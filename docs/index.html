@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dotnet-artisan — .NET AI Coding Skills</title>
+<style>
+  :root { --bg: #0d1117; --fg: #c9d1d9; --accent: #58a6ff; --border: #30363d; --card: #161b22; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { padding: 3rem 0 2rem; text-align: center; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  h1 { font-size: 2.5rem; color: #f0f6fc; margin-bottom: 0.5rem; }
+  h1 span { color: var(--accent); }
+  .tagline { font-size: 1.15rem; color: #8b949e; max-width: 600px; margin: 0 auto; }
+  h2 { font-size: 1.4rem; color: #f0f6fc; margin: 2rem 0 1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+  .card h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.5rem; }
+  .card p { color: #8b949e; font-size: 0.9rem; }
+  .badge { display: inline-block; background: #1f6feb22; color: var(--accent); border: 1px solid #1f6feb44; border-radius: 20px; padding: 0.15rem 0.7rem; font-size: 0.78rem; margin: 0.15rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .meta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem; }
+  footer { text-align: center; padding: 2rem 0; color: #484f58; font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1><span>dotnet</span>-artisan</h1>
+  <p class="tagline">Comprehensive .NET development skills for AI coding agents — Claude Code, GitHub Copilot, VS Code, Cursor</p>
+  <div class="meta" style="margin-top:1rem">
+    <span class="badge">14 Skills</span>
+    <span class="badge">17 Agents</span>
+    <span class="badge">160+ Refs</span>
+    <span class="badge">MIT</span>
+  </div>
+</header>
+
+<h2>Skills</h2>
+<div class="grid">
+  <div class="card"><h3>dotnet-api</h3><p>ASP.NET Core, EF Core, gRPC, SignalR, security, resilience</p></div>
+  <div class="card"><h3>dotnet-ui</h3><p>Blazor, MAUI, Uno Platform, WPF, WinUI, WinForms</p></div>
+  <div class="card"><h3>dotnet-csharp</h3><p>C# patterns, async/await, DI, LINQ, domain modeling</p></div>
+  <div class="card"><h3>dotnet-testing</h3><p>xUnit v3, Playwright, benchmarks, test quality analysis</p></div>
+  <div class="card"><h3>dotnet-devops</h3><p>CI/CD, GitHub Actions, containers, NuGet, observability</p></div>
+  <div class="card"><h3>dotnet-tooling</h3><p>MSBuild, Native AOT, CLI apps, profiling, SDK setup</p></div>
+  <div class="card"><h3>dotnet-debugging</h3><p>WinDbg, crash dumps, hang analysis, memory diagnostics</p></div>
+  <div class="card"><h3>dotnet-ai</h3><p>MCP servers, Semantic Kernel, RAG, ML.NET, LLMs</p></div>
+  <div class="card"><h3>dotnet-upgrade</h3><p>.NET version migration, AOT assessment, nullable migration</p></div>
+  <div class="card"><h3>dotnet-quality</h3><p>7-step cleanup pipeline, code review, dead code removal</p></div>
+  <div class="card"><h3>dotnet-workflow</h3><p>Parallel worktrees, context discipline, Claude Code optimization</p></div>
+  <div class="card"><h3>dotnet-learning</h3><p>Correction capture, instinct system, pattern learning</p></div>
+  <div class="card"><h3>using-dotnet</h3><p>.NET intent detection, routing gateway</p></div>
+  <div class="card"><h3>dotnet-advisor</h3><p>Skill router, cross-domain coordination</p></div>
+</div>
+
+<h2>Installation</h2>
+<div class="card" style="margin:1rem 0">
+  <p><code style="background:#0d1117;padding:0.2rem 0.5rem;border-radius:4px">claude plugins install YataoFeng/dotnet-artisan</code></p>
+  <p style="margin-top:0.5rem">Also compatible with GitHub Copilot, VS Code, Cursor — follows the <a href="https://agentskills.io">agentskills.io</a> open standard.</p>
+</div>
+
+<h2>Design Principles</h2>
+<div class="grid">
+  <div class="card"><h3>KISS First</h3><p>Simple CRUD doesn't need DDD, MediatR, or CQRS. Scale patterns to problems.</p></div>
+  <div class="card"><h3>No Repository Wrapping</h3><p>Use DbContext directly — EF Core is the repository. No useless abstraction layers.</p></div>
+  <div class="card"><h3>Version-Aware</h3><p>Guidance adapts to net8.0/net9.0/net10.0/net11.0 automatically.</p></div>
+  <div class="card"><h3>Framework First</h3><p>Use what .NET gives you: TimeProvider, ILogger, IHttpClientFactory, System.Text.Json.</p></div>
+</div>
+
+<footer>
+  Synthesized from <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>,
+  <a href="https://github.com/dotnet/skills">dotnet/skills</a>, and
+  <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a>
+  &nbsp;·&nbsp; <a href="https://github.com/YataoFeng/dotnet-artisan">GitHub</a>
+</footer>
+</div>
+</body>
+</html>
