@@ -33,7 +33,7 @@ provide the tiebreaker. Load this when making architecture/framework/pattern dec
 | New HTTP API (.NET 10) | Minimal API with `IEndpointGroup` auto-discovery |
 | Existing MVC project | Keep controllers, migrate incrementally |
 | OpenAPI documentation | `TypedResults` + `.WithName()` + Scalar UI |
-| Request validation | Endpoint filter (DataAnnotations or FluentValidation) |
+| Request validation | Endpoint filter (DataAnnotations) — no FluentValidation |
 | Authentication/authorization | Policy-based: `.RequireAuthorization("PolicyName")` |
 | Rate limiting | `AddRateLimiter` + `.RequireRateLimiting()` |
 | Response caching | `AddOutputCache` + `.CacheOutput()` |

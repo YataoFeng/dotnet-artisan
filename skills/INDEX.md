@@ -36,7 +36,7 @@ Quick navigation for all reference files. Each file contains implementation patt
 | [roslyn-analyzers.md](dotnet-csharp/references/roslyn-analyzers.md) | DiagnosticAnalyzer, CodeFixProvider |
 | [editorconfig.md](dotnet-csharp/references/editorconfig.md) | IDE/CA severity, globalconfig |
 | [file-io.md](dotnet-csharp/references/file-io.md) | FileStream, RandomAccess, paths |
-| [input-validation.md](dotnet-csharp/references/input-validation.md) | DataAnnotations, FluentValidation |
+| [input-validation.md](dotnet-csharp/references/input-validation.md) | DataAnnotations, .NET 10 AddValidation |
 | [validation-patterns.md](dotnet-csharp/references/validation-patterns.md) | IValidatableObject, IValidateOptions |
 
 ## API & Backend

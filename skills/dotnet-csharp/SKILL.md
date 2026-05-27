@@ -47,7 +47,7 @@ Load these when the topic matches (see Routing Table keywords):
 | Editorconfig | IDE/CA severity, AnalysisLevel, globalconfig | IDE/CA severity, AnalysisLevel, globalconfig, enforcement | references/editorconfig.md |
 | File I/O | FileStream, RandomAccess, FileSystemWatcher, paths | FileStream, RandomAccess, FileSystemWatcher, MemoryMappedFile | references/file-io.md |
 | Native interop | P/Invoke, LibraryImport, ComWrappers, marshalling | P/Invoke, LibraryImport, ComWrappers, marshalling, cross-platform | references/native-interop.md |
-| Input validation | .NET 10 AddValidation, FluentValidation | .NET 10 AddValidation, FluentValidation, ProblemDetails | references/input-validation.md |
+| Input validation | .NET 10 AddValidation, DataAnnotations | .NET 10 AddValidation, DataAnnotations, ProblemDetails | references/input-validation.md |
 | Validation patterns | DataAnnotations, IValidatableObject, IValidateOptions | DataAnnotations, IValidatableObject, IValidateOptions\<T\> | references/validation-patterns.md |
 | Modern patterns | records, pattern matching, primary constructors | Records, pattern matching, primary constructors, C# 12-15 | references/modern-patterns.md |
 | API design | naming, parameter ordering, return types, extensions | Naming, parameter ordering, return types, error patterns | references/api-design.md |
@@ -65,7 +65,7 @@ Load these when the topic matches (see Routing Table keywords):
 - Type design and domain modeling
 - File I/O and native interop
 - Globalization (string comparison, CultureInfo, time zones, character processing, encoding)
-- Input validation at the model level (DataAnnotations, IValidatableObject, FluentValidation, Options validation)
+- Input validation at the model level (DataAnnotations, IValidatableObject, Options validation)
 
 ## Out of scope
 

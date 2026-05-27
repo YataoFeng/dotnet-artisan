@@ -1,6 +1,6 @@
 # Input Validation
 
-Comprehensive input validation patterns for .NET APIs. Covers the .NET 10 built-in validation system, FluentValidation for complex business rules, Data Annotations for simple models, endpoint filters for Minimal API integration, ProblemDetails error responses, and security-focused validation techniques.
+Comprehensive input validation patterns for .NET APIs. Covers .NET 10 AddValidation() source-generated validation, DataAnnotations, IValidatableObject, endpoint filters, ProblemDetails error responses, and security-focused validation.
 
 ## Validation Framework Decision
 
@@ -216,7 +216,7 @@ Apply validation filters at the route group level for consistent validation acro
 
 ```csharp
 var orders = app.MapGroup("/api/orders")
-    .AddEndpointFilter<FluentValidationFilter<CreateOrderRequest>>();
+    .AddEndpointFilter<DataAnnotationsValidationFilter<CreateOrderRequest>>();
 ```
 
 **Gotcha:** Filter execution order matters -- first-registered filter is outermost. Register validation filters after logging but before authorization enrichment so that invalid requests are rejected early without unnecessary processing.
@@ -470,8 +470,8 @@ For OWASP injection prevention beyond input validation (SQL injection, XSS, comm
 
 ## Agent Gotchas
 
-1. **Do not use FluentValidation auto-validation pipeline** -- it was deprecated and removed in FluentValidation 11. Use manual validation or endpoint filters with `IValidator<T>` instead.
-2. **Do not mix validation frameworks on the same DTO** -- pick one (Data Annotations OR FluentValidation OR .NET 10 built-in) per model type. Mixing causes confusing partial validation.
+1. **Do not use FluentValidation at all.** It is deprecated for new .NET 10+ projects. Use DataAnnotations + `AddValidation()` or `IValidatableObject` instead.
+2. **Do not mix validation frameworks on the same DTO** -- pick one (DataAnnotations or .NET 10 built-in) per model type. Mixing causes confusing partial validation.
 3. **Do not use `Regex` without a timeout or `[GeneratedRegex]`** -- unbounded regex matching on user input enables ReDoS attacks. Always set `matchTimeout` or use source-generated regex.
 4. **Do not trust client-provided `Content-Type` headers** -- validate file content by reading magic bytes. Attackers rename executables with image extensions.
 5. **Do not forget `validateAllProperties: true`** -- `Validator.TryValidateObject` without this flag only validates `[Required]` attributes, silently skipping `[Range]`, `[StringLength]`, and others.
@@ -485,7 +485,6 @@ For OWASP injection prevention beyond input validation (SQL injection, XSS, comm
 - .NET 8.0+ (LTS baseline for endpoint filters, ProblemDetails, Data Annotations)
 - .NET 10.0 for built-in validation (`AddValidation`, `[ValidatableType]`, `Microsoft.Extensions.Validation`)
 - `Microsoft.Extensions.Validation` package for .NET 10 built-in validation
-- `FluentValidation` and `FluentValidation.DependencyInjectionExtensions` for FluentValidation patterns
 - .NET 7+ for `[GeneratedRegex]` source-generated regular expressions
 
 ---
@@ -494,7 +493,6 @@ For OWASP injection prevention beyond input validation (SQL injection, XSS, comm
 
 - [Model Validation in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-10.0)
 - [Minimal API Filters](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters?view=aspnetcore-10.0)
-- [FluentValidation Documentation](https://docs.fluentvalidation.net/en/latest/aspnet.html)
 - [ProblemDetails (RFC 9457)](https://www.rfc-editor.org/rfc/rfc9457)
 - [Handle Errors in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-10.0)
 - [OWASP Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
