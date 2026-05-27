@@ -1,5 +1,7 @@
 # HybridCache
 
+> **速查**: .NET 9+ 默认缓存方案 | `GetOrCreateAsync()` 一行搞定缓存穿透保护 | 内置 L1(内存)+L2(分布式) | 总是设置过期时间 | Key 包含用户 ID 避免跨用户泄露 | 不自己写锁防击穿
+
 HybridCache (.NET 9+) provides a unified two-level caching API with built-in stampede protection, tag-based eviction, and configurable serialization. It replaces the manual dual-layer `IMemoryCache` + `IDistributedCache` pattern.
 
 ## What It Replaces

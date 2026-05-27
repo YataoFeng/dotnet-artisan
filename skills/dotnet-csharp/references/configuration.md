@@ -1,5 +1,7 @@
 # Configuration
 
+> **速查**: 用 `IOptions<T>` 不用 `IConfiguration["key"]` | 密钥用 user-secrets/KeyVault 不放 appsettings.json | `ValidateOnStart()` 启动即校验 | `IOptionsSnapshot<T>` 支持热重载 | `IOptionsMonitor<T>` 给长生命周期服务
+
 Configuration patterns for .NET applications using Microsoft.Extensions.Configuration and Microsoft.Extensions.Options. Covers the Options pattern (`IOptions<T>`, `IOptionsMonitor<T>`, `IOptionsSnapshot<T>`), validation, user secrets, environment-based configuration, and feature flags with `Microsoft.FeatureManagement`.
 
 Cross-references: `references/dependency-injection.md` for service registration patterns, `references/coding-standards.md` for naming conventions.
