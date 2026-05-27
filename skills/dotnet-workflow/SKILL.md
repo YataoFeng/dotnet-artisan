@@ -1,12 +1,10 @@
 ---
 name: dotnet-workflow
 description: >
-  Claude Code workflow optimization for .NET development. Covers parallel execution
-  with git worktrees, context discipline (token budget management), plan mode strategy,
-  autonomous loops, verification patterns, and permission setup. Load when setting up
-  Claude Code for a .NET project, running parallel sessions, context is running low,
-  or optimizing productivity. Merges workflow-mastery + context-discipline +
-  autonomous-loops + verification-loop.
+  Claude Code 工作流优化（.NET 开发）。涵盖 git worktree 并行执行、上下文纪律
+  （Token 预算管理）、Plan Mode 策略、自主循环、验证模式和权限设置。配置 .NET 项目
+  的 Claude Code、运行并行会话、上下文不足或优化效率时加载。融合 workflow-mastery
+  + context-discipline + autonomous-loops + verification-loop。
 ---
 
 # dotnet-workflow

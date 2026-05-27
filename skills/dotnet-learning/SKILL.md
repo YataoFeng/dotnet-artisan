@@ -1,11 +1,10 @@
 ---
 name: dotnet-learning
 description: >
-  Compounding knowledge system for .NET projects. Detects user corrections, generalizes
-  them into rules, and stores in MEMORY.md. Tracks project-specific patterns via
-  confidence-scored instincts that graduate to permanent rules. Load when user corrects
-  output, says "remember this", "learn this pattern", or at session start to review
-  captured rules. Merges self-correction-loop + instinct-system + learning-log.
+  .NET 项目知识复利系统。检测用户纠错并将其概括为规则存入 MEMORY.md。通过置信度
+  评分的直觉系统追踪项目特定模式，逐步升华为永久规则。用户纠正输出、说"记住这个"、
+  "学习这个模式"或会话开始时加载。融合 self-correction-loop + instinct-system
+  + learning-log。
 ---
 
 # dotnet-learning

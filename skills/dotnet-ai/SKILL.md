@@ -1,11 +1,10 @@
 ---
 name: dotnet-ai
 description: >
-  AI/ML integration patterns for .NET. Covers MCP server/client creation and debugging,
-  LLM integration (Semantic Kernel, OpenAI, Azure AI), RAG pipelines, ML.NET model
-  training/inference, and AI technology selection. Load when building AI features in
-  .NET, creating MCP servers, integrating LLMs, or evaluating AI frameworks.
-  Synthesized from dotnet/skills dotnet-ai plugin + dotnet-artisan Semantic Kernel references.
+  .NET AI/ML 集成模式。涵盖 MCP 服务器/客户端创建调试、LLM 集成（Semantic Kernel、
+  OpenAI、Azure AI）、RAG 流水线、ML.NET 模型训练推理及 AI 技术选型。构建 .NET AI 功能、
+  创建 MCP 服务器、集成 LLM 或评估 AI 框架时加载。融合自 dotnet/skills dotnet-ai 插件
+  + dotnet-artisan Semantic Kernel 参考。
 ---
 
 # dotnet-ai
