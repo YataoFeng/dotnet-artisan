@@ -365,6 +365,56 @@ Feature guidance in this skill is grounded in publicly available language design
 
 > **Note:** This skill applies publicly documented design rationale. It does not represent or speak for the named sources.
 
+## Anti-patterns
+
+### Don't Use Obsolete Patterns When Modern C# Exists
+
+```csharp
+// BAD — manual backing field for validation
+private string _name;
+public string Name { get => _name; set => _name = value ?? throw new ArgumentNullException(); }
+// Use C# 14 field keyword instead
+
+// BAD — old collection init syntax
+var list = new List<int>() { 1, 2, 3 };
+
+// BAD — Tuple for domain types (no names, no methods)
+(string Name, decimal Price) product = ("Widget", 9.99m);
+```
+
+```csharp
+// GOOD — modern C# alternatives
+public string Name { get; set => field = value ?? throw new ArgumentNullException(); }
+
+List<int> list = [1, 2, 3];  // collection expression
+
+public record Product(string Name, decimal Price);  // named, can add methods
+```
+
+### Don't Over-Pattern-Match
+
+```csharp
+// BAD — deeply nested pattern matching, impossible to debug
+if (order is { Customer: { Address: { Country: { Code: "US" } } } }) { }
+
+// GOOD — break into clear sequential checks
+if (order.Customer?.Address?.Country?.Code == "US") { }
+```
+
+### Don't Use var When Type Is Not Obvious
+
+```csharp
+// BAD — reader can't tell the type
+var result = Process(order);          // object? int? Result<Order>?
+var data = GetData();                 // List? IEnumerable? array?
+
+// GOOD — explicit type for non-obvious cases
+Result<Order> result = Process(order);
+// var is fine when type is obvious: var orders = new List<Order>();
+```
+
+---
+
 ## References
 
 - [C# Language Reference](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/)

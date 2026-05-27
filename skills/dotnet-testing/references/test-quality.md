@@ -515,3 +515,78 @@ Do not delete flaky tests. Skip them with an issue reference and fix them system
 - [TimeProvider in .NET 8](https://learn.microsoft.com/en-us/dotnet/api/system.timeprovider)
 - [Microsoft.Extensions.TimeProvider.Testing](https://www.nuget.org/packages/Microsoft.Extensions.TimeProvider.Testing)
 - [CRAP metric explanation](https://testing.googleblog.com/2011/02/this-code-is-crap.html)
+
+---
+
+## Testing Anti-patterns
+
+### Don't Use In-Memory Database for Integration Tests
+
+```csharp
+// BAD — hides real SQL behavior: no real constraints, no transaction semantics
+services.AddDbContext<AppDbContext>(options =>
+    options.UseInMemoryDatabase("TestDb"));
+// Test passes with in-memory, fails with real PostgreSQL
+
+// GOOD — Testcontainers with the same database engine as production
+var container = new PostgreSqlBuilder().Build();
+await container.StartAsync();
+services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(container.GetConnectionString()));
+```
+
+### Don't Test Implementation Details
+
+```csharp
+// BAD — testing internal calls, fragile to refactoring
+mock.Verify(x => x.AddAsync(It.IsAny<Order>()), Times.Once);
+mock.Verify(x => x.SaveChangesAsync(), Times.Once);
+// Rename AddAsync → CreateAsync = test fails even though behavior is unchanged
+
+// GOOD — test observable outcomes
+var result = await service.CreateAsync(request);
+Assert.True(result.IsSuccess);
+var persisted = await db.Orders.FindAsync(result.Value.Id);
+Assert.NotNull(persisted);
+Assert.Equal(OrderStatus.Created, persisted.Status);
+```
+
+### Don't Write Assertion-Free Tests
+
+```csharp
+// BAD — "doesn't throw" is not a valid assertion
+[Fact]
+public async Task CreateOrder_Works()
+{
+    await service.CreateAsync(request);
+    // "it didn't throw, so it works!" — no, there's zero verification
+}
+
+// GOOD — assert specific expected outcomes
+[Fact]
+public async Task CreateOrder_PersistsAndReturnsCorrectResponse()
+{
+    var result = await service.CreateAsync(request);
+    Assert.True(result.IsSuccess);
+    var order = await db.Orders.FindAsync(result.Value.Id);
+    Assert.NotNull(order);
+    Assert.Equal(request.CustomerId, order.CustomerId);
+    Assert.Equal(request.Items.Count, order.Items.Count);
+}
+```
+
+### Don't Share Mutable State Between Tests
+
+```csharp
+// BAD — static shared state causes test ordering dependency
+private static readonly AppDbContext _sharedDb = CreateDb();
+// Test A modifies data → Test B breaks when data isn't what it expected
+
+// GOOD — fresh state per test, or use class fixtures (IAsyncLifetime) for shared setup
+public class OrderTests : IAsyncLifetime
+{
+    private AppDbContext _db = null!;
+    public async Task InitializeAsync() { _db = CreateDb(); await Seed(_db); }
+    public async Task DisposeAsync() { await _db.DisposeAsync(); }
+}
+```

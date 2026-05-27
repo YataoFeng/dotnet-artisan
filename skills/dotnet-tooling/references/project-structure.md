@@ -369,6 +369,49 @@ Key properties:
 - `ContinuousIntegrationBuild` — enables deterministic paths (only in CI to avoid breaking local debugging)
 
 
+## Anti-patterns
+
+### Don't Scatter Package Versions Across Projects
+
+```xml
+<!-- BAD — version drift: Project A has v2, Project B has v3 -->
+<!-- ProjectA.csproj: <PackageReference Include="Mediator" Version="2.0.0" /> -->
+<!-- ProjectB.csproj: <PackageReference Include="Mediator" Version="3.0.0" /> -->
+
+<!-- GOOD — Central Package Management, single source of truth -->
+<!-- Directory.Packages.props: <PackageVersion Include="Mediator" Version="3.0.0" /> -->
+<!-- Every .csproj: <PackageReference Include="Mediator" /> -->
+```
+
+### Don't Repeat Build Properties in Every Project
+
+```xml
+<!-- BAD — same boilerplate in 10 .csproj files -->
+<PropertyGroup>
+  <TargetFramework>net10.0</TargetFramework>
+  <Nullable>enable</Nullable>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+</PropertyGroup>
+
+<!-- GOOD — Directory.Build.props, inherited by all projects automatically -->
+<!-- Root/Directory.Build.props — write once, applies everywhere -->
+```
+
+### Don't Mix Source and Test Projects
+
+```
+# BAD — tests interleaved with source
+src/MyApp.Api/
+src/MyApp.Api.Tests/    # test among source = confusing
+
+# GOOD — clear separation at solution root
+src/MyApp.Api/
+tests/MyApp.Api.Tests/
+```
+
+---
+
 ## References
 
 - [.NET Library Design Guidance](https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/)

@@ -463,6 +463,44 @@ Choose Aspire when your stack is primarily .NET and you want standardized observ
 
 ---
 
+## Anti-patterns
+
+### Don't Use Aspire AppHost for Production Deployment
+
+```csharp
+// BAD — Aspire's AppHost is a local development orchestrator, not a K8s replacement
+// Don't try to deploy the AppHost project to production
+
+// GOOD — Aspire for local dev; Docker Compose / K8s / ACA for production
+// The individual service projects deploy normally; AppHost is dev-only
+```
+
+### Don't Hardcode Connection Strings with Aspire
+
+```csharp
+// BAD — defeats Aspire's automatic service discovery and connection management
+builder.Services.AddDbContext<AppDbContext>(o =>
+    o.UseNpgsql("Host=localhost;Database=myapp;Username=admin;Password=..."));
+
+// GOOD — Aspire integration handles connection strings automatically
+builder.AddNpgsqlDbContext<AppDbContext>("myappdb");
+// Connection string injected via Aspire's service discovery
+```
+
+### Don't Skip AddServiceDefaults()
+
+```csharp
+// BAD — manually configuring observability per service
+builder.Services.AddOpenTelemetry()...;
+builder.Services.AddHealthChecks()...;
+
+// GOOD — shared ServiceDefaults project, one line per service
+builder.AddServiceDefaults();
+// Includes: OTEL, health checks, default resilience, standardized logging
+```
+
+---
+
 ## References
 
 - [.NET Aspire overview](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview)
