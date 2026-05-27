@@ -13,6 +13,8 @@ Quick navigation for all reference files. Each file contains implementation patt
 | [anti-patterns.md](dotnet-csharp/references/anti-patterns.md) | 10 BAD/GOOD code comparisons |
 | [dotnet-releases.md](dotnet-csharp/references/dotnet-releases.md) | .NET/C# version features and breaking changes |
 | [DECISIONS.md](DECISIONS.md) | When to use what — decision guide cross-reference |
+| [CHEATSHEET.md](CHEATSHEET.md) | One-page all-rules summary — load as context refresher |
+| [package-choices.md](dotnet-csharp/references/package-choices.md) | Commercial → free/open-source alternatives |
 
 ## C# Language
 
