@@ -1,8 +1,12 @@
 name: Auto-Evolve
 
+concurrency:
+  group: auto-evolve
+  cancel-in-progress: true
+
 on:
   schedule:
-    - cron: '*/10 * * * *'  # every 10 minutes
+    - cron: '*/30 * * * *'  # every 30 minutes
   workflow_dispatch:
     inputs:
       source:
