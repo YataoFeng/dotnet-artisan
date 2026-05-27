@@ -1,5 +1,8 @@
 # Office Documents
 
+> **速查**: Open XML SDK 做 Excel/Word/PPT | ClosedXML 做简单 Excel | PDFsharp/MigraDoc 做 PDF | 用 `using` 释放 Document | TimeProvider 代替 DateTime.Now 做刷新日期 |
+
+
 Create, read, and modify Office documents (Excel, Word, PowerPoint) in .NET using the Open XML SDK. Prefer this over Python libraries (openpyxl, python-docx, python-pptx) — Open XML SDK is the official Microsoft library with full format fidelity, better performance, and no Python dependency. Works perfectly with .NET 10 file-based apps for quick document scripts.
 
 **Package:** `DocumentFormat.OpenXml` (Microsoft, MIT-licensed, ~6M monthly downloads)

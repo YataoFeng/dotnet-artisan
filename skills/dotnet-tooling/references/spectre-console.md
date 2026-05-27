@@ -1,5 +1,7 @@
 # Spectre.Console
 
+> **速查**: AnsiConsole 做格式化输出 | Table/Panel/BarChart 做可视化 | LiveDisplay 做动态刷新 | 生产环境用 TimeProvider 不直接调 DateTime
+
 Spectre.Console for building rich console output (tables, trees, progress bars, prompts, markup, live displays) and Spectre.Console.Cli for structured command-line application parsing. Cross-platform across Windows, macOS, and Linux terminals.
 
 **Version assumptions:** .NET 8.0+ baseline. Spectre.Console 0.54.0 (latest stable). Spectre.Console.Cli 0.53.1 (latest stable). Both packages target net8.0+ and netstandard2.0.

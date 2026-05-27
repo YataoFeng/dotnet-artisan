@@ -1,5 +1,8 @@
 # BenchmarkDotNet
 
+> **速查**: `[Benchmark]` 标记被测方法 | MemoryDiagnoser 看分配 | 固定测试数据不用随机 | TimeProvider 代替 DateTime | 不看单次运行看统计 |
+
+
 Microbenchmarking guidance for .NET using BenchmarkDotNet v0.14+. Covers benchmark class setup, memory and disassembly diagnosers, exporters for CI artifact collection, baseline comparisons, and common pitfalls that invalidate measurements.
 
 **Version assumptions:** BenchmarkDotNet v0.14+ on .NET 8.0+ baseline. Examples use current stable APIs.
