@@ -22,6 +22,7 @@ These references define correctness and quality standards that apply to all C# c
 - `references/anti-patterns.md` — side-by-side BAD/GOOD code: DateTime.Now→TimeProvider, N+1 queries, DI lifetime mismatch, .Result deadlocks, CancellationToken propagation
 - `references/package-choices.md` — always prefer free/open-source: MediatR→Mediator(MIT), FluentValidation→AddValidation(), AutoMapper→Mapperly, Newtonsoft→STJ, Swashbuckle→Microsoft.AspNetCore.OpenApi
 - `../DECISIONS.md` — when to use what: consolidated decision guides for architecture, data access, caching, DI, observability, testing, deployment
+- `../CHEATSHEET.md` — one-page summary of all non-negotiable rules, patterns, and package alternatives. Load as quick context refresher.
 - `references/dotnet-releases.md` — .NET 10/11 and C# 14/15 features, version matrix, TFM-specific code generation rules (compensates for training data cutoff)
 
 ### On-Demand References
