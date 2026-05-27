@@ -573,3 +573,48 @@ grep "Project Performance Summary" full.log -A 50
 ```
 
 Key metrics: per-project build time, critical path length, node assignment distribution. Wide graphs (many independent projects) parallelize well; deep chains do not.
+
+---
+
+## MSBuild Anti-Patterns (from dotnet/skills)
+
+### Use Built-in Tasks Instead of Exec
+
+```xml
+<!-- BAD: opaque to MSBuild, no structured logging, no incremental support -->
+<Exec Command="mkdir $(OutputPath)logs" />
+<Exec Command="copy config.json $(OutputPath)" />
+
+<!-- GOOD: cross-platform, incremental, structured -->
+<MakeDir Directories="$(OutputPath)logs" />
+<Copy SourceFiles="config.json" DestinationFolder="$(OutputPath)" />
+```
+
+| Shell | MSBuild Task |
+|-------|-------------|
+| `mkdir` | `<MakeDir>` |
+| `copy/cp` | `<Copy>` |
+| `del/rm` | `<Delete>` |
+| `echo > file` | `<WriteLinesToFile>` |
+
+### Always Quote Condition Expressions
+
+```xml
+<!-- BAD: single quotes break XML parsing -->
+<Target Name="Build" Condition="'$(Configuration)' == 'Debug'">
+
+<!-- GOOD: double-quote the entire condition string -->
+<Target Name="Build" Condition="'$(Configuration)' == 'Debug'">
+```
+
+### Modernize: .NET Framework → SDK-Style
+
+```xml
+<!-- LEGACY (.NET Framework project format, 50+ lines with assembly references) -->
+<!-- GOOD (.NET SDK style, minimal) -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+</Project>
+```

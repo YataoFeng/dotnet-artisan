@@ -532,3 +532,29 @@ builder.Services.AddScoped<CartState>(); // one per circuit, but re-injected on 
 builder.Services.AddSingleton<CartService>();
 // Store cart by circuit/user ID, not by DI lifetime
 ```
+
+---
+
+## Blazor Server → Blazor Web App Migration (from dotnet/skills)
+
+### Migration Steps
+
+1. **Create new Blazor Web App** from template (InteractiveServer + InteractiveWebAssembly)
+2. **Move components** from old Server project to the new `.Client` project for WASM-compatible components
+3. **Move pages** that need server interactivity to the main project with `@rendermode InteractiveServer`
+4. **Replace `NavigationManager` URI hardcoding**: `NavigationManager.BaseUri` differs between Server and WASM modes
+5. **Replace `HttpContext` dependencies**: NOT available in WASM. Use API calls instead of direct `HttpContext` access
+6. **Replace `AuthenticationStateProvider` customization**: Server uses circuit-based auth; Web App uses `PersistentAuthenticationStateProvider` + `PersistingRevalidatingAuthenticationStateProvider`
+
+### Key Pattern Changes
+
+```csharp
+// BEFORE (Blazor Server): direct HttpContext access
+@inject IHttpContextAccessor HttpContextAccessor
+var user = HttpContextAccessor.HttpContext.User;
+
+// AFTER (Blazor Web App): API-based, works in both Server and WASM
+@inject AuthenticationStateProvider AuthState
+var state = await AuthState.GetAuthenticationStateAsync();
+var user = state.User;
+```

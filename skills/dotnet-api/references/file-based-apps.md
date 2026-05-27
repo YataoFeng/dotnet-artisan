@@ -337,3 +337,48 @@ File-based apps differ from project-based apps in several default settings:
 - [Native AOT deployment](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/)
 - [Central Package Management](https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management)
 - [MSBuild property functions](https://learn.microsoft.com/en-us/visualstudio/msbuild/property-functions)
+
+---
+
+## Patterns from dotnet/skills
+
+### NuGet Package Directives
+
+```csharp
+// Inline NuGet references directly in the .cs file (no .csproj needed)
+#:package Spectre.Console
+#:package Microsoft.EntityFrameworkCore.Sqlite
+using Spectre.Console;
+AnsiConsole.MarkupLine("[green]Hello from a script![/]");
+```
+
+### Web App as a Single File
+
+```csharp
+#:sdk Microsoft.NET.Sdk.Web
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+app.MapGet("/", () => "Hello from a single .cs file!");
+app.Run();
+```
+
+### Shebang for Unix Tools
+
+```csharp
+#!/usr/bin/env dotnet
+#:package System.CommandLine
+// dotnet run tool.csx --input file.json --output result.csv
+```
+
+### Run Commands
+
+```bash
+# Execute directly
+dotnet run script.cs
+
+# With arguments
+dotnet run tool.csx -- --input data.json --verbose
+
+# Publish as native AOT binary
+dotnet publish script.cs -o ./out --self-contained
+```

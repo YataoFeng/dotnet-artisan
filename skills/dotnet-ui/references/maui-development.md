@@ -438,3 +438,42 @@ dotnet run --project MyApp/MyApp.csproj -f net8.0-android
 - XAML Hot Reload may not reflect changes to custom renderers or handlers until rebuild
 - On Android, Hot Reload uses the `MetadataUpdateHandler` mechanism; changes to static fields or constructors require restart
 - On iOS simulator, Hot Reload works but physical device Hot Reload requires a stable USB/WiFi connection
+
+---
+
+## Patterns from dotnet/skills
+
+### Safe Area Handling (iOS notch/dynamic island)
+
+```xml
+<!-- Wrap content in SafeArea to avoid hardware features -->
+<ContentPage xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific"
+             ios:Page.UseSafeArea="True">
+</ContentPage>
+```
+
+### App Lifecycle
+
+```csharp
+// Detect app resume/suspend for data refresh
+public partial class App : Application
+{
+    protected override void OnResume()
+    {
+        // Refresh data after background → foreground transition
+    }
+    protected override void OnSleep()
+    {
+        // Persist state before going to background
+    }
+}
+```
+
+### MAUI Doctor (Diagnostics)
+
+```bash
+# Check development environment health
+dotnet maui doctor
+
+# Key checks: SDK versions, workloads, platform SDKs (Android SDK, Xcode, Windows SDK)
+```

@@ -363,3 +363,41 @@ Use `CreateSlimBuilder` for Native AOT applications. It excludes features that r
 - [ILLink descriptor format](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options#descriptor-format)
 - [LibraryImport source generation](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke-source-generation)
 - [Optimize AOT deployments](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/optimizing)
+
+---
+
+## AOT Compatibility Checklist (from dotnet/skills)
+
+### Pre-Migration Audit
+
+```bash
+# Check AOT compatibility
+dotnet publish -p:PublishAot=true --no-restore -v q 2>&1 | grep -i "warning IL"
+
+# Common blockers:
+# IL3050: Requires dynamic code (reflection emit)
+# IL3051: 'Assembly.Location' always returns empty string  
+# IL2026: Requires unreferenced code (serialization, reflection)
+```
+
+### Must Fix Patterns
+
+```csharp
+// BAD: reflection-based code fails AOT
+var type = Type.GetType(config.TypeName);
+var instance = Activator.CreateInstance(type);   // IL2057 trim warning
+
+// GOOD: source-generated alternatives
+// System.Text.Json source gen: [JsonSerializable(typeof(Order))]
+// Mediator source gen: IRequest<T> (compile-time code gen)
+// ASP.NET Core minimal APIs: fully AOT-compatible
+```
+
+### AOT-Compatible Libraries to Prefer
+
+| Avoid (Reflection) | Use (Source-Generated) |
+|-------------------|----------------------|
+| Newtonsoft.Json | System.Text.Json with [JsonSourceGenerationOptions] |
+| AutoMapper | Manual mapping or Mapperly source gen |
+| MediatR (runtime) | Mediator (source gen, MIT) |
+| Dynamic DI scanning | Explicit registration |

@@ -590,3 +590,40 @@ public class OrderTests : IAsyncLifetime
     public async Task DisposeAsync() { await _db.DisposeAsync(); }
 }
 ```
+
+---
+
+## Additional Anti-patterns (from dotnet/skills)
+
+### Don't Write Single-Assertion-Per-Test Religiously
+
+```csharp
+// BAD: 5 tests all with same setup, 1 assert each = massive duplication
+[Fact] public void CreatesOrder() { var r = svc.Create(req); Assert.True(r.IsSuccess); }
+[Fact] public void PersistsOrder() { var r = svc.Create(req); Assert.NotNull(db.Orders.Find(r.Value.Id)); }
+[Fact] public void ReturnsCorrectStatus() { var r = svc.Create(req); Assert.Equal(Status.Created, r.Value.Status); }
+
+// GOOD: one test with multiple asserts on the same logical outcome
+[Fact]
+public void CreateOrder_Success()
+{
+    var result = svc.Create(req);
+    Assert.True(result.IsSuccess);
+    Assert.Equal(Status.Created, result.Value.Status);
+    Assert.Equal(req.Items.Count, result.Value.ItemCount);
+}
+```
+
+### Don't Use Boolean Assertions Without Context
+
+```csharp
+// BAD: Assert.True gives no context on failure
+Assert.True(orders.Count == expected);
+Assert.True(result.Contains("error"));
+
+// GOOD: typed assertions with clear failure messages
+Assert.Equal(expected, orders.Count);
+Assert.Contains("error", result);
+Assert.NotNull(order);
+Assert.NotEmpty(items);
+```
