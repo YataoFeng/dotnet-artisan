@@ -253,28 +253,9 @@ return result switch
 
 Choose validation based on complexity. For .NET 10+, prefer the built-in `AddValidation()` source-generator pipeline (see [skill:dotnet-csharp]). For detailed framework guidance, see [skill:dotnet-csharp].
 
-**Data Annotations (simple):** Use `[Required]`, `[MaxLength]`, `[Range]` on record properties. In minimal APIs, validate via `MiniValidation` (`MiniValidator.TryValidate`) or the .NET 10+ built-in pipeline.
+**DataAnnotations (default):** `[Required]`, `[MaxLength]`, `[Range]` on record properties. For .NET 10+, use `AddValidation()` source-generated pipeline.
 
-**FluentValidation (complex):** Use for cross-property rules, conditional logic, or database-dependent checks:
-
-```csharp
-builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped);
-
-public sealed class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
-{
-    public CreateOrderValidator()
-    {
-        RuleFor(x => x.CustomerId).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.Lines).NotEmpty()
-            .WithMessage("Order must have at least one line item");
-        RuleForEach(x => x.Lines).ChildRules(line =>
-        {
-            line.RuleFor(l => l.ProductId).NotEmpty();
-            line.RuleFor(l => l.Quantity).GreaterThan(0);
-        });
-    }
-}
-```
+**For cross-property rules:** Implement `IValidatableObject.Validate()`. For complex conditional logic, use custom `ValidationAttribute` subclasses. No third-party validation libraries needed for new .NET 10+ projects.
 
 ---
 

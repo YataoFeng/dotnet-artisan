@@ -482,7 +482,7 @@ var summaries = await db.Orders
 ## Agent Gotchas
 
 1. **Do not create navigation properties between aggregate roots** -- use foreign key values (e.g., `CustomerId`) instead of navigation properties (e.g., `Customer`). Cross-aggregate navigation properties break the consistency boundary and encourage loading data that belongs to another aggregate.
-2. **Do not create generic repositories** (`IRepository<T>`) -- they cannot express aggregate-specific loading rules and become leaky abstractions. Create one repository interface per aggregate root with explicit methods.
+2. **Do not create repository interfaces at all** (`IRepository<T>` or `IOrderRepository`) -- DbSet<T> IS the repository, DbContext IS the unit of work. EF Core already provides these abstractions. Repository wrappers hide `IQueryable`, block `.Include()`, and add zero value. Use `AppDbContext` directly in handlers.
 3. **Do not use `UseLazyLoadingProxies()`** -- lazy loading hides N+1 queries and makes performance unpredictable. Use `Include()` for eager loading or `Select()` for projections.
 4. **Do not return `IQueryable<T>` from repositories** -- it leaks persistence concerns to callers and makes query behavior unpredictable (e.g., multiple enumeration, client-side evaluation). Return materialized results (`List<T>`, `T?`).
 5. **Do not write `ToListAsync()` without `Take()` on unbounded queries** -- full table scans are a production incident waiting to happen. Always limit the result set.

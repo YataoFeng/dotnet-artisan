@@ -375,40 +375,37 @@ See [skill:dotnet-testing] for test organization, naming conventions, and test t
 ### Anti-Pattern
 
 ```csharp
-// WRONG: scoped service injected into singleton -- captive dependency
+// WRONG: scoped DbContext injected into singleton -- captive dependency
 builder.Services.AddSingleton<OrderProcessor>(); // singleton
-builder.Services.AddScoped<IOrderRepository, OrderRepository>(); // scoped
+builder.Services.AddDbContext<AppDbContext>();    // scoped (default)
 
-public class OrderProcessor(IOrderRepository repo) // repo is captured as singleton!
+public class OrderProcessor(AppDbContext db) // db is captured as singleton!
 {
-    public async Task ProcessAsync(int orderId, CancellationToken ct)
-    {
-        var order = await repo.GetByIdAsync(orderId, ct); // same DbContext forever
-    }
+    // Same DbContext instance forever = stale data, memory leak
 }
 
-// WRONG: missing registration causes runtime exception
-// builder.Services.AddScoped<IOrderRepository, OrderRepository>(); // forgot this line
-// InvalidOperationException: Unable to resolve service for type 'IOrderRepository'
+// WRONG: missing DbContext registration causes runtime exception
+// builder.Services.AddDbContext<AppDbContext>(); // forgot this line
+// InvalidOperationException: Unable to resolve service for type 'AppDbContext'
 ```
 
 ### Corrected
 
 ```csharp
-// CORRECT: lifetimes must not capture shorter-lived dependencies
-builder.Services.AddScoped<OrderProcessor>(); // scoped, matches repository lifetime
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+// CORRECT: match lifetimes — Scoped handler with Scoped DbContext
+builder.Services.AddScoped<OrderProcessor>();
+builder.Services.AddDbContext<AppDbContext>();
 
 // Or if OrderProcessor must be singleton, inject IServiceScopeFactory:
 builder.Services.AddSingleton<OrderProcessor>();
 
 public class OrderProcessor(IServiceScopeFactory scopeFactory)
 {
-    public async Task ProcessAsync(int orderId, CancellationToken ct)
+    public async Task ProcessAsync(Guid orderId, CancellationToken ct)
     {
         await using var scope = scopeFactory.CreateAsyncScope();
-        var repo = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
-        var order = await repo.GetByIdAsync(orderId, ct);
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var order = await db.Orders.FindAsync(orderId); // DbSet<T> IS the repository
     }
 }
 ```

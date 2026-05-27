@@ -52,10 +52,10 @@ public class OrderService
 ### Fix: Separate Responsibilities
 
 ```csharp
-// Each class has one reason to change
+// Each class has one reason to change — handler calls validator + notifier
 public sealed class OrderCreator(
     IOrderValidator validator,
-    IOrderRepository repository,
+    AppDbContext db,
     IOrderNotifier notifier)
 {
     public async Task<Order> CreateAsync(
@@ -63,10 +63,11 @@ public sealed class OrderCreator(
     {
         validator.Validate(request);
 
-        var order = await repository.AddAsync(request, ct);
+        var order = Order.Create(request.CustomerId, request.Items);
+        db.Orders.Add(order);
+        await db.SaveChangesAsync(ct);
 
         await notifier.OrderCreatedAsync(order, ct);
-
         return order;
     }
 }
@@ -76,19 +77,6 @@ public sealed class OrderValidator : IOrderValidator
     public void Validate(CreateOrderRequest request)
     {
         ArgumentException.ThrowIfNullOrEmpty(request.CustomerId);
-        // ... validation rules
-    }
-}
-
-public sealed class OrderRepository(AppDbContext db) : IOrderRepository
-{
-    public async Task<Order> AddAsync(
-        CreateOrderRequest request, CancellationToken ct)
-    {
-        var order = new Order { CustomerId = request.CustomerId };
-        db.Orders.Add(order);
-        await db.SaveChangesAsync(ct);
-        return order;
     }
 }
 ```
@@ -324,25 +312,30 @@ High-level modules should not depend on low-level modules. Both should depend on
 // WRONG -- high-level module creates low-level dependencies directly
 public sealed class OrderProcessor
 {
-    private readonly SqlOrderRepository _repository = new(); // Tight coupling
     private readonly SmtpEmailSender _emailSender = new();   // Tight coupling
+    private readonly StripePaymentGateway _gateway = new();  // Tight coupling
 }
 
 // RIGHT -- depend on abstractions owned by the high-level module
-public interface IOrderRepository
+public interface IPaymentGateway
 {
-    Task SaveAsync(Order order, CancellationToken ct = default);
+    Task<PaymentResult> ChargeAsync(Money amount, CustomerId customer, CancellationToken ct);
 }
 
 public sealed class OrderProcessor(
-    IOrderRepository repository,
+    AppDbContext db,               // DbContext directly — no repository wrapper
+    IPaymentGateway payment,       // Real abstraction over external service
     INotificationService notifier)
 {
     public async Task ProcessAsync(Order order, CancellationToken ct)
     {
-        await repository.SaveAsync(order, ct);
-        await notifier.NotifyAsync(order.Email,
-            "Order processed", $"Order {order.Id}", ct);
+        var result = await payment.ChargeAsync(order.Total, order.CustomerId, ct);
+        if (result.IsSuccess)
+        {
+            order.MarkPaid();
+            await db.SaveChangesAsync(ct);
+            await notifier.NotifyAsync(order, ct);
+        }
     }
 }
 ```
@@ -352,9 +345,11 @@ public sealed class OrderProcessor(
 Register abstractions with Microsoft.Extensions.DependencyInjection. See `references/dependency-injection.md` for lifetime management, keyed services, and decoration patterns.
 
 ```csharp
-builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
+builder.Services.AddScoped<AppDbContext>();
+builder.Services.AddScoped<IPaymentGateway, StripePaymentGateway>();
 builder.Services.AddScoped<INotificationService, SmtpNotificationService>();
 builder.Services.AddScoped<OrderProcessor>();
+// Note: DbContext is registered directly — no IRepository wrapper needed
 ```
 
 ### DIP Boundaries
