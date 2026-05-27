@@ -1,5 +1,7 @@
 # Validation Patterns
 
+> **速查**: 默认 DataAnnotations | 跨属性规则 `IValidatableObject` | 配置校验 `IValidateOptions<T>`+`ValidateOnStart()` | .NET 10 `AddValidation()` 源生成 | 不用 FluentValidation |
+
 Built-in .NET validation patterns. Covers DataAnnotations, `IValidatableObject`, `IValidateOptions<T>`, custom `ValidationAttribute`, and `Validator.TryValidateObject`. For .NET 10+, use `AddValidation()` source-generated validation. FluentValidation is NOT recommended for new projects.
 
 ## Validation Approach

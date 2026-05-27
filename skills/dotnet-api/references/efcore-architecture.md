@@ -1,5 +1,7 @@
 # EF Core Architecture
 
+> **速查**: DbContext 生命周期 Scoped | 不用 Repository 包装 | `IDbContextFactory<T>` 给 BackgroundService/Blazor | 迁移 SQL 必须 Review | 不建导航属性跨聚合根 | 迁移不放应用启动时运行 |
+
 Strategic architectural patterns for EF Core data layers. Covers read/write model separation, aggregate boundary design, repository vs direct DbContext policy, N+1 query governance, row limit enforcement, and projection patterns. These patterns guide how to structure a data layer -- not how to write individual queries (see [skill:dotnet-api] for tactical usage).
 
 ## Package Prerequisites
