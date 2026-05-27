@@ -224,7 +224,7 @@ If resource lookup fails, check namespace alignment. `IStringLocalizer<T>` resol
 
 ```csharp
 // Always pass explicit CultureInfo -- never rely on thread defaults in server code
-var date = DateTime.Now.ToString("D", new CultureInfo("fr-FR"));
+var date = new DateTime(2026, 2, 14).ToString("D", new CultureInfo("fr-FR"));
 // "vendredi 14 fevrier 2026"
 
 var price = 1234.56m.ToString("C", new CultureInfo("de-DE"));
