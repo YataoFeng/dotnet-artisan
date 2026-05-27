@@ -1,5 +1,6 @@
 # Blazor Patterns
 
+> **速查**: RenderMode 从页面设置不从子组件 | JS Interop 只在 OnAfterRender 不在 OnInitialized | 导航时 Cancel 组件操作 | Blazor Server→WebApp 迁移用 AuthState 不用 HttpContext | 不用 Scoped Service 存 UI 状态
 Blazor hosting models, render modes, project setup, routing, enhanced navigation, streaming rendering, and AOT-safe patterns. Covers all five hosting models (InteractiveServer, InteractiveWebAssembly, InteractiveAuto, Static SSR, Hybrid) with trade-off analysis for each.
 
 ## Hosting Models & Render Modes
