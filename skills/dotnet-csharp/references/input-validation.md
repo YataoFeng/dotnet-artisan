@@ -1,5 +1,7 @@
 # Input Validation
 
+> **速查**: .NET 10 `AddValidation()` 源生成 | DataAnnotations 默认 | `IValidatableObject` 跨属性 | 不用 FluentValidation | `[GeneratedRegex]` 防 ReDoS | 文件上传校验 Magic Bytes 不信 Content-Type |
+
 Comprehensive input validation patterns for .NET APIs. Covers .NET 10 AddValidation() source-generated validation, DataAnnotations, IValidatableObject, endpoint filters, ProblemDetails error responses, and security-focused validation.
 
 ## Validation Framework Decision
