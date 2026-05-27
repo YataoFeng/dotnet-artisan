@@ -1,82 +1,82 @@
-# .NET 速查表 — AI 代理一页全览
+# .NET Cheatsheet — AI Agent Quick Reference
 
-写任何 .NET 代码时加载此文件。每条规则一行。
+Load this when writing ANY .NET code. One line per rule.
 
-## 铁律
+## Non-Negotiable
 
-- 直接用 DbContext，禁止 IRepository/IUnitOfWork 包装
-- TimeProvider，禁止 DateTime.Now
-- AddValidation() + DataAnnotations，禁止 FluentValidation
-- 仅免费/开源：Mediator(MIT) 不 MediatR，Mapperly 不 AutoMapper
-- Microsoft.AspNetCore.OpenApi，禁止 Swashbuckle
-- System.Text.Json 源生成，禁止 Newtonsoft
-- IHttpClientFactory，禁止 new HttpClient()
+- DbContext direct, no IRepository/IUnitOfWork wrapper
+- TimeProvider, never DateTime.Now
+- AddValidation() + DataAnnotations, never FluentValidation
+- Free/open-source only: Mediator(MIT) not MediatR, Mapperly not AutoMapper
+- Microsoft.AspNetCore.OpenApi, never Swashbuckle
+- System.Text.Json source-gen, never Newtonsoft
+- IHttpClientFactory, never new HttpClient()
 
-## 架构
+## Architecture
 
-- 简单 CRUD: 单项目 + DbContext
-- 50+ 端点: 按功能垂直切片
-- 复杂领域: DDD + 聚合根
-- 多服务: 每个服务内部用 VSA
+- Simple CRUD: single project + DbContext
+- 50+ endpoints: Vertical Slice per feature
+- Complex domain: DDD with aggregates
+- Multi-service: each service = VSA internally
 
 ## EF Core
 
-- 读用 .Include().AsNoTracking()
-- 用 .Select() 投影到 DTO，禁止返回实体
-- 批量操作用 ExecuteUpdateAsync/ExecuteDeleteAsync
-- 集成测试用 Testcontainers，禁止 InMemory
-- 迁移 SQL 必须先审核再执行
+- .Include().AsNoTracking() for reads
+- .Select() project to DTO, never return entity
+- ExecuteUpdateAsync/ExecuteDeleteAsync for bulk
+- Testcontainers for integration tests, never InMemory
+- Review migration SQL before apply
 
-## 依赖注入
+## DI
 
-- Singleton 禁止依赖 Scoped
-- Singleton 需 Scoped 用 IServiceScopeFactory
-- AddDbContext<T>() — 默认 Scoped
-- BackgroundService/Blazor 用 AddDbContextFactory<T>()
+- Singleton never depends on Scoped
+- IServiceScopeFactory when Singleton needs Scoped
+- AddDbContext<T>() — scoped by default
+- AddDbContextFactory<T>() for BackgroundService/Blazor
 
 ## Minimal API
 
-- 用 IEndpointGroup 自动发现，不堆在 Program.cs
-- TypedResults，禁止 IResult
-- 返回 DTO，禁止返回实体
+- IEndpointGroup auto-discovery, not Program.cs
+- TypedResults, never IResult
+- Return DTO, never entity
 
 ## HTTP
 
-- IHttpClientFactory + 类型化客户端
-- 每个客户端一行 AddStandardResilienceHandler()
-- 每个调用传 CancellationToken
+- IHttpClientFactory with typed clients
+- AddStandardResilienceHandler() once per client
+- CancellationToken on every call
 
-## 异步
+## Async
 
-- async/await 一路到底，禁止 .Result/.Wait()
-- CancellationToken 端到端传播
-- async void 仅限 UI 事件处理
+- async/await all the way, never .Result/.Wait()
+- CancellationToken propagated end-to-end
+- async void ONLY for UI event handlers
 
-## 安全
+## Security
 
-- 参数化查询，禁止字符串拼接
-- 基于策略授权，不用角色字符串
-- 密钥放 user-secrets/KeyVault，禁止放 appsettings.json
-- JWT 验证全开: Issuer+Audience+Lifetime+SigningKey
+- Parameterized queries, never string concatenation
+- Policy-based auth, not role strings
+- Secrets in user-secrets/KeyVault, never appsettings.json
+- Validate JWT: Issuer+Audience+Lifetime+SigningKey all ON
 
-## 测试
+## Testing
 
-- 测行为不测实现细节
-- 集成测试用 Testcontainers，禁止 InMemory
-- 断言具体结果，不写 "没抛异常就算过"
-- 每个测试独立状态，禁止 static 共享
+- Test behavior, not implementation details
+- Testcontainers, never InMemory for integration tests
+- Assert specific outcomes, not "didn't throw"
+- Fresh state per test, no static shared state
 
-## 构建
+## Build
 
-- dotnet build -m（并行，默认串行）
-- CI 中 dotnet format --verify-no-changes
-- 多阶段 Docker: SDK→编译，runtime→运行
-- 容器内非 root 用户
+- dotnet build -m (parallel, default is sequential)
+- dotnet format --verify-no-changes in CI
+- Multi-stage Docker: SDK→build, runtime→deploy
+- Non-root user in containers
 
-## 包对照
+## Packages
 
-| 禁止 | 使用 |
-|------|------|
+| Avoid | Use |
+|-------|-----|
 | MediatR | Mediator (MIT) |
 | FluentValidation | AddValidation() |
 | AutoMapper | Mapperly |

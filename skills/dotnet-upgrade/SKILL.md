@@ -1,10 +1,11 @@
 ---
 name: dotnet-upgrade
 description: >
-  .NET 版本迁移与项目升级。涵盖 net8→net9→net10→net11 迁移路径、AOT 兼容性评估、
-  nullable 引用迁移、从 .NET Framework 的 Thread.Abort 迁移及渐进式升级策略。
-  升级 .NET 版本、从 .NET Framework 迁移或规划破坏性变更时加载。
-  融合自 dotnet/skills dotnet-upgrade 插件。
+  .NET version migration and project upgrade. Covers net8→net9→net10→net11 migration
+  paths, AOT compatibility assessment, nullable reference migration, thread-abort
+  migration from .NET Framework, and incremental upgrade strategies. Load when
+  upgrading .NET versions, migrating from .NET Framework, or planning a breaking
+  change rollout. Synthesized from dotnet/skills dotnet-upgrade plugin.
 ---
 
 # dotnet-upgrade

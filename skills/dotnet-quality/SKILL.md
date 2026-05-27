@@ -1,10 +1,12 @@
 ---
 name: dotnet-quality
 description: >
-  .NET 项目代码质量系统化流水线。7 步清理：格式化、移除未用 using、分析器警告、
-  死代码移除、TODO 解决、sealed 类审查、CancellationToken 传播。含代码评审工作流
-  和 80-20 评审原则。"清理"、"去味"、"代码评审"、"整理"、"移除死代码"、"修警告"、
-  "技术债"等关键词触发。融合 de-sloppify + code-review-workflow + 80-20-review。
+  Systematic code quality pipeline for .NET projects. Runs a 7-step cleanup:
+  formatting, unused usings, analyzer warnings, dead code removal, TODO resolution,
+  sealed class audit, CancellationToken propagation. Includes code review workflow
+  and the 80-20 review principle. Load when "clean up", "de-sloppify", "code review",
+  "tidy up", "remove dead code", "fix warnings", "tech debt".
+  Merges de-sloppify + code-review-workflow + 80-20-review + wrap-up-ritual.
   Merges de-sloppify + code-review-workflow + 80-20-review + wrap-up-ritual.
 ---
 
