@@ -160,6 +160,7 @@
   <button onclick="switchTab('install')">Install</button>
   <button onclick="switchTab('patterns')">Anti-Patterns</button>
   <button onclick="switchTab('rules')">Rules</button>
+  <button onclick="switchTab('flow')">Flow</button>
 </nav>
 
 <div class="container">
@@ -242,6 +243,47 @@ public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</co
     <div class="card"><h3>DbContext Directly</h3><p>Inject AppDbContext, never IRepository&lt;T&gt;.</p></div>
     <div class="card"><h3>Free/Open Source Only</h3><p>See package-choices.md for all replacements.</p></div>
   </div>
+</div>
+
+<div id="flow" class="tab">
+  <h2>Skill Routing Architecture</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.5rem">How AI agents navigate the skill system</p>
+  <pre style="background:var(--card);padding:1.5rem;font-size:0.78rem;line-height:1.8;text-align:center;overflow-x:auto">
+┌──────────────────────────────────────────────────┐
+│              User Prompt (.NET)                   │
+└──────────────────┬───────────────────────────────┘
+                   ▼
+         ┌─────────────────┐
+         │  using-dotnet   │  detect .NET intent
+         └────────┬────────┘
+                  ▼
+         ┌─────────────────┐
+         │ dotnet-advisor  │  route to domain skill
+         └────────┬────────┘
+                  ▼
+    ┌─────────────┼─────────────┐
+    ▼             ▼             ▼
+┌────────┐  ┌──────────┐  ┌──────────┐
+│dotnet- │  │dotnet-   │  │dotnet-   │
+│csharp  │  │api       │  │ui        │  ... domain skills
+│(always)│  │testing   │  │devops    │
+└────────┘  │tooling   │  │debugging │
+            │ai        │  │upgrade   │
+            └──────────┘  └──────────┘
+    │             │             │
+    └─────────────┼─────────────┘
+                  ▼
+    ┌────────────────────────────┐
+    │  Meta skills (on-demand)   │
+    │  quality | workflow | learn│
+    └────────────────────────────┘
+
+Always-loaded baseline:
+  anti-patterns → code-smells → async-patterns
+  → DECISIONS → CHEATSHEET → package-choices
+  → coding-standards → solid-principles
+  → dotnet-releases</pre>
+  <p style="color:var(--fg-dim);margin-top:0.75rem;font-size:0.8rem">Route: using-dotnet → dotnet-advisor → domain skill + dotnet-csharp always loaded → meta skills on demand</p>
 </div>
 
 </div>
