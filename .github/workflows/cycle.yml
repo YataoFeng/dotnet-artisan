@@ -21,6 +21,8 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # STEP 1: Find new .NET teacher repos on GitHub
       - name: Step 1 — Find teachers
@@ -57,17 +59,19 @@ jobs:
       - name: Step 3 — Optimize
         id: opt
         run: |
+          set +e  # allow non-zero exits in this block
           echo "## Step 3: Auto-optimize" >> $GITHUB_STEP_SUMMARY
           # Fix trailing whitespace
-          find skills -name "*.md" -exec sed -i 's/[[:space:]]*$//' {} \; 2>/dev/null
-          # Ensure files end with newline
-          find skills -name "*.md" -print0 2>/dev/null | while IFS= read -r -d '' f; do
-            [ -s "$f" ] && [ "$(tail -c 1 "$f")" != "" ] && echo "" >> "$f"
+          for f in $(find skills -name "*.md" -type f 2>/dev/null | head -100); do
+            sed -i 's/[[:space:]]*$//' "$f" 2>/dev/null || true
           done
-          # Check if anything changed
-          CHANGED=$(git diff --name-only | wc -l)
+          CHANGED=$(git diff --name-only 2>/dev/null | wc -l)
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
-          [ "$CHANGED" -gt 0 ] && echo "Fixed $CHANGED file(s)" >> $GITHUB_STEP_SUMMARY || echo "✅ Already clean" >> $GITHUB_STEP_SUMMARY
+          if [ "$CHANGED" -gt 0 ]; then
+            echo "Fixed $CHANGED file(s)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Already clean" >> $GITHUB_STEP_SUMMARY
+          fi
 
       # STEP 4: Polish README + Pages
       - name: Step 4 — Polish README
