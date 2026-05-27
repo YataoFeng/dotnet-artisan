@@ -543,37 +543,25 @@ Domain services should remain **pure** -- no infrastructure dependencies. If the
 
 ---
 
-## Repository Contracts
+## Aggregate Persistence with DbContext
 
-Repository interfaces belong in the **domain layer** and express aggregate loading and saving semantics. Implementation details (EF Core, Dapper) live in the infrastructure layer.
+Do NOT create `IRepository<T>` or `IUnitOfWork` wrappers. DbContext IS the unit of work; DbSet<T> IS the repository. EF Core already implements both patterns internally.
 
 ```csharp
-// Domain layer -- defines the contract
-public interface IOrderRepository
+// Direct DbContext usage — no repository wrapper needed
+public sealed class CreateOrderHandler(AppDbContext db, TimeProvider clock)
 {
-    Task<Order?> FindByIdAsync(Guid id, CancellationToken ct);
-    Task AddAsync(Order order, CancellationToken ct);
-    Task SaveChangesAsync(CancellationToken ct);
-}
-
-// Domain layer -- unit of work abstraction (optional)
-public interface IUnitOfWork
-{
-    Task<int> SaveChangesAsync(CancellationToken ct);
+    public async Task<OrderResponse> Handle(Command cmd, CancellationToken ct)
+    {
+        var order = Order.Create(cmd.CustomerId, cmd.Items, clock.GetUtcNow());
+        db.Orders.Add(order);
+        await db.SaveChangesAsync(ct);
+        return new OrderResponse(order.Id, order.Total);
+    }
 }
 ```
 
-For EF Core repository implementations, see [skill:dotnet-api].
-
-### Repository Design Rules
-
-| Rule | Rationale |
-|------|-----------|
-| One repository per aggregate root | Child entities are accessed through the root |
-| No `IQueryable<T>` return types | Prevents persistence concerns from leaking into domain |
-| No generic `IRepository<T>` | Cannot express aggregate-specific loading rules |
-| Return domain types, not DTOs | Repositories serve the domain; read models use projections |
-| Include `CancellationToken` on all async methods | Required for proper cancellation propagation |
+Aggregate loading: use `FindAsync` or `Include().FirstOrDefaultAsync()` directly on `DbSet<T>`. For read-only queries, use `.AsNoTracking().Select()` projections.
 
 ---
 

@@ -1,18 +1,15 @@
 # Validation Patterns
 
-Built-in .NET validation patterns that do not require third-party packages. Covers DataAnnotations attributes, `IValidatableObject` for cross-property validation, `IValidateOptions<T>` for options validation at startup, custom `ValidationAttribute` authoring, and `Validator.TryValidateObject` for manual validation. Prefer these built-in mechanisms as the default; reserve FluentValidation for complex domain rules that outgrow declarative attributes.
+Built-in .NET validation patterns. Covers DataAnnotations, `IValidatableObject`, `IValidateOptions<T>`, custom `ValidationAttribute`, and `Validator.TryValidateObject`. For .NET 10+, use `AddValidation()` source-generated validation. FluentValidation is NOT recommended for new projects.
 
-## Validation Approach Decision Tree
+## Validation Approach
 
-Choose the validation approach based on complexity:
-
-1. **DataAnnotations** (default) -- declarative `[Required]`, `[Range]`, `[StringLength]`, `[RegularExpression]` attributes. Best for: simple property-level constraints on DTOs, request models, and options classes.
-2. **`IValidatableObject`** -- implement `Validate()` for cross-property rules within the same object. Best for: date range comparisons, conditional required fields, business rules that span multiple properties.
-3. **Custom `ValidationAttribute`** -- subclass `ValidationAttribute` for reusable property-level rules. Best for: domain-specific constraints (SKU format, postal code, currency code) applied across multiple models.
-4. **`IValidateOptions<T>`** -- validate configuration/options classes at startup with access to DI services. Best for: cross-property options checks, environment-dependent validation, fail-fast startup.
-5. **FluentValidation** -- third-party library for complex, testable validation with fluent API. Best for: async validators, database-dependent rules, deeply nested object graphs. See `references/input-validation.md` for FluentValidation patterns.
-
-General guidance: start with DataAnnotations. Add `IValidatableObject` when cross-property rules emerge. Introduce FluentValidation only when rules outgrow declarative attributes.
+1. **DataAnnotations** (default) — `[Required]`, `[Range]`, `[StringLength]`, `[RegularExpression]`. Simple property-level constraints.
+2. **`IValidatableObject`** — `Validate()` method for cross-property rules (date ranges, conditional required).
+3. **Custom `ValidationAttribute`** — Reusable domain-specific constraints (SKU, postal code, currency).
+4. **`IValidateOptions<T>`** — Configuration validation at startup with DI access. Fail-fast.
+5. **.NET 10 `AddValidation()`** — Source-generated, AOT-compatible, auto-discovers from Minimal API handlers. Preferred for all .NET 10+ projects.
+6. **FluentValidation is deprecated for new code.** Only maintain existing FluentValidation in legacy net8.0 projects that cannot be migrated yet.
 
 ---
 
