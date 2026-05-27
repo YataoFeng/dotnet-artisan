@@ -432,6 +432,62 @@ builder.Services
 
 ---
 
+## Anti-patterns
+
+### Don't Use Polly v7 Policy Syntax
+
+```csharp
+// BAD — Polly v7 syntax, deprecated, use v8 pipeline
+var retryPolicy = Policy
+    .Handle<HttpRequestException>()
+    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+```
+
+```csharp
+// GOOD — Polly v8 pipeline via DI
+builder.Services.AddResiliencePipeline("my-pipeline", (builder, context) =>
+{
+    builder.AddRetry(new RetryStrategyOptions
+    {
+        MaxRetryAttempts = 3,
+        Delay = TimeSpan.FromSeconds(2),
+        BackoffType = DelayBackoffType.Exponential
+    });
+    builder.AddCircuitBreaker(new CircuitBreakerStrategyOptions
+    {
+        FailureRatio = 0.5,
+        SamplingDuration = TimeSpan.FromSeconds(30),
+        MinimumThroughput = 10
+    });
+});
+```
+
+### Don't Manually Inject Resilience Per Call Site
+
+```csharp
+// BAD — manual resilience at every HttpClient call site
+var retry = ResiliencePipelineRegistry.Get("default");
+var response = await retry.ExecuteAsync(async ct => await client.GetAsync(url, ct), ct);
+
+// GOOD — configure at HttpClient level, use client normally
+builder.Services.AddHttpClient<OrderApiClient>()
+    .AddStandardResilienceHandler(); // retry + circuit-breaker + timeout built-in
+// Then just: await client.GetAsync(url, ct) — resilience is automatic
+```
+
+### Don't Retry Non-Idempotent Operations
+
+```csharp
+// BAD — retrying a payment POST risks double-charging
+var response = await retry.ExecuteAsync(async ct =>
+    await client.PostAsync("/api/payments", content, ct), ct);
+
+// GOOD — only retry idempotent GET/PUT/DELETE; use idempotency keys for POST
+await client.PostAsync($"/api/payments?idempotency-key={Guid.NewGuid()}", content, ct);
+```
+
+---
+
 ## References
 
 - [Polly v8 documentation](https://www.pollydocs.org/)

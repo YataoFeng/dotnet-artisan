@@ -198,6 +198,46 @@ Both `sealed` and `[ImmutableObject(true)]` are required for reuse.
 
 ---
 
+## Anti-patterns
+
+### Don't Cache Without Expiration
+
+```csharp
+// BAD — cache entry lives forever, guaranteed stale data
+await cache.SetAsync(key, data);
+
+// GOOD — always set a reasonable TTL
+await cache.SetAsync(key, data, new HybridCacheEntryOptions
+{
+    Expiration = TimeSpan.FromMinutes(10)
+});
+```
+
+### Don't Cache User-Specific Data with Global Keys
+
+```csharp
+// BAD — all users share the same cached response
+await hybridCache.GetOrCreateAsync("shopping-cart", factory);
+
+// GOOD — include user/tenant identifier in the cache key
+await hybridCache.GetOrCreateAsync($"shopping-cart:{userId}", factory);
+```
+
+### Don't Build Your Own Stampede Protection
+
+```csharp
+// BAD — manual lock prone to deadlocks, doesn't scale
+private static readonly SemaphoreSlim Lock = new(1, 1);
+await Lock.WaitAsync();
+try { /* check cache, populate if missing */ }
+finally { Lock.Release(); }
+
+// GOOD — HybridCache has built-in stampede protection (L1+L2+lock-free queue)
+await hybridCache.GetOrCreateAsync(key, factory);
+```
+
+---
+
 ## References
 
 - [HybridCache library in ASP.NET Core](https://learn.microsoft.com/aspnet/core/performance/caching/hybrid?view=aspnetcore-10.0)

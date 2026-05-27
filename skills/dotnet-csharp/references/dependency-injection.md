@@ -301,6 +301,55 @@ For unit tests, prefer direct constructor injection with mocks rather than build
 
 ---
 
+## Anti-patterns
+
+### Don't Capture Scoped Services in Singletons
+
+```csharp
+// BAD — DbContext is Scoped, captured by Singleton = memory leak + stale data
+builder.Services.AddSingleton<OrderCache>(); // depends on AppDbContext (Scoped)
+public sealed class OrderCache(AppDbContext db) // DI gives same DbContext forever!
+```
+
+```csharp
+// GOOD — use IServiceScopeFactory in singletons
+builder.Services.AddSingleton<OrderCache>();
+public sealed class OrderCache(IServiceScopeFactory scopeFactory)
+{
+    public async Task<Order?> GetAsync(Guid id)
+    {
+        await using var scope = scopeFactory.CreateAsyncScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        return await db.Orders.FindAsync(id);
+    }
+}
+```
+
+### Don't Register Everything as Singleton
+
+```csharp
+// BAD — service with mutable state or Scoped dependency made Singleton
+builder.Services.AddSingleton<OrderService>(); // depends on DbContext
+
+// GOOD — match lifetime to dependency graph
+builder.Services.AddScoped<OrderService>(); // same as DbContext's lifetime
+```
+
+### Don't Inject DbContextFactory Unnecessarily
+
+```csharp
+// BAD — using factory in a Scoped service (DbContext already scoped)
+public sealed class OrderService(IDbContextFactory<AppDbContext> factory)
+{
+    // Creates a second DbContext even though one already exists for this scope
+}
+
+// GOOD — inject DbContext directly in Scoped services
+public sealed class OrderService(AppDbContext db) { }
+
+// Use IDbContextFactory ONLY in Singleton or long-lived services (BackgroundService, Blazor Server)
+```
+
 ## References
 
 - [Dependency injection in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)

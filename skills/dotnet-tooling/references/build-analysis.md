@@ -520,3 +520,56 @@ dotnet_diagnostic.CA5358.severity = none
 - [.NET Code Analysis Rules](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/categories)
 - [Central Package Management](https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management)
 - [.NET Trimming Warnings](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/fixing-warnings)
+
+---
+
+## Build Parallelism (MSBuild)
+
+### The -m Flag
+
+MSBuild defaults to **1 worker node (sequential)**. Always use `-m` for parallel builds:
+
+```bash
+# BAD — sequential, slow
+dotnet build
+
+# GOOD — parallel, uses all logical processors
+dotnet build -m
+```
+
+### Graph Build Mode (`/graph`)
+
+Constructs the full project dependency graph BEFORE building for better scheduling:
+
+```bash
+dotnet build /graph
+```
+
+Benefits: better parallelism, avoids redundant evaluations, enables isolated builds. Requires all projects to use `<ProjectReference>` (no dynamic MSBuild task references).
+
+### Project Reference Optimization
+
+```xml
+<!-- Reduce evaluation cost -->
+<ProjectReference Include="..\Lib\Lib.csproj"
+    SkipGetTargetFrameworkProperties="true" />
+
+<!-- Build-order-only dependency (no assembly reference) -->
+<ProjectReference Include="..\CodeGen\CodeGen.csproj"
+    ReferenceOutputAssembly="false" />
+```
+
+Use `.slnf` (solution filters) to build subsets of large solutions during development.
+
+### Diagnosing Build Bottlenecks
+
+Generate a binary log and check the Project Performance Summary:
+
+```bash
+dotnet build /bl:build.binlog -m
+# Open build.binlog in MSBuild Structured Log Viewer
+# Or: dotnet msbuild build.binlog -fl -flp:v=diag;logfile=full.log;performancesummary
+grep "Project Performance Summary" full.log -A 50
+```
+
+Key metrics: per-project build time, critical path length, node assignment distribution. Wide graphs (many independent projects) parallelize well; deep chains do not.

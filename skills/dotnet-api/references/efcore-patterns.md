@@ -470,6 +470,88 @@ await strategy.ExecuteAsync(async () =>
 
 ---
 
+## Anti-patterns
+
+### Don't Wrap DbContext in a Repository
+
+```csharp
+// BAD — unnecessary abstraction that blocks IQueryable, .Include(), and projections
+public interface IOrderRepository
+{
+    Task<Order?> GetByIdAsync(Guid id);
+    Task AddAsync(Order order);
+    Task SaveChangesAsync();
+}
+public class OrderRepository(AppDbContext db) : IOrderRepository { /* wraps DbSet */ }
+// Why bad: hides IQueryable, forces N+1 on Includes, adds zero value over DbSet<T>
+```
+
+```csharp
+// GOOD — use DbContext directly; DbSet<T> IS the repository
+public sealed class CreateOrderHandler(AppDbContext db, TimeProvider clock)
+{
+    public async Task<OrderResponse> Handle(Command cmd, CancellationToken ct)
+    {
+        var order = Order.Create(cmd.CustomerId, cmd.Items, clock.GetUtcNow());
+        db.Orders.Add(order);
+        await db.SaveChangesAsync(ct);
+        return new OrderResponse(order.Id, order.Total);
+    }
+}
+```
+
+### Don't Use Lazy Loading
+
+```csharp
+// BAD — hidden N+1 queries, breaks async patterns
+options.UseLazyLoadingProxies();
+
+// GOOD — explicit loading with Include or projection
+var orders = await db.Orders
+    .Include(o => o.Items)
+    .Where(o => o.CustomerId == customerId)
+    .AsNoTracking()
+    .ToListAsync(ct);
+```
+
+### Don't Filter in Memory
+
+```csharp
+// BAD — loads ALL rows, filters in C#
+var orders = await db.Orders.ToListAsync(ct);
+var pending = orders.Where(o => o.Status == OrderStatus.Pending).ToList();
+
+// GOOD — filter in the database
+var pending = await db.Orders
+    .Where(o => o.Status == OrderStatus.Pending)
+    .ToListAsync(ct);
+```
+
+### Don't Forget Async SaveChanges
+
+```csharp
+// BAD — missing await = fire-and-forget bug
+db.Orders.Add(order);
+db.SaveChangesAsync(); // returns before save completes!
+
+// GOOD — always await
+db.Orders.Add(order);
+await db.SaveChangesAsync(ct);
+```
+
+### Don't Use Cartesian Explosion (Multiple Includes)
+
+```csharp
+// BAD — loading Orders→Items→Reviews creates a cartesian product
+db.Orders.Include(o => o.Items).ThenInclude(i => i.Reviews).ToList();
+
+// GOOD — use split queries for multiple includes
+db.Orders.Include(o => o.Items).ThenInclude(i => i.Reviews).AsSplitQuery().ToList();
+// Or: project into DTOs and let EF Core optimize
+```
+
+---
+
 ## References
 
 - [EF Core performance best practices](https://learn.microsoft.com/en-us/ef/core/performance/)
