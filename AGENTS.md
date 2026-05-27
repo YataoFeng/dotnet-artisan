@@ -35,6 +35,17 @@ Every reference file follows: **Core Principles → Patterns → Anti-Patterns (
 
 Top 10 always-loaded anti-patterns: DateTime.Now→TimeProvider | Scoped in Singleton→IServiceScopeFactory | async void→BackgroundService | .Result/.Wait()→await | Repository→DbContext | N+1→.Include() | new HttpClient()→IHttpClientFactory | lock(this)→private object | string+loop→StringBuilder | 1-impl-1-interface→concrete class
 
+## Automation
+
+This repo auto-evolves via GitHub Actions:
+
+| Workflow | Schedule | Purpose |
+|----------|----------|---------|
+| `auto-evolve.yml` | Daily 10:47 AM | AI-analyzes upstream repos (dotnet/skills, dotnet-claude-kit), auto-applies new anti-patterns, creates PR |
+| `self-heal.yml` | Weekly Sun 11:23 AM | Checks broken links, missing sections, bad patterns, trailing whitespace |
+
+Both use GitHub Models (GPT-4o-mini, free tier) for AI analysis.
+
 ## Sources
 
 - [novotnyllc/dotnet-artisan](https://github.com/novotnyllc/dotnet-artisan) — deep reference framework
