@@ -19,8 +19,9 @@ Router and index skill for **dotnet-artisan**. Always loaded after [skill:using-
 
 ## Out of scope
 
-- Domain-specific implementation guidance -- see [skill:dotnet-csharp], [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging]
-- Deep implementation content -- see [skill:dotnet-csharp], [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging] and their companion files
+- Domain-specific implementation guidance -- see [skill:dotnet-csharp], [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging], [skill:dotnet-ai], [skill:dotnet-upgrade]
+- Meta/workflow guidance -- see [skill:dotnet-quality], [skill:dotnet-workflow], [skill:dotnet-learning]
+- Deep implementation content -- see the domain skills above and their companion files
 
 ## Step 1: Detect Project Version
 
