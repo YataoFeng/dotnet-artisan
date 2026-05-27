@@ -1,5 +1,7 @@
 # C# Anti-Patterns — Good vs Bad Code
 
+> **速查**: DateTime.Now→TimeProvider | Scoped in Singleton→IServiceScopeFactory | async void→BackgroundService | .Result→await | IRepository→DbContext | string concat→StringBuilder | lock(this)→private object | new HttpClient()→IHttpClientFactory | Tuple→record | 1 impl→no interface
+
 ## 1. DateTime.Now vs TimeProvider
 
 ```csharp

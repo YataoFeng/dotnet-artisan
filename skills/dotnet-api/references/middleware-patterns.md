@@ -1,5 +1,7 @@
 # Middleware Patterns
 
+> **速查**: `UseExceptionHandler` 在最前 | `UseAuthentication` 在 `UseAuthorization` 之前 | 不用异常做流程控制 | 错误返回统一用 RFC 9457 ProblemDetails | 不泄露内部实现到生产错误消息 | catch 特定异常不吞所有 | 生产环境 `env.IsDevelopment()` 只做调试
+
 ASP.NET Core middleware patterns for the HTTP request pipeline. Covers correct ordering, writing custom middleware as classes or inline delegates, short-circuit logic, request/response manipulation, exception handling middleware, and conditional middleware registration.
 
 ## Pipeline Ordering

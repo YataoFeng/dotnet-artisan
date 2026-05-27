@@ -1,5 +1,7 @@
 # Minimal APIs
 
+> **速查**: 端点用 `IEndpointGroup` 自动发现不用堆在 Program.cs | `TypedResults` 不用 `Results`（无 OpenAPI 类型信息）| 返回 DTO 不返回 Entity | 用 `[AsParameters]` 绑定复杂参数 | `MapGroup()` 统一前缀和过滤器 | 端点过滤器做验证
+
 Minimal APIs are Microsoft's recommended approach for new ASP.NET Core HTTP API projects. They provide a lightweight, lambda-based programming model with first-class OpenAPI support, endpoint filters for cross-cutting concerns, and route groups for organization at scale.
 
 ## Route Groups

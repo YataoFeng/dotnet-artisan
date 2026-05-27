@@ -1,5 +1,7 @@
 # Dependency Injection
 
+> **速查**: Singleton 不依赖 Scoped | Singleton 需要 Scoped 用 `IServiceScopeFactory` | 默认用 Scoped | DbContext 用 `AddDbContext<T>()` 不加 Repository 包装 | Keyed Service 做策略模式 | `ValidateOnStart()` 启动即校验 | `AddDbContextFactory<T>()` 给 BackgroundService
+
 Advanced Microsoft.Extensions.DependencyInjection patterns for .NET applications. Covers service lifetimes, keyed services (net8.0+), decoration, factory delegates, scope validation, and hosted service registration.
 
 Cross-references: `references/async-patterns.md` for `BackgroundService` async patterns, `references/configuration.md` for `IOptions<T>` binding.

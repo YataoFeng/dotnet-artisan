@@ -399,5 +399,5 @@ var instance = Activator.CreateInstance(type);   // IL2057 trim warning
 |-------------------|----------------------|
 | Newtonsoft.Json | System.Text.Json with [JsonSourceGenerationOptions] |
 | AutoMapper | Manual mapping or Mapperly source gen |
-| MediatR (runtime) | Mediator (source gen, MIT) |
+| MediatR (commercial, runtime) | Mediator (source gen, MIT, free) |
 | Dynamic DI scanning | Explicit registration |

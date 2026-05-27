@@ -1,5 +1,7 @@
 # OWASP Security
 
+> **速查**: SQL 查询用参数化不用字符串拼接 | 不用 `Html.Raw()` 防 XSS | 不用 `TypeNameHandling.All` 防反序列化攻击 | SHA256 起步不用 MD5/SHA1 | 密钥从配置/KeyVault 读取不硬编码 | 所有端点显式 `[Authorize]`
+
 OWASP Top 10 (2021) security guidance for .NET applications. Each category includes the vulnerability description, .NET-specific risk, mitigation code examples, and common pitfalls. This skill is the canonical owner of deprecated security pattern warnings (CAS, APTCA, .NET Remoting, DCOM, BinaryFormatter).
 
 ## A01: Broken Access Control
