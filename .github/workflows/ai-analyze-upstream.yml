@@ -1,10 +1,12 @@
-name: AI Analyze Upstream Changes
+name: AI Analyze Upstream (Free)
 
 on:
+  schedule:
+    - cron: '47 2 * * *'  # daily 10:47 AM China time
   workflow_dispatch:
     inputs:
       source_repo:
-        description: 'Upstream repo to analyze'
+        description: 'Upstream repo'
         required: true
         type: choice
         options:
@@ -15,108 +17,263 @@ on:
 
 jobs:
   analyze:
-    # Runs when an issue is labeled 'upstream-sync' or when manually triggered
-    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'upstream-sync'
+    if: github.event_name != 'issues' || github.event.label.name == 'upstream-sync'
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      contents: read
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Determine source repo
-        id: source
+      - name: Determine source
+        id: cfg
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "repo=${{ inputs.source_repo }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "repo=dotnet/skills" >> $GITHUB_OUTPUT  # check both in schedule
           else
-            # Extract from issue labels
             LABELS=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
               "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" \
               | jq -r '.[].name')
-            if echo "$LABELS" | grep -q "dotnet-skills"; then
-              echo "repo=dotnet/skills" >> $GITHUB_OUTPUT
-            elif echo "$LABELS" | grep -q "dotnet-claude-kit"; then
-              echo "repo=codewithmukesh/dotnet-claude-kit" >> $GITHUB_OUTPUT
-            else
-              echo "repo=dotnet/skills" >> $GITHUB_OUTPUT
-            fi
+            if echo "$LABELS" | grep -q "dotnet-skills"; then echo "repo=dotnet/skills" >> $GITHUB_OUTPUT
+            elif echo "$LABELS" | grep -q "dotnet-claude-kit"; then echo "repo=codewithmukesh/dotnet-claude-kit" >> $GITHUB_OUTPUT
+            else echo "repo=dotnet/skills" >> $GITHUB_OUTPUT; fi
           fi
-          echo "Analyzing: ${{ steps.source.outputs.repo }}"
 
       - name: Clone upstream
         run: |
-          REPO="${{ steps.source.outputs.repo }}"
-          git clone --depth 50 "https://github.com/$REPO.git" /tmp/upstream
-          echo "Cloned $REPO"
+          git clone --depth 50 "https://github.com/${{ steps.cfg.outputs.repo }}.git" /tmp/upstream
 
-      - name: Get changed files
-        id: changes
+      - name: Extract changed skill content
+        id: diff
         run: |
           cd /tmp/upstream
-          CHANGED=$(git diff --name-only HEAD~10..HEAD -- '*.md' '*.cs' 2>/dev/null | head -30 || echo "")
-          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGED" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # Get files changed in last 10 commits
+          git diff --name-only HEAD~10..HEAD -- '*.md' > /tmp/changed_files.txt 2>/dev/null || true
+          echo "Changed $(wc -l < /tmp/changed_files.txt) files"
 
-          # Get recent commit messages for context
-          echo "commits<<EOF" >> $GITHUB_OUTPUT
-          git log --oneline -10 >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # Concatenate changed SKILL.md files (limit to avoid token overflow)
+          truncate -s 0 /tmp/changed_content.md
+          count=0
+          while IFS= read -r f; do
+            if [ -f "$f" ] && [[ "$f" == *SKILL.md ]] || [[ "$f" == *.md ]]; then
+              echo "--- FILE: $f ---" >> /tmp/changed_content.md
+              head -200 "$f" >> /tmp/changed_content.md  # first 200 lines per file
+              echo -e "\n" >> /tmp/changed_content.md
+              count=$((count + 1))
+              [ $count -ge 8 ] && break  # max 8 files per analysis
+            fi
+          done < /tmp/changed_files.txt
 
-      - name: Summarize changes
+          CONTENT=$(cat /tmp/changed_content.md | head -c 28000)  # ~7K tokens
+          echo "content<<MYEOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "MYEOF" >> $GITHUB_OUTPUT
+
+          git log --oneline -10 > /tmp/commits.txt
+          echo "commits<<MYEOF" >> $GITHUB_OUTPUT
+          cat /tmp/commits.txt >> $GITHUB_OUTPUT
+          echo "MYEOF" >> $GITHUB_OUTPUT
+
+      - name: Analyze with GitHub Models (GPT-4o-mini)
+        id: ai
+        if: steps.diff.outputs.content != ''
         run: |
-          echo "## Changes detected in ${{ steps.source.outputs.repo }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Recent commits" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.changes.outputs.commits }}" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Changed files" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.changes.outputs.changed_files }}" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Integration Command" >> $GITHUB_STEP_SUMMARY
-          echo "Run locally with Claude Code:" >> $GITHUB_STEP_SUMMARY
-          echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo "claude \"Check ${{ steps.source.outputs.repo }} for new content since our last sync. Focus on changed files: ${{ steps.changes.outputs.changed_files }}. Extract new patterns, anti-patterns, and technology guidance. Integrate into our reference files.\"" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          PROMPT=$(cat <<'ENDPROMPT'
+          You are analyzing upstream changes to a .NET AI coding skills repository. Your job: identify new knowledge worth integrating.
 
-      - name: Comment on issue
+          Below are changed skill files from an upstream .NET skills repo. Analyze them and output a JSON report:
+
+          {
+            "summary": "1-sentence summary of what changed",
+            "new_patterns": [{"name": "...", "description": "...", "importance": "high|medium|low"}],
+            "new_anti_patterns": [{"name": "...", "bad": "...", "good": "...", "importance": "high|medium|low"}],
+            "new_technologies": [{"name": "...", "description": "...", "importance": "high|medium|low"}],
+            "integration_notes": "specific suggestions on which files in our repo should be updated"
+          }
+
+          Focus on: BAD/GOOD code patterns, anti-patterns, new .NET APIs/features, and practical guidance. Output ONLY valid JSON, no markdown, no explanation.
+          ENDPROMPT
+          )
+
+          CHANGED_CONTENT=$(cat /tmp/changed_content.md | head -c 24000)
+
+          RESPONSE=$(curl -s https://models.inference.ai.azure.com/chat/completions \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg prompt "$PROMPT" --arg content "$CHANGED_CONTENT" '{
+              messages: [
+                {role: "system", content: $prompt},
+                {role: "user", content: $content}
+              ],
+              model: "gpt-4o-mini",
+              temperature: 0.3,
+              max_tokens: 4096,
+              response_format: {type: "json_object"}
+            }')")
+
+          echo "$RESPONSE" | jq -r '.choices[0].message.content' > /tmp/ai_analysis.json
+          echo "AI analysis complete"
+          cat /tmp/ai_analysis.json
+
+      - name: Build report
+        id: report
+        run: |
+          # Parse AI response or use fallback
+          if [ -f /tmp/ai_analysis.json ] && jq -e '.summary' /tmp/ai_analysis.json >/dev/null 2>&1; then
+            SUMMARY=$(jq -r '.summary' /tmp/ai_analysis.json)
+            NEW_PATTERNS=$(jq -r '.new_patterns // [] | map("- **\(.name)** (\(.importance)): \(.description)") | join("\n")' /tmp/ai_analysis.json)
+            NEW_ANTI=$(jq -r '.new_anti_patterns // [] | map("- **\(.name)** (\(.importance))\n  - BAD: \(.bad)\n  - GOOD: \(.good)") | join("\n")' /tmp/ai_analysis.json)
+            NEW_TECH=$(jq -r '.new_technologies // [] | map("- **\(.name)** (\(.importance)): \(.description)") | join("\n")' /tmp/ai_analysis.json)
+            NOTES=$(jq -r '.integration_notes // ""' /tmp/ai_analysis.json)
+            AI_USED="GPT-4o-mini (GitHub Models free tier)"
+          else
+            SUMMARY="AI model unavailable or rate-limited. Manual review needed."
+            NEW_PATTERNS="N/A — re-run workflow or check manually"
+            NEW_ANTI="N/A — re-run workflow or check manually"
+            NEW_TECH="N/A — re-run workflow or check manually"
+            NOTES=""
+            AI_USED="Fallback (AI call failed, possibly rate-limited)"
+          fi
+
+          # Write report for issue comment
+          cat > /tmp/report.md << ENDREPORT
+          ## AI Analysis — ${{ steps.cfg.outputs.repo }}
+
+          > Powered by $AI_USED
+
+          ### Summary
+          $SUMMARY
+
+          ### New Patterns Identified
+          $NEW_PATTERNS
+
+          ### New Anti-Patterns (BAD → GOOD)
+          $NEW_ANTI
+
+          ### New Technologies
+          $NEW_TECH
+
+          ### Integration Notes
+          $NOTES
+
+          ### Recent Upstream Commits
+          \`\`\`
+          ${{ steps.diff.outputs.commits }}
+          \`\`\`
+
+          ### Changed Files
+          \`\`\`
+          $(cat /tmp/changed_files.txt | head -20)
+          \`\`\`
+
+          ---
+          > Auto-generated by [ai-analyze-upstream.yml](https://github.com/${{ github.repository }}/blob/main/.github/workflows/ai-analyze-upstream.yml)
+          ENDREPORT
+
+          echo "report_file=/tmp/report.md" >> $GITHUB_OUTPUT
+
+      - name: Post analysis as issue comment
         if: github.event_name == 'issues'
         uses: actions/github-script@v7
         with:
           script: |
-            const body = `## AI Analysis Complete
-
-            ### Source: ${{ steps.source.outputs.repo }}
-
-            **Recent commits:**
-            \`\`\`
-            ${{ steps.changes.outputs.commits }}
-            \`\`\`
-
-            **Changed files to review:**
-            \`\`\`
-            ${{ steps.changes.outputs.changed_files }}
-            \`\`\`
-
-            ### Next Step
-            Run this command locally with Claude Code to integrate the new knowledge:
-
-            \`\`\`bash
-            claude "Check ${{ steps.source.outputs.repo }} for new content. Changed files:
-            ${{ steps.changes.outputs.changed_files }}
-            Extract any new patterns, anti-patterns (BAD/GOOD code), or technology guidance.
-            Integrate into the appropriate reference files in our dotnet-artisan repository."
-            \`\`\`
-            `;
-
+            const fs = require('fs');
+            const report = fs.readFileSync('/tmp/report.md', 'utf8');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: body
+              body: report
+            });
+
+      - name: Create learning issue (for scheduled runs)
+        if: github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('/tmp/report.md', 'utf8');
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['ai-analysis'],
+              state: 'open'
+            });
+            if (issues.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '🤖 AI Analysis: Upstream changes detected',
+                body: report,
+                labels: ['ai-analysis', 'upstream-sync']
+              });
+            }
+
+      - name: Create PR with integration suggestions
+        if: steps.ai.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const analysis = JSON.parse(fs.readFileSync('/tmp/ai_analysis.json', 'utf8'));
+
+            // Only create PR if high-importance findings exist
+            const hasHighImportance = (analysis.new_patterns || [])
+              .concat(analysis.new_anti_patterns || [])
+              .concat(analysis.new_technologies || [])
+              .some(item => item.importance === 'high');
+
+            if (!hasHighImportance) {
+              console.log('No high-importance findings, skipping PR creation');
+              return;
+            }
+
+            // Create integration notes file
+            const branchName = `ai-learn-${Date.now()}`;
+            const { data: mainRef } = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'heads/main'
+            });
+
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/heads/${branchName}`,
+              sha: mainRef.object.sha
+            });
+
+            // Write AI findings markdown
+            let md = `# AI Learning: ${{ steps.cfg.outputs.repo }}\n\n`;
+            md += `## Summary\n${analysis.summary}\n\n`;
+
+            if (analysis.new_patterns && analysis.new_patterns.length > 0) {
+              md += `## New Patterns\n${analysis.new_patterns.map(p => `- **${p.name}** (${p.importance}): ${p.description}`).join('\n')}\n\n`;
+            }
+            if (analysis.new_anti_patterns && analysis.new_anti_patterns.length > 0) {
+              md += `## New Anti-Patterns\n${analysis.new_anti_patterns.map(a => `- **${a.name}**\n  - BAD: ${a.bad}\n  - GOOD: ${a.good}`).join('\n\n')}\n\n`;
+            }
+            if (analysis.integration_notes) {
+              md += `## Integration Notes\n${analysis.integration_notes}\n`;
+            }
+
+            await github.rest.repos.createOrUpdateFileContents({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: '.github/pending-integration.md',
+              message: 'AI: pending integration from upstream',
+              content: Buffer.from(md).toString('base64'),
+              branch: branchName
+            });
+
+            await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🤖 AI Learning: integrate new knowledge from ${{ steps.cfg.outputs.repo }}`,
+              head: branchName,
+              base: 'main',
+              body: md + '\n\n> Auto-generated by free GitHub Models AI. Review and merge, then run Claude Code locally to deep-integrate the patterns.'
             });
