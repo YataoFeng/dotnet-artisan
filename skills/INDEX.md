@@ -2,6 +2,8 @@
 
 Quick navigation for all reference files. Each file contains implementation patterns + anti-patterns.
 
+**Jump to:** [Core](#core-always-loaded) · [C#](#c-language) · [API](#api--backend) · [UI](#ui) · [Testing](#testing) · [DevOps](#devops) · [Tooling](#tooling)
+
 ## Core (always loaded)
 
 | File | Topics |
