@@ -1,102 +1,123 @@
 name: Evolution Cycle
 
+# 5-step cycle: Find → Learn → Optimize → Polish → Repeat
+# Creates PR for human review before merging.
+
 concurrency:
   group: evolution-cycle
   cancel-in-progress: true
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # every 10 minutes
-  push:
-    branches: [main]
-    paths: ['skills/**', 'docs/**', '.github/workflows/**']
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 jobs:
   cycle:
-    # Skip if the push was from the bot itself (prevent infinite loops)
     if: github.event_name != 'push' || github.event.head_commit.author.name != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-      issues: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Step 1 — Find new .NET teacher repos
+      # STEP 1: Find new .NET teacher repos on GitHub
+      - name: Step 1 — Find teachers
+        id: find
         run: |
-          echo "## Step 1: Finding teachers" >> $GITHUB_STEP_SUMMARY
+          echo "## Step 1: Finding .NET teacher repos" >> $GITHUB_STEP_SUMMARY
           curl -s "https://api.github.com/search/repositories?q=dotnet+skills+SKILL.md+claude&sort=updated&per_page=5" \
-            | jq -r '.items[] | .full_name' > /tmp/teachers.txt 2>/dev/null || echo "" > /tmp/teachers.txt
+            | jq -r '.items[] | "\(.full_name) | ⭐\(.stargazers_count) | \(.description // "no desc")"' \
+            > /tmp/teachers.txt 2>/dev/null || echo "No new teachers found" > /tmp/teachers.txt
           cat /tmp/teachers.txt >> $GITHUB_STEP_SUMMARY
-          echo "Found $(wc -l < /tmp/teachers.txt) potential teachers" >> $GITHUB_STEP_SUMMARY
+          echo "found=$(wc -l < /tmp/teachers.txt)" >> $GITHUB_OUTPUT
 
-      - name: Step 2 — Self quality check
+      # STEP 2: Quality check + learn from changes
+      - name: Step 2 — Learn & self-check
         run: |
-          echo "## Step 2: Self-check" >> $GITHUB_STEP_SUMMARY
-          BROKEN=$(find skills -name "*.md" -print0 2>/dev/null | head -20 | while IFS= read -r -d '' f; do
+          echo "## Step 2: Quality check" >> $GITHUB_STEP_SUMMARY
+          ISSUES=0
+          # Check internal links
+          find skills -name "*.md" -print0 2>/dev/null | head -30 | while IFS= read -r -d '' f; do
             grep -oP '\[.*?\]\(\.\.?/[^)]+\)' "$f" 2>/dev/null | sed 's/.*(\(.*\))/\1/' | while read link; do
               target="$(dirname "$f")/${link%.md}.md"
               [ -f "$target" ] && continue
-              echo "BROKEN: $f → $link"
+              echo "⚠️ Broken: $f → $link" >> $GITHUB_STEP_SUMMARY
             done
-          done)
-          if [ -n "$BROKEN" ]; then
-            echo "⚠️ Broken links" >> $GITHUB_STEP_SUMMARY
-            echo "$BROKEN" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "✅ No broken links in first 20 files" >> $GITHUB_STEP_SUMMARY
-          fi
-          # Check stray DateTime
-          STRAY=$(grep -rn 'DateTime\.Now' skills --include="*.md" 2>/dev/null | grep -v "BAD\|TimeProvider\|anti-pattern\|速查" | head -5)
-          if [ -n "$STRAY" ]; then
-            echo "⚠️ Stray DateTime.Now:" >> $GITHUB_STEP_SUMMARY
-            echo "$STRAY" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "✅ No stray DateTime.Now" >> $GITHUB_STEP_SUMMARY
-          fi
+          done
+          # Check stray DateTime.Now
+          STRAY=$(grep -rn 'DateTime\.Now' skills --include="*.md" 2>/dev/null | grep -v "BAD\|TimeProvider\|anti-pattern\|速查\|//.*BAD" | wc -l)
+          [ "$STRAY" -gt 0 ] && echo "⚠️ $STRAY stray DateTime.Now" >> $GITHUB_STEP_SUMMARY || echo "✅ No stray DateTime.Now" >> $GITHUB_STEP_SUMMARY
+          # Check for Chinese in SKILL.md
+          CN=$(grep -rn '[\x{4e00}-\x{9fff}]' skills/*/SKILL.md 2>/dev/null | wc -l)
+          [ "$CN" -gt 10 ] && echo "⚠️ $CN Chinese chars in SKILL.md — must be English!" >> $GITHUB_STEP_SUMMARY || echo "✅ SKILL.md files English" >> $GITHUB_STEP_SUMMARY
 
+      # STEP 3: Auto-optimize (fix trivial issues)
       - name: Step 3 — Optimize
+        id: opt
         run: |
-          echo "## Step 3: Optimize" >> $GITHUB_STEP_SUMMARY
-          CHANGED=0
-          # Remove trailing whitespace
+          echo "## Step 3: Auto-optimize" >> $GITHUB_STEP_SUMMARY
+          # Fix trailing whitespace
           find skills -name "*.md" -exec sed -i 's/[[:space:]]*$//' {} \; 2>/dev/null
-          if git diff --name-only | grep -q .; then
-            echo "Fixed trailing whitespace" >> $GITHUB_STEP_SUMMARY
-            CHANGED=1
-          else
-            echo "✅ No whitespace issues" >> $GITHUB_STEP_SUMMARY
-          fi
+          # Ensure files end with newline
+          find skills -name "*.md" -print0 2>/dev/null | while IFS= read -r -d '' f; do
+            [ -s "$f" ] && [ "$(tail -c 1 "$f")" != "" ] && echo "" >> "$f"
+          done
+          # Check if anything changed
+          CHANGED=$(git diff --name-only | wc -l)
           echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+          [ "$CHANGED" -gt 0 ] && echo "Fixed $CHANGED file(s)" >> $GITHUB_STEP_SUMMARY || echo "✅ Already clean" >> $GITHUB_STEP_SUMMARY
 
-      - name: Step 4 — Verify Pages
+      # STEP 4: Polish README + Pages
+      - name: Step 4 — Polish README
         run: |
-          echo "## Step 4: Pages check" >> $GITHUB_STEP_SUMMARY
-          [ -f docs/index.html ] && echo "✅ Pages OK" >> $GITHUB_STEP_SUMMARY || echo "❌ Missing!" >> $GITHUB_STEP_SUMMARY
+          echo "## Step 4: Polish docs" >> $GITHUB_STEP_SUMMARY
+          # Check README exists and has content
+          if [ -f README.md ]; then
+            LINES=$(wc -l < README.md)
+            [ "$LINES" -gt 50 ] && echo "✅ README healthy ($LINES lines)" >> $GITHUB_STEP_SUMMARY || echo "⚠️ README short ($LINES lines)" >> $GITHUB_STEP_SUMMARY
+          fi
+          # Check Pages exist
+          [ -f docs/index.html ] && echo "✅ Pages present" >> $GITHUB_STEP_SUMMARY || echo "⚠️ Pages missing" >> $GITHUB_STEP_SUMMARY
 
-      - name: Step 5 — Create PR if changes found
-        if: steps.optimize.outputs.changed == '1'
+      # STEP 5: Create PR with changes for human review
+      - name: Step 5 — Create PR for review
+        if: steps.opt.outputs.changed > 0
         run: |
-          BRANCH="cycle/$(date +%Y%m%d-%H%M)"
+          BRANCH="evolve/$(date +%Y%m%d-%H%M)"
           git checkout -b "$BRANCH"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Cycle: auto-optimize (whitespace cleanup)" || true
+          git commit -m "🔄 Evolve: auto-optimize ($(date +%Y-%m-%d))" || true
           git push origin "$BRANCH" 2>/dev/null || true
+
+          # Get list of changed files
+          FILES=$(git diff --name-only origin/main...HEAD | head -10 | sed 's/^/- /')
           gh pr create \
-            --title "🔄 Cycle: auto-optimize" \
-            --body "Automated whitespace cleanup from the 10-minute evolution cycle. Review and merge." \
+            --title "🔄 Auto-Evolve: $(date +%Y-%m-%d)" \
+            --body "## Evolution Cycle Report
+
+          **Step 1 — Find**: $(cat /tmp/teachers.txt | head -3 | tr '\n' ' ')
+
+          **Step 2 — Learn**: Quality check completed. See run summary.
+
+          **Step 3 — Optimize**: Auto-fixed whitespace/formatting issues.
+
+          **Step 4 — Polish**: README + Pages verified.
+
+          **Changed files:**
+          $FILES
+
+          > Auto-generated by [cycle.yml](.github/workflows/cycle.yml). Please review before merging." \
             --base main --head "$BRANCH" \
-            --label "auto-evolution" 2>/dev/null || echo "PR skipped"
+            --label "auto-evolution" 2>/dev/null || echo "PR skipped (no changes or duplicate)"
         env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Summary
         if: always()
         run: |
-          echo "## Cycle Complete ✅" >> $GITHUB_STEP_SUMMARY
-          echo "Steps: Find → Learn → Optimize → Polish → Repeat" >> $GITHUB_STEP_SUMMARY
-          echo "Next: $(date -d '+10 minutes' +%H:%M)" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ Cycle Complete" >> $GITHUB_STEP_SUMMARY
+          echo "Find → Learn → Optimize → Polish → Repeat" >> $GITHUB_STEP_SUMMARY
