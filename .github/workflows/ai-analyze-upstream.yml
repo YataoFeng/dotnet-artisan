@@ -1,0 +1,122 @@
+name: AI Analyze Upstream Changes
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_repo:
+        description: 'Upstream repo to analyze'
+        required: true
+        type: choice
+        options:
+          - dotnet/skills
+          - codewithmukesh/dotnet-claude-kit
+  issues:
+    types: [labeled]
+
+jobs:
+  analyze:
+    # Runs when an issue is labeled 'upstream-sync' or when manually triggered
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'upstream-sync'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine source repo
+        id: source
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "repo=${{ inputs.source_repo }}" >> $GITHUB_OUTPUT
+          else
+            # Extract from issue labels
+            LABELS=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+              "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" \
+              | jq -r '.[].name')
+            if echo "$LABELS" | grep -q "dotnet-skills"; then
+              echo "repo=dotnet/skills" >> $GITHUB_OUTPUT
+            elif echo "$LABELS" | grep -q "dotnet-claude-kit"; then
+              echo "repo=codewithmukesh/dotnet-claude-kit" >> $GITHUB_OUTPUT
+            else
+              echo "repo=dotnet/skills" >> $GITHUB_OUTPUT
+            fi
+          fi
+          echo "Analyzing: ${{ steps.source.outputs.repo }}"
+
+      - name: Clone upstream
+        run: |
+          REPO="${{ steps.source.outputs.repo }}"
+          git clone --depth 50 "https://github.com/$REPO.git" /tmp/upstream
+          echo "Cloned $REPO"
+
+      - name: Get changed files
+        id: changes
+        run: |
+          cd /tmp/upstream
+          CHANGED=$(git diff --name-only HEAD~10..HEAD -- '*.md' '*.cs' 2>/dev/null | head -30 || echo "")
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # Get recent commit messages for context
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          git log --oneline -10 >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Summarize changes
+        run: |
+          echo "## Changes detected in ${{ steps.source.outputs.repo }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Recent commits" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.changes.outputs.commits }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changed files" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.changes.outputs.changed_files }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Integration Command" >> $GITHUB_STEP_SUMMARY
+          echo "Run locally with Claude Code:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "claude \"Check ${{ steps.source.outputs.repo }} for new content since our last sync. Focus on changed files: ${{ steps.changes.outputs.changed_files }}. Extract new patterns, anti-patterns, and technology guidance. Integrate into our reference files.\"" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment on issue
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## AI Analysis Complete
+
+            ### Source: ${{ steps.source.outputs.repo }}
+
+            **Recent commits:**
+            \`\`\`
+            ${{ steps.changes.outputs.commits }}
+            \`\`\`
+
+            **Changed files to review:**
+            \`\`\`
+            ${{ steps.changes.outputs.changed_files }}
+            \`\`\`
+
+            ### Next Step
+            Run this command locally with Claude Code to integrate the new knowledge:
+
+            \`\`\`bash
+            claude "Check ${{ steps.source.outputs.repo }} for new content. Changed files:
+            ${{ steps.changes.outputs.changed_files }}
+            Extract any new patterns, anti-patterns (BAD/GOOD code), or technology guidance.
+            Integrate into the appropriate reference files in our dotnet-artisan repository."
+            \`\`\`
+            `;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
