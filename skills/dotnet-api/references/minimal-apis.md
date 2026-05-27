@@ -392,6 +392,57 @@ Minimal API patterns in this skill are grounded in guidance from:
 
 ---
 
+## Anti-patterns
+
+### Don't Put All Endpoints in Program.cs
+
+```csharp
+// BAD — Program.cs grows with every feature, becomes unmaintainable
+app.MapGet("/orders", async (AppDbContext db) => await db.Orders.ToListAsync());
+app.MapPost("/orders", async (Order o, AppDbContext db) => { /* ... */ });
+app.MapGet("/products", async (AppDbContext db) => await db.Products.ToListAsync());
+// 50+ endpoints later... Program.cs is 2000 lines
+
+// GOOD — auto-discover endpoints, Program.cs never changes
+app.MapEndpoints(); // discovers all IEndpointGroup implementations automatically
+```
+
+### Don't Use Untyped Results (IResult)
+
+```csharp
+// BAD — Results.Ok() doesn't contribute to OpenAPI schema
+private static async Task<IResult> GetOrder(Guid id, AppDbContext db)
+{
+    var order = await db.Orders.FindAsync(id);
+    return order is not null ? Results.Ok(order) : Results.NotFound();
+}
+
+// GOOD — TypedResults with explicit union return type
+private static async Task<Results<Ok<OrderResponse>, NotFound>> GetOrder(Guid id, AppDbContext db)
+{
+    var order = await db.Orders.Where(o => o.Id == id)
+        .Select(o => new OrderResponse(o.Id, o.Total, o.CreatedAt))
+        .FirstOrDefaultAsync();
+    return order is not null ? TypedResults.Ok(order) : TypedResults.NotFound();
+}
+```
+
+### Don't Return Domain Entities Directly
+
+```csharp
+// BAD — leaks internal entity structure, can't evolve API independently
+app.MapGet("/orders/{id}", async (Guid id, AppDbContext db) =>
+    await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id));
+
+// GOOD — project to response DTO
+app.MapGet("/orders/{id}", async (Guid id, AppDbContext db) =>
+    await db.Orders.Where(o => o.Id == id)
+        .Select(o => new OrderResponse(o.Id, o.Total, o.CreatedAt))
+        .FirstOrDefaultAsync());
+```
+
+---
+
 ## References
 
 - [Minimal APIs Overview](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-10.0)

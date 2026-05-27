@@ -556,6 +556,86 @@ Middleware patterns in this skill are grounded in publicly available content fro
 
 ---
 
+## Error Handling Anti-patterns
+
+### Don't Throw Exceptions for Flow Control
+
+```csharp
+// BAD — exceptions for expected business outcomes
+public Order GetOrder(Guid id)
+{
+    return db.Orders.Find(id)
+        ?? throw new NotFoundException($"Order {id} not found");
+    // Stack trace generation costs ~50x more than a Result return
+}
+
+// GOOD — Result pattern for expected failures
+public Result<Order> GetOrder(Guid id)
+{
+    var order = db.Orders.Find(id);
+    return order is not null
+        ? Result.Success(order)
+        : Result.Failure<Order>($"Order {id} not found");
+}
+```
+
+### Don't Return Raw Error Strings from APIs
+
+```csharp
+// BAD — inconsistent error format across endpoints
+return Results.BadRequest("Something went wrong");
+return Results.BadRequest(new { error = "Invalid input" });
+
+// GOOD — always use RFC 9457 ProblemDetails
+return TypedResults.Problem(title: "Invalid input", statusCode: 400);
+return TypedResults.ValidationProblem(validationResult.ToDictionary());
+```
+
+### Don't Catch and Swallow Exceptions
+
+```csharp
+// BAD — silently swallowing, no logging, no recovery
+try { await ProcessOrder(order); }
+catch (Exception) { /* ignore */ }
+
+// GOOD — catch specific exceptions, log, and handle appropriately
+try { await ProcessOrder(order); }
+catch (PaymentException ex)
+{
+    logger.LogWarning(ex, "Payment failed for order {OrderId}", order.Id);
+    return Result.Failure<Order>("Payment processing failed");
+}
+```
+
+### Don't Leak Implementation Details in Production Errors
+
+```csharp
+// BAD — stack trace and internal details exposed to clients
+if (!env.IsDevelopment())
+{
+    app.UseExceptionHandler("/error"); // still returns HTML, not API-friendly
+}
+
+// GOOD — ProblemDetails with safe messages
+app.UseExceptionHandler(exceptionApp =>
+{
+    exceptionApp.Run(async context =>
+    {
+        var ex = context.Features.Get<IExceptionHandlerFeature>()?.Error!;
+        logger.LogError(ex, "Unhandled exception");
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Title = "An unexpected error occurred",
+            Status = 500,
+            Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1"
+        });
+    });
+});
+```
+
+---
+
 ## Attribution
 
 Adapted from [Aaronontheweb/dotnet-skills](https://github.com/Aaronontheweb/dotnet-skills) (MIT license).

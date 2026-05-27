@@ -386,6 +386,75 @@ processor.ProcessMessageAsync += async args =>
 
 ---
 
+## Anti-patterns
+
+### Don't Use String Interpolation in Log Messages
+
+```csharp
+// BAD — allocates string even if level is disabled, breaks structured logging
+logger.LogInformation($"Order {orderId} created for {customerId}");
+// Why: allocates the interpolated string before the logging level check
+
+// GOOD — message template with named parameters
+logger.LogInformation("Order {OrderId} created for {CustomerId}", orderId, customerId);
+// Named params enable filtering: .Where(log => log.Properties["CustomerId"] == "123")
+```
+
+### Don't Log Sensitive Data
+
+```csharp
+// BAD — credentials in plaintext logs
+logger.LogInformation("User login: {Email} password={Password}", email, password);
+
+// GOOD — never log secrets, passwords, tokens, or PII
+logger.LogInformation("User login: {Email}", email);
+// Use Serilog.PiiMask or manual redaction for data that may contain PII
+```
+
+### Don't Skip CloseAndFlush (Serilog)
+
+```csharp
+// BAD — async sinks (Seq, OTLP, Elasticsearch) lose buffered events on shutdown
+var host = Host.CreateDefaultBuilder(args)
+    .UseSerilog() // no flush = silent data loss
+    .Build();
+
+// GOOD — flush buffered events before exit
+try { host.Run(); }
+finally { Log.CloseAndFlush(); }
+```
+
+### Don't Destructure Unlimited Objects
+
+```csharp
+// BAD — large object graphs cause memory spikes and 10KB log entries
+logger.LogInformation("Processing order: {@Order}", order); // @ = destructure
+
+// GOOD — configure destructuring depth, or project what you need
+Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
+Log.Logger = new LoggerConfiguration()
+    .Destructure.ToMaximumDepth(3)
+    .Destructure.ToMaximumCollectionCount(10)
+    .CreateLogger();
+
+// Even better: log only relevant fields
+logger.LogInformation("Processing order {OrderId} total {Total}", order.Id, order.Total);
+```
+
+### Don't Skip Health Check Tags
+
+```csharp
+// BAD — all checks run for both liveness and readiness
+app.MapHealthChecks("/health");
+
+// GOOD — separate liveness (am I alive?) from readiness (can I serve traffic?)
+app.MapHealthChecks("/health/live", new() { Predicate = _ => false }); // no checks
+app.MapHealthChecks("/health/ready", new() { Predicate = c => c.Tags.Contains("ready") });
+// Tag checks: builder.Services.AddHealthChecks().AddDbContext<AppDbContext>(tags: ["ready"]);
+```
+
+---
+
 ## References
 
 - [OpenTelemetry Collector configuration](https://opentelemetry.io/docs/collector/configuration/)

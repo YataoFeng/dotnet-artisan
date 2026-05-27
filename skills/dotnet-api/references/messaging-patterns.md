@@ -466,6 +466,76 @@ MassTransit is widely used in existing .NET projects. If you encounter MassTrans
 
 ---
 
+## Anti-patterns
+
+### Don't Publish Events Without Transactional Outbox
+
+```csharp
+// BAD — SaveChanges succeeds but Publish fails = inconsistent state
+await db.SaveChangesAsync(ct);
+await messageBus.PublishAsync(new OrderCreated(order.Id), ct);
+// If PublishAsync fails, the DB is updated but no one knows about the event
+
+// GOOD — transactional outbox (messages saved in same DB transaction)
+var order = Order.Create(req);
+db.Orders.Add(order);
+db.Outbox.Add(new OutboxMessage(nameof(OrderCreated), order.Id)); // same transaction
+await db.SaveChangesAsync(ct);
+// Background worker picks up OutboxMessage and publishes reliably
+```
+
+### Don't Put Complex Logic in Message Contracts
+
+```csharp
+// BAD — message contract with validation logic and business rules
+public record OrderCreated(Guid OrderId, Guid CustomerId, decimal Total)
+{
+    public bool IsHighValue => Total > 1000;
+    public string PartitionKey => CustomerId.ToString()[..2];
+}
+
+// GOOD — message is pure data; logic lives in handlers
+public sealed record OrderCreated(Guid OrderId, Guid CustomerId, decimal Total);
+
+public sealed class OrderCreatedHandler(IServiceBus bus) : INotificationHandler<OrderCreated>
+{
+    public async Task Handle(OrderCreated e, CancellationToken ct)
+    {
+        if (e.Total > 1000) { /* priority handling */ }
+        await bus.SendAsync(e, ct);
+    }
+}
+```
+
+### Don't Fire Events from Domain Entities
+
+```csharp
+// BAD — entity calls static mediator, hard to test, hidden side effects
+public class Order
+{
+    public void Cancel()
+    {
+        Status = OrderStatus.Cancelled;
+        Mediator.Publish(new OrderCancelled(Id)); // static! untestable!
+    }
+}
+
+// GOOD — collect events in entity, dispatch from handler after SaveChanges
+public class Order
+{
+    private readonly List<IDomainEvent> _events = [];
+    public IReadOnlyList<IDomainEvent> Events => _events.AsReadOnly();
+    public void Cancel()
+    {
+        Status = OrderStatus.Cancelled;
+        _events.Add(new OrderCancelled(Id));
+    }
+}
+// Handler: db.Add(order); await db.SaveChangesAsync(); await DispatchAsync(order.Events);
+```
+
+---
+
 ## References
 
 - [Azure Service Bus documentation](https://learn.microsoft.com/en-us/azure/service-bus-messaging/)

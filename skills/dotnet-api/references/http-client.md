@@ -556,6 +556,86 @@ Test the full HTTP client pipeline including DI registration:
 
 ---
 
+## Anti-patterns
+
+### Don't Create HttpClient Per Request
+
+```csharp
+// BAD — socket exhaustion under load, bypasses DNS changes
+using var client = new HttpClient();
+var result = await client.GetStringAsync(url);
+// Each new HttpClient creates a new socket, port exhaustion at scale
+```
+
+```csharp
+// GOOD — factory-managed, pooled handlers, DNS-aware
+public sealed class OrderApiClient(IHttpClientFactory factory)
+{
+    public async Task<string> GetAsync(string url)
+    {
+        var client = factory.CreateClient("OrderApi");
+        return await client.GetStringAsync(url);
+    }
+}
+```
+
+### Don't Capture Typed Clients in Singletons
+
+```csharp
+// BAD — transient HttpClient captured by singleton defeats handler rotation
+builder.Services.AddSingleton<OrderService>();
+public sealed class OrderService(OrderApiClient client) { /* client is cached forever */ }
+
+// GOOD — use IHttpClientFactory in singletons
+builder.Services.AddSingleton<OrderCache>();
+public sealed class OrderCache(IHttpClientFactory factory)
+{
+    public async Task<Order?> GetAsync(Guid id)
+    {
+        var client = factory.CreateClient("OrderApi");
+        return await client.GetFromJsonAsync<Order>($"/api/orders/{id}");
+    }
+}
+```
+
+### Don't Mutate DefaultRequestHeaders on Shared Clients
+
+```csharp
+// BAD — not thread-safe, affects all callers sharing the same client
+var client = factory.CreateClient("shared");
+client.DefaultRequestHeaders.Add("X-Tenant-Id", tenantId);
+
+// GOOD — use per-request HttpRequestMessage
+var request = new HttpRequestMessage(HttpMethod.Get, url);
+request.Headers.Add("X-Tenant-Id", tenantId);
+var response = await client.SendAsync(request);
+```
+
+### Don't Forget CancellationToken
+
+```csharp
+// BAD — no cancellation, request timeout = stuck thread
+var orders = await client.GetFromJsonAsync<List<Order>>("/api/orders");
+
+// GOOD — always propagate CancellationToken
+var orders = await client.GetFromJsonAsync<List<Order>>("/api/orders", ct);
+```
+
+### Don't Stack Multiple Resilience Handlers
+
+```csharp
+// BAD — conflicting resilience strategies
+builder.Services.AddHttpClient<ApiClient>()
+    .AddStandardResilienceHandler()
+    .AddStandardResilienceHandler(); // double retries!
+
+// GOOD — one standard resilience, or a custom named pipeline
+builder.Services.AddHttpClient<ApiClient>()
+    .AddStandardResilienceHandler(); // retry + circuit-breaker + timeout
+```
+
+---
+
 ## References
 
 - [IHttpClientFactory with .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory)

@@ -475,3 +475,60 @@ The diagnostics endpoint shows active circuits, component tree, render mode assi
 - [Streaming Rendering](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering?view=aspnetcore-10.0#streaming-rendering)
 - [Blazor Hybrid](https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/?view=aspnetcore-10.0)
 - [AOT Deployment](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/)
+
+---
+
+## Anti-patterns
+
+### Don't Use JS Interop in OnInitialized (Prerendering)
+
+```csharp
+// BAD — JSRuntime not available during prerendering
+protected override async Task OnInitializedAsync()
+{
+    var width = await JS.InvokeAsync<int>("getWindowWidth"); // throws on server!
+}
+
+// GOOD — use OnAfterRenderAsync for JS interop
+protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (firstRender)
+    {
+        var width = await JS.InvokeAsync<int>("getWindowWidth");
+        WindowWidth = width;
+        StateHasChanged();
+    }
+}
+```
+
+### Don't Forget CancellationToken on Navigation
+
+```csharp
+// BAD — long query runs even if user navigated away
+protected override async Task OnInitializedAsync()
+{
+    Orders = await DbContext.Orders.ToListAsync(); // no cancellation!
+}
+
+// GOOD — use component lifecycle token
+@implements IDisposable
+@inject ICircuitAccessor CircuitAccessor // Blazor Server
+
+private CancellationTokenSource _cts = new();
+protected override async Task OnInitializedAsync()
+{
+    Orders = await DbContext.Orders.ToListAsync(_cts.Token);
+}
+void IDisposable.Dispose() { _cts.Cancel(); _cts.Dispose(); }
+```
+
+### Don't Store UI State in Scoped Services (Blazor Server)
+
+```csharp
+// BAD — Scoped service shared across re-renders = stale state across tabs
+builder.Services.AddScoped<CartState>(); // one per circuit, but re-injected on re-render
+
+// GOOD — use Transient with a persistent key, or Singleton + keyed lookup
+builder.Services.AddSingleton<CartService>();
+// Store cart by circuit/user ID, not by DI lifetime
+```
