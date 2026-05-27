@@ -141,6 +141,7 @@
   <button onclick="switchTab('install')">安装</button>
   <button onclick="switchTab('patterns')">反模式</button>
   <button onclick="switchTab('rules')">铁律</button>
+  <button onclick="switchTab('packages')">包对照</button>
   <button onclick="switchTab('flow')">架构</button>
 </nav>
 
@@ -268,7 +269,36 @@ public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</co
   <p style="color:var(--fg-dim);margin-top:0.75rem;font-size:0.8rem">路由: using-dotnet → dotnet-advisor → 领域技能 + dotnet-csharp 常驻 → 元技能按需</p>
 </div>
 
+<div id="packages" class="tab">
+  <h2>商业/废弃包 → 免费/开源替代</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.25rem">本项目强制使用免费开源方案。以下为对照表。</p>
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+    <thead><tr style="text-align:left;border-bottom:2px solid var(--border)">
+      <th style="padding:0.7rem;color:var(--red)">禁止使用</th>
+      <th style="padding:0.7rem;color:var(--green)">替代方案</th>
+      <th style="padding:0.7rem;color:var(--fg-dim)">原因</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">MediatR（商业）</td><td style="padding:0.6rem 0.7rem">直接 Handler 调用 / Mediator (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">免费，AOT 兼容，零反射</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">FluentValidation</td><td style="padding:0.6rem 0.7rem">AddValidation() + DataAnnotations</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">内置，源生成，AOT 兼容</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">AutoMapper（商业）</td><td style="padding:0.6rem 0.7rem">手动映射 / Mapperly (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">编译时，更快，无运行时魔法</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">Newtonsoft.Json</td><td style="padding:0.6rem 0.7rem">System.Text.Json + 源生成</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">内置，AOT 兼容，更快</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">Swashbuckle（停止维护）</td><td style="padding:0.6rem 0.7rem">Microsoft.AspNetCore.OpenApi</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">微软官方，OpenAPI 3.1</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">SwaggerUI</td><td style="padding:0.6rem 0.7rem">Scalar API Reference (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">现代、轻量、MIT</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">BinaryFormatter（已删除）</td><td style="padding:0.6rem 0.7rem">System.Text.Json / Protobuf</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">安全、跨平台</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">log4net / NLog</td><td style="padding:0.6rem 0.7rem">Serilog (Apache 2.0)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">结构化日志，更好的生态</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">IdentityServer4（EOL）</td><td style="padding:0.6rem 0.7rem">Duende（社区版免费）/ Keycloak</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">维护中，安全更新</td></tr>
+      <tr><td style="padding:0.6rem 0.7rem">MongoDB.Driver (SSPL)</td><td style="padding:0.6rem 0.7rem">PostgreSQL + EF Core / Marten (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">真正开源，无协议顾虑</td></tr>
+    </tbody>
+  </table>
+  </div>
 </div>
+
+</div>
+
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})" id="topBtn" style="position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#fff;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;opacity:0;transition:opacity 0.3s;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,0.3)" title="回到顶部">↑</button>
+<script>window.addEventListener('scroll',()=>document.getElementById('topBtn').style.opacity=window.scrollY>400?'1':'0')</script>
 
 <footer>
   <p>融合自 <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>、<a href="https://github.com/dotnet/skills">dotnet/skills</a> 和 <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
