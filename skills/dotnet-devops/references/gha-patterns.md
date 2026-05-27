@@ -1,5 +1,7 @@
 # GitHub Actions Patterns
 
+> **速查**: Build once 多环境复用同一 Artifact | CI 加 `dotnet format --verify-no-changes` | matrix build 设 `fail-fast: false` | 缓存 key 包含 `runner.os` | 不用不同 Artifact 部署不同环境 |
+
 Composable GitHub Actions workflow patterns for .NET projects: reusable workflows with `workflow_call`, composite actions for shared step sequences, matrix builds across TFMs and operating systems, path-based triggers, concurrency groups for duplicate run cancellation, environment protection rules, NuGet and SDK caching strategies, and `workflow_dispatch` inputs for manual triggers.
 
 **Version assumptions:** GitHub Actions workflow syntax v2. `actions/setup-dotnet@v4` for .NET 8/9/10 support. `actions/cache@v4` for dependency caching.
