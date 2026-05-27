@@ -1,5 +1,7 @@
 # Version Upgrade
 
+> **速查**: 逐版本升级不跳版本 | 先升 SDK 和包再改代码 | 迁移前跑 Upgrade Assistant | 迁移 SQL 前 Review 生成的脚本 | 不在应用启动时跑迁移 | NuGet 用 CPM 统一版本 |
+
 Comprehensive guide for .NET version upgrade planning and execution. This skill consumes the structured output from `references/version-detection.md` (current TFM, SDK version, preview flags) and provides actionable upgrade guidance based on three defined upgrade lanes. Covers TFM migration, package updates, breaking change detection, deprecated API replacement, and test validation.
 
 ## Upgrade Lanes

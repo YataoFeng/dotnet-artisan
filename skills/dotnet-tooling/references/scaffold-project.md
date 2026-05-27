@@ -1,5 +1,7 @@
 # Scaffold Project
 
+> **速查**: 先问架构再生成不要乱猜 | Feature + Test 一起生成从不分开 | 模板匹配项目现有命名约定 | 不用 DTO 镜像 Entity | EF 配置放 `IEntityTypeConfiguration<T>` 不放 Entity 属性 |
+
 Scaffolds a new .NET project with all modern best practices applied. Generates the full solution structure including Central Package Management, analyzers, .editorconfig, SourceLink, and deterministic builds.
 
 **Prerequisites:** Run `references/version-detection.md` first to determine available SDK version — this affects which features and templates are available.
