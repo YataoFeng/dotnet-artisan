@@ -5,275 +5,265 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>dotnet-artisan — .NET AI Coding Skills</title>
 <style>
-  :root { --bg: #0d1117; --fg: #c9d1d9; --accent: #58a6ff; --border: #30363d; --card: #161b22; --hover: #1c2333; --bad: #da363344; --good: #3fb95044; }
+  :root {
+    --bg: #0a0e14; --surface: #12171e; --card: #181e28; --card-hover: #1e2632;
+    --fg: #b8c4d0; --fg-dim: #6b7888; --fg-bright: #e2e8f0;
+    --accent: #5b9cf5; --accent-dim: #3b7dd4; --accent-glow: #5b9cf533;
+    --border: #222a36; --border-light: #2a3442;
+    --green: #4ade80; --red: #f87171; --amber: #fbbf24;
+    --radius: 10px; --radius-sm: 6px;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
-  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
-  header { padding: 3rem 0 1rem; text-align: center; }
-  h1 { font-size: 2.5rem; color: #f0f6fc; } h1 span { color: var(--accent); }
-  .tagline { font-size: 1.1rem; color: #8b949e; max-width: 600px; margin: 0.5rem auto; }
-  .badge { display: inline-block; background: #1f6feb22; color: var(--accent); border: 1px solid #1f6feb44; border-radius: 20px; padding: 0.15rem 0.7rem; font-size: 0.78rem; margin: 0.15rem; }
-  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
 
-  /* Tabs */
-  nav { display: flex; justify-content: center; gap: 0; margin: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); }
-  nav button { background: none; border: none; color: #8b949e; padding: 0.75rem 1.25rem; cursor: pointer; font-size: 0.95rem; border-bottom: 2px solid transparent; transition: all 0.15s; font-family: inherit; }
-  nav button:hover { color: var(--fg); background: var(--card); }
+  /* Hero */
+  .hero {
+    background: linear-gradient(180deg, #0d1520 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
+  .hero h1 span { background: linear-gradient(135deg, #5b9cf5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .sub { font-size: 1.1rem; color: var(--fg-dim); max-width: 560px; margin: 0.75rem auto 1rem; }
+  .hero .stats { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem; }
+  .hero .stat { text-align: center; }
+  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: var(--fg-bright); }
+  .hero .stat .lbl { font-size: 0.75rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+
+  /* Navigation */
+  nav {
+    display: flex; justify-content: center; gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(12px);
+  }
+  nav button {
+    background: none; border: none; color: var(--fg-dim);
+    padding: 0.85rem 1.5rem; cursor: pointer; font-size: 0.9rem;
+    font-weight: 500; border-bottom: 2px solid transparent;
+    transition: all 0.2s; font-family: inherit;
+  }
+  nav button:hover { color: var(--fg); }
   nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
 
+  .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1.5rem; }
   .tab { display: none; }
-  .tab.active { display: block; }
+  .tab.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Filters */
-  .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; justify-content: center; }
-  .filters button { background: var(--card); border: 1px solid var(--border); color: #8b949e; padding: 0.35rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-family: inherit; transition: all 0.15s; }
-  .filters button:hover, .filters button.on { color: var(--accent); border-color: var(--accent); background: #1f6feb18; }
+  /* Filters + Search */
+  .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; justify-content: center; }
+  .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .filters button {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg-dim);
+    padding: 0.4rem 0.9rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+    font-family: inherit; transition: all 0.2s; font-weight: 500;
+  }
+  .filters button:hover { border-color: var(--border-light); color: var(--fg); }
+  .filters button.on { background: var(--accent-glow); color: var(--accent); border-color: var(--accent); }
+  .search-box {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg);
+    padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.8rem;
+    width: 200px; outline: none; font-family: inherit; transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--fg-dim); }
 
-  /* Grid */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; cursor: pointer; transition: all 0.15s; }
-  .card:hover { background: var(--hover); border-color: #58a6ff44; }
-  .card h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.3rem; display: flex; justify-content: space-between; align-items: center; }
-  .card .cat { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.05em; }
-  .card p { color: #8b949e; font-size: 0.88rem; }
-  .card .arrow { font-size: 0.8rem; color: #484f58; transition: transform 0.2s; }
+  /* Cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.85rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.35rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .card:hover { background: var(--card-hover); border-color: var(--border-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  .card h3 { color: var(--accent); font-size: 0.95rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+  .card .tag { font-size: 0.65rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; background: var(--surface); padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .card p { color: var(--fg-dim); font-size: 0.85rem; line-height: 1.5; }
+  .card .arrow { font-size: 0.7rem; color: #3d4a5c; transition: transform 0.2s; }
   .card.open .arrow { transform: rotate(180deg); }
-  .card .detail { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: #8b949e; }
+  .card .detail { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--fg-dim); }
   .card.open .detail { display: block; }
 
-  /* Agent list */
-  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; border-bottom: 1px solid #30363d44; }
+  /* Agent rows */
+  .agent-list { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
   .agent-row:last-child { border-bottom: none; }
-  .agent-row strong { color: #f0f6fc; font-size: 0.9rem; }
-  .agent-row span { color: #8b949e; font-size: 0.82rem; }
+  .agent-row:hover { background: var(--card-hover); }
+  .agent-row strong { color: var(--fg-bright); font-size: 0.88rem; font-weight: 600; }
+  .agent-row span { color: var(--fg-dim); font-size: 0.8rem; }
 
   /* Code blocks */
-  pre { background: #0d1117; border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: 0.82rem; border: 1px solid var(--border); margin: 0.5rem 0; }
-  code { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.85em; }
-  .good-code { border-left: 3px solid #3fb950; }
-  .bad-code { border-left: 3px solid #da3633; opacity: 0.75; }
-  .code-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
-  .code-label.good { color: #3fb950; }
-  .code-label.bad { color: #da3633; }
+  pre { background: #0a0e14; border-radius: var(--radius-sm); padding: 0.85rem 1rem; overflow-x: auto; font-size: 0.8rem; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.55; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; }
+  .good-code { border-left: 3px solid var(--green); }
+  .bad-code { border-left: 3px solid var(--red); opacity: 0.7; }
+  .code-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+  .code-label.good { color: var(--green); }
+  .code-label.bad { color: var(--red); }
 
-  h2 { font-size: 1.3rem; color: #f0f6fc; margin-bottom: 1rem; }
-  footer { text-align: center; padding: 2.5rem 0 1rem; color: #484f58; font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+  /* Install section */
+  .install-block { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
+  .install-block code { background: #0a0e14; padding: 0.55rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.88rem; display: inline-block; }
+
+  /* Principles grid */
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-top: 0.5rem; }
+  .principle-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
+  .principle-card h3 { color: var(--fg-bright); font-size: 0.9rem; margin-bottom: 0.35rem; }
+  .principle-card p { color: var(--fg-dim); font-size: 0.82rem; }
+
+  h2 { font-size: 1.25rem; color: var(--fg-bright); margin-bottom: 1rem; font-weight: 700; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  footer {
+    text-align: center; padding: 2.5rem 0 1.5rem; color: #3d4a5c;
+    font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+  .emoji-icon { font-size: 1.3rem; margin-right: 0.3rem; vertical-align: -0.1em; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .hero .stats { gap: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    nav button { padding: 0.7rem 0.9rem; font-size: 0.8rem; }
+  }
 </style>
 </head>
 <body>
-<div class="container">
-<header>
+
+<div class="hero">
   <h1><span>dotnet</span>-artisan</h1>
-  <p class="tagline">Comprehensive .NET development skills for AI coding agents</p>
-  <div style="margin-top:0.8rem">
-    <span class="badge">14 Skills</span>
-    <span class="badge">17 Agents</span>
-    <span class="badge">160+ References</span>
-    <span class="badge">MIT License</span>
+  <p class="sub">Comprehensive .NET development skills for AI coding agents — Claude Code, GitHub Copilot, VS Code, Cursor</p>
+  <div class="stats">
+    <div class="stat"><div class="num">14</div><div class="lbl">Skills</div></div>
+    <div class="stat"><div class="num">17</div><div class="lbl">Agents</div></div>
+    <div class="stat"><div class="num">160+</div><div class="lbl">References</div></div>
+    <div class="stat"><div class="num">90+</div><div class="lbl">Anti-Patterns</div></div>
+    <div class="stat"><div class="num">MIT</div><div class="lbl">License</div></div>
   </div>
-</header>
+</div>
 
 <nav>
   <button class="active" onclick="switchTab('skills')">Skills</button>
   <button onclick="switchTab('agents')">Agents</button>
   <button onclick="switchTab('install')">Install</button>
-  <button onclick="switchTab('patterns')">Patterns</button>
+  <button onclick="switchTab('patterns')">Anti-Patterns</button>
+  <button onclick="switchTab('rules')">Rules</button>
 </nav>
 
+<div class="container">
+
 <div id="skills" class="tab active">
-  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.25rem">
+  <div class="controls">
     <div class="filters">
       <button class="on" onclick="filterSkills('all', this)">All</button>
       <button onclick="filterSkills('core', this)">Core</button>
       <button onclick="filterSkills('domain', this)">Domain</button>
       <button onclick="filterSkills('meta', this)">Meta</button>
     </div>
-    <input type="text" id="skillSearch" placeholder="Search skills..." oninput="searchSkills()"
-      style="background:var(--card);border:1px solid var(--border);color:var(--fg);padding:0.35rem 0.8rem;border-radius:20px;font-size:0.8rem;width:180px;outline:none;font-family:inherit"
-      onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+    <input type="text" class="search-box" placeholder="Search skills..." oninput="searchSkills()" id="skillSearch">
   </div>
   <div class="grid" id="skillGrid"></div>
 </div>
 
 <div id="agents" class="tab">
-  <p style="color:#8b949e;margin-bottom:1rem">17 specialist sub-agents for deep analysis. Invoked automatically by dotnet-advisor.</p>
-  <div id="agentList" style="background:var(--card);border:1px solid var(--border);border-radius:8px;"></div>
+  <p style="color:var(--fg-dim);margin-bottom:1rem">17 specialist sub-agents invoked automatically by dotnet-advisor for deep analysis.</p>
+  <div class="agent-list" id="agentList"></div>
 </div>
 
 <div id="install" class="tab">
   <h2>Claude Code</h2>
-  <pre>claude plugins install YataoFeng/dotnet-artisan</pre>
-  <h2>GitHub Copilot / VS Code / Cursor</h2>
-  <p style="color:#8b949e">Clone the repo and point your agent's skills directory to <code>skills/</code>. Follows the <a href="https://agentskills.io">agentskills.io</a> open standard.</p>
-  <h2>Key Principles</h2>
-  <div class="grid" style="margin-top:0.5rem">
-    <div class="card"><h3>KISS First</h3><p>Simple CRUD doesn't need DDD, MediatR, or CQRS. Scale to the problem.</p></div>
-    <div class="card"><h3>No Repository Wrapping</h3><p>Use DbContext directly. EF Core IS the repository and unit of work.</p></div>
-    <div class="card"><h3>Version-Aware</h3><p>Guidance adapts to net8.0 → net9.0 → net10.0 → net11.0 automatically.</p></div>
-    <div class="card"><h3>Framework First</h3><p>TimeProvider, ILogger&lt;T&gt;, IHttpClientFactory, System.Text.Json — use what's built in.</p></div>
+  <div class="install-block">
+    <code>claude plugins install YataoFeng/dotnet-artisan</code>
+  </div>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Also compatible with GitHub Copilot, VS Code, Cursor — follows <a href="https://agentskills.io">agentskills.io</a>.</p>
+
+  <h2>Core Principles</h2>
+  <div class="principle-grid">
+    <div class="principle-card"><h3>KISS First</h3><p>Simple CRUD doesn't need DDD or CQRS. Scale to the problem.</p></div>
+    <div class="principle-card"><h3>No Repository Wrapping</h3><p>Use DbContext directly. EF Core IS the repository and unit of work.</p></div>
+    <div class="principle-card"><h3>Version-Aware</h3><p>Auto-adapts to net8.0 through net11.0.</p></div>
+    <div class="principle-card"><h3>Free & Open Source</h3><p>Microsoft-recommended + MIT packages only. No commercial dependencies.</p></div>
   </div>
 </div>
 
 <div id="patterns" class="tab">
-  <h2>Bad vs Good — Code Patterns</h2>
-  <p style="color:#8b949e;margin-bottom:1rem">Anti-patterns caught in code review. Click any card to expand.</p>
-
+  <p style="color:var(--fg-dim);margin-bottom:1rem">Most common BAD vs GOOD patterns. Click to expand.</p>
   <div class="grid">
-    <div class="card" onclick="this.classList.toggle('open')"><h3>DI Lifetime Mismatch <span class="arrow">&#9660;</span></h3><div class="detail">
-<div class="code-label bad">BAD — Scoped service injected into Singleton</div>
-<pre class="bad-code"><code>builder.Services.AddSingleton&lt;ICache, MyCache&gt;();
-builder.Services.AddScoped&lt;AppDbContext&gt;();
-
-// MyCache depends on DbContext — but Singleton wraps Scoped!
-public class MyCache(AppDbContext db) : ICache { }</code></pre>
-<div class="code-label good">GOOD — Match lifetimes correctly</div>
-<pre class="good-code"><code>builder.Services.AddSingleton&lt;ICache, MyCache&gt;();
-builder.Services.AddScoped&lt;AppDbContext&gt;();
-
-// Use IServiceScopeFactory to resolve scoped deps in singletons
-public class MyCache(IServiceScopeFactory sf) : ICache
+    <div class="card" onclick="this.classList.toggle('open')"><h3>DI Lifetime Mismatch <span class="tag">critical</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — Scoped injected into Singleton</div><pre class="bad-code"><code>builder.Services.AddSingleton&lt;ICache, MyCache&gt;();
+public class MyCache(AppDbContext db) : ICache { } // DbContext is Scoped!</code></pre><div class="code-label good">GOOD — IServiceScopeFactory in singletons</div><pre class="good-code"><code>public class MyCache(IServiceScopeFactory sf) : ICache
 {
-    public async Task&lt;T&gt; Get&lt;T&gt;(string key, Func&lt;AppDbContext, Task&lt;T&gt;&gt; factory)
-    {
-        using var scope = sf.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;();
-        return await factory(db);
-    }
-}</code></pre>
-    </div></div></div>
+  public async Task&lt;T&gt; Get&lt;T&gt;(string k, Func&lt;AppDbContext,Task&lt;T&gt;&gt; f) {
+    using var scope = sf.CreateScope();
+    return await f(scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;());
+  }
+}</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>Async Void Fire-and-Forget <span class="arrow">&#9660;</span></h3><div class="detail">
-<div class="code-label bad">BAD — Exceptions swallowed, no tracking</div>
-<pre class="bad-code"><code>public void SendEmail(string to, string body)
-{
-    _ = Task.Run(async () =>
-    {
-        await _emailService.SendAsync(to, body);
-    }); // Exception? What exception?
-}</code></pre>
-<div class="code-label good">GOOD — Use BackgroundService or proper fire-and-forget</div>
-<pre class="good-code"><code>// Option A: BackgroundService with Channel
-public class EmailBackgroundService(Channel&lt;EmailJob&gt; queue) : BackgroundService
-{
-    protected override async Task ExecuteAsync(CancellationToken ct)
-    {
-        await foreach (var job in queue.Reader.ReadAllAsync(ct))
-            await _emailService.SendAsync(job.To, job.Body, ct);
-    }
-}
+    <div class="card" onclick="this.classList.toggle('open')"><h3>DateTime.Now vs TimeProvider <span class="tag">common</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — not testable</div><pre class="bad-code"><code>var order = new Order { CreatedAt = DateTime.Now };</code></pre><div class="code-label good">GOOD — injectable and testable</div><pre class="good-code"><code>public class OrderService(AppDbContext db, TimeProvider clock) {
+  var order = new Order { CreatedAt = clock.GetLocalNow().DateTime };
+}</code></pre></div></div>
 
-// Option B: Proper fire-and-forget with exception handling
-public static void FireAndForget(this Task task, ILogger logger)
-{
-    task.ContinueWith(t =&gt; logger.LogError(t.Exception, "Unhandled bg error"),
-        TaskContinuationOptions.OnlyOnFaulted);
-}</code></pre>
-    </div></div></div>
+    <div class="card" onclick="this.classList.toggle('open')"><h3>N+1 EF Core Queries <span class="tag">perf</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — one query per item</div><pre class="bad-code"><code>var orders = await db.Orders.Where(...).ToListAsync();
+foreach (var o in orders)
+  o.Items = await db.OrderItems.Where(i => i.OrderId == o.Id).ToListAsync();</code></pre><div class="code-label good">GOOD — single query with Include</div><pre class="good-code"><code>var orders = await db.Orders.Include(o => o.Items).AsNoTracking().ToListAsync();</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>DateTime.Now vs TimeProvider <span class="arrow">&#9660;</span></h3><div class="detail">
-<div class="code-label bad">BAD — Not testable, timezone-dependent</div>
-<pre class="bad-code"><code>public class OrderService(AppDbContext db)
-{
-    public async Task CreateOrder(CreateOrderRequest req)
-    {
-        var order = new Order
-        {
-            CreatedAt = DateTime.Now, // Can't test time-based logic!
-            ExpiresAt = DateTime.UtcNow.AddHours(24)
-        };
-        db.Orders.Add(order);
-        await db.SaveChangesAsync();
-    }
-}</code></pre>
-<div class="code-label good">GOOD — TimeProvider is injectable and testable</div>
-<pre class="good-code"><code>public class OrderService(AppDbContext db, TimeProvider clock)
-{
-    public async Task CreateOrder(CreateOrderRequest req)
-    {
-        var order = new Order
-        {
-            CreatedAt = clock.GetLocalNow().DateTime,
-            ExpiresAt = clock.GetUtcNow().AddHours(24)
-        };
-        db.Orders.Add(order);
-        await db.SaveChangesAsync();
-    }
-}
+    <div class="card" onclick="this.classList.toggle('open')"><h3>Repository over DbContext <span class="tag">anti</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — useless wrapper hiding IQueryable</div><pre class="bad-code"><code>public interface IRepository&lt;T&gt; { Task&lt;T&gt; GetById(int id); }
+public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</code></pre><div class="code-label good">GOOD — use DbContext directly</div><pre class="good-code"><code>public class OrderService(AppDbContext db) {
+  public async Task&lt;Order?&gt; Get(int id) => await db.Orders.FindAsync(id);
+}</code></pre></div></div>
 
-// Test: TimeProvider.Fake("2026-03-15T10:00:00Z")</code></pre>
-    </div></div></div>
+    <div class="card" onclick="this.classList.toggle('open')"><h3>.Result / .Wait() Deadlocks <span class="tag">critical</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — deadlocks in sync context</div><pre class="bad-code"><code>var data = GetDataAsync().Result; // blocks thread, deadlock risk</code></pre><div class="code-label good">GOOD — async all the way</div><pre class="good-code"><code>var data = await GetDataAsync();</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>N+1 EF Core Queries <span class="arrow">&#9660;</span></h3><div class="detail">
-<div class="code-label bad">BAD — One query per order to get items</div>
-<pre class="bad-code"><code>var orders = await db.Orders.Where(o => o.CustomerId == id).ToListAsync();
-foreach (var order in orders) // N+1!
-{
-    var items = await db.OrderItems.Where(i => i.OrderId == order.Id).ToListAsync();
-    order.Items = items;
-}</code></pre>
-<div class="code-label good">GOOD — Single query with Include</div>
-<pre class="good-code"><code>var orders = await db.Orders
-    .Include(o => o.Items)
-    .Where(o => o.CustomerId == id)
-    .AsNoTracking()
-    .ToListAsync();</code></pre>
-    </div></div></div>
-
-    <div class="card" onclick="this.classList.toggle('open')"><h3>Repository over DbContext <span class="arrow">&#9660;</span></h3><div class="detail">
-<div class="code-label bad">BAD — Useless abstraction over EF Core</div>
-<pre class="bad-code"><code>public interface IRepository&lt;T&gt; { Task&lt;T&gt; GetById(int id); Task Add(T e); Task Save(); }
-public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { /* wraps DbSet */ }
-public class OrderService(IRepository&lt;Order&gt; repo) { /* uses repo */ }
-
-// DbContext is the repository. DbSet&lt;T&gt; is the repository.
-// This wrapper adds zero value, hides IQueryable, and blocks .Include().</code></pre>
-<div class="code-label good">GOOD — Use DbContext directly</div>
-<pre class="good-code"><code>public class OrderService(AppDbContext db)
-{
-    public async Task&lt;Order?&gt; Get(int id) =&gt; db.Orders.FindAsync(id);
-    public async Task Add(Order o) { db.Orders.Add(o); await db.SaveChangesAsync(); }
-    public IQueryable&lt;Order&gt; Query() =&gt; db.Orders.AsNoTracking(); // let caller compose
-}</code></pre>
-    </div></div></div>
-
-    <div class="card" onclick="this.classList.toggle('open')"><h3>Missing CancellationToken <span class="arrow">&#9660;</span></h3><div class="detail">
-<div class="code-label bad">BAD — No cancellation support</div>
-<pre class="bad-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q)
-{
-    return await db.Products.Where(p => p.Name.Contains(q)).ToListAsync();
-    // Can't cancel this. Request timeout = stuck thread.
-}</code></pre>
-<div class="code-label good">GOOD — Propagate CancellationToken end-to-end</div>
-<pre class="good-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q, CancellationToken ct = default)
-{
-    return await db.Products.Where(p => p.Name.Contains(q)).ToListAsync(ct);
-}
-// ASP.NET Core binds HttpContext.RequestAborted to ct automatically</code></pre>
-    </div></div></div>
+    <div class="card" onclick="this.classList.toggle('open')"><h3>Missing CancellationToken <span class="tag">common</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — no cancellation</div><pre class="bad-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q)
+  => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync();</code></pre><div class="code-label good">GOOD — propagate CancellationToken</div><pre class="good-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q, CancellationToken ct = default)
+  => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync(ct);</code></pre></div></div>
   </div>
+</div>
+
+<div id="rules" class="tab">
+  <h2>Non-Negotiable Rules</h2>
+  <div class="grid">
+    <div class="card"><h3>No Repository/UoW</h3><p>DbContext IS the unit of work. DbSet&lt;T&gt; IS the repository.</p></div>
+    <div class="card"><h3>No FluentValidation</h3><p>Use AddValidation() + DataAnnotations on .NET 10+.</p></div>
+    <div class="card"><h3>No Commercial Packages</h3><p>MediatR→Mediator(MIT), AutoMapper→Mapperly, Newtonsoft→STJ.</p></div>
+    <div class="card"><h3>No DateTime.Now</h3><p>Use TimeProvider everywhere. Injectable, testable.</p></div>
+    <div class="card"><h3>DbContext Directly</h3><p>Inject AppDbContext, never IRepository&lt;T&gt;.</p></div>
+    <div class="card"><h3>Free/Open Source Only</h3><p>See package-choices.md for all replacements.</p></div>
+  </div>
+</div>
+
 </div>
 
 <footer>
   Synthesized from <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>,
   <a href="https://github.com/dotnet/skills">dotnet/skills</a>, and
   <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a>
-  &nbsp;·&nbsp; <a href="https://github.com/YataoFeng/dotnet-artisan">GitHub</a>
+  &nbsp;&middot;&nbsp; <a href="https://github.com/YataoFeng/dotnet-artisan">GitHub</a>
+  &nbsp;&middot;&nbsp; <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/INDEX.md">Index</a>
 </footer>
-</div>
 
 <script>
 const skills = [
   { name:"using-dotnet", cat:"core", desc:".NET intent detection, routing gateway — always loaded first" },
   { name:"dotnet-advisor", cat:"core", desc:"Skill router, version detection, cross-domain coordination" },
   { name:"dotnet-csharp", cat:"core", desc:"C# patterns, async/await, DI, LINQ, domain modeling, source generators" },
-  { name:"dotnet-api", cat:"domain", desc:"ASP.NET Core, EF Core, gRPC, SignalR, security, resilience, caching, OpenAPI, YARP" },
+  { name:"dotnet-api", cat:"domain", desc:"ASP.NET Core, EF Core, gRPC, SignalR, security, resilience, caching, OpenAPI" },
   { name:"dotnet-ui", cat:"domain", desc:"Blazor, MAUI, Uno Platform, WPF, WinUI, WinForms, accessibility, localization" },
   { name:"dotnet-testing", cat:"domain", desc:"xUnit v3, Playwright, benchmarks, test quality analysis, snapshot testing" },
   { name:"dotnet-devops", cat:"domain", desc:"CI/CD, GitHub Actions, Azure DevOps, containers, NuGet, observability" },
   { name:"dotnet-tooling", cat:"domain", desc:"MSBuild, Native AOT, CLI apps, profiling, SDK setup, project scaffolding" },
   { name:"dotnet-debugging", cat:"domain", desc:"WinDbg, crash dumps, hang analysis, memory diagnostics, Linux debugging" },
   { name:"dotnet-ai", cat:"domain", desc:"MCP servers, Semantic Kernel, RAG pipelines, ML.NET, LLM integration" },
-  { name:"dotnet-upgrade", cat:"domain", desc:".NET version migration, AOT compatibility, nullable migration, thread-abort" },
+  { name:"dotnet-upgrade", cat:"domain", desc:".NET version migration, AOT compatibility, nullable migration" },
   { name:"dotnet-quality", cat:"meta", desc:"7-step cleanup pipeline, code review workflow, dead code removal, tech debt" },
   { name:"dotnet-workflow", cat:"meta", desc:"Parallel worktrees, context discipline, verification loops, Claude Code optimization" },
   { name:"dotnet-learning", cat:"meta", desc:"Correction capture, instinct system, pattern learning, MEMORY.md management" }
@@ -303,18 +293,37 @@ function searchSkills() {
   const grid = document.getElementById('skillGrid');
   const filtered = skills.filter(s => !q || s.name.includes(q) || s.desc.toLowerCase().includes(q));
   grid.innerHTML = filtered.map(s => `<div class="card" onclick="this.classList.toggle('open')">
-    <h3>${s.name} <span class="cat">${s.cat}</span><span class="arrow">&#9660;</span></h3>
+    <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
     <p>${s.desc}</p>
     <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
   </div>`).join('');
   document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
 }
+
 function renderSkills(filter) {
-  const grid = document.getElementById('skillGrid');
   document.getElementById('skillSearch').value = '';
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
+  event.target.classList.add('on');
+  const grid = document.getElementById('skillGrid');
   grid.innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
     .map(s => `<div class="card" onclick="this.classList.toggle('open')">
-      <h3>${s.name} <span class="cat">${s.cat}</span><span class="arrow">&#9660;</span></h3>
+      <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
+      <p>${s.desc}</p>
+      <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
+    </div>`).join('');
+}
+
+function filterSkills(cat, btn) {
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('skillSearch').value = '';
+  renderList(cat);
+}
+
+function renderList(filter) {
+  document.getElementById('skillGrid').innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
+    .map(s => `<div class="card" onclick="this.classList.toggle('open')">
+      <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
       <p>${s.desc}</p>
       <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
     </div>`).join('');
@@ -325,12 +334,6 @@ function renderAgents() {
     `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
 }
 
-function filterSkills(cat, btn) {
-  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderSkills(cat);
-}
-
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -338,7 +341,7 @@ function switchTab(name) {
   document.querySelector(`nav button[onclick*="${name}"]`).classList.add('active');
 }
 
-renderSkills('all');
+renderList('all');
 renderAgents();
 </script>
 </body>
