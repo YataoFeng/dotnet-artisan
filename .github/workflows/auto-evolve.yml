@@ -85,14 +85,41 @@ jobs:
           echo "$RESPONSE" | jq -r '.choices[0].message.content' > /tmp/ai.json
           echo "AI analysis complete"
 
-      - name: Create evolution PR
+      - name: Apply AI suggestions to files
         if: steps.ai.outcome == 'success'
+        id: apply
+        run: |
+          # For each anti-pattern, append to the target file
+          jq -r '.new_anti_patterns // [] | .[] | "\(.file_to_update)|||\(.name)|||\(.bad)|||\(.good)"' /tmp/ai.json | while IFS='|||' read -r file name bad good; do
+            [ -z "$file" ] && continue
+            [ ! -f "$file" ] && echo "SKIP (not found): $file" && continue
+            echo "PATCH: adding '$name' to $file"
+            cat >> "$file" << PATCH
+
+### $name
+
+\`\`\`csharp
+// BAD
+$bad
+
+// GOOD
+$good
+\`\`\`
+PATCH
+          done
+
+          # Set changed files count
+          CHANGED=$(git diff --name-only | wc -l)
+          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Create evolution PR
+        if: steps.apply.outputs.changed > 0
         id: pr
         run: |
           BRANCH="evolve-$(date +%Y%m%d-%H%M)"
           git checkout -b "$BRANCH"
 
-          # Generate integration content
+          # Generate evolution log
           cat > .github/latest-evolution.md << EOF
           # Auto-Evolution: ${{ steps.src.outputs.repo }}
           ## Date
