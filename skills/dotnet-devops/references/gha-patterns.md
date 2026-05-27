@@ -496,3 +496,35 @@ Input types: `string`, `boolean`, `choice`, `environment` (selects from configur
 6. **Do not hardcode TFMs in workflow files** -- use matrix variables or extract from csproj to keep workflows in sync with project configuration.
 7. **`secrets: inherit` passes all caller secrets** -- use explicit secret declarations for security-sensitive reusable workflows to limit exposure.
 8. **Concurrency groups for deploys must use `cancel-in-progress: false`** -- cancelling an in-progress deployment can leave infrastructure in an inconsistent state.
+
+
+---
+
+## Anti-patterns
+
+### Don't Build Different Artifacts per Environment
+
+```yaml
+# BAD -- building separately for each environment
+- run: dotnet publish -c Debug -o ./publish   # dev
+- run: dotnet publish -c Release -o ./publish # prod
+# Same code compiled 3 times = 3 potentially different binaries
+
+# GOOD -- build once, deploy the same artifact everywhere
+- run: dotnet publish -c Release -o ./publish
+- uses: actions/upload-artifact@v4
+  with: { name: app, path: ./publish }
+# Same ./publish deployed to dev -> staging -> prod
+```
+
+### Don't Skip Format Checks in CI
+
+```yaml
+# BAD -- no quality gate, formatting drift accumulates
+- run: dotnet build
+
+# GOOD -- fail fast on formatting and warnings
+- run: dotnet format --verify-no-changes
+- run: dotnet build -warnaserror
+- run: dotnet test
+```

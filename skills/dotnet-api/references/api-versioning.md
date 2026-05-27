@@ -280,3 +280,41 @@ See the [migration guide](https://github.com/dotnet/aspnet-api-versioning/wiki/M
 - [Asp.Versioning.Http NuGet](https://www.nuget.org/packages/Asp.Versioning.Http)
 - [Asp.Versioning.Mvc NuGet](https://www.nuget.org/packages/Asp.Versioning.Mvc)
 - [RFC 8594 - The Sunset HTTP Header](https://datatracker.ietf.org/doc/html/rfc8594)
+
+
+---
+
+## Anti-patterns
+
+### Don't Version Individual Endpoints
+
+```csharp
+// BAD -- inconsistent versioning within a group
+app.MapGet("/api/v1/orders", ListOrdersV1);
+app.MapGet("/api/v2/orders/{id}", GetOrderV2);  // mix of v1 and v2 in same group
+
+// GOOD -- version the entire group
+app.MapGroup("/api/v1/orders").MapOrderEndpointsV1();
+app.MapGroup("/api/v2/orders").MapOrderEndpointsV2();
+```
+
+### Don't Use Query String Versioning as Default
+
+```csharp
+// BAD -- ?api-version=2 is error-prone, easy to forget
+// Prefer URL path versioning (/api/v2/) or header versioning (Api-Version: 2.0)
+// for discoverability and caching (CDN caches by URL, not query string)
+```
+
+### Don't Forget Sunset Headers for Deprecated Versions
+
+```csharp
+// BAD -- deprecated v1 with no warning, users discover via 404
+app.MapGroup("/api/v1/orders")...;
+
+// GOOD -- add Sunset and Deprecation headers (RFC 8594)
+app.MapGroup("/api/v1/orders")
+    .WithOpenApi(o => { o.Deprecated = true; return o; });
+// Returns: Sunset: Sat, 01 Aug 2026 00:00:00 GMT
+//          Deprecation: true
+```

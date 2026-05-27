@@ -444,3 +444,39 @@ Pinned versions are recommended for deterministic CI; floating versions are usef
 - [Target Framework Monikers](https://learn.microsoft.com/en-us/dotnet/standard/frameworks)
 - [.NET Analyzers Overview](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview)
 - [Package Validation](https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/overview)
+
+
+---
+
+## Anti-patterns
+
+### Don't Apply Migrations Without Reviewing SQL
+
+```bash
+# BAD -- blind apply, may drop columns with millions of rows
+dotnet ef database update
+# Surprise: migration drops a column because you renamed a property
+
+# GOOD -- review the generated SQL first
+dotnet ef migrations script --idempotent > review.sql
+# Read review.sql: check for DROP COLUMN, ALTER TABLE, data type changes
+# If data loss: update the migration to preserve data (rename instead of drop+add)
+dotnet ef database update
+```
+
+### Don't Run Migrations at App Startup in Production
+
+```csharp
+// BAD -- migration runs at startup, blocks all traffic until complete
+var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // blocks startup, no timeout
+}
+app.Run();
+
+// GOOD -- run migrations as a separate CI/CD step or init container
+// In CI: dotnet ef database update --connection "$CONNECTION_STRING"
+// In K8s: use an init container that runs migrations before app starts
+```

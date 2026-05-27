@@ -308,3 +308,28 @@ MyApp/
 - [SourceLink](https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink)
 - [NuGet Audit](https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages)
 - [dotnet new Templates](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-new)
+
+
+---
+
+## Anti-patterns
+
+### Don't Scaffold Without Knowing Architecture
+
+```csharp
+// BAD -- generating code without knowing project style
+public class CreateOrderHandler { /* random structure */ }
+// Is this VSA? Clean Architecture? Random?
+
+// GOOD -- detect architecture first, then scaffold consistently
+// "I see feature folders with single-file handlers -> scaffold VSA style"
+public static class CreateOrder
+{
+    public sealed record Command(...) : IRequest<OrderResponse>;
+    internal sealed class Handler(AppDbContext db) : IRequestHandler<Command, OrderResponse> { }
+}
+```
+
+### Don't Scaffold Feature Without Tests
+
+Always generate feature + test as a single unit. `CreateOrder.cs` + `CreateOrderTests.cs` are created together. Never scaffold a handler without its integration test.
