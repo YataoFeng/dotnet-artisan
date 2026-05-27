@@ -1,5 +1,7 @@
 # Native AOT
 
+> **速查**: 不用反射/动态类型 | `System.Text.Json` 源生成代替 Newtonsoft | Mapperly 代替 AutoMapper | Mediator(MIT) 代替 MediatR | 显式 DI 注册代替动态扫描 | `dotnet publish -p:PublishAot=true` 验证 |
+
 Full Native AOT compilation pipeline for .NET 8+ applications: `PublishAot` configuration, ILLink descriptor XML for type preservation, reflection-free coding patterns, P/Invoke considerations, binary size optimization, self-contained deployment with `runtime-deps` base images, and diagnostic analyzers (`EnableAotAnalyzer`/`EnableTrimAnalyzer`).
 
 **Version assumptions:** .NET 8.0+ baseline. Native AOT for ASP.NET Core Minimal APIs and console apps shipped in .NET 8. .NET 9 improved trimming warnings and library compat. .NET 10 enhanced request delegate generator and expanded Minimal API AOT support.
