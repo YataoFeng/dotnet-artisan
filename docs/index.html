@@ -69,11 +69,11 @@
   .search-box:focus { border-color: var(--accent); }
   .search-box::placeholder { color: var(--fg-dim); }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.85rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.85rem; }
   .card {
     background: var(--card); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 1.25rem 1.35rem;
-    cursor: pointer; transition: all 0.2s;
+    cursor: pointer; transition: all 0.2s; overflow: hidden;
   }
   .card:hover { background: var(--card-hover); border-color: var(--border-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
   .card h3 { color: var(--accent); font-size: 0.95rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
@@ -218,61 +218,103 @@ public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</co
     <div class="card" onclick="this.classList.toggle('open')"><h3>缺少 CancellationToken <span class="tag">常见</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 无法取消</div><pre class="bad-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q)
   => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync();</code></pre><div class="code-label good">正确 — 传播 CancellationToken</div><pre class="good-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q, CancellationToken ct = default)
   => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync(ct);</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>new HttpClient() 耗尽 Socket <span class="tag">性能</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 每次请求创建新连接，高负载下耗尽端口</div><pre class="bad-code"><code>using var client = new HttpClient();
+var result = await client.GetStringAsync(url);</code></pre><div class="code-label good">正确 — IHttpClientFactory 管理连接池</div><pre class="good-code"><code>public class ApiClient(IHttpClientFactory factory) {
+  public async Task&lt;string&gt; Get(string url) {
+    var client = factory.CreateClient("api");
+    return await client.GetStringAsync(url);
+  }
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>异常做流程控制 <span class="tag">严重</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 异常用于预期业务结果</div><pre class="bad-code"><code>public Order GetOrder(Guid id) {
+  return db.Orders.Find(id) ?? throw new NotFoundException();
+}</code></pre><div class="code-label good">正确 — Result 模式处理预期失败</div><pre class="good-code"><code>public Result&lt;Order&gt; GetOrder(Guid id) {
+  var order = db.Orders.Find(id);
+  return order is not null ? Result.Success(order) : Result.Failure();
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>硬编码密钥 <span class="tag">安全</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 密钥提交到源码控制</div><pre class="bad-code"><code>const string ApiKey = "sk-abc123xyz";
+var connStr = "Server=prod;Password=Secret123!";</code></pre><div class="code-label good">正确 — User Secrets + 环境变量 / Key Vault</div><pre class="good-code"><code>var apiKey = builder.Configuration["ApiKey"];
+var connStr = builder.Configuration.GetConnectionString("Default");</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>Swashbuckle 用于 .NET 10 <span class="tag">过时</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — Swashbuckle 停止维护，不支持 Native AOT</div><pre class="bad-code"><code>builder.Services.AddSwaggerGen();
+app.UseSwagger(); app.UseSwaggerUI();</code></pre><div class="code-label good">正确 — 微软内置 OpenAPI + Scalar</div><pre class="good-code"><code>builder.Services.AddOpenApi();
+app.MapOpenApi(); // /openapi/v1.json
+app.MapScalarApiReference(); // 现代 API 文档 UI</code></pre></div></div>
   </div>
 </div>
 
 <div id="rules" class="tab">
   <h2>不可协商的铁律</h2>
   <div class="grid">
-    <div class="card"><h3>禁止 Repository/UoW</h3><p>DbContext 就是工作单元。DbSet&lt;T&gt; 就是仓储。</p></div>
-    <div class="card"><h3>禁止 FluentValidation</h3><p>.NET 10+ 用 AddValidation() + DataAnnotations。</p></div>
-    <div class="card"><h3>禁止商业包</h3><p>MediatR→Mediator(MIT)、AutoMapper→Mapperly、Newtonsoft→STJ。</p></div>
-    <div class="card"><h3>禁止 DateTime.Now</h3><p>全项目使用 TimeProvider。可注入，可测试。</p></div>
-    <div class="card"><h3>直接注入 DbContext</h3><p>注入 AppDbContext，禁止 IRepository&lt;T&gt;。</p></div>
-    <div class="card"><h3>仅免费/开源</h3><p>详见 package-choices.md 全部替代方案。</p></div>
+    <div class="card"><h3>1. 禁止 Repository/UoW</h3><p>DbContext 就是工作单元，DbSet&lt;T&gt; 就是仓储。不要包一层无意义的 IRepository 和 IUnitOfWork。</p></div>
+    <div class="card"><h3>2. 禁止 FluentValidation</h3><p>.NET 10+ 使用内置 AddValidation() + DataAnnotations。源生成、AOT 兼容、零依赖。</p></div>
+    <div class="card"><h3>3. 禁止 DateTime.Now</h3><p>全项目使用 TimeProvider。构造函数注入，单元测试用 TimeProvider.Fake()。</p></div>
+    <div class="card"><h3>4. 仅免费/开源</h3><p>MediatR→Mediator(MIT)、AutoMapper→Mapperly、Newtonsoft→STJ、Swashbuckle→Microsoft.AspNetCore.OpenApi。</p></div>
+    <div class="card"><h3>5. DbContext 直接注入</h3><p>注入 AppDbContext 到 Handler，不创建 IOrderRepository 接口。EF Core 本身就是完整的仓储实现。</p></div>
+    <div class="card"><h3>6. async/await 一路到底</h3><p>禁止 .Result、.Wait()、async void（UI 事件除外）。CancellationToken 端到端传播。</p></div>
+    <div class="card"><h3>7. 参数化查询</h3><p>禁止 SQL 字符串拼接。用 FromSqlInterpolated 或 LINQ。密钥放 user-secrets/KeyVault，禁止硬编码。</p></div>
+    <div class="card"><h3>8. 测试用 Testcontainers</h3><p>集成测试用真实数据库（Testcontainers），禁止 InMemory。测行为不测实现细节。</p></div>
   </div>
 </div>
 
 <div id="flow" class="tab">
   <h2>技能路由架构</h2>
   <p style="color:var(--fg-dim);margin-bottom:1.5rem">AI 代理如何导航技能系统</p>
-  <pre style="background:var(--card);padding:1.5rem;font-size:0.78rem;line-height:1.8;text-align:center;overflow-x:auto">
-┌──────────────────────────────────────────────────┐
-│              用户提问 (.NET 相关)                  │
-└──────────────────┬───────────────────────────────┘
-                   ▼
-         ┌─────────────────┐
-         │  using-dotnet   │  检测 .NET 意图
-         └────────┬────────┘
-                  ▼
-         ┌─────────────────┐
-         │ dotnet-advisor  │  路由到领域技能
-         └────────┬────────┘
-                  ▼
-    ┌─────────────┼─────────────┐
-    ▼             ▼             ▼
-┌────────┐  ┌──────────┐  ┌──────────┐
-│dotnet- │  │dotnet-api │  │dotnet-ui │  ... 领域技能
-│csharp  │  │dotnet-    │  │dotnet-   │
-│(常驻)  │  │testing    │  │devops    │
-└────────┘  │dotnet-    │  │dotnet-   │
-            │tooling    │  │debugging │
-            │dotnet-ai  │  │dotnet-   │
-            │upgrade    │  └──────────┘
-            └──────────┘
-    │             │             │
-    └─────────────┼─────────────┘
-                  ▼
-    ┌────────────────────────────┐
-    │  元技能（按需加载）         │
-    │  quality | workflow | learn│
-    └────────────────────────────┘
-
-常驻加载基线:
-  anti-patterns → code-smells → async-patterns
-  → DECISIONS → CHEATSHEET → package-choices
-  → coding-standards → solid-principles → dotnet-releases</pre>
-  <p style="color:var(--fg-dim);margin-top:0.75rem;font-size:0.8rem">路由: using-dotnet → dotnet-advisor → 领域技能 + dotnet-csharp 常驻 → 元技能按需</p>
+  <div style="display:flex;flex-wrap:wrap;gap:1.5rem">
+  <div style="flex:1;min-width:300px">
+    <pre style="background:var(--card);padding:1.5rem;font-size:0.82rem;line-height:1.9;overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)">
+  用户提问 (.NET)
+       │
+       ▼
+  ┌─────────────┐
+  │ using-dotnet │  ← 检测意图
+  └──────┬──────┘
+         ▼
+  ┌──────────────┐
+  │ dotnet-advisor│  ← 路由分发
+  └──────┬───────┘
+         ▼
+  ┌──────┴──────┐
+  ▼             ▼
+┌─────────┐ ┌──────────┐
+│dotnet-  │ │dotnet-ui │
+│api      │ │dotnet-   │
+│testing  │ │devops    │
+│tooling  │ │debugging │
+│ai       │ └──────────┘
+│upgrade  │
+└─────────┘
+  │
+  ▼
+┌──────────────┐
+│ dotnet-csharp │ ← 始终加载
+└──────────────┘
+  │
+  ▼
+┌──────────────┐
+│ 元技能 (按需) │
+│ quality      │
+│ workflow     │
+│ learning     │
+└──────────────┘</pre>
+  </div>
+  <div style="flex:1;min-width:280px">
+    <h2 style="font-size:1rem">常驻基线（始终加载）</h2>
+    <div style="color:var(--fg-dim);font-size:0.85rem;line-height:2">
+      <div>1. anti-patterns.md — 好/坏代码</div>
+      <div>2. code-smells.md — 常见错误</div>
+      <div>3. async-patterns.md — 异步规范</div>
+      <div>4. solid-principles.md — SOLID 原则</div>
+      <div>5. DECISIONS.md — 决策指南</div>
+      <div>6. CHEATSHEET.md — 一页速查</div>
+      <div>7. package-choices.md — 包对照</div>
+      <div>8. coding-standards.md — 编码规范</div>
+      <div>9. dotnet-releases.md — 版本特性</div>
+    </div>
+  </div>
+  </div>
 </div>
 
 <div id="packages" class="tab">
