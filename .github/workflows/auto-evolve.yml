@@ -1,0 +1,163 @@
+name: Auto-Evolve from Upstream
+
+on:
+  schedule:
+    - cron: '47 2 * * *'  # daily 10:47 AM Beijing
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Upstream repo'
+        required: true
+        type: choice
+        options:
+          - dotnet/skills
+          - codewithmukesh/dotnet-claude-kit
+
+jobs:
+  evolve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick source
+        id: src
+        run: |
+          REPO="${{ inputs.source || 'dotnet/skills' }}"
+          echo "repo=$REPO" >> $GITHUB_OUTPUT
+          # Also check the other one in scheduled mode
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "also_check=true" >> $GITHUB_OUTPUT
+          else
+            echo "also_check=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Clone upstream
+        run: git clone --depth 50 "https://github.com/${{ steps.src.outputs.repo }}.git" /tmp/upstream
+
+      - name: Detect changed skill files
+        id: diff
+        run: |
+          cd /tmp/upstream
+          git diff --name-only HEAD~10..HEAD -- '*.md' > /tmp/changed.txt
+          echo "count=$(wc -l < /tmp/changed.txt)" >> $GITHUB_OUTPUT
+          cat /tmp/changed.txt
+
+      - name: Fetch changed content
+        id: content
+        if: steps.diff.outputs.count > 0
+        run: |
+          truncate -s 0 /tmp/upstream_content.md
+          head -5 /tmp/changed.txt | while read f; do
+            if [ -f "/tmp/upstream/$f" ]; then
+              echo "--- $f ---" >> /tmp/upstream_content.md
+              head -200 "/tmp/upstream/$f" >> /tmp/upstream_content.md
+              echo -e "\n" >> /tmp/upstream_content.md
+            fi
+          done
+          echo "size=$(wc -c < /tmp/upstream_content.md)" >> $GITHUB_OUTPUT
+
+      - name: AI analysis via GitHub Models
+        id: ai
+        if: steps.content.outputs.size > 0
+        run: |
+          CONTENT=$(cat /tmp/upstream_content.md | head -c 24000)
+          PROMPT='You analyze .NET skill files for an auto-evolution system. Output JSON:
+          {
+            "summary": "1-2 sentence summary",
+            "new_anti_patterns": [{"name":"...","bad":"...","good":"...","file_to_update":"skills/.../references/xxx.md","importance":"high|medium|low"}],
+            "new_patterns": [{"name":"...","code":"...","file_to_update":"...","importance":"high|medium|low"}],
+            "new_tech": [{"name":"...","description":"...","file_to_update":"...","importance":"high|medium|low"}]
+          }
+          Only include high or medium importance items. Output ONLY valid JSON.'
+
+          RESPONSE=$(curl -s https://models.inference.ai.azure.com/chat/completions \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg p "$PROMPT" --arg c "$CONTENT" '{
+              messages: [{role:"system",content:$p},{role:"user",content:$c}],
+              model:"gpt-4o-mini",temperature:0.3,max_tokens:4096,
+              response_format:{type:"json_object"}}')")
+
+          echo "$RESPONSE" | jq -r '.choices[0].message.content' > /tmp/ai.json
+          echo "AI analysis complete"
+
+      - name: Create evolution PR
+        if: steps.ai.outcome == 'success'
+        id: pr
+        run: |
+          BRANCH="evolve-$(date +%Y%m%d-%H%M)"
+          git checkout -b "$BRANCH"
+
+          # Generate integration content
+          cat > .github/latest-evolution.md << EOF
+          # Auto-Evolution: ${{ steps.src.outputs.repo }}
+          ## Date
+          $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          ## Summary
+          $(jq -r '.summary // "No changes detected"' /tmp/ai.json)
+
+          ## New Anti-Patterns to Integrate
+          $(jq -r '.new_anti_patterns // [] | map("### " + .name + " (" + .importance + ")\n**BAD:**\n```csharp\n" + .bad + "\n```\n**GOOD:**\n```csharp\n" + .good + "\n```\n→ Append to: `" + .file_to_update + "`") | join("\n\n")' /tmp/ai.json)
+
+          ## New Patterns to Integrate
+          $(jq -r '.new_patterns // [] | map("### " + .name + " (" + .importance + ")\n```csharp\n" + .code + "\n```\n→ Add to: `" + .file_to_update + "`") | join("\n\n")' /tmp/ai.json)
+
+          ## New Tech to Document
+          $(jq -r '.new_tech // [] | map("### " + .name + " (" + .importance + ")\n" + .description + "\n→ Update: `" + .file_to_update + "`") | join("\n\n")' /tmp/ai.json)
+
+          ## Next Steps
+          1. Review this analysis
+          2. Run locally: `claude "integrate the evolution suggestions from .github/latest-evolution.md"`
+          3. Push the integrated changes
+          EOF
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/latest-evolution.md
+          git commit -m "Auto-evolution: ${{ steps.src.outputs.repo }} ($(date +%Y-%m-%d))" || true
+          git push origin "$BRANCH" 2>/dev/null || echo "Push failed, continuing"
+
+          # Create PR with GitHub CLI
+          gh pr create \
+            --title "🤖 Auto-Evolution: integrate from ${{ steps.src.outputs.repo }}" \
+            --body "$(cat .github/latest-evolution.md)" \
+            --base main \
+            --head "$BRANCH" \
+            --label "auto-evolution,upstream-sync" 2>/dev/null || echo "PR creation skipped"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Create issue if no PR
+        if: steps.pr.outcome != 'success' && steps.ai.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const ai = JSON.parse(fs.readFileSync('/tmp/ai.json', 'utf8'));
+            const body = `## Auto-Evolution Analysis: ${{ steps.src.outputs.repo }}
+
+            ${ai.summary || 'Analysis complete. Review manually.'}
+
+            ### Suggested integrations
+            ${(ai.new_anti_patterns || []).map(p => `- **${p.name}**: add to \`${p.file_to_update}\``).join('\n')}
+            ${(ai.new_patterns || []).map(p => `- **${p.name}**: add to \`${p.file_to_update}\``).join('\n')}
+            ${(ai.new_tech || []).map(t => `- **${t.name}**: update \`${t.file_to_update}\``).join('\n')}
+
+            ### Run locally
+            \`\`\`bash
+            claude "Check ${{ steps.src.outputs.repo }}. Integrate new patterns into our reference files."
+            \`\`\`
+            `;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🤖 Auto-Evolution: ${{ steps.src.outputs.repo }} has new content`,
+              body: body,
+              labels: ['auto-evolution']
+            });

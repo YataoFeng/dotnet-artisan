@@ -81,11 +81,16 @@
 </nav>
 
 <div id="skills" class="tab active">
-  <div class="filters">
-    <button class="on" onclick="filterSkills('all', this)">All</button>
-    <button onclick="filterSkills('core', this)">Core</button>
-    <button onclick="filterSkills('domain', this)">Domain</button>
-    <button onclick="filterSkills('meta', this)">Meta</button>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.25rem">
+    <div class="filters">
+      <button class="on" onclick="filterSkills('all', this)">All</button>
+      <button onclick="filterSkills('core', this)">Core</button>
+      <button onclick="filterSkills('domain', this)">Domain</button>
+      <button onclick="filterSkills('meta', this)">Meta</button>
+    </div>
+    <input type="text" id="skillSearch" placeholder="Search skills..." oninput="searchSkills()"
+      style="background:var(--card);border:1px solid var(--border);color:var(--fg);padding:0.35rem 0.8rem;border-radius:20px;font-size:0.8rem;width:180px;outline:none;font-family:inherit"
+      onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
   </div>
   <div class="grid" id="skillGrid"></div>
 </div>
@@ -293,8 +298,20 @@ const agents = [
   ["dotnet-uno-specialist","Uno Platform, Extensions, MVUX, multi-target"]
 ];
 
+function searchSkills() {
+  const q = document.getElementById('skillSearch').value.toLowerCase();
+  const grid = document.getElementById('skillGrid');
+  const filtered = skills.filter(s => !q || s.name.includes(q) || s.desc.toLowerCase().includes(q));
+  grid.innerHTML = filtered.map(s => `<div class="card" onclick="this.classList.toggle('open')">
+    <h3>${s.name} <span class="cat">${s.cat}</span><span class="arrow">&#9660;</span></h3>
+    <p>${s.desc}</p>
+    <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
+  </div>`).join('');
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
+}
 function renderSkills(filter) {
   const grid = document.getElementById('skillGrid');
+  document.getElementById('skillSearch').value = '';
   grid.innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
     .map(s => `<div class="card" onclick="this.classList.toggle('open')">
       <h3>${s.name} <span class="cat">${s.cat}</span><span class="arrow">&#9660;</span></h3>
