@@ -20,6 +20,7 @@ These references define correctness and quality standards that apply to all C# c
 - `references/solid-principles.md` — SOLID, DRY, single responsibility, dependency inversion, anti-pattern detection
 - `references/code-smells.md` — common mistakes the agent should avoid without being told (async void, DI lifetime misuse, swallowed exceptions)
 - `references/anti-patterns.md` — side-by-side BAD/GOOD code: DateTime.Now→TimeProvider, N+1 queries, DI lifetime mismatch, .Result deadlocks, CancellationToken propagation
+- `../DECISIONS.md` — when to use what: consolidated decision guides for architecture, data access, caching, DI, observability, testing, deployment
 - `references/dotnet-releases.md` — .NET 10/11 and C# 14/15 features, version matrix, TFM-specific code generation rules (compensates for training data cutoff)
 
 ### On-Demand References
