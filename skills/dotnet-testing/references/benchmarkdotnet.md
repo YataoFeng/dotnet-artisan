@@ -260,7 +260,7 @@ public class SerializationBenchmarks
 
     private readonly WeatherForecast _data = new()
     {
-        Date = DateOnly.FromDateTime(DateTime.Now),
+        Date = DateOnly.FromDateTime(TimeProvider.System.GetLocalNow().DateTime),
         TemperatureC = 25,
         Summary = "Warm"
     };

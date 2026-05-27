@@ -224,8 +224,10 @@ If resource lookup fails, check namespace alignment. `IStringLocalizer<T>` resol
 
 ```csharp
 // Always pass explicit CultureInfo -- never rely on thread defaults in server code
-var date = new DateTime(2026, 2, 14).ToString("D", new CultureInfo("fr-FR"));
-// "vendredi 14 fevrier 2026"
+// In production: TimeProvider.GetLocalNow().ToString("D", new CultureInfo("fr-FR"))
+var sample = new DateTimeOffset(2026, 2, 14, 0, 0, 0, TimeSpan.Zero)
+    .ToString("D", new CultureInfo("fr-FR"));
+// "samedi 14 fevrier 2026"
 
 var price = 1234.56m.ToString("C", new CultureInfo("de-DE"));
 // "1.234,56 EUR" (uses NumberFormatInfo.CurrencySymbol)

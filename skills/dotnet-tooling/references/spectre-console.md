@@ -293,7 +293,8 @@ await AnsiConsole.Live(table)
     .Cropping(VerticalOverflowCropping.Bottom)
     .StartAsync(async ctx =>
     {
-        table.AddRow(DateTime.Now.ToString("T"), "[yellow]Starting...[/]");
+        var now = DateTime.Now.ToString("T"); // TimeProvider preferred in production
+        table.AddRow(now, "[yellow]Starting...[/]");
         ctx.Refresh();
         await Task.Delay(1000);
 

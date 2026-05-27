@@ -224,7 +224,7 @@ var cacheDefinition = new PivotCacheDefinition
 {
     Id = "rId1",
     RefreshedBy = "OpenXML",
-    RefreshedDate = DateTime.Now.ToOADate(),
+    RefreshedDate = DateTimeOffset.Now.ToOADate(), // Production: inject TimeProvider
     CreatedVersion = 8,
     RefreshedVersion = 8,
     MinRefreshableVersion = 3,
