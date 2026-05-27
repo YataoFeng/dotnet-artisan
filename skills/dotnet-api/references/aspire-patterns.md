@@ -503,6 +503,20 @@ builder.AddServiceDefaults();
 
 ---
 
+### Don't Leave Orphaned Aspire Processes
+
+```bash
+# BAD — killing the terminal leaves aspire processes holding file locks
+dotnet run --project AppHost/ # then close terminal
+
+# GOOD — always stop properly
+aspire stop
+# Or: Ctrl+C and wait for graceful shutdown
+# If stuck: aspire ps → aspire stop <resource>
+```
+
+---
+
 ## References
 
 - [.NET Aspire overview](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview)
