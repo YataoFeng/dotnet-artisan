@@ -1,5 +1,6 @@
 # ASP.NET Core Identity
 
+> **速查**: Policy-based 不用 Role 字符串 | JWT 全部验证开启 ValidateIssuer/Audience/Lifetime/IssuerSigningKey | 全局 FallbackPolicy 默认 RequireAuthenticatedUser | 密钥放 user-secrets/KeyVault 不在 appsettings | 不用 AllowAnonymous 除非显式公开端点
 ASP.NET Core Identity is the built-in membership system for managing users, passwords, roles, claims, tokens, email confirmation, and 2FA/MFA. It is distinct from the Microsoft Identity Platform (Azure AD/Entra ID) -- Identity is for self-hosted user stores, not federated OIDC.
 
 ## AddIdentity vs AddDefaultIdentity
