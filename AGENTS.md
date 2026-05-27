@@ -1,53 +1,53 @@
-# dotnet-artisan — AI Agent Skills for .NET
+# dotnet-artisan — .NET AI 编码代理技能库
 
-14 skills, 17 agents, 160+ reference files. Synthesized from dotnet-artisan, dotnet/skills, and dotnet-claude-kit.
+14 个技能、17 个代理、160+ 参考文件。融合自 dotnet-artisan、dotnet/skills 和 dotnet-claude-kit。
 
-## Quick Start
+## 快速开始
 
-Load path: `using-dotnet` → `dotnet-advisor` → domain skills. `dotnet-csharp` is always loaded as baseline.
+加载路径: `using-dotnet` → `dotnet-advisor` → 领域技能。`dotnet-csharp` 始终作为基线加载。
 
-## Rules (Non-Negotiable)
+## 铁律（不可协商）
 
-1. **No Repository/UoW wrappers** — DbContext IS the UoW; DbSet<T> IS the repository
-2. **No FluentValidation** — Use `AddValidation()` + DataAnnotations on .NET 10+
-3. **No commercial packages** — Prefer free/open-source (see package-choices.md)
-4. **No DateTime.Now** — Use `TimeProvider` everywhere
-5. **DbContext directly** — Inject `AppDbContext`, not `IRepository<T>`
-6. **Free/open-source only** — MediatR→Mediator(MIT), AutoMapper→Mapperly, etc.
+1. **禁止 Repository/UoW 包装** — DbContext 就是工作单元；DbSet<T> 就是仓储
+2. **禁止 FluentValidation** — .NET 10+ 使用 `AddValidation()` + DataAnnotations
+3. **禁止商业包** — 优先使用免费/开源替代（见 package-choices.md）
+4. **禁止 DateTime.Now** — 全项目使用 `TimeProvider`
+5. **直接注入 DbContext** — 注入 `AppDbContext`，不是 `IRepository<T>`
+6. **仅免费/开源** — MediatR→Mediator(MIT)、AutoMapper→Mapperly 等
 
-## Key Files
+## 核心文件
 
-| Load when | File |
-|-----------|------|
-| Any .NET code | [anti-patterns.md](skills/dotnet-csharp/references/anti-patterns.md) — 10 most common BAD/GOOD patterns |
-| Choosing packages | [package-choices.md](skills/dotnet-csharp/references/package-choices.md) — commercial→free alternatives |
-| Architecture decisions | [DECISIONS.md](skills/DECISIONS.md) — "when to use what" quick lookups |
-| Find a reference | [INDEX.md](skills/INDEX.md) — all 80+ reference files by domain |
-| Cleanup/quality | [dotnet-quality](skills/dotnet-quality/SKILL.md) — 7-step pipeline |
-| Workflow optimization | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) — parallel worktrees, context discipline |
-| Pattern learning | [dotnet-learning](skills/dotnet-learning/SKILL.md) — correction capture, instincts |
-| AI/ML features | [dotnet-ai](skills/dotnet-ai/SKILL.md) — MCP, RAG, Semantic Kernel |
-| Framework upgrade | [dotnet-upgrade](skills/dotnet-upgrade/SKILL.md) — migration paths |
+| 加载时机 | 文件 |
+|----------|------|
+| 写任何 .NET 代码 | [anti-patterns.md](skills/dotnet-csharp/references/anti-patterns.md) — 最常犯的 10 组好/坏代码 |
+| 选择 NuGet 包 | [package-choices.md](skills/dotnet-csharp/references/package-choices.md) — 商业→免费替代方案 |
+| 架构决策 | [DECISIONS.md](skills/DECISIONS.md) — "什么时候用什么"速查 |
+| 查找参考 | [INDEX.md](skills/INDEX.md) — 全部 80+ 参考文件按领域索引 |
+| 清理/质量 | [dotnet-quality](skills/dotnet-quality/SKILL.md) — 7 步清理流水线 |
+| 工作流优化 | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) — 并行工作树、上下文管理 |
+| 模式学习 | [dotnet-learning](skills/dotnet-learning/SKILL.md) — 纠错捕获、直觉系统 |
+| AI/ML 功能 | [dotnet-ai](skills/dotnet-ai/SKILL.md) — MCP、RAG、Semantic Kernel |
+| 框架升级 | [dotnet-upgrade](skills/dotnet-upgrade/SKILL.md) — 迁移路径 |
 
-## Anti-Patterns Quick Reference
+## 反模式速查
 
-Every reference file follows: **Core Principles → Patterns → Anti-Patterns (BAD/GOOD) → Decision Guide**.
+每个参考文件遵循: **核心原则 → 模式 → 反模式（好/坏代码）→ 决策指南**。
 
-Top 10 always-loaded anti-patterns: DateTime.Now→TimeProvider | Scoped in Singleton→IServiceScopeFactory | async void→BackgroundService | .Result/.Wait()→await | Repository→DbContext | N+1→.Include() | new HttpClient()→IHttpClientFactory | lock(this)→private object | string+loop→StringBuilder | 1-impl-1-interface→concrete class
+十大常驻反模式: DateTime.Now→TimeProvider | Scoped 注入 Singleton→IServiceScopeFactory | async void→BackgroundService | .Result/.Wait()→await | Repository→DbContext | N+1→.Include() | new HttpClient()→IHttpClientFactory | lock(this)→私有对象 | string+循环→StringBuilder | 一个实现一个接口→直接用类
 
-## Automation
+## 自动化
 
-This repo auto-evolves via GitHub Actions:
+本仓库通过 GitHub Actions 自动进化：
 
-| Workflow | Schedule | Purpose |
-|----------|----------|---------|
-| `auto-evolve.yml` | Daily 10:47 AM | AI-analyzes upstream repos (dotnet/skills, dotnet-claude-kit), auto-applies new anti-patterns, creates PR |
-| `self-heal.yml` | Weekly Sun 11:23 AM | Checks broken links, missing sections, bad patterns, trailing whitespace |
+| 工作流 | 时间 | 功能 |
+|--------|------|------|
+| `auto-evolve.yml` | 每天 10:47 | AI 分析上游仓库（dotnet/skills、dotnet-claude-kit），自动应用新反模式，创建 PR |
+| `self-heal.yml` | 每周日 11:23 | 检查断链、缺失反模式章节、坏 DateTime 用法、行尾空白 |
 
-Both use GitHub Models (GPT-4o-mini, free tier) for AI analysis.
+均使用 GitHub Models（GPT-4o-mini，免费层）进行 AI 分析。
 
-## Sources
+## 来源
 
-- [novotnyllc/dotnet-artisan](https://github.com/novotnyllc/dotnet-artisan) — deep reference framework
-- [dotnet/skills](https://github.com/dotnet/skills) — Microsoft's official .NET AI skills
-- [codewithmukesh/dotnet-claude-kit](https://github.com/codewithmukesh/dotnet-claude-kit) — BAD/GOOD patterns + workflow
+- [novotnyllc/dotnet-artisan](https://github.com/novotnyllc/dotnet-artisan) — 深度参考框架
+- [dotnet/skills](https://github.com/dotnet/skills) — 微软官方 .NET AI 技能
+- [codewithmukesh/dotnet-claude-kit](https://github.com/codewithmukesh/dotnet-claude-kit) — 好/坏代码模式 + 工作流

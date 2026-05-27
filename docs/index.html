@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>dotnet-artisan — .NET AI Coding Skills</title>
+<title>dotnet-artisan — .NET AI 编码技能库</title>
 <style>
   :root {
     --bg: #0a0e14; --surface: #12171e; --card: #181e28; --card-hover: #1e2632;
     --fg: #b8c4d0; --fg-dim: #6b7888; --fg-bright: #e2e8f0;
     --accent: #5b9cf5; --accent-dim: #3b7dd4; --accent-glow: #5b9cf533;
     --border: #222a36; --border-light: #2a3442;
-    --green: #4ade80; --red: #f87171; --amber: #fbbf24;
+    --green: #4ade80; --red: #f87171;
     --radius: 10px; --radius-sm: 6px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
     background: var(--bg); color: var(--fg); line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Hero */
   .hero {
     background: linear-gradient(180deg, #0d1520 0%, var(--bg) 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 4rem 1.5rem 3rem;
-    text-align: center;
+    border-bottom: 1px solid var(--border); padding: 4rem 1.5rem 3rem; text-align: center;
   }
   .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
   .hero h1 span { background: linear-gradient(135deg, #5b9cf5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -36,19 +33,15 @@
   .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: var(--fg-bright); }
   .hero .stat .lbl { font-size: 0.75rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.07em; }
 
-  /* Navigation */
   nav {
     display: flex; justify-content: center; gap: 0;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky; top: 0; z-index: 10;
-    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px);
   }
   nav button {
     background: none; border: none; color: var(--fg-dim);
     padding: 0.85rem 1.5rem; cursor: pointer; font-size: 0.9rem;
-    font-weight: 500; border-bottom: 2px solid transparent;
-    transition: all 0.2s; font-family: inherit;
+    font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; font-family: inherit;
   }
   nav button:hover { color: var(--fg); }
   nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
@@ -59,7 +52,6 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  /* Filters + Search */
   .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; justify-content: center; }
   .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .filters button {
@@ -77,7 +69,6 @@
   .search-box:focus { border-color: var(--accent); }
   .search-box::placeholder { color: var(--fg-dim); }
 
-  /* Cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.85rem; }
   .card {
     background: var(--card); border: 1px solid var(--border);
@@ -93,7 +84,6 @@
   .card .detail { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--fg-dim); }
   .card.open .detail { display: block; }
 
-  /* Agent rows */
   .agent-list { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
   .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
   .agent-row:last-child { border-bottom: none; }
@@ -101,7 +91,6 @@
   .agent-row strong { color: var(--fg-bright); font-size: 0.88rem; font-weight: 600; }
   .agent-row span { color: var(--fg-dim); font-size: 0.8rem; }
 
-  /* Code blocks */
   pre { background: #0a0e14; border-radius: var(--radius-sm); padding: 0.85rem 1rem; overflow-x: auto; font-size: 0.8rem; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.55; }
   code { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; }
   .good-code { border-left: 3px solid var(--green); background: #0a1a10; }
@@ -110,25 +99,17 @@
   .code-label.good { color: var(--green); }
   .code-label.bad { color: var(--red); }
 
-  /* Install section */
   .install-block { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
   .install-block code { background: #0a0e14; padding: 0.55rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.88rem; display: inline-block; }
-
-  /* Principles grid */
   .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-top: 0.5rem; }
   .principle-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
   .principle-card h3 { color: var(--fg-bright); font-size: 0.9rem; margin-bottom: 0.35rem; }
-  .principle-card p { color: var(--fg-dim); font-size: 0.82rem; }
 
   h2 { font-size: 1.25rem; color: var(--fg-bright); margin-bottom: 1rem; font-weight: 700; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  footer {
-    text-align: center; padding: 2.5rem 0 1.5rem; color: #3d4a5c;
-    font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem;
-  }
-  .emoji-icon { font-size: 1.3rem; margin-right: 0.3rem; vertical-align: -0.1em; }
+  footer { text-align: center; padding: 2.5rem 0 1.5rem; color: #3d4a5c; font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem; }
 
   @media (max-width: 640px) {
     .hero { padding: 2.5rem 1rem 2rem; }
@@ -143,24 +124,24 @@
 
 <div class="hero">
   <h1><span>dotnet</span>-artisan</h1>
-  <p class="sub">Comprehensive .NET development skills for AI coding agents — Claude Code, GitHub Copilot, VS Code, Cursor</p>
+  <p class="sub">面向 AI 编码代理的 .NET 开发技能库 — Claude Code / GitHub Copilot / VS Code / Cursor</p>
   <div class="stats">
-    <div class="stat"><div class="num">14</div><div class="lbl">Skills</div></div>
-    <div class="stat"><div class="num">17</div><div class="lbl">Agents</div></div>
-    <div class="stat"><div class="num">160+</div><div class="lbl">References</div></div>
-    <div class="stat"><div class="num">90+</div><div class="lbl">Anti-Patterns</div></div>
-    <div class="stat"><div class="num">MIT</div><div class="lbl">License</div></div>
+    <div class="stat"><div class="num">14</div><div class="lbl">技能</div></div>
+    <div class="stat"><div class="num">17</div><div class="lbl">代理</div></div>
+    <div class="stat"><div class="num">160+</div><div class="lbl">参考文件</div></div>
+    <div class="stat"><div class="num">90+</div><div class="lbl">反模式</div></div>
+    <div class="stat"><div class="num">MIT</div><div class="lbl">许可</div></div>
   </div>
-  <div style="margin-top:1rem"><span style="display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin-right:0.4rem;animation:pulse 2s infinite"></span><span style="color:var(--fg-dim);font-size:0.78rem">Auto-evolving daily via GPT-4o-mini (free) — learning from dotnet/skills + dotnet-claude-kit</span></div>
+  <div style="margin-top:1rem"><span style="display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin-right:0.4rem;animation:pulse 2s infinite"></span><span style="color:var(--fg-dim);font-size:0.78rem">每日通过 GPT-4o-mini（免费）自动进化 — 持续从 dotnet/skills + dotnet-claude-kit 学习</span></div>
 </div>
 
 <nav>
-  <button class="active" onclick="switchTab('skills')">Skills</button>
-  <button onclick="switchTab('agents')">Agents</button>
-  <button onclick="switchTab('install')">Install</button>
-  <button onclick="switchTab('patterns')">Anti-Patterns</button>
-  <button onclick="switchTab('rules')">Rules</button>
-  <button onclick="switchTab('flow')">Flow</button>
+  <button class="active" onclick="switchTab('skills')">技能</button>
+  <button onclick="switchTab('agents')">代理</button>
+  <button onclick="switchTab('install')">安装</button>
+  <button onclick="switchTab('patterns')">反模式</button>
+  <button onclick="switchTab('rules')">铁律</button>
+  <button onclick="switchTab('flow')">架构</button>
 </nav>
 
 <div class="container">
@@ -168,18 +149,18 @@
 <div id="skills" class="tab active">
   <div class="controls">
     <div class="filters">
-      <button class="on" onclick="filterSkills('all', this)">All</button>
-      <button onclick="filterSkills('core', this)">Core</button>
-      <button onclick="filterSkills('domain', this)">Domain</button>
-      <button onclick="filterSkills('meta', this)">Meta</button>
+      <button class="on" onclick="filterSkills('all', this)">全部</button>
+      <button onclick="filterSkills('core', this)">核心</button>
+      <button onclick="filterSkills('domain', this)">领域</button>
+      <button onclick="filterSkills('meta', this)">元技能</button>
     </div>
-    <input type="text" class="search-box" placeholder="Search skills..." oninput="searchSkills()" id="skillSearch">
+    <input type="text" class="search-box" placeholder="搜索技能..." oninput="searchSkills()" id="skillSearch">
   </div>
   <div class="grid" id="skillGrid"></div>
 </div>
 
 <div id="agents" class="tab">
-  <p style="color:var(--fg-dim);margin-bottom:1rem">17 specialist sub-agents invoked automatically by dotnet-advisor for deep analysis.</p>
+  <p style="color:var(--fg-dim);margin-bottom:1rem">17 个专家子代理，由 dotnet-advisor 自动调用进行深度分析。</p>
   <div class="agent-list" id="agentList"></div>
 </div>
 
@@ -187,24 +168,24 @@
   <h2>Claude Code</h2>
   <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
     <code style="flex:1;min-width:250px">claude plugins install YataoFeng/dotnet-artisan</code>
-    <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">📋 Copy</button>
+    <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">📋 复制</button>
   </div>
-  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Also compatible with GitHub Copilot, VS Code, Cursor — follows <a href="https://agentskills.io">agentskills.io</a>.</p>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">同时兼容 GitHub Copilot、VS Code、Cursor — 遵循 <a href="https://agentskills.io">agentskills.io</a> 开放标准。</p>
 
-  <h2>Core Principles</h2>
+  <h2>核心原则</h2>
   <div class="principle-grid">
-    <div class="principle-card"><h3>KISS First</h3><p>Simple CRUD doesn't need DDD or CQRS. Scale to the problem.</p></div>
-    <div class="principle-card"><h3>No Repository Wrapping</h3><p>Use DbContext directly. EF Core IS the repository and unit of work.</p></div>
-    <div class="principle-card"><h3>Version-Aware</h3><p>Auto-adapts to net8.0 through net11.0.</p></div>
-    <div class="principle-card"><h3>Free & Open Source</h3><p>Microsoft-recommended + MIT packages only. No commercial dependencies.</p></div>
+    <div class="principle-card"><h3>KISS 优先</h3><p style="color:var(--fg-dim);font-size:0.82rem">简单 CRUD 不需要 DDD 或 CQRS。按问题规模选择模式。</p></div>
+    <div class="principle-card"><h3>禁止仓储包装</h3><p style="color:var(--fg-dim);font-size:0.82rem">直接用 DbContext。EF Core 本身就是仓储和工作单元。</p></div>
+    <div class="principle-card"><h3>版本自适应</h3><p style="color:var(--fg-dim);font-size:0.82rem">自动适配 net8.0 到 net11.0。</p></div>
+    <div class="principle-card"><h3>免费 & 开源</h3><p style="color:var(--fg-dim);font-size:0.82rem">仅用微软推荐 + MIT 协议包。零商业依赖。</p></div>
   </div>
 </div>
 
 <div id="patterns" class="tab">
-  <p style="color:var(--fg-dim);margin-bottom:1rem">Most common BAD vs GOOD patterns. Click to expand.</p>
+  <p style="color:var(--fg-dim);margin-bottom:1rem">最常见的错误 vs 正确写法。点击展开查看详情。</p>
   <div class="grid">
-    <div class="card" onclick="this.classList.toggle('open')"><h3>DI Lifetime Mismatch <span class="tag">critical</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — Scoped injected into Singleton</div><pre class="bad-code"><code>builder.Services.AddSingleton&lt;ICache, MyCache&gt;();
-public class MyCache(AppDbContext db) : ICache { } // DbContext is Scoped!</code></pre><div class="code-label good">GOOD — IServiceScopeFactory in singletons</div><pre class="good-code"><code>public class MyCache(IServiceScopeFactory sf) : ICache
+    <div class="card" onclick="this.classList.toggle('open')"><h3>DI 生命周期不匹配 <span class="tag">严重</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — Scoped 注入到 Singleton</div><pre class="bad-code"><code>builder.Services.AddSingleton&lt;ICache, MyCache&gt;();
+public class MyCache(AppDbContext db) : ICache { } // DbContext 是 Scoped！</code></pre><div class="code-label good">正确 — 在 Singleton 中用 IServiceScopeFactory</div><pre class="good-code"><code>public class MyCache(IServiceScopeFactory sf) : ICache
 {
   public async Task&lt;T&gt; Get&lt;T&gt;(string k, Func&lt;AppDbContext,Task&lt;T&gt;&gt; f) {
     using var scope = sf.CreateScope();
@@ -212,130 +193,131 @@ public class MyCache(AppDbContext db) : ICache { } // DbContext is Scoped!</code
   }
 }</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>DateTime.Now vs TimeProvider <span class="tag">common</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — not testable</div><pre class="bad-code"><code>var order = new Order { CreatedAt = DateTime.Now };</code></pre><div class="code-label good">GOOD — injectable and testable</div><pre class="good-code"><code>public class OrderService(AppDbContext db, TimeProvider clock) {
+    <div class="card" onclick="this.classList.toggle('open')"><h3>DateTime.Now → TimeProvider <span class="tag">常见</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 不可测试</div><pre class="bad-code"><code>var order = new Order { CreatedAt = DateTime.Now };</code></pre><div class="code-label good">正确 — 可注入可测试</div><pre class="good-code"><code>public class OrderService(AppDbContext db, TimeProvider clock) {
   var order = new Order { CreatedAt = clock.GetLocalNow().DateTime };
 }</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>N+1 EF Core Queries <span class="tag">perf</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — one query per item</div><pre class="bad-code"><code>var orders = await db.Orders.Where(...).ToListAsync();
+    <div class="card" onclick="this.classList.toggle('open')"><h3>EF Core N+1 查询 <span class="tag">性能</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 每个订单一次查询</div><pre class="bad-code"><code>var orders = await db.Orders.Where(...).ToListAsync();
 foreach (var o in orders)
-  o.Items = await db.OrderItems.Where(i => i.OrderId == o.Id).ToListAsync();</code></pre><div class="code-label good">GOOD — single query with Include</div><pre class="good-code"><code>var orders = await db.Orders.Include(o => o.Items).AsNoTracking().ToListAsync();</code></pre></div></div>
+  o.Items = await db.OrderItems.Where(i => i.OrderId == o.Id).ToListAsync();</code></pre><div class="code-label good">正确 — 一次 Include 查询</div><pre class="good-code"><code>var orders = await db.Orders.Include(o => o.Items).AsNoTracking().ToListAsync();</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>Repository over DbContext <span class="tag">anti</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — useless wrapper hiding IQueryable</div><pre class="bad-code"><code>public interface IRepository&lt;T&gt; { Task&lt;T&gt; GetById(int id); }
-public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</code></pre><div class="code-label good">GOOD — use DbContext directly</div><pre class="good-code"><code>public class OrderService(AppDbContext db) {
+    <div class="card" onclick="this.classList.toggle('open')"><h3>仓储包装 DbContext <span class="tag">反模式</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 无用抽象，隐藏 IQueryable</div><pre class="bad-code"><code>public interface IRepository&lt;T&gt; { Task&lt;T&gt; GetById(int id); }
+public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</code></pre><div class="code-label good">正确 — 直接用 DbContext</div><pre class="good-code"><code>public class OrderService(AppDbContext db) {
   public async Task&lt;Order?&gt; Get(int id) => await db.Orders.FindAsync(id);
 }</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>.Result / .Wait() Deadlocks <span class="tag">critical</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — deadlocks in sync context</div><pre class="bad-code"><code>var data = GetDataAsync().Result; // blocks thread, deadlock risk</code></pre><div class="code-label good">GOOD — async all the way</div><pre class="good-code"><code>var data = await GetDataAsync();</code></pre></div></div>
+    <div class="card" onclick="this.classList.toggle('open')"><h3>.Result / .Wait() 死锁 <span class="tag">严重</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 同步上下文死锁风险</div><pre class="bad-code"><code>var data = GetDataAsync().Result; // 阻塞线程，可能死锁</code></pre><div class="code-label good">正确 — 异步一路到底</div><pre class="good-code"><code>var data = await GetDataAsync();</code></pre></div></div>
 
-    <div class="card" onclick="this.classList.toggle('open')"><h3>Missing CancellationToken <span class="tag">common</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">BAD — no cancellation</div><pre class="bad-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q)
-  => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync();</code></pre><div class="code-label good">GOOD — propagate CancellationToken</div><pre class="good-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q, CancellationToken ct = default)
+    <div class="card" onclick="this.classList.toggle('open')"><h3>缺少 CancellationToken <span class="tag">常见</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 无法取消</div><pre class="bad-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q)
+  => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync();</code></pre><div class="code-label good">正确 — 传播 CancellationToken</div><pre class="good-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q, CancellationToken ct = default)
   => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync(ct);</code></pre></div></div>
   </div>
 </div>
 
 <div id="rules" class="tab">
-  <h2>Non-Negotiable Rules</h2>
+  <h2>不可协商的铁律</h2>
   <div class="grid">
-    <div class="card"><h3>No Repository/UoW</h3><p>DbContext IS the unit of work. DbSet&lt;T&gt; IS the repository.</p></div>
-    <div class="card"><h3>No FluentValidation</h3><p>Use AddValidation() + DataAnnotations on .NET 10+.</p></div>
-    <div class="card"><h3>No Commercial Packages</h3><p>MediatR→Mediator(MIT), AutoMapper→Mapperly, Newtonsoft→STJ.</p></div>
-    <div class="card"><h3>No DateTime.Now</h3><p>Use TimeProvider everywhere. Injectable, testable.</p></div>
-    <div class="card"><h3>DbContext Directly</h3><p>Inject AppDbContext, never IRepository&lt;T&gt;.</p></div>
-    <div class="card"><h3>Free/Open Source Only</h3><p>See package-choices.md for all replacements.</p></div>
+    <div class="card"><h3>禁止 Repository/UoW</h3><p>DbContext 就是工作单元。DbSet&lt;T&gt; 就是仓储。</p></div>
+    <div class="card"><h3>禁止 FluentValidation</h3><p>.NET 10+ 用 AddValidation() + DataAnnotations。</p></div>
+    <div class="card"><h3>禁止商业包</h3><p>MediatR→Mediator(MIT)、AutoMapper→Mapperly、Newtonsoft→STJ。</p></div>
+    <div class="card"><h3>禁止 DateTime.Now</h3><p>全项目使用 TimeProvider。可注入，可测试。</p></div>
+    <div class="card"><h3>直接注入 DbContext</h3><p>注入 AppDbContext，禁止 IRepository&lt;T&gt;。</p></div>
+    <div class="card"><h3>仅免费/开源</h3><p>详见 package-choices.md 全部替代方案。</p></div>
   </div>
 </div>
 
 <div id="flow" class="tab">
-  <h2>Skill Routing Architecture</h2>
-  <p style="color:var(--fg-dim);margin-bottom:1.5rem">How AI agents navigate the skill system</p>
+  <h2>技能路由架构</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.5rem">AI 代理如何导航技能系统</p>
   <pre style="background:var(--card);padding:1.5rem;font-size:0.78rem;line-height:1.8;text-align:center;overflow-x:auto">
 ┌──────────────────────────────────────────────────┐
-│              User Prompt (.NET)                   │
+│              用户提问 (.NET 相关)                  │
 └──────────────────┬───────────────────────────────┘
                    ▼
          ┌─────────────────┐
-         │  using-dotnet   │  detect .NET intent
+         │  using-dotnet   │  检测 .NET 意图
          └────────┬────────┘
                   ▼
          ┌─────────────────┐
-         │ dotnet-advisor  │  route to domain skill
+         │ dotnet-advisor  │  路由到领域技能
          └────────┬────────┘
                   ▼
     ┌─────────────┼─────────────┐
     ▼             ▼             ▼
 ┌────────┐  ┌──────────┐  ┌──────────┐
-│dotnet- │  │dotnet-   │  │dotnet-   │
-│csharp  │  │api       │  │ui        │  ... domain skills
-│(always)│  │testing   │  │devops    │
-└────────┘  │tooling   │  │debugging │
-            │ai        │  │upgrade   │
-            └──────────┘  └──────────┘
+│dotnet- │  │dotnet-api │  │dotnet-ui │  ... 领域技能
+│csharp  │  │dotnet-    │  │dotnet-   │
+│(常驻)  │  │testing    │  │devops    │
+└────────┘  │dotnet-    │  │dotnet-   │
+            │tooling    │  │debugging │
+            │dotnet-ai  │  │dotnet-   │
+            │upgrade    │  └──────────┘
+            └──────────┘
     │             │             │
     └─────────────┼─────────────┘
                   ▼
     ┌────────────────────────────┐
-    │  Meta skills (on-demand)   │
+    │  元技能（按需加载）         │
     │  quality | workflow | learn│
     └────────────────────────────┘
 
-Always-loaded baseline:
+常驻加载基线:
   anti-patterns → code-smells → async-patterns
   → DECISIONS → CHEATSHEET → package-choices
-  → coding-standards → solid-principles
-  → dotnet-releases</pre>
-  <p style="color:var(--fg-dim);margin-top:0.75rem;font-size:0.8rem">Route: using-dotnet → dotnet-advisor → domain skill + dotnet-csharp always loaded → meta skills on demand</p>
+  → coding-standards → solid-principles → dotnet-releases</pre>
+  <p style="color:var(--fg-dim);margin-top:0.75rem;font-size:0.8rem">路由: using-dotnet → dotnet-advisor → 领域技能 + dotnet-csharp 常驻 → 元技能按需</p>
 </div>
 
 </div>
 
 <footer>
-  <p>Synthesized from <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>, <a href="https://github.com/dotnet/skills">dotnet/skills</a>, and <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
+  <p>融合自 <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>、<a href="https://github.com/dotnet/skills">dotnet/skills</a> 和 <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
   <p style="margin-top:0.3rem">
     <a href="https://github.com/YataoFeng/dotnet-artisan">GitHub</a> &nbsp;&middot;&nbsp;
-    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/INDEX.md">Index</a> &nbsp;&middot;&nbsp;
-    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/DECISIONS.md">Decisions</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/INDEX.md">索引</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/DECISIONS.md">决策</a> &nbsp;&middot;&nbsp;
     <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/AGENTS.md">AGENTS.md</a> &nbsp;&middot;&nbsp;
-    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/CHEATSHEET.md">Cheatsheet</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/CHEATSHEET.md">速查表</a> &nbsp;&middot;&nbsp;
     <a href="https://github.com/YataoFeng/dotnet-artisan/actions">CI/CD</a>
   </p>
-  <p style="margin-top:0.5rem;font-size:0.7rem">Auto-evolves from upstream via GitHub Actions + GPT-4o-mini (free)</p>
+  <p style="margin-top:0.5rem;font-size:0.7rem">通过 GitHub Actions + GPT-4o-mini（免费）自动进化</p>
 </footer>
 
 <script>
 const skills = [
-  { name:"using-dotnet", cat:"core", desc:".NET intent detection, routing gateway — always loaded first" },
-  { name:"dotnet-advisor", cat:"core", desc:"Skill router, version detection, cross-domain coordination" },
-  { name:"dotnet-csharp", cat:"core", desc:"C# patterns, async/await, DI, LINQ, domain modeling, source generators" },
-  { name:"dotnet-api", cat:"domain", desc:"ASP.NET Core, EF Core, gRPC, SignalR, security, resilience, caching, OpenAPI" },
-  { name:"dotnet-ui", cat:"domain", desc:"Blazor, MAUI, Uno Platform, WPF, WinUI, WinForms, accessibility, localization" },
-  { name:"dotnet-testing", cat:"domain", desc:"xUnit v3, Playwright, benchmarks, test quality analysis, snapshot testing" },
-  { name:"dotnet-devops", cat:"domain", desc:"CI/CD, GitHub Actions, Azure DevOps, containers, NuGet, observability" },
-  { name:"dotnet-tooling", cat:"domain", desc:"MSBuild, Native AOT, CLI apps, profiling, SDK setup, project scaffolding" },
-  { name:"dotnet-debugging", cat:"domain", desc:"WinDbg, crash dumps, hang analysis, memory diagnostics, Linux debugging" },
-  { name:"dotnet-ai", cat:"domain", desc:"MCP servers, Semantic Kernel, RAG pipelines, ML.NET, LLM integration" },
-  { name:"dotnet-upgrade", cat:"domain", desc:".NET version migration, AOT compatibility, nullable migration" },
-  { name:"dotnet-quality", cat:"meta", desc:"7-step cleanup pipeline, code review workflow, dead code removal, tech debt" },
-  { name:"dotnet-workflow", cat:"meta", desc:"Parallel worktrees, context discipline, verification loops, Claude Code optimization" },
-  { name:"dotnet-learning", cat:"meta", desc:"Correction capture, instinct system, pattern learning, MEMORY.md management" }
+  { name:"using-dotnet", cat:"core", desc:"检测 .NET 意图，路由网关 — 始终最先加载" },
+  { name:"dotnet-advisor", cat:"core", desc:"技能路由器，版本检测，跨域协调" },
+  { name:"dotnet-csharp", cat:"core", desc:"C# 模式、async/await、DI、LINQ、领域建模、源生成器" },
+  { name:"dotnet-api", cat:"domain", desc:"ASP.NET Core、EF Core、gRPC、SignalR、安全、弹性、缓存" },
+  { name:"dotnet-ui", cat:"domain", desc:"Blazor、MAUI、Uno Platform、WPF、WinUI、WinForms" },
+  { name:"dotnet-testing", cat:"domain", desc:"xUnit v3、Playwright、基准测试、测试质量分析" },
+  { name:"dotnet-devops", cat:"domain", desc:"CI/CD、GitHub Actions、Azure DevOps、容器、NuGet" },
+  { name:"dotnet-tooling", cat:"domain", desc:"MSBuild、Native AOT、CLI 应用、性能分析、SDK 安装" },
+  { name:"dotnet-debugging", cat:"domain", desc:"WinDbg、崩溃转储、死锁分析、内存诊断" },
+  { name:"dotnet-ai", cat:"domain", desc:"MCP 服务器、Semantic Kernel、RAG 流水线、ML.NET" },
+  { name:"dotnet-upgrade", cat:"domain", desc:".NET 版本迁移、AOT 兼容性、nullable 迁移" },
+  { name:"dotnet-quality", cat:"meta", desc:"7 步清理流水线、代码评审、死代码移除、技术债" },
+  { name:"dotnet-workflow", cat:"meta", desc:"并行工作树、上下文管理、验证循环、Claude Code 优化" },
+  { name:"dotnet-learning", cat:"meta", desc:"纠错捕获、直觉系统、模式学习、MEMORY.md 管理" }
 ];
 
 const agents = [
-  ["dotnet-architect","Architecture review, framework selection, design patterns"],
-  ["dotnet-aspnetcore-specialist","ASP.NET Core middleware, request pipeline, DI lifetimes"],
-  ["dotnet-async-performance-specialist","Async/await performance, ValueTask, ConfigureAwait"],
-  ["dotnet-benchmark-designer","Benchmark methodology, measurement validation"],
-  ["dotnet-blazor-specialist","Blazor components, render modes, hosting models"],
-  ["dotnet-build-error-resolver","MSBuild error diagnosis and systematic resolution"],
-  ["dotnet-cloud-specialist","Cloud deployment, Aspire, AKS, CI/CD"],
-  ["dotnet-code-review-agent","Code review for correctness, performance, security"],
-  ["dotnet-csharp-concurrency-specialist","Race conditions, deadlocks, thread safety"],
-  ["dotnet-docs-generator","Documentation, XML docs, Mermaid diagrams"],
-  ["dotnet-maui-specialist",".NET MAUI development, platform targets"],
-  ["dotnet-performance-analyst","Profiling, flame graphs, heap dumps"],
-  ["dotnet-refactor-cleaner","7-step cleanup pipeline, dead code removal"],
-  ["dotnet-security-reviewer","OWASP compliance, secrets exposure, crypto review"],
-  ["dotnet-testing-specialist","Test architecture, test data management"],
-  ["dotnet-uno-specialist","Uno Platform, Extensions, MVUX, multi-target"]
+  ["dotnet-architect","架构审查、框架选择、设计模式"],
+  ["dotnet-aspnetcore-specialist","ASP.NET Core 中间件、请求流水线、DI 生命周期"],
+  ["dotnet-async-performance-specialist","Async/await 性能、ValueTask、ConfigureAwait"],
+  ["dotnet-benchmark-designer","基准测试方法、测量验证"],
+  ["dotnet-blazor-specialist","Blazor 组件、渲染模式、托管模型"],
+  ["dotnet-build-error-resolver","MSBuild 错误诊断和系统化解决"],
+  ["dotnet-cloud-specialist","云部署、Aspire、AKS、CI/CD"],
+  ["dotnet-code-review-agent","代码评审：正确性、性能、安全"],
+  ["dotnet-csharp-concurrency-specialist","竞态条件、死锁、线程安全"],
+  ["dotnet-docs-generator","文档生成、XML 文档、Mermaid 图表"],
+  ["dotnet-maui-specialist",".NET MAUI 开发、平台目标"],
+  ["dotnet-performance-analyst","性能分析、火焰图、堆转储"],
+  ["dotnet-refactor-cleaner","7 步清理流水线、死代码移除"],
+  ["dotnet-security-reviewer","OWASP 合规、密钥暴露、加密审查"],
+  ["dotnet-testing-specialist","测试架构、测试数据管理"],
+  ["dotnet-uno-specialist","Uno Platform、Extensions、MVUX"]
 ];
 
 function searchSkills() {
@@ -345,21 +327,17 @@ function searchSkills() {
   grid.innerHTML = filtered.map(s => `<div class="card" onclick="this.classList.toggle('open')">
     <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
     <p>${s.desc}</p>
-    <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
+    <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">查看 SKILL.md &rarr;</a></div>
   </div>`).join('');
   document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
 }
 
-function renderSkills(filter) {
-  document.getElementById('skillSearch').value = '';
-  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
-  event.target.classList.add('on');
-  const grid = document.getElementById('skillGrid');
-  grid.innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
+function renderList(filter) {
+  document.getElementById('skillGrid').innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
     .map(s => `<div class="card" onclick="this.classList.toggle('open')">
       <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
       <p>${s.desc}</p>
-      <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
+      <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">查看 SKILL.md &rarr;</a></div>
     </div>`).join('');
 }
 
@@ -370,15 +348,6 @@ function filterSkills(cat, btn) {
   renderList(cat);
 }
 
-function renderList(filter) {
-  document.getElementById('skillGrid').innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
-    .map(s => `<div class="card" onclick="this.classList.toggle('open')">
-      <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
-      <p>${s.desc}</p>
-      <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">View SKILL.md &rarr;</a></div>
-    </div>`).join('');
-}
-
 function renderAgents() {
   document.getElementById('agentList').innerHTML = agents.map(a =>
     `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
@@ -387,10 +356,11 @@ function renderAgents() {
 function copyInstall() {
   navigator.clipboard.writeText('claude plugins install YataoFeng/dotnet-artisan');
   const btn = document.getElementById('copyBtn');
-  btn.textContent = '✓ Copied!';
+  btn.textContent = '✓ 已复制！';
   btn.style.background = 'var(--green)';
-  setTimeout(() => { btn.textContent = '📋 Copy'; btn.style.background = 'var(--accent)'; }, 2000);
+  setTimeout(() => { btn.textContent = '📋 复制'; btn.style.background = 'var(--accent)'; }, 2000);
 }
+
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
