@@ -65,9 +65,9 @@ See [skill:dotnet-csharp] for full async/await guidance including `ValueTask`, `
 <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
 <!-- This breaks on net8.0 projects -->
 
-<!-- WRONG: agents add Swashbuckle by default; .NET 9+ templates use built-in OpenAPI -->
+<!-- WRONG: Swashbuckle is unmaintained; .NET 10+ uses Microsoft.AspNetCore.OpenApi -->
 <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
-<!-- Swashbuckle is still valid when Swagger UI is needed, but not the default choice -->
+<!-- Always use Microsoft.AspNetCore.OpenApi + Scalar for new projects -->
 ```
 
 ### Corrected
