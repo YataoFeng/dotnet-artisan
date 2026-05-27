@@ -95,6 +95,24 @@ PATCH
           done
           echo "patched=$(git diff --name-only | wc -l)" >> $GITHUB_OUTPUT
 
+      - name: Validate patches
+        if: steps.ai.outcome == 'success'
+        run: |
+          echo "## Validation" >> $GITHUB_STEP_SUMMARY
+          # Check no broken internal links
+          BROKEN=0
+          for f in $(git diff --name-only); do
+            grep -oP '\[.*?\]\(\.\.?/[^)]+\)' "$f" 2>/dev/null | sed 's/.*(\(.*\))/\1/' | while read link; do
+              target="$(dirname "$f")/${link%.md}.md"
+              [ -f "$target" ] && continue
+              echo "⚠️ Broken link: $f → $link" >> $GITHUB_STEP_SUMMARY
+            done
+          done
+          # Check no stray DateTime.Now
+          STRAY=$(grep -rn 'DateTime\.Now' $(git diff --name-only) | grep -v "BAD\|TimeProvider\|anti-pattern\|速查" | wc -l)
+          [ "$STRAY" -gt 0 ] && echo "⚠️ $STRAY DateTime.Now usage(s) found" >> $GITHUB_STEP_SUMMARY
+          echo "Validation complete" >> $GITHUB_STEP_SUMMARY
+
       - name: Create Evolution PR
         if: steps.ai.outcome == 'success'
         id: pr
