@@ -224,6 +224,67 @@ Without shared key storage, tokens generated on one server cannot be validated o
 
 ---
 
+## Anti-patterns
+
+### Don't Use Role Strings Everywhere
+
+```csharp
+// BAD — magic strings scattered across codebase, hard to refactor
+[Authorize(Roles = "Admin,SuperAdmin,Manager")]
+public class AdminController : ControllerBase { }
+
+[Authorize(Roles = "Admin,SuperAdmin,Manager")]
+public IResult DeleteUser(Guid id) { /* ... */ }
+// Change one role name → must find and update every attribute
+```
+
+```csharp
+// GOOD — policy-based authorization, single source of truth
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminAccess", p => p.RequireRole("Admin", "SuperAdmin", "Manager"));
+
+[Authorize(Policy = "AdminAccess")] // everywhere
+// Change roles in ONE place → builder.AddAuthorizationBuilder()
+```
+
+### Don't Disable JWT Token Validation
+
+```csharp
+// BAD — accepts any token, including expired/forged
+options.TokenValidationParameters = new()
+{
+    ValidateIssuer = false,      // accepts tokens from any issuer
+    ValidateAudience = false,    // accepts tokens meant for other apps
+    ValidateLifetime = false,    // accepts EXPIRED tokens
+    ValidateIssuerSigningKey = false, // accepts unsigned tokens!
+};
+
+// GOOD — validate everything
+options.TokenValidationParameters = new()
+{
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+    ClockSkew = TimeSpan.FromMinutes(1), // tighten from default 5 min
+};
+```
+
+### Don't Use AllowAnonymous by Default
+
+```csharp
+// BAD — single [AllowAnonymous] on a sensitive endpoint or global fallback
+// BAD — RequireAuthorization() with no policy = just checks "is authenticated"
+group.MapGet("/admin/users", ListUsers); // no [Authorize] → open to anyone
+
+// GOOD — explicit policy everywhere, global fallback
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
+// Now every endpoint requires auth by default unless explicitly [AllowAnonymous]
+```
+
+---
+
 ## References
 
 - [Introduction to Identity](https://learn.microsoft.com/aspnet/core/security/authentication/identity?view=aspnetcore-10.0)

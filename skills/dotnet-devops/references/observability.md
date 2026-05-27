@@ -718,4 +718,71 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 });
 
 app.Run();
+
+---
+
+## Anti-patterns
+
+### Don't Create Meters Per Request
+
+```csharp
+// BAD — new Meter per HTTP request = unbounded memory growth
+app.MapGet("/orders/{id}", (Guid id) =>
+{
+    var meter = new Meter($"Orders.{id}"); // memory leak! one per request
+    meter.CreateCounter<int>("requests").Add(1);
+});
+
+// GOOD — singleton Meter via IMeterFactory, static tag values
+public static class AppMetrics
+{
+    public static readonly Meter Meter = new("MyApp", "1.0");
+    public static readonly Counter<int> OrderRequests = Meter.CreateCounter<int>(
+        "order_requests_total", description: "Total order requests");
+}
+```
+
+### Don't Use High-Cardinality Metric Tags
+
+```csharp
+// BAD — OrderId/CustomerId as metric tag = millions of unique tag combinations
+counter.Add(1, new("order.id", orderId.ToString()), new("customer.id", customerId));
+
+// GOOD — low-cardinality dimensions only (status, operation, outcome)
+counter.Add(1, new("order.status", status), new("operation", "create"));
+// High-cardinality data (user ID, order ID) belongs in log/span attributes, not metric tags
+```
+
+### Don't Mix UseOtlpExporter with AddOtlpExporter
+
+```csharp
+// BAD — NotSupportedException at runtime
+builder.Services.AddOpenTelemetry()
+    .UseOtlpExporter()  // old API
+    .WithTracing(b => b.AddOtlpExporter()); // new API — conflict!
+// Only one OTLP exporter registration path is allowed.
+
+// GOOD — pick one approach
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService("MyApp"))
+    .WithTracing(b => b
+        .AddAspNetCoreInstrumentation()
+        .AddOtlpExporter(o => o.Endpoint = new Uri("http://localhost:4317")));
+```
+
+### Don't Forget to Register Custom ActivitySources
+
+```csharp
+// BAD — custom activities silently dropped (no listener)
+var activitySource = new ActivitySource("MyApp.Custom");
+using var activity = activitySource.StartActivity("ProcessOrder");
+// Activity created but never exported!
+
+// GOOD — register the source name in the tracing builder
+builder.Services.AddOpenTelemetry()
+    .WithTracing(b => b
+        .AddSource("MyApp.Custom") // must match ActivitySource name
+        .AddAspNetCoreInstrumentation()
+        .AddOtlpExporter());
+```
 ```

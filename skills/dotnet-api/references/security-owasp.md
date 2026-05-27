@@ -601,3 +601,69 @@ Do **not** set `System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerializ
 - [Rate Limiting Middleware](https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-10.0)
 - [NuGet Package Source Mapping](https://learn.microsoft.com/en-us/nuget/consume-packages/package-source-mapping)
 - [BinaryFormatter Migration Guide](https://learn.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-migration-guide/)
+
+---
+
+## Common Anti-patterns
+
+### SQL Injection via Raw SQL
+
+```csharp
+// BAD — string concatenation with user input
+var sql = $"SELECT * FROM Orders WHERE CustomerName = '{userInput}'";
+var orders = db.Orders.FromSqlRaw(sql).ToList();
+
+// GOOD — parameterized query with FromSqlInterpolated
+var orders = db.Orders.FromSqlInterpolated(
+    $"SELECT * FROM Orders WHERE CustomerName = {userInput}").ToList();
+// .NET automatically parameterizes interpolated values
+```
+
+### XSS in Razor/Blazor
+
+```csharp
+// BAD — raw HTML rendering without encoding
+@Html.Raw(userInput)  // XSS if userInput contains <script>alert(1)</script>
+
+// GOOD — Razor auto-encodes by default
+@userInput  // auto HTML-encoded: &lt;script&gt; becomes harmless text
+```
+
+### Insecure Deserialization (Newtonsoft)
+
+```csharp
+// BAD — TypeNameHandling.All allows arbitrary type instantiation (RCE risk)
+var obj = JsonConvert.DeserializeObject(json, new JsonSerializerSettings
+{
+    TypeNameHandling = TypeNameHandling.All
+});
+
+// GOOD — use System.Text.Json (no type-name handling), or explicit type
+var order = JsonSerializer.Deserialize<Order>(json);
+// If Newtonsoft is unavoidable: TypeNameHandling.None + SerializationBinder whitelist
+```
+
+### Weak Cryptographic Hashing
+
+```csharp
+// BAD — MD5/SHA1 for security purposes (collision attacks, broken)
+var hash = MD5.Create().ComputeHash(passwordBytes);
+var hash2 = SHA1.Create().ComputeHash(data);
+
+// GOOD — SHA256 minimum for integrity, HMACSHA256 for auth, PBKDF2/Argon2 for passwords
+var hash = SHA256.HashData(data);
+var keyedHash = HMACSHA256.HashData(key, data);
+// For passwords: use ASP.NET Identity's built-in PasswordHasher
+```
+
+### Hardcoded Secrets
+
+```csharp
+// BAD — secrets in source code
+const string ApiKey = "sk-abc123xyz";
+var connStr = "Server=prod-db;Password=Secret123!";
+
+// GOOD — configuration with environment overrides
+var apiKey = builder.Configuration["ApiKey"]; // from user-secrets / env var / Key Vault
+var connStr = builder.Configuration.GetConnectionString("Default");
+```

@@ -353,6 +353,78 @@ ENV DOTNET_EnableDiagnostics=0
 
 ---
 
+## Anti-patterns
+
+### Don't Use SDK Image for Runtime
+
+```dockerfile
+# BAD — SDK image is 3x larger, includes compilers (attack surface)
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+COPY . ./
+RUN dotnet publish -c Release -o /app
+ENTRYPOINT ["dotnet", "/app/MyApp.dll"]
+```
+
+```dockerfile
+# GOOD — multi-stage build: SDK for compile, runtime for deploy
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY *.csproj ./
+RUN dotnet restore
+COPY . ./
+RUN dotnet publish -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+COPY --from=build /app ./
+ENTRYPOINT ["dotnet", "MyApp.dll"]
+```
+
+### Don't Copy Everything Before Restore
+
+```dockerfile
+# BAD — copying all source before restore = cache miss every code change
+COPY . ./
+RUN dotnet restore   # cache invalidated even when only .cs files changed
+
+# GOOD — copy .csproj first, restore, then copy source (Docker layer caching)
+COPY *.csproj ./
+RUN dotnet restore   # cached as long as .csproj unchanged
+COPY . ./
+RUN dotnet publish -c Release -o /app
+```
+
+### Don't Run as Root
+
+```dockerfile
+# BAD — running as root in production
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app ./
+ENTRYPOINT ["dotnet", "MyApp.dll"]  # runs as root!
+
+# GOOD — create and use a non-root user
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app ./
+RUN useradd -m -u 1001 appuser && chown -R appuser /app
+USER appuser
+ENTRYPOINT ["dotnet", "MyApp.dll"]
+```
+
+### Don't Forget Health Checks
+
+```dockerfile
+# BAD — no health check, container always "healthy"
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+
+# GOOD — tell Docker how to verify the app is running
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD curl -f http://localhost:8080/health/live || exit 1
+```
+
+---
+
 ## References
 
 - [.NET container images](https://learn.microsoft.com/en-us/dotnet/core/docker/build-container)

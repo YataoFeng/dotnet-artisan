@@ -341,6 +341,62 @@ builder.Services.AddOpenApi(options =>
 
 ---
 
+## Anti-patterns
+
+### Don't Use Swashbuckle in .NET 10
+
+```csharp
+// BAD — Swashbuckle is effectively abandoned, doesn't support Native AOT
+builder.Services.AddSwaggerGen();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// GOOD — .NET 10 built-in OpenAPI (Microsoft.AspNetCore.OpenApi)
+builder.Services.AddOpenApi();
+app.MapOpenApi(); // /openapi/v1.json — Native AOT compatible
+// Use Scalar for UI: app.MapScalarApiReference();
+```
+
+### Don't Return Untyped Results
+
+```csharp
+// BAD — no type information for OpenAPI schema generation
+private static async Task<IResult> GetOrder(Guid id, AppDbContext db)
+{
+    var order = await db.Orders.FindAsync(id);
+    return order is not null ? Results.Ok(order) : Results.NotFound();
+    // OpenAPI can't infer the 200 response type from IResult
+}
+
+// GOOD — TypedResults contribute to OpenAPI schema
+private static async Task<Results<Ok<OrderResponse>, NotFound>> GetOrder(Guid id, AppDbContext db)
+{
+    var order = await db.Orders.Where(o => o.Id == id)
+        .Select(o => new OrderResponse(o.Id, o.Total))
+        .FirstOrDefaultAsync();
+    return order is not null ? TypedResults.Ok(order) : TypedResults.NotFound();
+    // OpenAPI sees: 200 → OrderResponse, 404 → void
+}
+```
+
+### Don't Expose Internal Models in OpenAPI
+
+```csharp
+// BAD — internal entity leaks in API docs
+app.MapGet("/orders/{id}", async (Guid id, AppDbContext db) =>
+    await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id));
+// OpenAPI generates schema with all navigation properties, timestamps, internal fields
+
+// GOOD — project to response DTO
+app.MapGet("/orders/{id}", async (Guid id, AppDbContext db) =>
+    await db.Orders.Where(o => o.Id == id)
+        .Select(o => new OrderResponse(o.Id, o.Total, o.Status, o.CreatedAt))
+        .FirstOrDefaultAsync());
+// OpenAPI generates clean DTO schema with only public fields
+```
+
+---
+
 ## References
 
 - [OpenAPI in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview?view=aspnetcore-10.0)

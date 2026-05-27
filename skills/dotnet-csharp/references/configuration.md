@@ -469,6 +469,70 @@ public void Configuration_BindsCorrectly()
 
 ---
 
+## Anti-patterns
+
+### Don't Read IConfiguration Directly
+
+```csharp
+// BAD — stringly-typed, no validation, impossible to unit test
+public class OrderService(IConfiguration config)
+{
+    public void Process()
+    {
+        var timeout = int.Parse(config["Database:CommandTimeout"]!);
+        var connStr = config["Database:ConnectionString"];
+        // typo in key name? no compile error. missing config? runtime crash.
+    }
+}
+
+// GOOD — strongly-typed Options pattern
+public class OrderService(IOptions<DatabaseOptions> options)
+{
+    public void Process()
+    {
+        var timeout = options.Value.CommandTimeoutSeconds; // compile-time safe
+    }
+}
+public sealed class DatabaseOptions
+{
+    [Range(1, 300)] public int CommandTimeoutSeconds { get; set; } = 30;
+    [Required] public string ConnectionString { get; set; } = "";
+}
+```
+
+### Don't Put Secrets in appsettings.json
+
+```json
+// BAD — committed to git, visible to everyone with repo access
+{
+  "Jwt": { "Key": "super-secret-production-key-12345" },
+  "Database": { "ConnectionString": "Server=prod;User=admin;Password=S3cret!" }
+}
+```
+
+```bash
+# GOOD — use user secrets in development
+dotnet user-secrets set "Jwt:Key" "super-secret-key"
+dotnet user-secrets set "ConnectionStrings:OrdersDb" "..."
+
+# Production: environment variables, Azure Key Vault, or AWS Secrets Manager
+```
+
+### Don't Skip Startup Validation
+
+```csharp
+// BAD — misconfiguration discovered at runtime, possibly in production
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+
+// GOOD — fail fast at startup, before any requests are served
+builder.Services.AddOptions<JwtOptions>()
+    .BindConfiguration("Jwt")
+    .ValidateDataAnnotations()
+    .ValidateOnStart(); // throws at startup if config is invalid
+```
+
+---
+
 ## References
 
 - [Options pattern in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/options)
