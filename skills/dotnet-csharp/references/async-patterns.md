@@ -1,5 +1,8 @@
 # Async Patterns
 
+> **速查**: async/await 一路到底不用 .Result/.Wait() | CancellationToken 端到端传播 | `async void` 仅限 UI 事件处理 | `ConfigureAwait(false)` 仅库代码 | `Task.Run` 不在 ASP.NET 中用 | BackgroundService 做后台任务 |
+
+
 Async/await best practices for .NET applications. Covers correct task usage, cancellation propagation, and the most common mistakes AI agents make when generating async code.
 
 Cross-references: `references/concurrency-patterns.md` for thread synchronization primitives (lock, SemaphoreSlim), `references/channels.md` for Channel<T> producer/consumer patterns, `references/dependency-injection.md` for `IHostedService`/`BackgroundService` registration, `references/coding-standards.md` for `Async` suffix naming, `references/modern-patterns.md` for language-level features.

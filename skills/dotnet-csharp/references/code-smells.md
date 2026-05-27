@@ -1,5 +1,8 @@
 # Code Smells
 
+> **速查**: IDisposable 用 using | 不吞异常 | `#pragma warning disable` 必须配合 restore | 不用 denylist 做安全验证 | 不用 `dynamic` | 不用 `new HttpClient()` |
+
+
 Proactive code-smell and anti-pattern detection for C# code. This skill triggers during all workflow modes -- planning, implementation, and review. Each entry identifies the smell, explains why it is harmful, provides the correct fix, and references the relevant CA rule or cross-reference.
 
 ## 1. Resource Management (IDisposable Misuse)
