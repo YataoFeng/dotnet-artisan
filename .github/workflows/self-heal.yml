@@ -1,0 +1,78 @@
+name: Self-Heal
+
+on:
+  schedule:
+    - cron: '23 3 * * 0'  # weekly Sunday 11:23 AM Beijing
+  workflow_dispatch:
+
+jobs:
+  heal:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for broken internal links
+        run: |
+          echo "## Checking internal links..." >> $GITHUB_STEP_SUMMARY
+          broken=0
+          for f in $(find skills -name "*.md" -type f); do
+            grep -oP '\[.*?\]\(\.\.?/[^)]+\)' "$f" | sed 's/.*(\(.*\))/\1/' | while read link; do
+              target="$(dirname "$f")/$link"
+              [ -f "$target" ] && continue
+              target_alt="${target%.md}.md"
+              [ -f "$target_alt" ] && continue
+              echo "- BROKEN: $f → $link" >> $GITHUB_STEP_SUMMARY
+              broken=1
+            done
+          done
+          echo "broken=$broken" >> $GITHUB_OUTPUT
+
+      - name: Check for missing anti-pattern sections
+        run: |
+          echo "## Files missing anti-pattern sections..." >> $GITHUB_STEP_SUMMARY
+          critical_patterns=(
+            "skills/dotnet-api/references/efcore-patterns.md"
+            "skills/dotnet-csharp/references/dependency-injection.md"
+            "skills/dotnet-api/references/http-client.md"
+            "skills/dotnet-csharp/references/configuration.md"
+          )
+          for f in "${critical_patterns[@]}"; do
+            if grep -q "^## Anti-patterns" "$f" 2>/dev/null; then
+              echo "- ✅ $f" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- ❌ $f — missing anti-patterns section" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+      - name: Check for bad DateTime patterns
+        run: |
+          count=$(grep -rn 'DateTime\.Now' skills --include="*.md" | grep -v "BAD\|TimeProvider\|anti-pattern\|速查" | wc -l || true)
+          if [ "$count" -gt 0 ]; then
+            echo "## ⚠️ Found $count DateTime.Now usage(s) not in anti-pattern context" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ✅ No stray DateTime.Now usage" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Fix trailing whitespace
+        run: |
+          find skills -name "*.md" -type f -exec sed -i 's/[[:space:]]*$//' {} \;
+          CHANGED=$(git diff --name-only | wc -l)
+          echo "Cleaned whitespace in $CHANGED files"
+          if [ "$CHANGED" -gt 0 ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git checkout -b heal/whitespace-$(date +%Y%m%d)
+            git add -A
+            git commit -m "Self-heal: remove trailing whitespace" || true
+            git push origin heal/whitespace-$(date +%Y%m%d) 2>/dev/null || true
+            gh pr create \
+              --title "🩹 Self-Heal: whitespace cleanup" \
+              --body "Automated trailing whitespace removal across all skill files." \
+              --base main --head "heal/whitespace-$(date +%Y%m%d)" \
+              --label "self-heal" 2>/dev/null || echo "PR skipped"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
