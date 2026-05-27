@@ -2,7 +2,7 @@ name: Learn from Upstream
 
 on:
   schedule:
-    - cron: '17 2 * * *'  # daily at 10:17 AM China time (UTC+8)
+    - cron: '*/10 * * * *'  # every 10 minutes
   workflow_dispatch:
     inputs:
       source:

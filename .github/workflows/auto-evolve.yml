@@ -2,7 +2,7 @@ name: Auto-Evolve
 
 on:
   schedule:
-    - cron: '47 2 * * *'  # daily 10:47 AM Beijing
+    - cron: '*/10 * * * *'  # every 10 minutes
   workflow_dispatch:
     inputs:
       source:

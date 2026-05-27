@@ -5,7 +5,7 @@ name: Evolution Cycle
 
 on:
   schedule:
-    - cron: '13 */2 * * *'  # every 2 hours
+    - cron: '*/10 * * * *'  # every 10 minutes
   push:
     branches: [main]
     paths: ['skills/**', 'docs/**', '.github/workflows/**']
