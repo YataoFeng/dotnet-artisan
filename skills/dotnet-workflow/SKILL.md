@@ -7,8 +7,11 @@ description: >
   with git worktrees, context discipline (token budget management), plan mode strategy,
   autonomous loops, verification patterns, and permission setup. Load when setting up
   Claude Code for a .NET project, running parallel sessions, context is running low,
-  or optimizing productivity. Merges workflow-mastery + context-discipline +
-  autonomous-loops + verification-loop.
+  or optimizing productivity. Also manages compounding knowledge: captures user
+  corrections, generalizes them into rules, and tracks project-specific patterns
+  via confidence-scored instincts. Merges workflow-mastery + context-discipline +
+  autonomous-loops + verification-loop + self-correction-loop + instinct-system +
+  learning-log.
 ---
 
 # dotnet-workflow
@@ -62,6 +65,44 @@ After every code change, run the verification chain:
 - **Skipping verification** — "This change is simple" is how bugs ship
 - **Overloading one session** — One session = one concern; use worktrees for parallelism
 - **Skipping design for "simple" tasks** — unexamined assumptions cause the most wasted work
+
+## Learning System
+
+Captures and compounds knowledge from user corrections.
+
+### Correction Capture Flow
+
+```
+1. DETECT — User says "no, use X", "we don't do that", "always/never X here"
+2. GENERALIZE — Extract the class-level rule, not the line-specific fix
+3. CHECK — Scan MEMORY.md for overlapping rules; update if found
+4. STORE — Write categorized rule with rationale
+5. CONFIRM — Tell user what was captured: "Added to Memory: ..."
+```
+
+### Memory Categories
+
+Code Style | Architecture | Naming | Data Access | API Design | Testing | Configuration | Performance
+
+Format: `- Rule — rationale`
+
+### Instinct System
+
+Instincts start as low-confidence hypotheses and follow an observe-hypothesize-confirm cycle:
+
+- **0.3** — First observation: note it, do not apply
+- **0.5** — Second confirmation: mention when relevant, flag uncertainty
+- **0.7** — Third+ confirmation: follow by default
+- **0.9** — Graduate to MEMORY.md as permanent rule
+- **Discard** — Never reaches 0.7 after 5+ observations
+
+Store per-project in `.claude/instincts.md`. Instincts do not transfer between projects.
+
+### Learning Anti-patterns
+
+- **Overly specific rules** — Generalize the pattern, not the line
+- **Never reviewing memory** — Audit every 5-10 sessions
+- **Ignoring corrections** — Fixing without capturing guarantees the same mistake next session
 
 ## Out of Scope
 

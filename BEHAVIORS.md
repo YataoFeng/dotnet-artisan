@@ -36,9 +36,9 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 | **App crashed — analyze dump** | `dotnet-debugging` | Opens .dmp with WinDbg, runs !analyze, finds crash root cause |
 | **App is stuck/hanging** | `dotnet-debugging` | Deadlock detection (!dlk, !syncblk), thread analysis |
 | **Memory leak** | `dotnet-debugging` | Heap analysis (!dumpheap, !gcroot), finds what's holding memory |
-| **High CPU** | `dotnet-debugging` + `dotnet-performance-analyst` | !runaway, flame graphs, hot path identification |
-| **Build errors** | `dotnet-build-error-resolver` | Diagnoses MSBuild errors, NuGet conflicts, SDK issues |
-| **Slow async code** | `dotnet-async-performance-specialist` | Finds .Result misuse, missing ConfigureAwait, thread pool starvation |
+| **High CPU** | `dotnet-debugging` + `dotnet-performance-specialist` | !runaway, flame graphs, hot path identification |
+| **Build errors** | `dotnet-code-lifecycle-agent` | Diagnoses MSBuild errors, NuGet conflicts, SDK issues |
+| **Slow async code** | `dotnet-performance-specialist` | Finds .Result misuse, missing ConfigureAwait, thread pool starvation |
 | **Race condition** | `dotnet-csharp-concurrency-specialist` | Finds unsynchronized shared state, lock gaps |
 | **Database query too slow** | `dotnet-api` + `dotnet-performance-analyst` | N+1 detection, missing indexes, query plan analysis |
 
@@ -48,8 +48,8 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 |----------|-------------|--------------|
 | **Code review** | `dotnet-code-review-agent` | Multi-dimensional review: correctness, perf, security, architecture |
 | **Security audit** | `dotnet-security-reviewer` | OWASP Top 10, secret leaks, crypto misuse — read-only, no code changes |
-| **7-step cleanup** | `dotnet-quality` | Format → unused usings → fix warnings → dead code → TODOs → seal audit → CancellationToken |
-| **Refactor safely** | `dotnet-refactor-cleaner` | Runs cleanup pipeline, verifies each step with build+test |
+| **7-step cleanup** | `dotnet-code-lifecycle-agent` | Format → unused usings → fix warnings → dead code → TODOs → seal audit → CancellationToken |
+| **Refactor safely** | `dotnet-code-lifecycle-agent` | Runs cleanup pipeline, verifies each step with build+test |
 | **Architecture review** | `dotnet-architect` | Recommends patterns, catches over-engineering, suggests structure |
 | **Test quality check** | `dotnet-testing` + `dotnet-testing-specialist` | CRAP scores, coverage gaps, test smell detection |
 
@@ -61,7 +61,7 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 | **Write integration tests** | `dotnet-testing` + `dotnet-api` | WebApplicationFactory, Testcontainers with real PostgreSQL |
 | **Write E2E tests** | `dotnet-testing` | Playwright browser automation, CI caching |
 | **Write BDD scenarios** | `dotnet-testing` | Reqnroll (MIT) for .feature files or lightweight xUnit Given/When/Then |
-| **Write benchmarks** | `dotnet-benchmark-designer` | BenchmarkDotNet with MemoryDiagnoser, avoids measurement bias |
+| **Write benchmarks** | `dotnet-performance-specialist` | BenchmarkDotNet with MemoryDiagnoser, avoids measurement bias |
 | **Snapshot testing** | `dotnet-testing` | Verify with scrubbing for stable output tests |
 
 ### Manage Code
@@ -88,9 +88,9 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 
 | Behavior | Skills Used | What Happens |
 |----------|-------------|--------------|
-| **Upgrade .NET version** | `dotnet-upgrade` | net8→net9→net10→net11 step by step, breaking change assessment |
-| **Migrate to Native AOT** | `dotnet-tooling` + `dotnet-upgrade` | Reflection audit, source-gen replacement, publish validation |
-| **Learn from corrections** | `dotnet-learning` | Captures your corrections, generalizes into rules, stores in MEMORY.md |
+| **Upgrade .NET version** | `dotnet-devops` | net8→net9→net10→net11 step by step, breaking change assessment |
+| **Migrate to Native AOT** | `dotnet-tooling` + `dotnet-devops` | Reflection audit, source-gen replacement, publish validation |
+| **Learn from corrections** | `dotnet-workflow` | Captures your corrections, generalizes into rules, stores in MEMORY.md |
 | **Optimize workflow** | `dotnet-workflow` | Parallel worktrees, token budget management, plan-mode strategy |
 
 ---
@@ -103,20 +103,15 @@ The decision-maker invokes specialist agents for one-shot deep analysis. Each ag
 |-------|---------------|-----------------|
 | `dotnet-architect` | Architecture, framework choice | "How should I structure this?" |
 | `dotnet-aspnetcore-specialist` | Middleware, DI, request pipeline | "Is my middleware order correct?" |
-| `dotnet-async-performance-specialist` | Async/await, ValueTask, ThreadPool | "Why is my async code slow?" |
-| `dotnet-benchmark-designer` | BenchmarkDotNet, measurement | "Design a benchmark for this" |
-| `dotnet-blazor-specialist` | Blazor render modes, components | "Which Blazor render mode?" |
-| `dotnet-build-error-resolver` | MSBuild errors, SDK conflicts | Build fails and output is cryptic |
+| `dotnet-performance-specialist` | Async, profiling, benchmarks | "Why is it slow?", "Design a benchmark" |
+| `dotnet-ui-specialist` | Blazor, MAUI, Uno Platform | "Build a Blazor/MAUI/Uno app" |
+| `dotnet-code-lifecycle-agent` | Build errors + cleanup pipeline | "Build fails", "Clean this up" |
 | `dotnet-cloud-specialist` | Aspire, AKS, cloud deployment | "Deploy to Azure?" |
 | `dotnet-code-review-agent` | Correctness, perf, security review | "Review this PR" |
 | `dotnet-csharp-concurrency-specialist` | Race conditions, deadlocks, locks | "This crashes under load" |
 | `dotnet-docs-generator` | DocFX, Mermaid, XML docs | "Generate documentation" |
-| `dotnet-maui-specialist` | MAUI, Xamarin migration | "Build a MAUI app" |
-| `dotnet-performance-analyst` | Flame graphs, heap analysis | "Find the bottleneck" |
-| `dotnet-refactor-cleaner` | 7-step cleanup, dead code | "Clean this up" |
 | `dotnet-security-reviewer` | OWASP, secrets, crypto | "Is this secure?" |
 | `dotnet-testing-specialist` | Test architecture, test data | "How should I test this?" |
-| `dotnet-uno-specialist` | Uno Platform, MVUX | "Cross-platform Uno app" |
 | `dotnet-pr-workflow` | PR lifecycle, merge, release tagging | "Create PR", "merge this", "release" |
 
 ## Routing Logic
@@ -153,6 +148,6 @@ Your prompt
 | "Create a todo API" | "New project, API, EF Core → dotnet-api + dotnet-tooling" | api + tooling + csharp |
 | "My app crashes" | "Debugging needed. Has .dmp? No → ask for dump. Yes → !analyze" | debugging |
 | "Review my code" | "Code review request. C# files found → dotnet-code-review-agent" | code-review-agent |
-| "Upgrade to .NET 10" | "Migration. Current: net8.0 → upgrade path: 8→9→10" | upgrade + tooling |
-| "Make this faster" | "Performance. Has benchmarks? No → suggest writing. Yes → analyze" | perf-analyst or benchmark-designer |
+| "Upgrade to .NET 10" | "Migration. Current: net8.0 → upgrade path: 8→9→10" | devops + tooling |
+| "Make this faster" | "Performance. Has benchmarks? No → suggest writing. Yes → analyze" | performance-specialist |
 | "Deploy this" | "DevOps. Has Dockerfile? No → suggest creating. Yes → CI/CD setup" | devops + cloud-specialist |

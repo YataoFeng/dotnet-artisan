@@ -1,6 +1,6 @@
 ---
 name: dotnet-devops
-description: Configures .NET CI/CD pipelines (GitHub Actions with setup-dotnet, NuGet cache, reusable workflows; Azure DevOps with DotNetCoreCLI, templates, multi-stage), Git workflow (branch strategies, Conventional Commits, PR lifecycle), containerization (multi-stage Dockerfiles, Compose, rootless), packaging (NuGet authoring, source generators, MSIX signing), release management (NBGV, SemVer, changelogs, GitHub Releases), and observability (OpenTelemetry, health checks, structured logging, PII). Spans 19 topic areas. Do not use for application-layer API or UI implementation patterns.
+description: Configures .NET CI/CD pipelines (GitHub Actions with setup-dotnet, NuGet cache, reusable workflows; Azure DevOps with DotNetCoreCLI, templates, multi-stage), Git workflow (branch strategies, Conventional Commits, PR lifecycle), containerization (multi-stage Dockerfiles, Compose, rootless), packaging (NuGet authoring, source generators, MSIX signing), release management (NBGV, SemVer, changelogs, GitHub Releases), observability (OpenTelemetry, health checks, structured logging, PII), and .NET version migration (net8→net9→net10→net11, AOT assessment, nullable migration, upgrade strategies). Spans 19 + 5 topic areas. Do not use for application-layer API or UI implementation patterns.
 license: MIT
 user-invocable: false
 ---
@@ -52,3 +52,45 @@ CI/CD, packaging, Git workflow, release management, and operational tooling for 
 - API/backend code patterns -> [skill:dotnet-api]
 - Build system authoring -> [skill:dotnet-tooling]
 - Test authoring -> [skill:dotnet-testing]
+
+## Version Upgrade
+
+.NET version migration and project upgrade. Covers net8→net9→net10→net11 migration paths, AOT compatibility assessment, nullable reference migration, and thread-abort migration from .NET Framework.
+
+### Principles
+
+1. **One version at a time** — Don't skip versions. net8→net10 directly risks missing deprecated API warnings.
+2. **Upgrade tooling before framework** — Update SDK, analyzers, and NuGet packages first.
+3. **Assess before upgrading** — Run upgrade assessment tools to identify breaking changes before touching code.
+4. **Incremental over big-bang** — Upgrade one project at a time, starting with leaf dependencies.
+
+### Migration Paths
+
+| From | To | Key Changes |
+|------|-----|-------------|
+| net8.0 | net9.0 | STJ 9.0, EF Core 9.0 auto-compiled models, HybridCache stable |
+| net9.0 | net10.0 | C# 14 `field` keyword, AddValidation, EF Core 10 bulk ops |
+| net10.0 | net11.0 | C# 15 preview, enhanced AOT, ASP.NET Core perf improvements |
+
+### Pre-Upgrade Checklist
+
+1. Audit NuGet packages — `dotnet list package --outdated --vulnerable`
+2. Check global.json — Remove or update SDK version pin
+3. Run upgrade assessment — Use .NET Upgrade Assistant
+4. Review breaking changes — Check official breaking changes doc
+5. Update CI/CD — Ensure build agents use the new SDK version
+
+### AOT Compatibility
+
+Before migrating to Native AOT: no `Assembly.Load` or reflection emit, no `dynamic` expanded at runtime, source-generated JSON serialization, AOT-compatible packages.
+
+### Nullable Reference Migration
+
+Enable incrementally: `<Nullable>enable</Nullable>` + `<WarningsAsErrors>nullable</WarningsAsErrors>`. Fix per-project from leaf dependencies.
+
+### Anti-patterns
+
+- **Big-bang migration** — All projects at once = giant PR, impossible to revert
+- **Skipping versions** — Bypasses deprecation warnings
+- **Upgrading without running tests** — Undetected breaking changes
+- **Mixing migration with feature work** — Separate PRs

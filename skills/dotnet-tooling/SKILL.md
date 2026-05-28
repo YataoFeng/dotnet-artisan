@@ -1,6 +1,6 @@
 ---
 name: dotnet-tooling
-description: Manages .NET SDK installation (dotnet-install, workloads), project bootstrapping (architecture selection, solution structure, domain analysis), project setup (.slnx, Directory.Build.props, CPM), MSBuild authoring, build optimization, performance (Span, ArrayPool, stackalloc), profiling (dotnet-counters, dotnet-trace), Native AOT/trimming, GC tuning, CLI apps (System.CommandLine, Spectre.Console, Terminal.Gui), ILSpy decompilation, VS Code debug config (launch.json, coreclr, remote), C# LSP (csharp-ls, OmniSharp), and version detection/upgrade. Spans 36 topic areas. Do not use for UI implementation or API security design.
+description: Manages .NET SDK installation (dotnet-install, workloads), project bootstrapping (architecture selection, solution structure, domain analysis), project setup (.slnx, Directory.Build.props, CPM), MSBuild authoring, build optimization, performance (Span, ArrayPool, stackalloc), profiling (dotnet-counters, dotnet-trace), Native AOT/trimming, GC tuning, CLI apps (System.CommandLine, Spectre.Console, Terminal.Gui), ILSpy decompilation, VS Code debug config (launch.json, coreclr, remote), C# LSP (csharp-ls, OmniSharp), version detection/upgrade, and code quality cleanup (7-step pipeline: formatting, usings, analyzers, dead code, TODOs, sealed classes, CancellationToken). Spans 36 + 7 topic areas. Do not use for UI implementation or API security design.
 license: MIT
 user-invocable: false
 ---
@@ -81,3 +81,36 @@ user-invocable: false
 - `scripts/hooks/session-start-context.js` -- SessionStart hook for .NET project detection
 - `scripts/hooks/user-prompt-dotnet-reminder.js` -- UserPromptSubmit hook for .NET keyword detection
 - `scripts/hooks/check-self-doc.js` -- PostToolUse hook for .cs file quality reminders
+
+## Code Quality Pipeline
+
+Systematic 7-step cleanup for .NET projects. Each step: build → test → commit → next step.
+
+### Principles
+
+1. **Systematic over random** — Follow the pipeline in order. Formatting first, dead code last.
+2. **Verify after each step** — Run `dotnet build && dotnet test` after every step.
+3. **Safe removals only** — Verify dead code isn't used via reflection, DI, or serialization.
+4. **One concern per commit** — Each step gets its own commit for safe revert.
+
+### 7-Step Pipeline
+
+```
+Step 1: Formatting        — dotnet format (whitespace, indentation, braces)
+Step 2: Unused Usings     — dotnet format analyzers (IDE0005)
+Step 3: Analyzer Warnings — dotnet build -warnaserror (fix all CS/IDE warnings)
+Step 4: Dead Code         — Remove unreferenced code (verify via Grep first)
+Step 5: TODO Resolution   — Convert TODOs to issues or implement inline
+Step 6: Sealed Class Audit — Seal classes not designed for inheritance
+Step 7: CancellationToken  — Propagate CancellationToken through all async chains
+```
+
+### Code Review
+
+Focus 80% of review effort on the 20% of code most likely to contain issues: new code paths, error handling, DI lifetimes, EF Core queries (N+1), async/await and CancellationToken.
+
+### Anti-patterns
+
+- **Mixing cleanup with feature work** — Separate commits, separate PRs
+- **Batch cleanup without testing** — Guaranteed regression
+- **Aggressive dead code removal** — Verify via reflection, DI, serialization first

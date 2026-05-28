@@ -19,8 +19,8 @@ Router and index skill for **dotnet-artisan**. Always loaded after [skill:using-
 
 ## Out of scope
 
-- Domain-specific implementation guidance -- see [skill:dotnet-csharp], [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging], [skill:dotnet-ai], [skill:dotnet-upgrade]
-- Meta/workflow guidance -- see [skill:dotnet-quality], [skill:dotnet-workflow], [skill:dotnet-learning]
+- Domain-specific implementation guidance -- see [skill:dotnet-csharp], [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging], [skill:dotnet-ai]
+- Meta/workflow guidance -- see [skill:dotnet-workflow]
 - Deep implementation content -- see the domain skills above and their companion files
 
 ## Step 1: Detect Project Version
@@ -84,10 +84,10 @@ Identify the primary domain from the request, then invoke the matching skill. If
 | Quick script, utility, single-file tool | [skill:dotnet-api] (references/file-based-apps.md) |
 | Excel, Word, PowerPoint, PDF, spreadsheet, document generation | [skill:dotnet-api] (references/office-documents.md) |
 | AI/ML, LLM integration, MCP servers, RAG, ML.NET, Semantic Kernel | [skill:dotnet-ai] |
-| .NET version upgrade, framework migration, AOT assessment, nullable migration | [skill:dotnet-upgrade] |
-| Code cleanup, quality pipeline, dead code removal, code review, tech debt | [skill:dotnet-quality] |
+| .NET version upgrade, framework migration, AOT assessment, nullable migration | [skill:dotnet-devops] |
+| Code cleanup, quality pipeline, dead code removal, code review, tech debt | [skill:dotnet-tooling] |
 | Claude Code workflow, context discipline, parallel sessions, git worktrees | [skill:dotnet-workflow] |
-| User corrections, pattern learning, project conventions, memory management | [skill:dotnet-learning] |
+| User corrections, pattern learning, project conventions, memory management | [skill:dotnet-workflow] |
 | New project (unclear domain) | [skill:dotnet-tooling], then route to the owning domain skill |
 
 ### Cross-Domain Routing
@@ -103,9 +103,9 @@ Many tasks naturally span multiple domains. After invoking the primary domain sk
 | Building a new app (any "build me" request) | [skill:dotnet-tooling] (project setup) + [skill:dotnet-testing] (test strategy) |
 | CI/CD that runs tests | [skill:dotnet-testing] (test framework configuration) |
 | AI/ML feature in a web API | [skill:dotnet-api] (context) + [skill:dotnet-ai] |
-| Upgrading .NET version | [skill:dotnet-upgrade] + [skill:dotnet-tooling] (SDK/version) |
-| Code review or cleanup pass | [skill:dotnet-quality] + relevant domain skill for the project |
-| Setting up Claude Code for a project | [skill:dotnet-workflow] + [skill:dotnet-learning] |
+| Upgrading .NET version | [skill:dotnet-devops] (version upgrade section) + [skill:dotnet-tooling] (SDK/version) |
+| Code review or cleanup pass | [skill:dotnet-tooling] (code quality section) + relevant domain skill for the project |
+| Setting up Claude Code for a project | [skill:dotnet-workflow] |
 
 For broad "build me an app" requests, load comprehensively: [skill:dotnet-csharp] -> [skill:dotnet-tooling] -> primary domain -> [skill:dotnet-testing] -> [skill:dotnet-devops].
 
@@ -122,10 +122,7 @@ For broad "build me an app" requests, load comprehensively: [skill:dotnet-csharp
 | [skill:dotnet-tooling] | Project setup, MSBuild, Native AOT, profiling, CLI apps, version detection | Build system, performance, and developer tools |
 | [skill:dotnet-debugging] | WinDbg MCP, crash dumps, hang analysis, memory diagnostics | Live and post-mortem dump analysis |
 | [skill:dotnet-ai] | MCP servers, Semantic Kernel, RAG, ML.NET, LLM integration | AI/ML frameworks and agent-tool protocols |
-| [skill:dotnet-upgrade] | .NET version migration, AOT assessment, nullable migration, framework upgrade | Safe incremental version migration paths |
-| [skill:dotnet-quality] | 7-step cleanup pipeline, code review workflow, dead code removal | Systematic code quality improvement |
-| [skill:dotnet-workflow] | Parallel worktrees, context discipline, verification loops, permission setup | Claude Code productivity optimization |
-| [skill:dotnet-learning] | Correction capture, instinct system, pattern learning, MEMORY.md | Compounding project knowledge over time |
+| [skill:dotnet-workflow] | Parallel worktrees, context discipline, verification loops, correction capture, instinct system | Claude Code productivity + compounding knowledge |
 | dotnet-advisor | This skill -- routes to domain skills above | Entry point, loaded after [skill:using-dotnet] |
 
 ---
@@ -139,15 +136,11 @@ For complex analysis that benefits from domain expertise, delegate to specialist
 - General code review (correctness, performance, security) -> [skill:dotnet-code-review-agent]
 
 **Performance and Concurrency**
-- Async/await performance, ValueTask, ConfigureAwait, IO.Pipelines -> [skill:dotnet-async-performance-specialist]
-- Performance profiling, flame graphs, heap dumps, benchmark regression -> [skill:dotnet-performance-analyst]
-- Benchmark design, measurement methodology, diagnoser selection -> [skill:dotnet-benchmark-designer]
+- Performance (async, profiling, benchmarks) -> [skill:dotnet-performance-specialist]
 - Race conditions, deadlocks, thread safety, synchronization -> [skill:dotnet-csharp-concurrency-specialist]
 
 **UI Frameworks**
-- Blazor components, render modes, hosting models, auth -> [skill:dotnet-blazor-specialist]
-- .NET MAUI development, platform targets, Xamarin migration -> [skill:dotnet-maui-specialist]
-- Uno Platform, Extensions ecosystem, MVUX, multi-target deployment -> [skill:dotnet-uno-specialist]
+- UI frameworks (Blazor, MAUI, Uno Platform) -> [skill:dotnet-ui-specialist]
 
 **Infrastructure**
 - Cloud deployment, .NET Aspire, AKS, CI/CD pipelines, distributed tracing -> [skill:dotnet-cloud-specialist]

@@ -4,10 +4,10 @@
 
 [![中文](https://img.shields.io/badge/中文-简体中文-red)](README.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/Skills-14-5b9cf5)](skills/)
-[![Agents](https://img.shields.io/badge/Agents-17-8b5cf6)](agents/)
+[![Skills](https://img.shields.io/badge/Skills-11-5b9cf5)](skills/)
+[![Agents](https://img.shields.io/badge/Agents-12-8b5cf6)](agents/)
 
-14 skills · 17 agents · 160+ references · 30+ behaviors
+11 skills · 12 agents · 160+ references · 30+ behaviors
 
 ---
 
@@ -129,7 +129,7 @@ AI: I'll run an upgrade assessment first. Checking TFM, NuGet compatibility,
 
 You: Go ahead.
 
-Chain: intent detection → assess current project → route to dotnet-upgrade →
+Chain: intent detection → assess current project → route to dotnet-devops →
        8→9: handle BinaryFormatter deprecation → build + test → commit →
        9→10: migrate to AddValidation → build + test → commit →
        replace incompatible packages with free alternatives
@@ -161,7 +161,7 @@ AI: Let me examine the query code. This looks like a classic N+1 problem —
     querying each order's line items in a loop. I'll add .Include() to
     collapse into a single SQL query and check the indexes afterward.
 
-Chain: intent detection → route to dotnet-performance-analyst →
+Chain: intent detection → route to dotnet-performance-specialist →
        review code → find N+1 loop query → add .Include() →
        single SQL query → find missing composite indexes →
        migration script + before/after performance comparison
@@ -177,9 +177,9 @@ Two gateways activate first: `using-dotnet` detects .NET intent, `dotnet-advisor
 Gateway  │ using-dotnet · dotnet-advisor               →  intent detection + routing
 Baseline │ dotnet-csharp                                →  C# standards (always loaded)
 Build    │ dotnet-api · dotnet-ui                       →  Web API / EF Core / Blazor / MAUI / WPF
-Verify   │ dotnet-testing · dotnet-debugging · dotnet-quality  →  testing / WinDbg / cleanup
-Operate  │ dotnet-devops · dotnet-tooling · dotnet-upgrade     →  CI/CD / scaffold / migration
-Augment  │ dotnet-ai · dotnet-workflow · dotnet-learning       →  MCP, RAG / workflow / learning
+Verify   │ dotnet-testing · dotnet-debugging            →  testing / WinDbg
+Operate  │ dotnet-devops · dotnet-tooling               →  CI/CD / scaffold / migration + quality
+Augment  │ dotnet-ai · dotnet-workflow                  →  MCP, RAG / workflow + learning
 ```
 
 ---
@@ -195,17 +195,12 @@ Call them by name or let the decision-maker route automatically. Full names begi
 | "Is this secure?" | security-reviewer | OWASP Top 10, secrets, crypto (read-only) |
 | "How should I test this?" | testing-specialist | Strategy, pyramid design, test data |
 | "Generate documentation" | docs-generator | DocFX, Mermaid, XML doc skeletons |
-| "Clean this up" | refactor-cleaner | 7-step cleanup pipeline |
 | "Is my middleware order correct?" | aspnetcore-specialist | Middleware, DI, request pipeline |
-| "Why is my async code slow?" | async-performance-specialist | Async/await, ValueTask, ThreadPool |
-| "Design a benchmark" | benchmark-designer | BenchmarkDotNet, measurement |
-| "Which render mode?" | blazor-specialist | Blazor render modes, components |
-| Build fails | build-error-resolver | MSBuild errors, NuGet conflicts |
+| "Why is it slow?" / "Design a benchmark" | performance-specialist | Async, profiling, benchmarks |
+| "Build a cross-platform UI" | ui-specialist | Blazor / MAUI / Uno Platform |
+| Build fails / "Clean this up" | code-lifecycle-agent | Build errors + quality pipeline |
 | "Deploy to cloud?" | cloud-specialist | Aspire, AKS, App Service |
 | "Crashes under load" | concurrency-specialist | Race conditions, deadlocks, locks |
-| "Build a mobile app" | maui-specialist | MAUI, Xamarin migration |
-| "Find the bottleneck" | performance-analyst | Flame graphs, heap dumps, GC analysis |
-| "Cross-platform desktop?" | uno-specialist | Uno Platform, MVUX |
 | "Create a PR" / "Release" | pr-workflow | PR lifecycle, merge, tagging |
 
 Full catalog: [BEHAVIORS.md](BEHAVIORS.md)
