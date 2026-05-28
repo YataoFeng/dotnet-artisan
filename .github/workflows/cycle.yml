@@ -22,6 +22,11 @@ jobs:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
 
+      - name: Setup git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       # 1. FIND teachers
       - name: 1. Find .NET teacher repos
         run: |
@@ -132,19 +137,21 @@ jobs:
           [ -f README.md ] && echo "✅ README OK" >> $GITHUB_STEP_SUMMARY
           [ -f docs/index.html ] && echo "✅ Pages OK" >> $GITHUB_STEP_SUMMARY
 
-      # 7. CREATE PR with actual changes
+      # 7. CREATE PR if there are actual changes
       - name: 7. Create PR for review
         run: |
-          BRANCH="evolve/$(date +%Y%m%d-%H%M)"
-          git checkout -b "$BRANCH"
+          # Only create PR if we actually have something to commit
           git add -A
-          git commit -m "🔄 Auto-evolve $(date +%Y-%m-%d)" || true
+          if git diff --staged --name-only | grep -q .; then
+            BRANCH="evolve/$(date +%Y%m%d-%H%M)"
+            git checkout -b "$BRANCH"
+            git commit -m "🔄 Auto-evolve $(date +%Y-%m-%d)" || true
 
-          TEACHERS=$(cat /tmp/teachers.txt 2>/dev/null | head -3 | tr '\n' ' | ')
-          LEARNED=$(jq '.patterns | length' /tmp/learned.json 2>/dev/null || echo "0")
-          FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null | head -10 | sed 's/^/- /')
+            TEACHERS=$(cat /tmp/teachers.txt 2>/dev/null | head -3 | tr '\n' ' | ')
+            LEARNED=$(jq '.patterns | length' /tmp/learned.json 2>/dev/null || echo "0")
+            FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null | head -10 | sed 's/^/- /')
 
-          BODY="## 🔄 Auto-Evolution $(date +%Y-%m-%d)
+            BODY="## 🔄 Auto-Evolution $(date +%Y-%m-%d)
 
           **1. Find**: $TEACHERS
           **2. Screen**: AI checked suitability
@@ -158,8 +165,12 @@ jobs:
 
           > Auto-generated. Review before merging."
 
-          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$BRANCH"
-          gh pr create --title "🤖 Auto-Evolve $(date +%Y-%m-%d)" --body "$BODY" --base main --head "$BRANCH"
+            git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$BRANCH"
+            gh pr create --title "🤖 Auto-Evolve $(date +%Y-%m-%d)" --body "$BODY" --base main --head "$BRANCH"
+          else
+            echo "## 7. PR Skipped — no new content to integrate" >> $GITHUB_STEP_SUMMARY
+            echo "The AI analyzed teacher repos but found no genuinely new patterns worth adding. Our repo is comprehensive."
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
 
