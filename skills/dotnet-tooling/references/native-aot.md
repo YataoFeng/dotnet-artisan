@@ -378,7 +378,7 @@ dotnet publish -p:PublishAot=true --no-restore -v q 2>&1 | grep -i "warning IL"
 
 # Common blockers:
 # IL3050: Requires dynamic code (reflection emit)
-# IL3051: 'Assembly.Location' always returns empty string  
+# IL3051: 'Assembly.Location' always returns empty string
 # IL2026: Requires unreferenced code (serialization, reflection)
 ```
 
