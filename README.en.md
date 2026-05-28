@@ -22,6 +22,27 @@ Compatible with GitHub Copilot, VS Code, and Cursor. Open any .NET project and s
 
 ---
 
+## Strengths & Limitations
+
+### Strengths
+
+- **Orchestration over collection** — The decision-maker unifies the entire flow: requirements alignment → standards loading → skill routing → agent delegation, not a scattered toolset
+- **Understand before building** — Asks clarifying questions and captures domain vocabulary before writing a single line of code
+- **Full coverage** — 11 skills spanning API, UI, testing, DevOps, debugging, tooling, AI; 160+ reference files with patterns and anti-patterns
+- **Future-proof** — Generated code follows the 30-second rule; any AI can understand any project quickly
+- **Zero commercial dependencies** — All free/open-source (MediatR→Mediator, AutoMapper→Mapperly, FluentValidation→AddValidation)
+- **Cross-platform debugging** — Windows (WinDbg) and Linux/macOS (dotnet-dump + lldb)
+- **Zero config** — Install and go; harness auto-activates
+
+### Limitations
+
+- Requires Claude Code as the AI coding agent (not a standalone tool)
+- Focused on the .NET ecosystem only
+- WinDbg debugging is Windows-only (Linux/macOS uses dotnet-dump instead)
+- Some reference files are still being standardized
+
+---
+
 ## How It Works
 
 Install and go. You describe what you need — the decision-maker handles the rest:
@@ -221,27 +242,6 @@ Full catalog: [BEHAVIORS.md](BEHAVIORS.md)
 7. **Use modern alternatives** — IHttpClientFactory, System.Text.Json source-gen, Microsoft.AspNetCore.OpenApi, Mediator (MIT). Never legacy patterns.
 
 Quick reference: [CHEATSHEET.md](skills/CHEATSHEET.md)
-
----
-
-## Strengths & Limitations
-
-### Strengths
-
-- **Orchestration over collection** — The decision-maker unifies the entire flow: requirements alignment → standards loading → skill routing → agent delegation, not a scattered toolset
-- **Understand before building** — Asks clarifying questions and captures domain vocabulary before writing a single line of code
-- **Full coverage** — 11 skills spanning API, UI, testing, DevOps, debugging, tooling, AI; 160+ reference files with patterns and anti-patterns
-- **Future-proof** — Generated code follows the 30-second rule; any AI can understand any project quickly
-- **Zero commercial dependencies** — All free/open-source (MediatR→Mediator, AutoMapper→Mapperly, FluentValidation→AddValidation)
-- **Cross-platform debugging** — Windows (WinDbg) and Linux/macOS (dotnet-dump + lldb)
-- **Zero config** — Install and go; harness auto-activates
-
-### Limitations
-
-- Requires Claude Code as the AI coding agent (not a standalone tool)
-- Focused on the .NET ecosystem only
-- WinDbg debugging is Windows-only (Linux/macOS uses dotnet-dump instead)
-- Some reference files are still being standardized
 
 ---
 
