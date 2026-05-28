@@ -158,7 +158,7 @@ Without correct symbols, stacks show raw addresses instead of function names.
 - Do not call it a deadlock unless lock/wait evidence supports it
 - Preserve user privacy: do not include secrets from environment blocks in reports
 
-Cross-references: [skill:dotnet-tooling] for .NET SDK diagnostic tools (`references/profiling.md`) and GC/memory tuning (`references/gc-memory.md`).
+Cross-references: [skill:dotnet-tooling] for .NET SDK diagnostic tools (profiling, GC tuning, dotnet-counters, dotnet-trace).
 
 ## References
 
