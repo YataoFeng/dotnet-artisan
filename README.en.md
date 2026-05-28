@@ -151,86 +151,50 @@ Chain: dotnet-workflow → detect correction → generalize rule →
 
 ## Skills
 
-| Category | Skill | Positioning | Does NOT |
-|----------|-------|-------------|----------|
-| Gateway | using-dotnet | Detects .NET intent, triggers decision-maker | Non-.NET requests |
-| | dotnet-advisor | Decision-maker: align → architect → route | Domain implementation |
-| Baseline | dotnet-csharp | C# standards, async/await, DI, LINQ | Framework API design |
-| Build | dotnet-api | Backend API, EF Core, gRPC, SignalR, security | UI rendering |
-| | dotnet-ui | Blazor, MAUI, WPF, WinUI, Uno | Backend API |
-| Verify | dotnet-testing | xUnit, integration, Playwright, benchmarks | Production debugging |
-| | dotnet-debugging | WinDbg / dotnet-dump crash diagnostics | Unit testing |
-| Operate | dotnet-devops | CI/CD, containers, migration, Git workflow | Code quality |
-| | dotnet-tooling | Project structure, MSBuild, AOT, CLI, quality | CI/CD pipelines |
-| Augment | dotnet-ai | MCP servers, Semantic Kernel, RAG | API development |
-| | dotnet-workflow | Parallel workflows, correction learning, memory | Domain development |
+| Category | Skill | Positioning |
+|----------|-------|-------------|
+| Gateway | [using-dotnet](skills/using-dotnet/SKILL.md) | Detects .NET intent, triggers decision-maker |
+| | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | Decision-maker: align → architect → route |
+| Baseline | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | C# standards, async/await, DI, LINQ (always loaded) |
+| Build | [dotnet-api](skills/dotnet-api/SKILL.md) | Backend API, EF Core, gRPC, SignalR, security |
+| | [dotnet-ui](skills/dotnet-ui/SKILL.md) | Blazor, MAUI, WPF, WinUI, Uno |
+| Verify | [dotnet-testing](skills/dotnet-testing/SKILL.md) | xUnit, integration, Playwright, benchmarks |
+| | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | WinDbg / dotnet-dump crash diagnostics |
+| Operate | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD, containers, migration, Git workflow |
+| | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | Project structure, AOT, CLI, performance, quality |
+| Augment | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP servers, Semantic Kernel, RAG |
+| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | Parallel workflows, correction learning, memory |
 
 ---
 
 ## Agents
 
-| You say | Agent | Focus | Mode |
-|---------|-------|-------|------|
-| "How should I structure this?" | architect | Architecture, folder structure, build config | Read-only |
-| "Analyze the domain" | domain-analyst | Event storming, bounded contexts, domain doc | Read-Write |
-| "Review this PR" | code-review-agent | Correctness, performance, security review | Read-only |
-| "Is this secure?" | security-reviewer | OWASP, secrets, crypto audit | Read-only |
-| "How should I test?" | testing-specialist | Strategy, pyramid design, microservice tests | Read-only |
-| "Generate documentation" | docs-generator | DocFX, Mermaid, XML docs, README | Read-Write |
-| "Is my middleware correct?" | aspnetcore-specialist | Middleware pipeline, DI lifetimes, API design | Read-only |
-| "Why is it slow?" | performance-specialist | Async, flame graphs, GC, benchmarks | Read-only |
-| "Build a cross-platform UI" | ui-specialist | Blazor/MAUI/Uno framework choice, render modes | Read-only |
-| "Remember this" | workflow (skill) | Correction capture, generalization, memory | Read-Write |
-| Build fails | code-lifecycle-agent | MSBuild/NuGet/SDK errors | Read-Write |
-| "Clean this up" | code-lifecycle-agent | 7-step quality pipeline | Read-Write |
-| "Deploy to cloud?" | cloud-specialist | Aspire, AKS, distributed tracing | Read-only |
-| "Crashes under load" | concurrency-specialist | Race conditions, deadlocks, thread safety | Read-only |
-| "Create a PR" / "Release" | pr-workflow | Create → review → merge → release | Read-Write |
-
-Full catalog: [BEHAVIORS.md](BEHAVIORS.md)
-
----
-
-## Key Rules
-
-1. **DbContext is the repository** — No Repository/UoW wrappers. Inject directly.
-2. **No FluentValidation** — .NET 10+ uses `AddValidation()` + DataAnnotations.
-3. **Free/open-source only** — MediatR→Mediator, AutoMapper→Mapperly. See [package-choices.md](skills/dotnet-csharp/references/package-choices.md).
-4. **No DateTime.Now** — Use `TimeProvider`, constructor-injected everywhere.
-5. **Understand before building** — 7-item checklist before writing code. See [USAGE.md](USAGE.md).
-6. **Self-documenting code** — Fresh AI must understand any project in 30 seconds.
-7. **Use modern alternatives** — IHttpClientFactory, System.Text.Json source-gen, Microsoft.AspNetCore.OpenApi.
-
-Quick reference: [CHEATSHEET.md](skills/CHEATSHEET.md)
-
----
-
-## Strengths & Limitations
-
-### Strengths
-
-- **Orchestration over collection** — Decision-maker unifies the entire flow: alignment → standards → routing → agents
-- **Understand before building** — Asks clarifying questions, captures domain vocabulary before coding
-- **Full coverage** — 11 skills spanning API, UI, testing, DevOps, debugging, tooling, AI; 169 reference files
-- **Future-proof** — Generated code follows the 30-second rule; any AI understands any project quickly
-- **Zero commercial dependencies** — All free/open-source (MediatR→Mediator, AutoMapper→Mapperly)
-- **Cross-platform debugging** — Windows (WinDbg) and Linux/macOS (dotnet-dump + lldb)
-- **Zero config** — Install and go; harness auto-activates
-
-### Limitations
-
-- Requires Claude Code as the AI coding agent
-- Focused on the .NET ecosystem only
-- WinDbg debugging is Windows-only (Linux/macOS uses dotnet-dump)
-- Some reference files are still being standardized
+| You say | Agent | Focus |
+|---------|-------|-------|
+| "How should I structure this?" | [architect](agents/dotnet-architect.md) | Architecture, folder structure, build config |
+| "Analyze the domain" | [domain-analyst](agents/dotnet-domain-analyst.md) | Event storming, bounded contexts, domain doc |
+| "Review this PR" | [code-review-agent](agents/dotnet-code-review-agent.md) | Correctness, performance, security review |
+| "Is this secure?" | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP, secrets, crypto audit |
+| "How should I test?" | [testing-specialist](agents/dotnet-testing-specialist.md) | Strategy, pyramid design, microservice tests |
+| "Generate documentation" | [docs-generator](agents/dotnet-docs-generator.md) | DocFX, Mermaid, XML docs, README |
+| "Is my middleware correct?" | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | Middleware pipeline, DI lifetimes, API design |
+| "Why is it slow?" | [performance-specialist](agents/dotnet-performance-specialist.md) | Async, flame graphs, GC, benchmarks |
+| "Build a cross-platform UI" | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno framework choice, render modes |
+| "Remember this" | workflow ([dotnet-workflow](skills/dotnet-workflow/SKILL.md)) | Correction capture, generalization, memory |
+| Build fails / "Clean this up" | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | Build errors + 7-step quality pipeline |
+| "Deploy to cloud?" | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire, AKS, distributed tracing |
+| "Crashes under load" | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | Race conditions, deadlocks, thread safety |
+| "Create a PR" / "Release" | [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release |
 
 ---
 
 ## Further Reading
 
-- [Questioning Framework](USAGE.md) — The decision-maker's 4-round discovery process
-- [Behavior Catalog](BEHAVIORS.md) — All behaviors with routing logic
-- [CLAUDE.md](CLAUDE.md) — Session recovery entry point
+- [USAGE.md](USAGE.md) — Understand before building: 7-item checklist, 4-round questioning, domain-driven analysis
+- [Design Principles](skills/CHEATSHEET.md) — DbContext as repository, no FluentValidation, TimeProvider everywhere
+- [BEHAVIORS.md](BEHAVIORS.md) — Full behavior catalog, routing logic, agent triggers
+- [CLAUDE.md](CLAUDE.md) — Plugin architecture, file map, session recovery protocol
+- [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) — 30-second rule: write code any AI can read
 
 ---
 

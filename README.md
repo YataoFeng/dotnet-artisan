@@ -150,86 +150,50 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 ## 技能
 
-| 分类 | 技能 | 定位 | 不做什么 |
-|------|------|------|---------|
-| 网关 | using-dotnet | 检测 .NET 意图，触发决策者 | 不处理非 .NET 请求 |
-| | dotnet-advisor | 决策者：需求对齐 → 架构设计 → 路由调度 | 不提供领域实现细节 |
-| 基线 | dotnet-csharp | C# 编码规范、async/await、DI、LINQ | 不处理框架级 API 设计 |
-| 构建 | dotnet-api | 后端 API、EF Core、gRPC、SignalR、安全 | 不处理 UI 渲染 |
-| | dotnet-ui | Blazor、MAUI、WPF、WinUI、Uno | 不处理后端 API |
-| 验证 | dotnet-testing | xUnit、集成测试、Playwright、基准 | 不处理生产调试 |
-| | dotnet-debugging | WinDbg / dotnet-dump 崩溃诊断 | 不处理单元测试 |
-| 运维 | dotnet-devops | CI/CD、容器、版本迁移、Git 工作流 | 不处理代码质量 |
-| | dotnet-tooling | 项目结构、MSBuild、AOT、CLI、性能、代码质量 | 不处理 CI/CD 流水线 |
-| 增强 | dotnet-ai | MCP 服务器、Semantic Kernel、RAG | 不处理 API 开发 |
-| | dotnet-workflow | 并行工作流、纠错学习、模式记忆 | 不处理领域开发 |
+| 分类 | 技能 | 定位 |
+|------|------|------|
+| 网关 | [using-dotnet](skills/using-dotnet/SKILL.md) | 检测 .NET 意图，触发决策者 |
+| | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | 决策者：需求对齐 → 架构设计 → 路由调度 |
+| 基线 | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | C# 规范、async/await、DI、LINQ（始终加载） |
+| 构建 | [dotnet-api](skills/dotnet-api/SKILL.md) | 后端 API、EF Core、gRPC、SignalR、安全 |
+| | [dotnet-ui](skills/dotnet-ui/SKILL.md) | Blazor、MAUI、WPF、WinUI、Uno |
+| 验证 | [dotnet-testing](skills/dotnet-testing/SKILL.md) | xUnit、集成测试、Playwright、基准测试 |
+| | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | WinDbg / dotnet-dump 崩溃诊断 |
+| 运维 | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD、容器、版本迁移、Git 工作流 |
+| | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | 项目结构、AOT、CLI、性能、代码质量 |
+| 增强 | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP 服务器、Semantic Kernel、RAG |
+| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | 并行工作流、纠错学习、模式记忆 |
 
 ---
 
 ## 代理
 
-| 你说 | 代理 | 定位 | 模式 |
-|------|------|------|------|
-| "这个项目怎么架构？" | architect | 架构选型、文件夹结构、构建配置 | 只读 |
-| "分析领域" | domain-analyst | 事件风暴、限界上下文、输出领域文档 | 读写 |
-| "审查 PR" | code-review-agent | 正确性、性能、安全、架构审查 | 只读 |
-| "代码安全吗？" | security-reviewer | OWASP、密钥泄露、加密误用审计 | 只读 |
-| "怎么测试？" | testing-specialist | 测试策略、金字塔设计、微服务测试 | 只读 |
-| "生成文档" | docs-generator | DocFX、Mermaid 图、XML 文档、README | 读写 |
-| "中间件顺序对吗？" | aspnetcore-specialist | 中间件管道、DI 生命周期、API 设计 | 只读 |
-| "为什么慢？" | performance-specialist | 异步性能、火焰图、GC 分析、基准设计 | 只读 |
-| "做跨平台 UI" | ui-specialist | Blazor/MAUI/Uno 框架选择、渲染模式 | 只读 |
-| "记住这个" | workflow（技能） | 纠错捕获、模式泛化、写入记忆 | 读写 |
-| 构建失败 | code-lifecycle-agent | MSBuild/NuGet/SDK 错误诊断 | 读写 |
-| "清理代码" | code-lifecycle-agent | 7 步质量流水线：格式→警告→死代码→CancellationToken | 读写 |
-| "部署到云？" | cloud-specialist | Aspire、AKS、分布式追踪 | 只读 |
-| "高并发出问题" | concurrency-specialist | 竞态条件、死锁、线程安全 | 只读 |
-| "创建 PR" / "发布" | pr-workflow | 创建 → 审查 → 合并 → 发布 | 读写 |
-
-完整列表：[BEHAVIORS.md](BEHAVIORS.md)
-
----
-
-## 核心规则
-
-1. **DbContext 即仓储** — 禁止 Repository/UoW 包装，直接注入
-2. **禁止 FluentValidation** — .NET 10+ 用 `AddValidation()` + DataAnnotations
-3. **仅用免费/开源包** — MediatR→Mediator, AutoMapper→Mapperly，详见 [package-choices.md](skills/dotnet-csharp/references/package-choices.md)
-4. **禁止 DateTime.Now** — 全部用 `TimeProvider`，构造函数注入
-5. **先理解再动手** — 7 项检查清单自信回答前不写代码，详见 [USAGE.md](USAGE.md)
-6. **自文档化代码** — 新 AI 在 30 秒内理解项目
-7. **使用现代替代** — IHttpClientFactory、System.Text.Json 源码生成、Microsoft.AspNetCore.OpenApi
-
-速查：[CHEATSHEET.md](skills/CHEATSHEET.md)
-
----
-
-## 优势与局限
-
-### 优势
-
-- **编排而非堆砌** — 决策者统一编排：需求对齐 → 规范加载 → 技能路由 → 专家代理
-- **先理解再动手** — 写代码前先提问澄清，捕获领域词汇，避免在假设上构建
-- **全覆盖** — 11 技能覆盖 API、UI、测试、DevOps、调试、工具链、AI；169 参考文件
-- **长期可用** — 生成的代码遵循 30 秒法则，任何 AI 都能快速理解
-- **零商业依赖** — 全部免费/开源（MediatR→Mediator，AutoMapper→Mapperly）
-- **跨平台调试** — Windows（WinDbg）和 Linux/macOS（dotnet-dump + lldb）
-- **零配置** — 装完即用，Harness 自动激活
-
-### 局限
-
-- 需要 Claude Code 作为 AI 编码代理
-- 专注于 .NET 生态
-- WinDbg 调试仅支持 Windows（Linux/macOS 用 dotnet-dump 替代）
-- 部分参考文件仍在标准化格式中
+| 你说 | 代理 | 定位 |
+|------|------|------|
+| "这个项目怎么架构？" | [architect](agents/dotnet-architect.md) | 架构选型、文件夹结构、构建配置 |
+| "分析领域" | [domain-analyst](agents/dotnet-domain-analyst.md) | 事件风暴、限界上下文、输出领域文档 |
+| "审查 PR" | [code-review-agent](agents/dotnet-code-review-agent.md) | 正确性、性能、安全、架构审查 |
+| "代码安全吗？" | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP、密钥泄露、加密误用审计 |
+| "怎么测试？" | [testing-specialist](agents/dotnet-testing-specialist.md) | 测试策略、金字塔设计、微服务测试 |
+| "生成文档" | [docs-generator](agents/dotnet-docs-generator.md) | DocFX、Mermaid 图、XML 文档、README |
+| "中间件顺序对吗？" | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | 中间件管道、DI 生命周期、API 设计 |
+| "为什么慢？" | [performance-specialist](agents/dotnet-performance-specialist.md) | 异步性能、火焰图、GC 分析、基准设计 |
+| "做跨平台 UI" | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno 框架选择、渲染模式 |
+| "记住这个" | workflow（[dotnet-workflow](skills/dotnet-workflow/SKILL.md)） | 纠错捕获、模式泛化、写入记忆 |
+| 构建失败 / "清理代码" | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | 构建错误诊断 + 7 步质量流水线 |
+| "部署到云？" | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire、AKS、分布式追踪 |
+| "高并发出问题" | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | 竞态条件、死锁、线程安全 |
+| "创建 PR" / "发布" | [pr-workflow](agents/dotnet-pr-workflow.md) | PR 生命周期：创建 → 审查 → 合并 → 发布 |
 
 ---
 
 ## 了解更多
 
-- [提问框架](USAGE.md) — 决策者的 4 轮发现流程
-- [行为目录](BEHAVIORS.md) — 全部行为及路由逻辑
-- [CLAUDE.md](CLAUDE.md) — 上下文恢复入口
+- [USAGE.md](USAGE.md) — 先理解再动手：7 项检查清单、4 轮提问框架、领域驱动分析
+- [设计原则](skills/CHEATSHEET.md) — DbContext 即仓储、禁止 FluentValidation、TimeProvider 等核心规范
+- [BEHAVIORS.md](BEHAVIORS.md) — 全部行为目录、决策者路由逻辑、代理触发词
+- [CLAUDE.md](CLAUDE.md) — 插件架构、文件地图、上下文恢复协议
+- [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) — 30 秒法则：让代码自文档化
 
 ---
 
