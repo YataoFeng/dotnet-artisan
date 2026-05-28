@@ -55,13 +55,14 @@ flowchart TD
     D --> E[1.5 Align requirements<br/>ask questions · capture domain]
     E --> F[2. Load baseline<br/>dotnet-csharp standards]
     F --> G[3. .NET-first defaults]
-    G --> H[4. Analyze request<br/>decompose domains]
-    H --> I1[Backend API]
-    H --> I2[Web frontend]
-    H --> I3[PC desktop]
-    H --> I4[Testing]
-    H --> I5[CI/CD]
-    H --> I6[Tooling]
+    G --> H[4. Architecture design<br/>invoke architect agent<br/>pattern + folder + build config]
+    H --> I[5. Analyze request<br/>decompose domains]
+    I --> I1[Backend API]
+    I --> I2[Web frontend]
+    I --> I3[PC desktop]
+    I --> I4[Testing]
+    I --> I5[CI/CD]
+    I --> I6[Tooling]
     I1 --> J1[dotnet-api]
     I2 --> J2[dotnet-ui<br/>Blazor]
     I3 --> J3[dotnet-ui<br/>MAUI / WPF]
@@ -244,7 +245,7 @@ Gateway  │ using-dotnet · dotnet-advisor               →  intent detection 
 Baseline │ dotnet-csharp                                →  C# language, async/await, DI, LINQ (always loaded)
 Build    │ dotnet-api · dotnet-ui                       →  API / EF Core / gRPC / SignalR / Blazor / MAUI / WPF / Uno
 Verify   │ dotnet-testing · dotnet-debugging            →  testing / debugging（WinDbg / dotnet-dump）
-Operate  │ dotnet-devops · dotnet-tooling               →  CI/CD / scaffold / migration + quality
+Operate  │ dotnet-devops · dotnet-tooling               →  CI/CD / solution structure + scaffold / migration + quality
 Augment  │ dotnet-ai · dotnet-workflow                  →  MCP, RAG / workflow + learning
 ```
 
