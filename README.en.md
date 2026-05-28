@@ -2,7 +2,7 @@
 
 **Makes your AI coding agent actually good at .NET.** Install and go. Zero config.
 
-[![中文](README.md)](README.md) [![MIT](LICENSE)](LICENSE) 11 skills · 13 agents · 169 references · 30+ behaviors
+[![中文](README.md)](README.md) [![MIT](LICENSE)](LICENSE) 11 skills · 14 agents · 169 references · 30+ behaviors
 
 ---
 
@@ -169,47 +169,35 @@ Chain: dotnet-workflow → detect correction → generalize rule →
 
 ## Agents
 
-**Architecture & Design**
+**Build**
 | Agent | Focus | Mode |
 |-------|-------|------|
 | [architect](agents/dotnet-architect.md) | Architecture, folder structure, build config | Read-only |
 | [domain-analyst](agents/dotnet-domain-analyst.md) | Event storming, bounded contexts, domain doc | Read-Write |
-
-**Review & Security**
-| Agent | Focus | Mode |
-|-------|-------|------|
-| [code-review-agent](agents/dotnet-code-review-agent.md) | Correctness, performance, security review | Read-only |
-| [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP, secrets, crypto audit | Read-only |
-
-**Testing & Docs**
-| Agent | Focus | Mode |
-|-------|-------|------|
-| [testing-specialist](agents/dotnet-testing-specialist.md) | Strategy, pyramid design, microservice tests | Read-only |
-| [docs-generator](agents/dotnet-docs-generator.md) | DocFX, Mermaid, XML docs, README | Read-Write |
-
-**Framework & Platform**
-| Agent | Focus | Mode |
-|-------|-------|------|
 | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | Middleware pipeline, DI lifetimes, API design | Read-only |
 | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno framework choice, render modes | Read-only |
 
-**Performance & Concurrency**
+**Verify**
 | Agent | Focus | Mode |
 |-------|-------|------|
+| [testing-specialist](agents/dotnet-testing-specialist.md) | Strategy, pyramid design, microservice tests | Read-only |
+| [code-review-agent](agents/dotnet-code-review-agent.md) | Correctness, performance, security review | Read-only |
+| [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP, secrets, crypto audit | Read-only |
 | [performance-specialist](agents/dotnet-performance-specialist.md) | Async, flame graphs, GC, benchmarks | Read-only |
 | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | Race conditions, deadlocks, thread safety | Read-only |
 
-**Operations & Workflow**
+**Operate**
 | Agent | Focus | Mode |
 |-------|-------|------|
 | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire, AKS, distributed tracing | Read-only |
-| [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release | Read-Write |
 | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | Build errors + 7-step quality pipeline | Read-Write |
+| [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release | Read-Write |
 
-**Learning**
+**Augment**
 | Agent | Focus | Mode |
 |-------|-------|------|
-| [dotnet-workflow](skills/dotnet-workflow/SKILL.md) (skill) | Correction capture, generalization, memory | Read-Write |
+| [docs-generator](agents/dotnet-docs-generator.md) | DocFX, Mermaid, XML docs, README | Read-Write |
+| [dotnet-learning-agent](agents/dotnet-learning-agent.md) | Correction capture, generalization, memory | Read-Write |
 
 ---
 

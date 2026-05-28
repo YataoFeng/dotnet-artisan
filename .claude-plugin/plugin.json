@@ -32,6 +32,7 @@
     "./agents/dotnet-csharp-concurrency-specialist.md",
     "./agents/dotnet-docs-generator.md",
     "./agents/dotnet-domain-analyst.md",
+    "./agents/dotnet-learning-agent.md",
     "./agents/dotnet-security-reviewer.md",
     "./agents/dotnet-testing-specialist.md",
     "./agents/dotnet-pr-workflow.md"

@@ -152,3 +152,4 @@ For complex analysis that benefits from domain expertise, delegate to specialist
 - Test architecture, test type selection, test data management -> [skill:dotnet-testing-specialist]
 - Documentation generation, XML docs, Mermaid diagrams -> [skill:dotnet-docs-generator]
 - ASP.NET Core middleware, request pipeline, DI lifetimes -> [skill:dotnet-aspnetcore-specialist]
+- Correction capture, pattern learning, memory management -> [skill:dotnet-learning-agent]

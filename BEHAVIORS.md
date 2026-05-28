@@ -91,7 +91,7 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 |----------|-------------|--------------|
 | **Upgrade .NET version** | `dotnet-devops` | net8→net9→net10→net11 step by step, breaking change assessment |
 | **Migrate to Native AOT** | `dotnet-tooling` + `dotnet-devops` | Reflection audit, source-gen replacement, publish validation |
-| **Learn from corrections** | `dotnet-workflow` | Captures your corrections, generalizes into rules, stores in MEMORY.md |
+| **Learn from corrections** | `dotnet-learning-agent` | Captures your corrections, generalizes into rules, stores in MEMORY.md |
 | **Optimize workflow** | `dotnet-workflow` | Parallel worktrees, token budget management, plan-mode strategy |
 
 ---
@@ -114,6 +114,7 @@ The decision-maker invokes specialist agents for one-shot deep analysis. Each ag
 | `dotnet-docs-generator` | DocFX, Mermaid, XML docs | "Generate documentation" |
 | `dotnet-security-reviewer` | OWASP, secrets, crypto | "Is this secure?" |
 | `dotnet-testing-specialist` | Test architecture, test data | "How should I test this?" |
+| `dotnet-learning-agent` | Correction capture, pattern generalization, memory | "Remember this", "Learn this pattern" |
 | `dotnet-pr-workflow` | PR lifecycle, merge, release tagging | "Create PR", "merge this", "release" |
 
 ## Routing Logic
