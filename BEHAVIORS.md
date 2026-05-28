@@ -40,7 +40,7 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 | **Build errors** | `dotnet-code-lifecycle-agent` | Diagnoses MSBuild errors, NuGet conflicts, SDK issues |
 | **Slow async code** | `dotnet-performance-specialist` | Finds .Result misuse, missing ConfigureAwait, thread pool starvation |
 | **Race condition** | `dotnet-csharp-concurrency-specialist` | Finds unsynchronized shared state, lock gaps |
-| **Database query too slow** | `dotnet-api` + `dotnet-performance-analyst` | N+1 detection, missing indexes, query plan analysis |
+| **Database query too slow** | `dotnet-api` + `dotnet-performance-specialist` | N+1 detection, missing indexes, query plan analysis |
 
 ### Improve Code Quality
 
