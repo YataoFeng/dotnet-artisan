@@ -1,230 +1,201 @@
 # dotnet-artisan
 
-[![English](https://img.shields.io/badge/English-README-blue)](README.md) [![中文](https://img.shields.io/badge/中文-简体中文-red)](README.zh-CN.md)
+[![English](https://img.shields.io/badge/English-README-blue)](README.md)
 
-**面向 AI 编码代理的 .NET 开发技能库。**
-Claude Code · GitHub Copilot · VS Code · Cursor
+**让你的 AI 编码代理真正擅长 .NET。**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/技能-14-5b9cf5)](skills/)
 [![Agents](https://img.shields.io/badge/代理-17-8b5cf6)](agents/)
-[![References](https://img.shields.io/badge/参考文件-160+-4ade80)](skills/)
 
 ---
 
-## 为什么需要这个仓库
+## 为什么用这个？
 
-AI 编码代理在 .NET 开发中有两个致命缺陷：
+如果你用 Claude Code（或 Copilot、Cursor）做 .NET 开发，你大概率遇到过这些问题：
 
-1. **不知道 .NET 最新模式。** 训练数据是冻结的。它们推荐 Swashbuckle（已停维护）、MediatR（商业）、FluentValidation（不兼容 AOT）、仓储包装（反模式）。它们不知道 .NET 10 的 `AddValidation()`、`HybridCache`、`Microsoft.AspNetCore.OpenApi`。
-
-2. **会话断开就丢失上下文。** 断开重连后，AI 完全不知道你构建了什么、做了什么决策、项目遵循什么模式。
-
-**这个仓库解决这两个问题。** 它教会 AI 写正确的 .NET 代码，同时确保 AI 能在 30 秒内重新理解任何项目。
-
----
-
-## 使用流程
-
-以下是实际使用这个仓库时的行为：
-
-### 示例 1："我需要一个订单管理系统"
-
-```
-你: "我需要一个订单管理系统"
-
-AI（决策者介入）:
-  "写代码前先了解——什么样的订单？采购订单？工单？还是网店顾客订单？"
-
-你: "网店的顾客订单"
-
-AI:
-  "明白了。谁下单——外部顾客？内部员工？"
-  "走一遍流程：一个订单从创建到完成经过哪些步骤？"
-  "'订单状态'对你们来说什么意思——待确认/已确认/已发货/已送达？"
-
-你: "顾客下单。状态：待确认→已确认→已发货→已送达"
-
-AI（领域词汇表已捕获）:
-  "清楚了。再来一轮：
-   - .NET 10 还是 8？PostgreSQL 还是 SQL Server？
-   - 生产环境还是原型？
-   - 需要测试吗？"
-
-你: ".NET 10，PostgreSQL，生产环境，需要测试"
-
-AI（决策者路由）:
-  → 加载 dotnet-api + dotnet-tooling + dotnet-csharp
-  → 脚手架生成 OrderManagement.Api：EF Core + Minimal API + 认证
-  → 配置 Testcontainers + PostgreSQL 集成测试
-  → 每个文件遵循 30 秒法则（自文档化）
-```
-
-**行为链**：意图检测 → 3 轮提问 → 领域词汇表 → 架构选择 → 脚手架 → 测试配置 → 自文档化代码。
-
-### 示例 2："我的应用在生产环境崩溃"
-
-```
-你: "我的应用一直在生产环境崩溃"
-
-AI（决策者）:
-  "有 .dmp 转储文件吗？没有的话能复现吗？"
-  "崩溃表现是什么——OutOfMemoryException？StackOverflow？还是直接挂掉？"
-
-你: "OutOfMemoryException，我有转储文件 C:\dumps\crash.dmp"
-
-AI（决策者路由）:
-  → 加载 dotnet-debugging
-  → WinDbg 打开 crash.dmp
-  → !analyze -v → "CLR 异常: OutOfMemoryException"
-  → !dumpheap -stat → "90% 堆是 byte[]——850MB"
-  → !gcroot 追踪最大 byte[] → "被 ImageCache 单例持有，从不清理"
-  → 报告: "你的 ImageCache 把原始图片存在内存里，没有淘汰策略。
-     修复方案：用 IMemoryCache + SizeLimit + SetSize 做 LRU 淘汰。"
-```
-
-**行为链**：意图检测 → 诊断 → WinDbg 命令 → 根因定位 → 修复建议。
-
-### 示例 3："审查我的代码"
-
-```
-你: "审查这个 PR"
-
-AI（决策者）:
-  → 启动 dotnet-code-review-agent（独立子会话）
-  → 分析：正确性 → 性能 → 安全 → 架构
-  → 报告: "发现 3 个问题:
-     1. [严重] Scoped DbContext 注入到 Singleton 缓存
-     2. [性能] OrderList 端点存在 N+1 查询
-     3. [安全] appsettings.json 里硬编码了 API 密钥"
-```
-
-**行为链**：意图检测 → 代码审查代理 → 多维度分析 → 分类报告。
+| 问题 | 没装这个插件 | 装了这个插件 |
+|---------|-------------------|------------------|
+| 过时/商业包 | AI 推荐 Swashbuckle（停维护）、FluentValidation（不兼容 AOT）、MediatR（商业） | AI 用 `Microsoft.AspNetCore.OpenApi`、`AddValidation()`、直接 Handler——全是内置、免费、AOT 安全 |
+| 反模式 | AI 给 DbContext 包一层无意义的 IRepository/IUnitOfWork | AI 直接注入 DbContext。EF Core 本身就是仓储。 |
+| 知识冻结 | AI 不知道 .NET 10 新特性：`HybridCache`、文件级应用、`field` 关键字 | AI 自动识别 .NET 8 到 11，每个版本用什么特性都清楚 |
+| 上来就写代码 | "帮我做个订单系统" → AI 直接脚手架，但建了一堆错的东西 | AI 先问 3-4 轮问题，捕获领域词汇表，选对架构，再动手 |
+| 断开就失忆 | 断开 → 重连 → AI 完全不认识你写的东西 | AI 30 秒读懂项目，因为每个文件都是自文档化的 |
+| 调试靠猜 | "应用崩溃了" → AI 给泛泛的建议 | AI 在 WinDbg 里打开 .dmp，`!analyze -v`，一路追踪到具体哪行代码 |
 
 ---
 
-## 技能分类
+## 能干什么？（实际场景）
 
-### 网关（最先运行）
+### 构建新项目
 
-| 技能 | 角色 |
-|-------|------|
-| `using-dotnet` | 意图检测器——"这是 .NET 吗？" |
-| `dotnet-advisor` | **决策者。** 分析你的提示词 + 项目文件，检测 .NET 版本，路由到正确技能，意图不明确时反问澄清。 |
+"帮我做一个顾客订单的 Web API"
 
-### 基线（始终加载）
+→ AI 问：什么类型的订单？谁下单？走一遍流程？.NET 版本？什么数据库？
+→ 脚手架生成：EF Core + Minimal API + 认证 + OpenAPI + Scalar 文档
+→ 集成测试搭好：Testcontainers + 真实 PostgreSQL
+→ 每个文件自文档化，以后任何 AI 打开都能读懂
 
-| 技能 | 角色 |
-|-------|------|
-| `dotnet-csharp` | C# 语言标准。Async/await、DI、LINQ、并发、类型设计。所有代码路径都激活。 |
+"做一个 Blazor 管理后台" — 同样流程，但针对 UI：选渲染模式、搭组件、配认证。
 
-### 构建者（创建东西）
+"做一个 CLI 工具" — System.CommandLine 或 Spectre.Console，Native AOT 就绪。
 
-| 技能 | 构建 |
-|-------|--------|
-| `dotnet-api` | Web API、EF Core、gRPC、SignalR、认证、缓存、YARP |
-| `dotnet-ui` | Blazor、MAUI、Uno、WPF、WinUI、WinForms |
+"给我的应用加 AI" — Semantic Kernel、MCP 服务、RAG 流水线。
 
-### 验证者（检查 & 修复）
+### 修复故障
 
-| 技能 | 验证 |
-|-------|--------|
-| `dotnet-testing` | xUnit v3、集成测试（Testcontainers）、E2E（Playwright）、基准测试 |
-| `dotnet-debugging` | 崩溃转储（WinDbg）、死锁、内存泄漏、高 CPU |
-| `dotnet-quality` | 7 步清理：格式化 → 未用 using → 警告 → 死代码 → TODO → sealed 审计 → CancellationToken |
+"生产环境 OutOfMemoryException 崩溃"
 
-### 运维者（交付 & 维护）
+→ AI 加载**调试专家**，在 WinDbg 里打开你的 .dmp 文件
+→ `!analyze -v` → `!dumpheap -stat` → 发现 ImageCache 单例持有 850MB byte[]
+→ 报告："你的图片缓存没有淘汰策略。修复：IMemoryCache + SizeLimit 做 LRU。"
 
-| 技能 | 运维 |
-|-------|--------|
-| `dotnet-devops` | CI/CD、Docker、NuGet 发布、OpenTelemetry |
-| `dotnet-tooling` | MSBuild、Native AOT、CLI 工具、SDK 管理、性能分析 |
-| `dotnet-upgrade` | .NET 版本迁移（8→9→10→11）、AOT 兼容、nullable 迁移 |
+"高并发下卡死" → 死锁检测（!dlk, !syncblk）
 
-### 增强者（扩展 & 提升）
+"构建失败" → MSBuild 诊断专家解决 NuGet 冲突、SDK 版本问题
 
-| 技能 | 增强 |
-|-------|--------|
-| `dotnet-ai` | MCP 服务、Semantic Kernel、RAG、ML.NET |
-| `dotnet-workflow` | 并行工作树、上下文管理、验证循环 |
-| `dotnet-learning` | 纠错捕获、模式泛化、记忆存储 |
+"竞态条件" → 并发专家找到未同步的共享状态
 
----
+### 代码审查
 
-## 专家代理分类
+"审查这段代码" → 多维度分析：正确性、性能、安全、架构。返回分类问题 + 修复建议。
 
-### 角色型代理
+"这个安全吗？" → OWASP 审计。发现硬编码密钥、SQL 注入风险。只读，不修改代码。
 
-像人类专家一样工作。理解上下文，做出判断，解释推理。
+"怎么架构这个项目？" → 架构专家根据复杂度推荐模式。
 
-| 代理 | 扮演角色 | 何时调用 |
-|-------|---------|-------------|
-| `dotnet-architect` | 软件架构师 | "怎么架构这个项目？" |
-| `dotnet-code-review-agent` | 代码审查员 | "审查这个 PR" |
-| `dotnet-security-reviewer` | 安全审计员 | "这个安全吗？"（只读） |
-| `dotnet-testing-specialist` | 测试架构师 | "怎么测试这个？" |
-| `dotnet-docs-generator` | 技术文档工程师 | "生成文档" |
-| `dotnet-refactor-cleaner` | 清理专家 | "清理这段代码" |
+"清理代码" → 7 步流水线：格式化 → 未用 using → 修复警告 → 死代码 → TODO → sealed 审计 → CancellationToken。每步 `dotnet build && dotnet test` 验证。
 
-### 工具型代理
+### 交付
 
-执行特定技术深度分析。聚焦单一领域。
-
-| 代理 | 分析对象 | 何时调用 |
-|-------|----------|-------------|
-| `dotnet-aspnetcore-specialist` | 中间件、DI、管道 | "我的中间件顺序对吗？" |
-| `dotnet-async-performance-specialist` | Async/await 性能、ValueTask | "为什么异步代码这么慢？" |
-| `dotnet-benchmark-designer` | BenchmarkDotNet、测量方法 | "设计一个基准测试" |
-| `dotnet-blazor-specialist` | Blazor 渲染模式、组件 | "选哪个渲染模式？" |
-| `dotnet-build-error-resolver` | MSBuild 错误、SDK 冲突 | 构建失败 |
-| `dotnet-cloud-specialist` | Aspire、AKS、云部署 | "部署到云？" |
-| `dotnet-csharp-concurrency-specialist` | 竞态条件、死锁 | "高并发下崩溃？" |
-| `dotnet-maui-specialist` | MAUI、Xamarin 迁移 | "构建 MAUI 应用" |
-| `dotnet-performance-analyst` | 火焰图、堆、GC | "找出瓶颈" |
-| `dotnet-uno-specialist` | Uno Platform、MVUX | "跨平台 Uno 应用？" |
+"配 CI/CD" → GitHub Actions 管道：缓存、测试、Docker 构建
+"容器化" → 多阶段 Dockerfile、chiseled 镜像、非 root 用户
+"部署到云" → .NET Aspire、AKS、健康检查
+"加监控" → OpenTelemetry + Serilog 结构化日志
 
 ---
 
-## 自文档化代码
-
-每个生成的项目遵循 **30 秒法则**：新 AI 必须在 30 秒内理解项目。
-
-| 规则 | 做 | 不做 |
-|------|-----|-------|
-| 解决方案在根目录 | `.slnx` 立即可见 | 藏在子目录里 |
-| 项目名用领域术语 | `OrderManagement.Api` | `Core`、`Shared` |
-| 文件顶部一句话 | `// 处理履约：验证支付、预留库存、创建发货单` | `// 订单处理` |
-| 显式依赖 | 构造函数参数暴露所有依赖 | Service Locator |
-| 只写 WHY 注释 | `// IServiceScopeFactory：BackgroundService 比 Scoped DbContext 活得长` | `// 保存订单` |
-| 无通用名称 | — | `Helper`、`Manager`、`Utils`、`Common` |
-
-**[→ 完整指南](SELF_DOCUMENTING.md)**
-
-## 核心原则
-
-1. **KISS 优先** — 简单 CRUD 不需要 DDD 或 CQRS。
-2. **禁止仓储包装** — DbContext 就是工作单元；DbSet 就是仓储。
-3. **禁止商业包** — 仅免费/开源。
-4. **禁止 DateTime.Now** — 全项目 `TimeProvider`。
-5. **自文档化代码** — 30 秒法则。[指南 →](SELF_DOCUMENTING.md)
-6. **先问再做** — 领域词汇表优先。[指南 →](USAGE.md)
-
-## 快速开始
+## 怎么安装
 
 ```bash
 claude plugins install YataoFeng/dotnet-artisan
 ```
 
-## 指南
+同样兼容 GitHub Copilot、VS Code、Cursor。遵循 [agentskills.io](https://agentskills.io) 标准。
 
-| 指南 | 主题 |
-|-------|-------|
-| [USAGE.md](USAGE.md) | 4 轮提问框架，领域驱动分析 |
-| [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) | 30 秒法则，8 条 MUST，4 条 NEVER |
-| [BEHAVIORS.md](BEHAVIORS.md) | 30+ 行为目录 + 路由逻辑 |
-| [CLAUDE.md](CLAUDE.md) | 上下文重连——新会话第一份要读的 |
-| [CHEATSHEET.md](skills/CHEATSHEET.md) | 一页全规则速查 |
-| [DECISIONS.md](skills/DECISIONS.md) | "什么时候用什么" |
+装完即用。你说 .NET 相关的事，插件自动激活。零配置。
+
+---
+
+## 谁在干活？
+
+### 决策者（最先运行）
+
+你每次说 .NET 相关的事，两个网关自动介入：
+
+| 角色 | 谁 | 干什么 |
+|------|-----|--------------|
+| 意图检测器 | `using-dotnet` | "这是 .NET 请求吗？" 是 → 交给决策者 |
+| **决策者** | `dotnet-advisor` | 读取你的项目文件、检测 .NET 版本、分析意图、路由到正确专家。意图模糊时反问澄清。 |
+
+### 领域专家（需要时加载）
+
+每个专家深耕一个领域，背后有参考文件支撑（包含模式 + 反模式 + 好/坏代码对照）。
+
+#### 构建者
+
+| 专家 | 构建什么 | 知识储备 |
+|------------|---------------|-----------|
+| `dotnet-api` | Web API、EF Core、gRPC、SignalR、认证、缓存、YARP 反向代理 | 32 个参考文件 |
+| `dotnet-ui` | Blazor、MAUI、Uno Platform、WPF、WinUI 3、WinForms | 20 个参考文件 |
+
+**调用的工具**：项目脚手架、MSBuild、NuGet、SDK 管理（通过 `dotnet-tooling`）
+
+#### 验证者
+
+| 专家 | 检查什么 | 知识储备 |
+|------------|---------------|-----------|
+| `dotnet-testing` | 单元测试 (xUnit v3)、集成测试 (Testcontainers)、E2E (Playwright)、基准测试 | 13 个参考文件 |
+| `dotnet-debugging` | 崩溃转储 (WinDbg)、死锁、内存泄漏、高 CPU | 17 个参考文件——使用 MCP WinDbg 工具 |
+| `dotnet-quality` | 7 步清理：格式化 → 警告 → 死代码 → CancellationToken | 内置流水线 |
+
+#### 运维者
+
+| 专家 | 处理什么 | 知识储备 |
+|------------|-----------------|-----------|
+| `dotnet-devops` | CI/CD、Docker、NuGet 发布、OpenTelemetry | 18 个参考文件 |
+| `dotnet-tooling` | MSBuild、Native AOT、CLI 工具、SDK 安装、性能分析 | 34 个参考文件 |
+| `dotnet-upgrade` | .NET 版本迁移 (8→9→10→11)、AOT 兼容性 | 迁移指南 |
+
+#### 增强者
+
+| 专家 | 添加什么 | 知识储备 |
+|------------|-------------|-----------|
+| `dotnet-ai` | MCP 服务、Semantic Kernel、RAG、ML.NET | AI 集成模式 |
+| `dotnet-workflow` | 并行工作树、上下文管理、Claude Code 优化 | 工作流模式 |
+| `dotnet-learning` | 捕获你的纠正、泛化为规则、存入 MEMORY.md | 学习系统 |
+
+**始终激活**：`dotnet-csharp` 在所有代码路径上都加载。它强制执行 C# 标准：async/await 正确性、DI 模式、LINQ 优化、并发安全。25 个参考文件。
+
+### 专家顾问（按需深度分析）
+
+当领域专家需要更深入的分析时，会叫专家顾问来帮忙。就像打电话请资深同事给第二意见。
+
+**角色型顾问** — 像人类专家一样工作，做出判断，解释推理：
+
+| 顾问 | 扮演角色 | 什么时候叫 |
+|---------|---------|--------------|
+| `dotnet-architect` | 软件架构师 | "这个项目怎么架构？" |
+| `dotnet-code-review-agent` | 高级代码审查员 | "仔细审查这个 PR" |
+| `dotnet-security-reviewer` | 安全审计员 | "这个代码安全吗？"（只读，不改代码） |
+| `dotnet-testing-specialist` | 测试架构师 | "这里怎么测比较合适？" |
+| `dotnet-docs-generator` | 技术文档工程师 | "给这个项目生成文档" |
+| `dotnet-refactor-cleaner` | 清理专家 | "把这个代码库清理干净" |
+
+**工具型顾问** — 在特定领域做深度技术分析：
+
+| 顾问 | 分析什么 | 什么时候叫 |
+|---------|----------|--------------|
+| `dotnet-aspnetcore-specialist` | 中间件、DI、请求管道 | "我这中间件顺序对吗？" |
+| `dotnet-async-performance-specialist` | Async/await、ValueTask、ThreadPool | "为什么异步代码这么慢？" |
+| `dotnet-benchmark-designer` | BenchmarkDotNet、测量方法 | "我需要一个准确的基准测试" |
+| `dotnet-blazor-specialist` | Blazor 渲染模式、组件 | "选哪个 Blazor 渲染模式？" |
+| `dotnet-build-error-resolver` | MSBuild 错误、SDK 冲突 | 构建失败 |
+| `dotnet-cloud-specialist` | .NET Aspire、AKS、云部署 | "部署到 Azure？" |
+| `dotnet-csharp-concurrency-specialist` | 竞态条件、死锁 | "高并发下出问题了" |
+| `dotnet-maui-specialist` | MAUI、Xamarin 迁移 | "做一个手机应用" |
+| `dotnet-performance-analyst` | 火焰图、堆转储、GC | "找出性能瓶颈在哪" |
+| `dotnet-uno-specialist` | Uno Platform、MVUX | "跨平台桌面应用？" |
+
+---
+
+## 写的代码好在哪里？
+
+这个插件生成的每个项目遵循一条规则：**新 AI 会话必须在 30 秒内理解它。**
+
+| 规则 | 好 | 坏 |
+|------|------|-----|
+| 解决方案在根目录 | `OrderManagement.slnx` 一眼看到 | 藏在 `/src/` 里 |
+| 项目名 = 领域名 | `OrderManagement.Api` | `Core`、`Shared`、`Services` |
+| 文件顶部一句话 | `// 处理履约：验证支付、预留库存、创建发货单` | `// 订单处理` |
+| 显式依赖 | `构造函数(AppDbContext, IHybridCache, TimeProvider)` | `IServiceProvider.GetService<T>()` |
+| 只写 WHY 注释 | `// IServiceScopeFactory：BackgroundService 活得比 Scoped DbContext 长` | `// 保存订单` |
+
+[完整指南 →](SELF_DOCUMENTING.md)
+
+---
+
+## 怎么用最有效
+
+1. **说清楚你想要什么。** "我需要一个订单系统"就会触发提问框架。给的上下文越多，提问轮数越少。
+
+2. **让 AI 问完再动手。** 别急着写代码。3-4 轮领域发现能省掉几周的返工。
+
+3. **保留崩溃转储。** 生产环境出问题时，一个 `.dmp` 文件能让调试专家在几分钟内找到根因。
+
+4. **阅读指南。** [USAGE.md](USAGE.md) 展示完整工作流。[BEHAVIORS.md](BEHAVIORS.md) 列出所有行为。
+
+---
 
 ## 许可
 

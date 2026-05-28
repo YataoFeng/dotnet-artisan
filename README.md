@@ -1,232 +1,201 @@
 # dotnet-artisan
 
-[![中文](https://img.shields.io/badge/中文-简体中文-red)](README.zh-CN.md) [![English](https://img.shields.io/badge/English-README-blue)](README.md)
+[![中文](https://img.shields.io/badge/中文-简体中文-red)](README.zh-CN.md)
 
-**.NET development skills for AI coding agents.**
-Claude Code · GitHub Copilot · VS Code · Cursor
+**Makes your AI coding agent actually good at .NET.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/Skills-14-5b9cf5)](skills/)
 [![Agents](https://img.shields.io/badge/Agents-17-8b5cf6)](agents/)
-[![References](https://img.shields.io/badge/References-160+-4ade80)](skills/)
 
 ---
 
-## Why This Exists
+## Why use this?
 
-AI coding agents have two critical flaws with .NET:
+If you use Claude Code (or Copilot, Cursor) for .NET development, you've probably seen these problems:
 
-1. **They don't know .NET's latest patterns.** Training data is frozen. They recommend Swashbuckle (dead), MediatR (commercial), FluentValidation (AOT-incompatible), and Repository wrappers (anti-pattern). They don't know .NET 10's `AddValidation()`, `HybridCache`, or `Microsoft.AspNetCore.OpenApi`.
-
-2. **They forget context between sessions.** Disconnect and reconnect, and the AI has no idea what you built or what decisions you made.
-
-**This repo fixes both.** It teaches AIs to write correct .NET code AND ensures they re-understand any project in 30 seconds.
-
----
-
-## Usage Flow
-
-Here's what actually happens when you use this repo:
-
-### Example 1: "I need an order management system"
-
-```
-YOU: "I need an order management system"
-
-AI (decision-maker kicks in):
-  "Before I write code — what kind of orders? Purchase orders?
-   Work orders? Customer orders from a storefront?"
-
-YOU: "Customer orders from our online store"
-
-AI:
-  "Got it. Who places orders — external customers? Internal staff?"
-  "Walk me through one order: what happens step by step?"
-  "What does 'order status' mean to you — Pending/Confirmed/Shipped?"
-
-YOU: "Customers place orders. Status goes: Pending → Confirmed → Shipped → Delivered"
-
-AI (domain glossary captured):
-  "Understood. One more round:
-   - .NET 10 or 8? PostgreSQL or SQL Server?
-   - Is this production or prototype?
-   - Do you need tests?"
-
-YOU: ".NET 10, PostgreSQL, production, yes tests"
-
-AI (decision-maker routes):
-  → dotnet-api + dotnet-tooling + dotnet-csharp loaded
-  → Scaffolds OrderManagement.Api with EF Core + Minimal APIs + auth
-  → Sets up Testcontainers with PostgreSQL for integration tests
-  → Every file follows 30-second rule (self-documenting)
-```
-
-**Behavior chain**: Intent detection → 3 rounds of questions → domain glossary → architecture choice → scaffold → test setup → self-documenting code.
-
-### Example 2: "My app crashes in production"
-
-```
-YOU: "My app keeps crashing in production"
-
-AI (decision-maker):
-  "Do you have a .dmp file or crash dump? If not, can you reproduce it?"
-  "What's the crash symptom — OutOfMemoryException? StackOverflow?
-   Or just 'stops working'?"
-
-YOU: "OutOfMemoryException, I have a dump file at C:\dumps\crash.dmp"
-
-AI (decision-maker routes):
-  → dotnet-debugging loaded
-  → Opens crash.dmp with WinDbg
-  → Runs !analyze -v → "CLR exception: OutOfMemoryException"
-  → Runs !dumpheap -stat → "90% of heap is byte[] — 850MB"
-  → Runs !gcroot on largest byte[] → "Held by ImageCache singleton, never pruned"
-  → Reports: "Your ImageCache stores raw images in memory with no eviction.
-     Fix: use IMemoryCache with SizeLimit and SetSize for LRU eviction."
-```
-
-**Behavior chain**: Intent detection → diagnostic → WinDbg commands → root cause found → fix recommendation.
-
-### Example 3: "Review my code"
-
-```
-YOU: "Review this PR"
-
-AI (decision-maker):
-  → dotnet-code-review-agent invoked (separate sub-session)
-  → Analyzes: correctness → performance → security → architecture
-  → Reports: "3 issues found:
-     1. [Critical] Scoped DbContext injected into Singleton cache
-     2. [Performance] N+1 query in OrderList endpoint
-     3. [Security] API key hardcoded in appsettings.json"
-```
-
-**Behavior chain**: Intent detection → code-review agent → multi-dimensional analysis → categorized findings.
+| Problem | Without this plugin | With this plugin |
+|---------|-------------------|------------------|
+| Dead packages | AI recommends Swashbuckle (unmaintained), FluentValidation (no AOT), MediatR (commercial) | AI uses `Microsoft.AspNetCore.OpenApi`, `AddValidation()`, direct handlers — all built-in, free, AOT-safe |
+| Anti-patterns | AI wraps DbContext in useless IRepository/IUnitOfWork layers | AI injects DbContext directly. EF Core IS the repository. |
+| Frozen knowledge | AI doesn't know .NET 10 features: `HybridCache`, file-based apps, `field` keyword | AI knows every .NET version from 8 to 11 and adapts automatically |
+| Jumps to code | "Build me an order system" → AI immediately scaffolds a project with wrong assumptions | AI asks 3-4 rounds of questions first, captures a domain glossary, then builds |
+| Lost context | Disconnect → reconnect → AI has no idea what you built or why | AI reads the code in 30 seconds because every file is self-documenting |
+| Vague debugging | "My app crashes" → AI gives generic advice | AI opens .dmp in WinDbg, runs `!analyze -v`, traces root cause to exact line |
 
 ---
 
-## Skill Categories
+## What can it do? (Practical)
 
-### Gateway (Always Run First)
+### When you're building something new
 
-| Skill | Role |
-|-------|------|
-| `using-dotnet` | Intent detector — "Is this .NET?" |
-| `dotnet-advisor` | **The decision-maker.** Analyzes your prompt + project files, detects .NET version, routes to right skills, asks clarifying questions when intent is unclear. |
+"Create a Web API for customer orders"
 
-### Baseline (Always Loaded)
+→ AI asks: What kind of orders? Who places them? What's the flow? .NET version? Database?
+→ Scaffolds project with EF Core, Minimal APIs, auth, OpenAPI, Scalar docs
+→ Sets up integration tests with real PostgreSQL via Testcontainers
+→ Every file follows self-documenting rules so it's readable forever
 
-| Skill | Role |
-|-------|------|
-| `dotnet-csharp` | C# language standards. Async/await, DI, LINQ, concurrency, type design. Active for every code path. |
+"Build a Blazor dashboard" — same flow, but for UI: picks render mode, sets up components, auth state.
 
-### Builders (Create Things)
+"Create a CLI tool" — System.CommandLine or Spectre.Console, Native AOT-ready.
 
-| Skill | Builds |
-|-------|--------|
-| `dotnet-api` | Web APIs, EF Core, gRPC, SignalR, auth, caching, YARP |
-| `dotnet-ui` | Blazor, MAUI, Uno, WPF, WinUI, WinForms |
+"Add AI to my app" — Semantic Kernel, MCP servers, RAG pipelines.
 
-### Verifiers (Check & Fix)
+### When something's broken
 
-| Skill | Verifies |
-|-------|--------|
-| `dotnet-testing` | xUnit v3, integration tests (Testcontainers), E2E (Playwright), benchmarks |
-| `dotnet-debugging` | Crash dumps (WinDbg), deadlocks, memory leaks, high CPU |
-| `dotnet-quality` | 7-step cleanup: format → unused usings → warnings → dead code → TODOs → sealed audit → CancellationToken |
+"Production is crashing with OutOfMemoryException"
 
-### Operators (Ship & Maintain)
+→ AI loads the **debugging specialist**, opens your .dmp file in WinDbg
+→ `!analyze -v` → `!dumpheap -stat` → finds 850MB of byte[] held by ImageCache
+→ Reports: "Your image cache has no eviction. Fix: IMemoryCache with SizeLimit."
 
-| Skill | Operates |
-|-------|--------|
-| `dotnet-devops` | CI/CD, Docker, NuGet publishing, OpenTelemetry |
-| `dotnet-tooling` | MSBuild, Native AOT, CLI tools, SDK management, profiling |
-| `dotnet-upgrade` | .NET version migration (8→9→10→11), AOT compatibility, nullable migration |
+"My app freezes under load" → deadlock detection (!dlk, !syncblk)
 
-### Augmenters (Extend & Improve)
+"Build fails" → MSBuild diagnostic specialist resolves NuGet conflicts, SDK issues
 
-| Skill | Augments |
-|-------|--------|
-| `dotnet-ai` | MCP servers, Semantic Kernel, RAG, ML.NET |
-| `dotnet-workflow` | Parallel worktrees, context management, verification loops |
-| `dotnet-learning` | Correction capture, pattern generalization, memory storage |
+"Race condition" → concurrency specialist finds unsynchronized shared state
 
----
+### When you need a second opinion
 
-## Specialist Agent Categories
+"Review this code" → multi-dimensional analysis: correctness, performance, security, architecture. Returns categorized findings with fix suggestions.
 
-### Role-Based Agents
+"Is this secure?" → OWASP audit. Finds hardcoded secrets, SQL injection risks, missing auth. Read-only.
 
-Act like a human specialist. Understand context, make judgment calls, explain reasoning.
+"How should I structure this?" → architecture specialist recommends patterns based on complexity.
 
-| Agent | Acts As | Invoke When |
-|-------|---------|-------------|
-| `dotnet-architect` | Software architect | "How should I structure this?" |
-| `dotnet-code-review-agent` | Code reviewer | "Review this PR" |
-| `dotnet-security-reviewer` | Security auditor | "Is this secure?" (read-only) |
-| `dotnet-testing-specialist` | Test architect | "How should I test this?" |
-| `dotnet-docs-generator` | Technical writer | "Generate documentation" |
-| `dotnet-refactor-cleaner` | Cleanup specialist | "Clean this up" |
+"Clean this up" → 7-step pipeline: format → unused usings → fix warnings → dead code → TODOs → sealed audit → CancellationToken. Each step verified with `dotnet build && dotnet test`.
 
-### Tool-Based Agents
+### When you're shipping
 
-Perform specific technical deep-dive analysis. Focus on one domain.
-
-| Agent | Analyzes | Invoke When |
-|-------|----------|-------------|
-| `dotnet-aspnetcore-specialist` | Middleware, DI, pipelines | "Is my middleware order correct?" |
-| `dotnet-async-performance-specialist` | Async/await perf, ValueTask | "Why is my async code slow?" |
-| `dotnet-benchmark-designer` | BenchmarkDotNet, measurement | "Design a benchmark" |
-| `dotnet-blazor-specialist` | Blazor render modes, components | "Which render mode?" |
-| `dotnet-build-error-resolver` | MSBuild errors, SDK conflicts | Build fails |
-| `dotnet-cloud-specialist` | Aspire, AKS, cloud deploy | "Deploy to cloud?" |
-| `dotnet-csharp-concurrency-specialist` | Race conditions, deadlocks | "Crashes under load?" |
-| `dotnet-maui-specialist` | MAUI, Xamarin migration | "Build MAUI app" |
-| `dotnet-performance-analyst` | Flame graphs, heap, GC | "Find bottleneck" |
-| `dotnet-uno-specialist` | Uno Platform, MVUX | "Cross-platform Uno?" |
+"Set up CI/CD" → GitHub Actions pipeline with caching, testing, Docker build
+"Containerize" → multi-stage Dockerfile, chiseled images, non-root user
+"Deploy to cloud" → .NET Aspire orchestration, AKS, health checks
+"Add monitoring" → OpenTelemetry + Serilog structured logging
 
 ---
 
-## Self-Documenting Code
-
-Every generated project follows the **30-second rule**: a fresh AI must understand it in 30 seconds.
-
-| Rule | Do | Don't |
-|------|-----|-------|
-| Solution at root | `.slnx` visible immediately | Hidden in subdirectory |
-| Domain project names | `OrderManagement.Api` | `Core`, `Shared` |
-| One-line file headers | `// Handles fulfillment: validates payment, reserves inventory, creates shipment` | `// Order handler` |
-| Explicit dependencies | Constructor parameters | Service Locator |
-| WHY comments only | `// IServiceScopeFactory: BackgroundService outlives Scoped DbContext` | `// Saves the order` |
-| No generic names | — | `Helper`, `Manager`, `Utils`, `Common` |
-
-**[→ Full Guide](SELF_DOCUMENTING.md)**
-
-## Core Principles
-
-1. **KISS first** — Simple CRUD does not need DDD or CQRS.
-2. **No Repository wrappers** — DbContext IS the UoW; DbSet IS the repository.
-3. **No commercial packages** — Free/open-source only.
-4. **No DateTime.Now** — `TimeProvider` everywhere.
-5. **Self-documenting code** — 30-second rule. [Guide →](SELF_DOCUMENTING.md)
-6. **Question before coding** — Domain glossary first. [Guide →](USAGE.md)
-
-## Quick Start
+## How to install
 
 ```bash
 claude plugins install YataoFeng/dotnet-artisan
 ```
 
-## Guides
+Also works with GitHub Copilot, VS Code, Cursor. Follows the [agentskills.io](https://agentskills.io) standard.
 
-| Guide | Topic |
-|-------|-------|
-| [USAGE.md](USAGE.md) | 4-round questioning framework, domain-driven analysis |
-| [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) | 30-second rule, 8 MUST rules, 4 NEVER patterns |
-| [BEHAVIORS.md](BEHAVIORS.md) | 30+ behaviors catalog + routing logic |
-| [CLAUDE.md](CLAUDE.md) | Context reconnection — read first in fresh session |
-| [CHEATSHEET.md](skills/CHEATSHEET.md) | All rules in one page |
-| [DECISIONS.md](skills/DECISIONS.md) | "When to use what" |
+That's it. When you ask for .NET help, the plugin auto-activates. No configuration needed.
+
+---
+
+## Who's in the team?
+
+### The Decision-Maker (always runs first)
+
+When you say anything .NET-related, two gateways fire:
+
+| Role | Who | What it does |
+|------|-----|--------------|
+| Intent detector | `using-dotnet` | "Is this a .NET request?" If yes, pass to decision-maker |
+| **Decision-maker** | `dotnet-advisor` | Reads your project files, detects .NET version, analyzes your intent, routes to the right specialists. Asks clarifying questions if your intent is ambiguous. |
+
+### The Specialists (loaded when needed)
+
+Each specialist has deep knowledge in one domain, backed by reference files with patterns and anti-patterns.
+
+#### Building things
+
+| Specialist | What it builds | Backed by |
+|------------|---------------|-----------|
+| `dotnet-api` | Web APIs, EF Core, gRPC, SignalR, auth, caching, YARP reverse proxy | 32 reference files |
+| `dotnet-ui` | Blazor, MAUI, Uno Platform, WPF, WinUI 3, WinForms | 20 reference files |
+
+**Tools they use**: project scaffolding, MSBuild, NuGet, SDK management (via `dotnet-tooling`)
+
+#### Checking things
+
+| Specialist | What it checks | Backed by |
+|------------|---------------|-----------|
+| `dotnet-testing` | Unit tests (xUnit v3), integration tests (Testcontainers), E2E (Playwright), benchmarks | 13 reference files |
+| `dotnet-debugging` | Crash dumps (WinDbg), deadlocks, memory leaks, high CPU | 17 reference files — uses MCP WinDbg tools |
+| `dotnet-quality` | 7-step cleanup: format → warnings → dead code → CancellationToken | Built-in pipeline |
+
+#### Shipping things
+
+| Specialist | What it handles | Backed by |
+|------------|-----------------|-----------|
+| `dotnet-devops` | CI/CD, Docker, NuGet publishing, OpenTelemetry | 18 reference files |
+| `dotnet-tooling` | MSBuild, Native AOT, CLI tools, SDK install, profiling | 34 reference files |
+| `dotnet-upgrade` | .NET version migration (8→9→10→11), AOT compatibility | Migration guides |
+
+#### Extending things
+
+| Specialist | What it adds | Backed by |
+|------------|-------------|-----------|
+| `dotnet-ai` | MCP servers, Semantic Kernel, RAG, ML.NET | AI integration patterns |
+| `dotnet-workflow` | Parallel worktrees, context management, Claude Code optimization | Workflow patterns |
+| `dotnet-learning` | Captures your corrections, generalizes into rules, stores in MEMORY.md | Learning system |
+
+**Always active**: `dotnet-csharp` is loaded on every code path. It enforces C# standards: async/await correctness, DI patterns, LINQ optimization, concurrency safety. 25 reference files.
+
+### The Expert Advisors (on-demand deep analysis)
+
+When a specialist needs a deeper look, it calls in an expert advisor. These are like calling a senior colleague for a second opinion.
+
+**Role-based advisors** — they act like human specialists, make judgment calls, explain their reasoning:
+
+| Advisor | Acts as | Call when... |
+|---------|---------|--------------|
+| `dotnet-architect` | Software architect | "How should I structure this project?" |
+| `dotnet-code-review-agent` | Senior code reviewer | "Review this PR thoroughly" |
+| `dotnet-security-reviewer` | Security auditor | "Is this code secure?" (read-only, doesn't change code) |
+| `dotnet-testing-specialist` | Test architect | "What's the right test strategy here?" |
+| `dotnet-docs-generator` | Technical writer | "Generate docs for this project" |
+| `dotnet-refactor-cleaner` | Cleanup specialist | "Clean up this codebase" |
+
+**Tool-based advisors** — they do deep technical analysis in one specific area:
+
+| Advisor | Analyzes | Call when... |
+|---------|----------|--------------|
+| `dotnet-aspnetcore-specialist` | Middleware, DI, request pipelines | "Is my middleware order correct?" |
+| `dotnet-async-performance-specialist` | Async/await, ValueTask, ThreadPool | "Why is my async code slow?" |
+| `dotnet-benchmark-designer` | BenchmarkDotNet, measurement | "I need an accurate benchmark" |
+| `dotnet-blazor-specialist` | Blazor render modes, components | "Which Blazor render mode?" |
+| `dotnet-build-error-resolver` | MSBuild errors, SDK conflicts | Build won't compile |
+| `dotnet-cloud-specialist` | .NET Aspire, AKS, cloud | "Deploy this to Azure?" |
+| `dotnet-csharp-concurrency-specialist` | Race conditions, deadlocks | "This breaks under concurrency" |
+| `dotnet-maui-specialist` | MAUI, Xamarin migration | "Build a mobile app" |
+| `dotnet-performance-analyst` | Flame graphs, heap dumps, GC | "Find the performance bottleneck" |
+| `dotnet-uno-specialist` | Uno Platform, MVUX | "Cross-platform desktop app?" |
+
+---
+
+## What makes the code good?
+
+Every project this plugin generates follows one rule: **a fresh AI session must understand it in 30 seconds.**
+
+| Rule | Good | Bad |
+|------|------|-----|
+| Solution at root | `OrderManagement.slnx` at top level | Hidden in `/src/` |
+| Project names = domain | `OrderManagement.Api` | `Core`, `Shared`, `Services` |
+| File headers | `// Handles fulfillment: validates payment, reserves inventory, creates shipment` | `// Order handler` |
+| Dependencies | `constructor(AppDbContext, IHybridCache, TimeProvider)` | `IServiceProvider.GetService<T>()` |
+| Comments | `// IServiceScopeFactory: BackgroundService outlives Scoped DbContext` | `// Saves the order` |
+
+[Full guide →](SELF_DOCUMENTING.md)
+
+---
+
+## How to get the most out of it
+
+1. **Be specific about what you want.** "I need an order system" triggers the questioning framework. The more context you give, the fewer rounds of questions.
+
+2. **Let the AI ask questions.** Don't rush to code. The 3-4 rounds of domain discovery prevent weeks of rework.
+
+3. **Save crash dumps.** When something breaks in production, having a `.dmp` file means the debugging specialist can find the root cause in minutes.
+
+4. **Read the guides.** [USAGE.md](USAGE.md) shows the full workflow. [BEHAVIORS.md](BEHAVIORS.md) lists every behavior.
+
+---
 
 ## License
 
