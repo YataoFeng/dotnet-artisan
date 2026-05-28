@@ -53,7 +53,7 @@ dotnet-artisan/
 │   ├── dotnet-workflow/   ← Parallel worktrees, context
 │   └── dotnet-learning/   ← Correction capture
 ├── agents/                ← 17 specialist agent .md files
-├── docs/                  ← GitHub Pages (index.html + index.zh-CN.html)
+├── docs/                  ← GitHub Pages (index.html = Chinese, index.en.html = English)
 ├── scripts/hooks/         ← Node.js hook scripts
 └── hooks.json             ← Hook configuration
 ```
