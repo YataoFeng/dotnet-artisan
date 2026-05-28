@@ -12,7 +12,7 @@ dotnet-artisan 是一个 Claude Code 插件，让 AI 编码代理能够正确地
 
 它不是一个零散的工具集合，而是一个**完整的 .NET 开发智能体系统**。核心是一个决策者编排器，它会先分析需求、捕获领域词汇、设计架构，然后路由到对应技能去执行——从 API 搭建到调试崩溃，从安全审计到 CI/CD 配置，覆盖完整的开发生命周期。
 
-装完即用，无需任何配置。
+装完即用，无需任何配置。 [Web 版 →](https://fenzel999.github.io/dotnet-artisan)
 
 ---
 
@@ -150,35 +150,41 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 ## 技能
 
-| 分类 | 技能 | 覆盖 |
-|------|------|------|
-| 网关 | using-dotnet, dotnet-advisor | 意图检测 + 决策路由 |
-| 基线 | dotnet-csharp | C# 规范、async/await、DI、LINQ（始终加载） |
-| 构建 | dotnet-api, dotnet-ui | API / EF Core / gRPC / SignalR / Blazor / MAUI / WPF / Uno |
-| 验证 | dotnet-testing, dotnet-debugging | 测试 / 调试（WinDbg + dotnet-dump） |
-| 运维 | dotnet-devops, dotnet-tooling | CI/CD / 版本迁移 / Git 工作流 / 脚手架 / 代码质量 |
-| 增强 | dotnet-ai, dotnet-workflow | MCP、RAG / 工作流优化 + 学习 |
+| 分类 | 技能 | 定位 | 不做什么 |
+|------|------|------|---------|
+| 网关 | using-dotnet | 检测 .NET 意图，触发决策者 | 不处理非 .NET 请求 |
+| | dotnet-advisor | 决策者：需求对齐 → 架构设计 → 路由调度 | 不提供领域实现细节 |
+| 基线 | dotnet-csharp | C# 编码规范、async/await、DI、LINQ | 不处理框架级 API 设计 |
+| 构建 | dotnet-api | 后端 API、EF Core、gRPC、SignalR、安全 | 不处理 UI 渲染 |
+| | dotnet-ui | Blazor、MAUI、WPF、WinUI、Uno | 不处理后端 API |
+| 验证 | dotnet-testing | xUnit、集成测试、Playwright、基准 | 不处理生产调试 |
+| | dotnet-debugging | WinDbg / dotnet-dump 崩溃诊断 | 不处理单元测试 |
+| 运维 | dotnet-devops | CI/CD、容器、版本迁移、Git 工作流 | 不处理代码质量 |
+| | dotnet-tooling | 项目结构、MSBuild、AOT、CLI、性能、代码质量 | 不处理 CI/CD 流水线 |
+| 增强 | dotnet-ai | MCP 服务器、Semantic Kernel、RAG | 不处理 API 开发 |
+| | dotnet-workflow | 并行工作流、纠错学习、模式记忆 | 不处理领域开发 |
 
 ---
 
 ## 代理
 
-| 你说 | 代理 | 专长 |
-|------|------|------|
-| "这个项目怎么架构？" | architect | 架构选型、文件夹结构、构建配置 |
-| "分析领域" | domain-analyst | 事件风暴、限界上下文、领域文档 |
-| "审查 PR" | code-review-agent | 正确性、性能、安全、架构 |
-| "代码安全吗？" | security-reviewer | OWASP、密钥、加密（只读） |
-| "怎么测试？" | testing-specialist | 测试策略、金字塔设计 |
-| "生成文档" | docs-generator | DocFX、Mermaid |
-| "中间件顺序对吗？" | aspnetcore-specialist | 中间件、DI、请求管道 |
-| "为什么慢？" / "设计基准" | performance-specialist | 异步、性能分析、基准 |
-| "做跨平台 UI" | ui-specialist | Blazor / MAUI / Uno |
-| "记住这个" | workflow（技能） | 纠错捕获、模式泛化 |
-| 构建失败 / "清理代码" | code-lifecycle-agent | 构建错误 + 质量清理 |
-| "部署到云？" | cloud-specialist | Aspire、AKS |
-| "高并发出问题" | concurrency-specialist | 竞态条件、死锁 |
-| "创建 PR" / "发布" | pr-workflow | PR 生命周期 |
+| 你说 | 代理 | 定位 | 模式 |
+|------|------|------|------|
+| "这个项目怎么架构？" | architect | 架构选型、文件夹结构、构建配置 | 只读 |
+| "分析领域" | domain-analyst | 事件风暴、限界上下文、输出领域文档 | 读写 |
+| "审查 PR" | code-review-agent | 正确性、性能、安全、架构审查 | 只读 |
+| "代码安全吗？" | security-reviewer | OWASP、密钥泄露、加密误用审计 | 只读 |
+| "怎么测试？" | testing-specialist | 测试策略、金字塔设计、微服务测试 | 只读 |
+| "生成文档" | docs-generator | DocFX、Mermaid 图、XML 文档、README | 读写 |
+| "中间件顺序对吗？" | aspnetcore-specialist | 中间件管道、DI 生命周期、API 设计 | 只读 |
+| "为什么慢？" | performance-specialist | 异步性能、火焰图、GC 分析、基准设计 | 只读 |
+| "做跨平台 UI" | ui-specialist | Blazor/MAUI/Uno 框架选择、渲染模式 | 只读 |
+| "记住这个" | workflow（技能） | 纠错捕获、模式泛化、写入记忆 | 读写 |
+| 构建失败 | code-lifecycle-agent | MSBuild/NuGet/SDK 错误诊断 | 读写 |
+| "清理代码" | code-lifecycle-agent | 7 步质量流水线：格式→警告→死代码→CancellationToken | 读写 |
+| "部署到云？" | cloud-specialist | Aspire、AKS、分布式追踪 | 只读 |
+| "高并发出问题" | concurrency-specialist | 竞态条件、死锁、线程安全 | 只读 |
+| "创建 PR" / "发布" | pr-workflow | 创建 → 审查 → 合并 → 发布 | 读写 |
 
 完整列表：[BEHAVIORS.md](BEHAVIORS.md)
 

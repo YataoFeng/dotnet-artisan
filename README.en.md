@@ -12,7 +12,7 @@ dotnet-artisan is a Claude Code plugin that teaches AI coding agents to write co
 
 It's not a collection of scattered tools — it's a **complete .NET development agent system**. A decision-maker orchestrator analyzes requirements, captures domain vocabulary, designs architecture, then routes to the right skills for execution. From building APIs to debugging crashes, security audits to CI/CD setup, it covers the full development lifecycle.
 
-Install and go. Zero configuration required.
+Install and go. Zero configuration required. [Web edition →](https://fenzel999.github.io/dotnet-artisan)
 
 ---
 
@@ -151,35 +151,41 @@ Chain: dotnet-workflow → detect correction → generalize rule →
 
 ## Skills
 
-| Category | Skills | Covers |
-|----------|--------|--------|
-| Gateway | using-dotnet, dotnet-advisor | Intent detection + decision routing |
-| Baseline | dotnet-csharp | C# standards, async/await, DI, LINQ (always loaded) |
-| Build | dotnet-api, dotnet-ui | API / EF Core / gRPC / SignalR / Blazor / MAUI / WPF / Uno |
-| Verify | dotnet-testing, dotnet-debugging | Testing / debugging (WinDbg + dotnet-dump) |
-| Operate | dotnet-devops, dotnet-tooling | CI/CD / migration / Git workflow / scaffold / quality |
-| Augment | dotnet-ai, dotnet-workflow | MCP, RAG / workflow optimization + learning |
+| Category | Skill | Positioning | Does NOT |
+|----------|-------|-------------|----------|
+| Gateway | using-dotnet | Detects .NET intent, triggers decision-maker | Non-.NET requests |
+| | dotnet-advisor | Decision-maker: align → architect → route | Domain implementation |
+| Baseline | dotnet-csharp | C# standards, async/await, DI, LINQ | Framework API design |
+| Build | dotnet-api | Backend API, EF Core, gRPC, SignalR, security | UI rendering |
+| | dotnet-ui | Blazor, MAUI, WPF, WinUI, Uno | Backend API |
+| Verify | dotnet-testing | xUnit, integration, Playwright, benchmarks | Production debugging |
+| | dotnet-debugging | WinDbg / dotnet-dump crash diagnostics | Unit testing |
+| Operate | dotnet-devops | CI/CD, containers, migration, Git workflow | Code quality |
+| | dotnet-tooling | Project structure, MSBuild, AOT, CLI, quality | CI/CD pipelines |
+| Augment | dotnet-ai | MCP servers, Semantic Kernel, RAG | API development |
+| | dotnet-workflow | Parallel workflows, correction learning, memory | Domain development |
 
 ---
 
 ## Agents
 
-| You say | Agent | Focus |
-|---------|-------|-------|
-| "How should I structure this?" | architect | Architecture, folder structure, build config |
-| "Analyze the domain" | domain-analyst | Event storming, bounded contexts, domain docs |
-| "Review this PR" | code-review-agent | Correctness, performance, security |
-| "Is this secure?" | security-reviewer | OWASP, secrets, crypto (read-only) |
-| "How should I test?" | testing-specialist | Strategy, pyramid design, test data |
-| "Generate documentation" | docs-generator | DocFX, Mermaid |
-| "Is my middleware order correct?" | aspnetcore-specialist | Middleware, DI, request pipeline |
-| "Why is it slow?" / "Design a benchmark" | performance-specialist | Async, profiling, benchmarks |
-| "Build a cross-platform UI" | ui-specialist | Blazor / MAUI / Uno |
-| "Remember this" | workflow (skill) | Correction capture, generalization |
-| Build fails / "Clean this up" | code-lifecycle-agent | Build errors + quality cleanup |
-| "Deploy to cloud?" | cloud-specialist | Aspire, AKS |
-| "Crashes under load" | concurrency-specialist | Race conditions, deadlocks |
-| "Create a PR" / "Release" | pr-workflow | PR lifecycle |
+| You say | Agent | Focus | Mode |
+|---------|-------|-------|------|
+| "How should I structure this?" | architect | Architecture, folder structure, build config | Read-only |
+| "Analyze the domain" | domain-analyst | Event storming, bounded contexts, domain doc | Read-Write |
+| "Review this PR" | code-review-agent | Correctness, performance, security review | Read-only |
+| "Is this secure?" | security-reviewer | OWASP, secrets, crypto audit | Read-only |
+| "How should I test?" | testing-specialist | Strategy, pyramid design, microservice tests | Read-only |
+| "Generate documentation" | docs-generator | DocFX, Mermaid, XML docs, README | Read-Write |
+| "Is my middleware correct?" | aspnetcore-specialist | Middleware pipeline, DI lifetimes, API design | Read-only |
+| "Why is it slow?" | performance-specialist | Async, flame graphs, GC, benchmarks | Read-only |
+| "Build a cross-platform UI" | ui-specialist | Blazor/MAUI/Uno framework choice, render modes | Read-only |
+| "Remember this" | workflow (skill) | Correction capture, generalization, memory | Read-Write |
+| Build fails | code-lifecycle-agent | MSBuild/NuGet/SDK errors | Read-Write |
+| "Clean this up" | code-lifecycle-agent | 7-step quality pipeline | Read-Write |
+| "Deploy to cloud?" | cloud-specialist | Aspire, AKS, distributed tracing | Read-only |
+| "Crashes under load" | concurrency-specialist | Race conditions, deadlocks, thread safety | Read-only |
+| "Create a PR" / "Release" | pr-workflow | Create → review → merge → release | Read-Write |
 
 Full catalog: [BEHAVIORS.md](BEHAVIORS.md)
 
