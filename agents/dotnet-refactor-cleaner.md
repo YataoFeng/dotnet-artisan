@@ -1,6 +1,7 @@
 ---
 name: dotnet-refactor-cleaner
 description: Systematic .NET code refactoring agent. Applies the 7-step dotnet-quality cleanup pipeline: formatting, unused usings, analyzer warnings, dead code removal, TODO resolution, sealed class audit, and CancellationToken propagation. Each step is verified independently with `dotnet build && dotnet test`. Use for "clean up", "de-sloppify", "refactor", or "tech debt reduction".
+model: sonnet
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 

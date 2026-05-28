@@ -1,6 +1,6 @@
 ---
 name: dotnet-csharp
-description: Baseline C# skill loaded for every .NET code path. Guides language patterns (records, pattern matching, primary constructors, C# 8-15), coding standards, async/await, DI, LINQ, serialization, domain modeling, concurrency, Roslyn analyzers, globalization, native interop (P/Invoke, LibraryImport, ComWrappers), WASM interop (JSImport/JSExport), and type design. Spans 25 topics. Do not use for ASP.NET endpoint architecture, UI framework patterns, or CI/CD guidance.
+description: Baseline C# skill loaded for every .NET code path. Guides language patterns (records, pattern matching, primary constructors, C# 8-15), coding standards, async/await, DI, LINQ, serialization, domain modeling, concurrency, Roslyn analyzers, globalization, native interop (P/Invoke, LibraryImport, ComWrappers), WASM interop (JSImport/JSExport), and type design. Spans 27 topics. Do not use for ASP.NET endpoint architecture, UI framework patterns, or CI/CD guidance.
 license: MIT
 user-invocable: false
 ---

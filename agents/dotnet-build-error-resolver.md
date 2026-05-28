@@ -1,6 +1,7 @@
 ---
 name: dotnet-build-error-resolver
 description: Diagnoses and resolves .NET build errors by analyzing error logs, MSBuild output, and project configuration. Handles NuGet resolution failures, TFM mismatches, analyzer warnings, and SDK version conflicts. Use after a failed `dotnet build` to systematically resolve all errors.
+model: sonnet
 tools: Read, Grep, Glob, Bash
 ---
 
