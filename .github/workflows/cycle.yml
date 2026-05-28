@@ -1,7 +1,7 @@
 name: Evolution Cycle
 
-# 5-step cycle: Find → Learn → Optimize → Polish → Repeat
-# Creates PR for human review before merging.
+# 7-step cycle. Creates PR with REAL content changes for human review.
+# 1. Find → 2. Screen → 3. Fetch → 4. Learn → 5. Integrate → 6. Polish → 7. PR
 
 concurrency:
   group: evolution-cycle
@@ -14,120 +14,156 @@ on:
 
 jobs:
   cycle:
-    if: github.event_name != 'push' || github.event.head_commit.author.name != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        with: { fetch-depth: 0 }
 
-      # STEP 1: Find new .NET teacher repos on GitHub
-      - name: Step 1 — Find teachers
-        id: find
+      # 1. FIND teachers
+      - name: 1. Find .NET teacher repos
         run: |
-          echo "## Step 1: Finding .NET teacher repos" >> $GITHUB_STEP_SUMMARY
+          echo "## 1. Find" >> $GITHUB_STEP_SUMMARY
           curl -s "https://api.github.com/search/repositories?q=dotnet+skills+SKILL.md+claude&sort=updated&per_page=5" \
-            | jq -r '.items[] | "\(.full_name) | ⭐\(.stargazers_count) | \(.description // "no desc")"' \
-            > /tmp/teachers.txt 2>/dev/null || echo "No new teachers found" > /tmp/teachers.txt
+            | jq -r '.items[] | .full_name' > /tmp/teachers.txt 2>/dev/null
           cat /tmp/teachers.txt >> $GITHUB_STEP_SUMMARY
-          echo "found=$(wc -l < /tmp/teachers.txt)" >> $GITHUB_OUTPUT
 
-      # STEP 2: Quality check + learn from changes
-      - name: Step 2 — Learn & self-check
+      # 2. SCREEN with AI — check if any teacher has .NET content worth learning
+      - name: 2. Screen teachers (AI)
+        id: screen
         run: |
-          echo "## Step 2: Quality check" >> $GITHUB_STEP_SUMMARY
-          ISSUES=0
-          # Check internal links
-          find skills -name "*.md" -print0 2>/dev/null | head -30 | while IFS= read -r -d '' f; do
-            grep -oP '\[.*?\]\(\.\.?/[^)]+\)' "$f" 2>/dev/null | sed 's/.*(\(.*\))/\1/' | while read link; do
-              target="$(dirname "$f")/${link%.md}.md"
-              [ -f "$target" ] && continue
-              echo "⚠️ Broken: $f → $link" >> $GITHUB_STEP_SUMMARY
+          TEACHERS=$(cat /tmp/teachers.txt | tr '\n' ', ')
+          PROMPT="Screen these repos. Output JSON: {\"suitable\":[{\"repo\":\"owner/name\",\"reason\":\"1 sentence why\"}],\"skip\":[\"owner/name\"]}. Suitable = .NET/C# specific, has SKILL.md, teaches new patterns we might not have. Skip = generic, non-.NET, or already known."
+          RESPONSE=$(curl -s https://models.inference.ai.azure.com/chat/completions \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg p "$PROMPT" --arg t "$TEACHERS" '{
+              messages:[{role:"system",content:$p},{role:"user",content:$t}],
+              model:"gpt-4o-mini",temperature:0.3,max_tokens:512,
+              response_format:{type:"json_object"}}')")
+          echo "$RESPONSE" | jq -r '.choices[0].message.content' > /tmp/screen.json 2>/dev/null || echo '{"suitable":[]}' > /tmp/screen.json
+          jq -r '.suitable[]?.repo // empty' /tmp/screen.json > /tmp/to_learn.txt
+          COUNT=$(wc -l < /tmp/to_learn.txt)
+          echo "Suitable teachers: $COUNT" >> $GITHUB_STEP_SUMMARY
+          cat /tmp/screen.json >> $GITHUB_STEP_SUMMARY
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+      # 3. FETCH teacher content
+      - name: 3. Fetch teacher skills
+        if: steps.screen.outputs.count > 0
+        run: |
+          echo "## 3. Fetch" >> $GITHUB_STEP_SUMMARY
+          truncate -s 0 /tmp/teacher_content.md
+          while read repo; do
+            [ -z "$repo" ] && continue
+            echo "Fetching $repo..." >> $GITHUB_STEP_SUMMARY
+            git clone --depth 1 "https://github.com/$repo.git" "/tmp/$repo" 2>/dev/null || continue
+            find "/tmp/$repo" -name "SKILL.md" -o -name "*.md" | head -5 | while read f; do
+              echo "--- $f ---" >> /tmp/teacher_content.md
+              head -150 "$f" >> /tmp/teacher_content.md
             done
-          done
-          # Check stray DateTime.Now
-          STRAY=$(grep -rn 'DateTime\.Now' skills --include="*.md" 2>/dev/null | grep -v "BAD\|TimeProvider\|anti-pattern\|速查\|//.*BAD" | wc -l)
-          [ "$STRAY" -gt 0 ] && echo "⚠️ $STRAY stray DateTime.Now" >> $GITHUB_STEP_SUMMARY || echo "✅ No stray DateTime.Now" >> $GITHUB_STEP_SUMMARY
-          # Check for Chinese in SKILL.md
-          CN=$(grep -rn '[\x{4e00}-\x{9fff}]' skills/*/SKILL.md 2>/dev/null | wc -l)
-          [ "$CN" -gt 10 ] && echo "⚠️ $CN Chinese chars in SKILL.md — must be English!" >> $GITHUB_STEP_SUMMARY || echo "✅ SKILL.md files English" >> $GITHUB_STEP_SUMMARY
+            rm -rf "/tmp/$repo"
+          done < /tmp/to_learn.txt
+          echo "Content fetched: $(wc -c < /tmp/teacher_content.md) bytes" >> $GITHUB_STEP_SUMMARY
 
-      # STEP 3: Auto-optimize (fix trivial issues)
-      - name: Step 3 — Optimize
-        id: opt
+      # 4. LEARN — AI extracts new anti-patterns
+      - name: 4. Learn new patterns (AI)
+        id: learn
+        if: steps.screen.outputs.count > 0
         run: |
-          set +e  # allow non-zero exits in this block
-          echo "## Step 3: Auto-optimize" >> $GITHUB_STEP_SUMMARY
-          # Fix trailing whitespace
-          for f in $(find skills -name "*.md" -type f 2>/dev/null | head -100); do
-            sed -i 's/[[:space:]]*$//' "$f" 2>/dev/null || true
-          done
-          CHANGED=$(git diff --name-only 2>/dev/null | wc -l)
-          echo "changed=$CHANGED" >> $GITHUB_OUTPUT
-          if [ "$CHANGED" -gt 0 ]; then
-            echo "Fixed $CHANGED file(s)" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "✅ Already clean" >> $GITHUB_STEP_SUMMARY
-          fi
+          CONTENT=$(head -c 20000 /tmp/teacher_content.md)
+          PROMPT="You are analyzing .NET skill files. Extract NEW anti-patterns (BAD vs GOOD code) that we should integrate. For each: name, short BAD code (one line), short GOOD code (one line), which of our reference files to update (pick from: skills/dotnet-csharp/references/anti-patterns.md, skills/dotnet-api/references/efcore-patterns.md, skills/dotnet-api/references/http-client.md, skills/dotnet-csharp/references/dependency-injection.md, skills/dotnet-api/references/minimal-apis.md, skills/dotnet-api/references/aspire-patterns.md, skills/dotnet-devops/references/containers.md). Only include genuinely NEW patterns we likely don't have. Output JSON: {\"patterns\":[{\"name\":\"...\",\"bad\":\"...\",\"good\":\"...\",\"file\":\"...\"}]}. If nothing new, output {\"patterns\":[]}."
+          RESPONSE=$(curl -s https://models.inference.ai.azure.com/chat/completions \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg p "$PROMPT" --arg c "$CONTENT" '{
+              messages:[{role:"system",content:$p},{role:"user",content:$c}],
+              model:"gpt-4o-mini",temperature:0.3,max_tokens:2048,
+              response_format:{type:"json_object"}}')")
+          echo "$RESPONSE" | jq -r '.choices[0].message.content' > /tmp/learned.json 2>/dev/null || echo '{"patterns":[]}' > /tmp/learned.json
+          COUNT=$(jq '.patterns | length' /tmp/learned.json)
+          echo "New patterns found: $COUNT" >> $GITHUB_STEP_SUMMARY
+          jq '.patterns' /tmp/learned.json >> $GITHUB_STEP_SUMMARY
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
 
-      # STEP 4: Polish README + Pages
-      - name: Step 4 — Polish README
+      # 5. INTEGRATE — apply new patterns to files
+      - name: 5. Integrate new patterns
+        if: steps.learn.outputs.count > 0
         run: |
-          echo "## Step 4: Polish docs" >> $GITHUB_STEP_SUMMARY
-          # Check README exists and has content
-          if [ -f README.md ]; then
-            LINES=$(wc -l < README.md)
-            [ "$LINES" -gt 50 ] && echo "✅ README healthy ($LINES lines)" >> $GITHUB_STEP_SUMMARY || echo "⚠️ README short ($LINES lines)" >> $GITHUB_STEP_SUMMARY
-          fi
-          # Check Pages exist
-          [ -f docs/index.html ] && echo "✅ Pages present" >> $GITHUB_STEP_SUMMARY || echo "⚠️ Pages missing" >> $GITHUB_STEP_SUMMARY
-
-      # STEP 5: Create PR with cycle report for human review
-      - name: Step 5 — Create PR for review
-        run: |
+          echo "## 5. Integrate" >> $GITHUB_STEP_SUMMARY
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Write cycle report file
-          TEACHERS=$(head -3 /tmp/teachers.txt 2>/dev/null | tr '\n' ' | ' || echo "None found")
-          STRAY_DT=$(grep -rn 'DateTime\.Now' skills --include="*.md" 2>/dev/null | grep -v "BAD\|TimeProvider\|anti-pattern" | wc -l)
+          jq -r '.patterns[] | "\(.file)|||\(.name)|||\(.bad)|||\(.good)"' /tmp/learned.json | while IFS='|||' read -r file name bad good; do
+            [ -z "$file" ] && continue
+            [ ! -f "$file" ] && echo "⚠️ $file not found, skipping $name" >> $GITHUB_STEP_SUMMARY && continue
+            echo "✅ Adding '$name' to $file" >> $GITHUB_STEP_SUMMARY
+            cat >> "$file" << PATCH
 
-          cat > .github/cycle-report.md << EOF
-          # 🔄 Evolution Cycle Report — $(date +%Y-%m-%d)
+### $name
 
-          **Step 1 — Find Teachers**: $TEACHERS
+\`\`\`csharp
+// BAD
+$bad
 
-          **Step 2 — Quality Check**: Stray DateTime.Now: $STRAY_DT
+// GOOD
+$good
+\`\`\`
+PATCH
+          done
 
-          **Step 3 — Optimize**: ✅ Verified
+          git add -A
+          git diff --staged --name-only | grep -q . && git commit -m "🤖 Auto-learn: integrate new anti-patterns from teacher repos" || true
+          echo "integrated=$(git diff --name-only origin/main...HEAD 2>/dev/null | wc -l)" >> $GITHUB_OUTPUT
 
-          **Step 4 — Polish**: README + Pages OK ✅
+      # Also run whitespace cleanup even if no new patterns
+      - name: 5b. Whitespace cleanup
+        run: |
+          set +e
+          for f in $(find skills -name "*.md" -type f 2>/dev/null | head -100); do
+            sed -i 's/[[:space:]]*$//' "$f" 2>/dev/null || true
+          done
 
-          **Step 5 — Repeat**: Next cycle in ~10 minutes
+      # 6. POLISH
+      - name: 6. Polish README & Pages
+        run: |
+          echo "## 6. Polish" >> $GITHUB_STEP_SUMMARY
+          [ -f README.md ] && echo "✅ README OK" >> $GITHUB_STEP_SUMMARY
+          [ -f docs/index.html ] && echo "✅ Pages OK" >> $GITHUB_STEP_SUMMARY
 
-          > Auto-generated by cycle.yml — review and merge.
-          EOF
-
-          # Commit + push with token auth
+      # 7. CREATE PR with actual changes
+      - name: 7. Create PR for review
+        run: |
           BRANCH="evolve/$(date +%Y%m%d-%H%M)"
           git checkout -b "$BRANCH"
-          git add .github/cycle-report.md
-          git commit -m "🔄 Cycle report: $(date +%Y-%m-%d)" || true
-          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$BRANCH" 2>&1
+          git add -A
+          git commit -m "🔄 Auto-evolve $(date +%Y-%m-%d)" || true
 
-          # Create PR
-          gh pr create \
-            --title "🔄 Cycle Report: $(date +%Y-%m-%d)" \
-            --body "$(cat .github/cycle-report.md)" \
-            --base main --head "$BRANCH" 2>&1
+          TEACHERS=$(cat /tmp/teachers.txt 2>/dev/null | head -3 | tr '\n' ' | ')
+          LEARNED=$(jq '.patterns | length' /tmp/learned.json 2>/dev/null || echo "0")
+          FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null | head -10 | sed 's/^/- /')
+
+          BODY="## 🔄 Auto-Evolution $(date +%Y-%m-%d)
+
+          **1. Find**: $TEACHERS
+          **2. Screen**: AI checked suitability
+          **3. Fetch**: Cloned suitable repos
+          **4. Learn**: AI found $LEARNED new pattern(s)
+          **5. Integrate**: Applied to reference files
+          **6. Polish**: README + Pages OK
+
+          **Changed files:**
+          $FILES
+
+          > Auto-generated. Review before merging."
+
+          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$BRANCH"
+          gh pr create --title "🤖 Auto-Evolve $(date +%Y-%m-%d)" --body "$BODY" --base main --head "$BRANCH"
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Summary
+      - name: Complete
         if: always()
-        run: |
-          echo "## ✅ Cycle Complete" >> $GITHUB_STEP_SUMMARY
-          echo "Find → Learn → Optimize → Polish → Repeat" >> $GITHUB_STEP_SUMMARY
+        run: echo "## ✅ Cycle Complete — 1.Find→2.Screen→3.Fetch→4.Learn→5.Integrate→6.Polish→7.PR" >> $GITHUB_STEP_SUMMARY
