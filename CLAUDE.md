@@ -12,9 +12,9 @@ A Claude Code plugin containing 14 skills + 17 agents + 160+ reference files for
 |------|------|------|--------------|
 | 1 | `CLAUDE.md` (this file) | 2 min | Repo overview, rules, structure |
 | 2 | `AGENTS.md` | 1 min | Iron rules, anti-patterns, key file map |
-| 3 | `USAGE.md` | 3 min | How to use skills: questioning framework, domain analysis, workflow |
-| 4 | `skills/CHEATSHEET.md` | 2 min | All rules in one page |
-| 5 | `skills/INDEX.md` | 1 min | Find specific reference files by domain |
+| 3 | `USAGE.md` | 3 min | Questioning framework, domain-driven analysis, workflow |
+| 4 | `SELF_DOCUMENTING.md` | 2 min | How to write code that any AI can read in 30 seconds |
+| 5 | `skills/CHEATSHEET.md` | 2 min | All rules in one page |
 
 That's ~10 minutes to full context recovery. No session history needed.
 
@@ -66,6 +66,7 @@ dotnet-artisan/
 5. **English only in skills/agents/references** — Docs (README, Pages) support Chinese + English.
 6. **SKILL.md under 500 lines** — Detailed content in `references/` subdirectory.
 7. **Every reference file follows**: Core Principles → Patterns (GOOD code) → Anti-patterns (BAD/GOOD) → Decision Guide.
+8. **All generated code MUST follow SELF_DOCUMENTING.md** — A fresh AI must understand any project in 30 seconds. Zero exceptions.
 
 ## Skill Format
 

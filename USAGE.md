@@ -1,199 +1,219 @@
 # How to Use dotnet-artisan
 
-This guide teaches AI coding agents (and humans) how to use these skills effectively. The core principle: **understand before you build**.
-
-## Quick Start
-
-When a user asks for .NET help, the `using-dotnet` skill auto-detects the intent and routes to the right domain skills. But before writing code, the AI must bridge the gap between the user's words and what they actually need.
+This guide teaches AI coding agents how to use these skills. Rule zero: **understand before you build**. If you don't understand the domain, every line of code you write is a guess.
 
 ## The Questioning Framework
 
-Never jump straight to code. Ask clarifying questions in this order:
+Never write code on the first message. Ask questions. Then ask more. Each answer reveals new questions. This is not annoying — this is the bridge between "what the user said" and "what the user actually needs."
 
-### 1. Goal & Scope (always first)
+### Round 1: Goal & Scope
+
+First message. Clarify WHAT is being built.
 
 ```
 What are you building?
-- Web API / Desktop app / Mobile app / CLI tool / Library / Script?
-- New project or modifying existing?
-- Production, prototype, or learning exercise?
+- Web API / Desktop / Mobile / CLI / Library?
+- New project or modifying existing code?
+- Production system, prototype, or learning exercise?
+
+Example answer: "A Web API for managing customer orders. New project, production."
 ```
 
-### 2. Domain Context (the most important step)
+### Round 2: Domain Discovery
 
-This is where most misunderstandings happen. Before naming a single class, understand the domain:
+Second message. This is the most important round. Before naming anything, build a shared vocabulary.
 
 ```
 Let me understand the domain:
 
-- Who are the users? (internal team, public customers, admins?)
-- What's the core business process? (walk me through one flow)
-- What entities/concepts exist? (Order? Customer? Sensor? Document?)
-- How do they relate? (one-to-many? many-to-many? aggregate root?)
-- What are the key terms? (does "Order" mean purchase order or work order?)
+Who are the users?
+- External customers? Internal staff? Both? Admins?
+
+Walk me through one core flow:
+- "A customer places an order" — what happens step by step?
+
+What things exist in this world? (entities/concepts)
+- Order? Product? Customer? Payment? Shipment? Invoice? Inventory?
+
+How do they relate?
+- One customer → many orders? One order → many products?
+- Does an Order contain Payment, or is Payment separate?
+
+What do these words mean to YOU specifically?
+- "Order" — purchase order? work order? service request?
+- "Status" — what are the valid statuses and transitions?
 ```
 
-**Why this matters**: Two teams can use the same word to mean completely different things. "User" might mean "customer" to marketing but "account holder" to billing. Establishing a **ubiquitous language** (shared vocabulary) prevents months of rework.
+Why this round matters: Two people use "User" to mean completely different things. Marketing means "email subscriber." Billing means "account with payment method." Legal means "GDPR data subject." If you build one `User` class for all three, you've already failed.
 
-### 3. Technical Constraints
+Capture this as a **domain glossary** before writing any code:
+
+```markdown
+## Domain Glossary (captured from conversation)
+- Customer: person who places orders on the storefront (not B2B, not internal)
+- Order: a confirmed purchase by a Customer, containing 1+ line items
+- Order Status: Pending → Confirmed → Shipped → Delivered (one-way, no rollback)
+- Product: a physical item in catalog with SKU, price, and inventory count
+- Payment: authorized charge for an Order (always 1:1 with Order)
+```
+
+### Round 3: Technical Constraints
+
+Third message. Pin down the technology.
 
 ```
-What are the constraints?
-- .NET version? (net8.0 LTS / net10.0 LTS / net11.0 preview?)
-- Database? (PostgreSQL / SQL Server / CosmosDB / None?)
-- Deployment? (Docker / Azure / AWS / On-premise?)
-- Existing patterns to follow? (CQRS? Vertical slices? Clean architecture?)
+Technical constraints:
+- .NET version? (net10.0 LTS preferred, net8.0 if legacy, net11.0 if bleeding edge)
+- Database? (PostgreSQL default, SQL Server if org requires it, CosmosDB if NoSQL)
+- How will this be deployed? (Docker? Azure? On-premise Windows Server?)
+- Existing codebase to integrate with? (auth system? logging? monitoring?)
+- Any org-mandated patterns? (some teams require MediatR, some ban it)
 ```
 
-### 4. Quality & Process
+### Round 4: Quality & Process
+
+Fourth message. How do we know we're done?
 
 ```
-How should we work?
-- Tests required? (unit / integration / E2E?)
-- CI/CD needed?
-- Code style preferences?
-- Timeline pressure? (quick prototype vs. production system)
+Quality expectations:
+- Tests: unit only? integration with real DB? E2E with browser?
+- CI/CD: GitHub Actions pipeline needed? Just a Dockerfile?
+- Timeline: ship in 2 days or 2 months? This changes architecture choices.
+- Team: solo dev or 10-person team? Solo = simpler. Team = more structure.
 ```
+
+### When to STOP asking
+
+You've asked enough when:
+- You can explain the core business flow in 3 sentences
+- You know what every key word means (domain glossary exists)
+- You can list the top 5 entities and their relationships
+- You know if it's a prototype or production
+- You know the .NET version and database
+
+If any of these are fuzzy, ask another round.
 
 ## Domain-Driven Analysis
 
-After gathering context, analyze the domain before writing code:
+After questioning, analyze before coding. Four steps:
 
-### Step 1: Identify the Core Domain
+### Step 1: Identify Core vs Supporting vs Generic
 
-| Question | Example |
-|----------|---------|
-| What's the business differentiator? | Not "authentication" (everyone has it) — it's "real-time inventory matching" |
-| What's supporting? | Shipping notifications, billing |
-| What's generic? | Logging, email, file storage |
+| Layer | What | Example | Investment |
+|-------|------|---------|------------|
+| **Core Domain** | The business differentiator | Real-time fraud detection engine | Highest effort, best design |
+| **Supporting** | Needed but not unique | Order fulfillment workflow | Moderate effort |
+| **Generic** | Everyone needs it | Auth, logging, file storage | Use off-the-shelf |
 
-Focus your best design on the **core domain**. Use off-the-shelf for generic.
+### Step 2: Map Bounded Contexts
 
-### Step 2: Map the Bounded Contexts
-
-Split the domain into contexts where terms have consistent meaning:
+A "bounded context" is where a word has ONE consistent meaning. When the meaning changes, you've crossed into a new context.
 
 ```
-[Sales Context]          [Shipping Context]
-  Order = purchase         Order = package
-  Customer = buyer         Customer = recipient
-  Product = what's sold    Product = what's in the box
+[Sales Context]              [Shipping Context]           [Billing Context]
+  Order = purchase contract    Order = package to ship      Order = amount to charge
+  Customer = buyer             Customer = recipient          Customer = payer
+  Product = what's sold        Product = physical item       Product = chargeable line
 ```
 
-Same word, different meaning in different contexts. This is normal. Don't force one `Order` class to serve both.
+Key rule: same word, different contexts = different classes. Don't merge them. Don't share tables between contexts. This is the #1 cause of unmaintainable monoliths.
 
 ### Step 3: Define Aggregates
 
-An aggregate is a cluster of objects treated as a unit. Each aggregate has one **root**:
+An aggregate is a consistency boundary. One root entity controls access to everything inside.
 
 ```
-Order (aggregate root)
-  ├── OrderLine (part of Order aggregate)
-  ├── ShippingAddress (value object)
-  └── PaymentInfo (value object)
+Order (aggregate root, ID: OrderId)
+  ├── OrderLine (value inside Order — no independent existence)
+  ├── ShippingAddress (value object — immutable)
+  └── OrderNote (entity inside Order — has its own ID but dies with Order)
 
-Product (separate aggregate — referenced by ID only)
+Product (separate aggregate root, ID: ProductId)
+  └── Order references Product by ProductId ONLY — NO navigation property
 ```
 
-**Rule**: Aggregates reference other aggregates by ID, never by navigation property. EF Core navigation properties should not cross aggregate boundaries.
+**Hard rule**: Aggregates reference other aggregates by ID, never by EF Core navigation property. `Order.Product` is forbidden. `Order.ProductId` is correct.
 
-### Step 4: Choose the Architecture
+### Step 4: Choose Architecture
 
-| Scenario | Architecture | Why |
-|----------|-------------|-----|
-| Simple CRUD (< 20 endpoints) | Single project, Controller-based | KISS |
-| Medium complexity (20-80 endpoints) | Vertical Slice Architecture | Feature isolation |
-| Complex domain logic | Domain-Driven Design | Business rules first |
-| Multiple persistence needs | Clean Architecture | Swappable infrastructure |
-| Microservice | VSA inside each service | Each service is focused |
+| Scenario | Pattern | Project Structure |
+|----------|--------|-------------------|
+| < 20 endpoints, logic is CRUD | Single project, controllers | `Api/` with Controllers + Services |
+| 20-80 endpoints, distinct features | Vertical Slice Architecture | `Features/Orders/`, `Features/Products/` |
+| Complex domain rules (finance, legal, medical) | Domain-Driven Design | `Domain/`, `Application/`, `Infrastructure/`, `Api/` |
+| Multiple databases or external systems | Clean Architecture | Same as DDD but with UseCase layer |
+| Microservices | VSA inside each service | Each service is small enough that VSA alone suffices |
+
+## Full Example: From Vague to Clear
+
+**User**: "我需要一个订餐系统"
+
+**Round 1 — Scope**:
+> 是什么类型的订餐？员工内部订餐？对外卖平台？食堂预订？
+
+User: "公司内部，员工提前订第二天的午餐"
+
+**Round 2 — Domain**:
+> 明白了。继续了解：
+> - 谁可以订？所有员工还是特定部门？
+> - 菜单谁发布？每天有固定供应商还是多个选择？
+> - 订完能改吗？截止时间是什么？
+> - "订单"的生命周期：选餐 → 提交 → 厨房确认 → 制作 → 送达？
+> - 需要统计什么？（谁订了、花了多少钱、哪个菜最受欢迎？）
+
+User: "所有员工可以订。行政每天上午发布当天的菜单（只有一个供应商），员工在下午3点前订第二天的。3点后锁定不可改。"
+
+**Round 3 — Technical**:
+> - .NET 版本？（推荐 net10.0）
+> - 数据库？（PostgreSQL 是我们的默认选择）
+> - 部署方式？（Docker？内部服务器？）
+> - 需要微信/企业微信通知吗？
+
+User: "net10.0，PostgreSQL，Docker 部署，需要企业微信通知订餐成功"
+
+**Domain Glossary (captured)**:
+```
+Menu: published daily by Admin, contains 1+ MenuItems
+MenuItem: a dish option (name, price, image, category)
+Order: an employee's selection for tomorrow's lunch (1 Order per person per day)
+OrderItem: one selected dish in an Order
+OrderStatus: Draft → Submitted → Locked (at 3pm cutoff)
+Cutoff: 3:00 PM — after this, Orders are locked and sent to vendor
+Employee: internal staff member (from existing AD/Azure AD, not a new user system)
+```
+
+**Now we can build.** Before questioning: zero clarity, high risk. After 3 rounds: shared vocabulary, clear boundaries, ready to code.
 
 ## Skill Routing Decision Tree
 
-After analysis, here's how skills map to needs:
-
 ```
-Is this .NET?
-├─ No → Not our domain
-└─ Yes → using-dotnet detects it
-    └─ dotnet-advisor routes:
-        ├─ Writing code → dotnet-csharp (always loaded)
-        ├─ Backend/API → dotnet-api
-        ├─ UI/Frontend → dotnet-ui
-        ├─ Writing tests → dotnet-testing
-        ├─ CI/CD/Docker → dotnet-devops
-        ├─ Project setup/build → dotnet-tooling
-        ├─ Crash/deadlock/leak → dotnet-debugging
-        ├─ AI/MCP/RAG → dotnet-ai
-        ├─ Version migration → dotnet-upgrade
-        ├─ Code cleanup → dotnet-quality
-        ├─ Workflow efficiency → dotnet-workflow
-        └─ Learning from mistakes → dotnet-learning
+.NET request detected (using-dotnet auto-loads)
+  │
+  └─ dotnet-advisor routes:
+      ├─ Always loaded: dotnet-csharp (C# patterns, async, DI, LINQ)
+      ├─ Backend/API/database   → dotnet-api (32 refs)
+      ├─ UI/Blazor/MAUI/WPF     → dotnet-ui (20 refs)
+      ├─ Testing/xUnit/Playwright → dotnet-testing (13 refs)
+      ├─ CI/CD/Docker/NuGet     → dotnet-devops (18 refs)
+      ├─ Project setup/MSBuild  → dotnet-tooling (34 refs)
+      ├─ Crash/deadlock/memory  → dotnet-debugging (17 refs)
+      ├─ MCP/Semantic Kernel    → dotnet-ai
+      ├─ Framework migration    → dotnet-upgrade
+      ├─ Code cleanup           → dotnet-quality
+      ├─ Workflow optimization  → dotnet-workflow
+      └─ Learning from mistakes → dotnet-learning
 ```
-
-## Full Workflow Example
-
-**User says**: "I need an order management system"
-
-**Bad response** (jumps to code):
-> "I'll create an OrderController with CRUD endpoints..."
-
-**Good response** (clarifies first):
-
-> Before I write any code, let me understand what you need:
->
-> **Goal**: What kind of orders? Purchase orders? Work orders? Customer orders from a storefront?
->
-> **Domain**:
-> - Who places orders? (Customers? Internal staff? Both?)
-> - What happens after an order is placed? (Payment → Fulfillment → Shipping? Or something else?)
-> - What entities are involved beyond Order? (Products? Inventory? Invoices?)
-> - What does "order status" mean to you? (Pending/Confirmed/Shipped/Delivered? Or different?)
->
-> **Technical**:
-> - .NET 10 or 8?
-> - Database preference? (PostgreSQL is our default)
-> - Is this a greenfield project or integrating with existing systems?
-> - REST API? gRPC? Both?
->
-> **Quality**:
-> - Is this production or prototype?
-> - Do you want tests from the start?
 
 ## Context Persistence
 
-This repository is designed so any AI can re-establish context quickly:
+Any AI reconnecting in a fresh session recovers full context in ~10 minutes:
 
-### Entry Points (read these first)
+| Step | File | Time |
+|------|------|------|
+| 1 | `CLAUDE.md` | 2 min — repo overview, rules, conventions |
+| 2 | `AGENTS.md` | 1 min — iron rules, anti-patterns, key files |
+| 3 | `USAGE.md` (this file) | 3 min — questioning framework, domain analysis |
+| 4 | `SELF_DOCUMENTING.md` | 2 min — how to write code that survives sessions |
+| 5 | `skills/CHEATSHEET.md` | 2 min — all rules in one page |
 
-| File | Read when | Contains |
-|------|-----------|----------|
-| `CLAUDE.md` | Every session start | Repo structure, rules, conventions |
-| `AGENTS.md` | Every session start | Non-negotiable rules, anti-patterns, key files |
-| `USAGE.md` | First time using skills | This file — how to approach requirements |
-| `skills/CHEATSHEET.md` | Quick context refresh | One-page all-rules summary |
-| `skills/DECISIONS.md` | Architecture decision needed | "When to use what" guides |
-| `skills/INDEX.md` | Need a specific reference | All 80+ reference files by domain |
-
-### Self-Documenting Code Principles
-
-Every generated project should be understandable by a fresh AI session:
-
-1. **Solution file at root** — `.slnx` or `.sln` shows project structure immediately
-2. **Meaningful project names** — `OrderManagement.Api`, not `Project1`
-3. **One sentence per file** — Each file's top explains its purpose in a short comment
-4. **Domain terms in class names** — `OrderFulfillmentHandler`, not `ProcessHandler`
-5. **Short WHY comments** — Only explain non-obvious decisions: `// Uses IServiceScopeFactory because BackgroundService outlives Scoped DbContext`
-6. **No WHAT comments** — `// Saves the order` is noise. The code already says that.
-
-### Project Discovery Pattern
-
-When a fresh AI session opens a project, it should be able to understand it in 30 seconds:
-
-```
-1. Open .slnx → See all projects
-2. Open Program.cs → See DI, middleware, endpoints
-3. Open any .cs file → Class name + constructor parameters tell the story
-4. Open appsettings.json → See configuration shape
-```
-
-If any of these fail to communicate, the project needs better naming or structure.
+All generated code must follow SELF_DOCUMENTING.md so a fresh AI can understand the project in 30 seconds: solution file → Program.cs → any .cs file → config.
