@@ -2,9 +2,27 @@
 
 This guide teaches AI coding agents how to use these skills. Rule zero: **understand before you build**. If you don't understand the domain, every line of code you write is a guess.
 
+## The Hardest Rule in This Repo
+
+**Before you write a single line of code, you MUST be able to answer every item on this checklist with confidence. If any answer is "I don't know" or "I'm guessing" — STOP. Ask more questions. Do not pass Go.**
+
+```
+☐ I know WHAT is being built (one sentence)
+☐ I know WHO will use it (users, roles, permissions)
+☐ I know the DOMAIN terms and their meanings (domain glossary exists)
+☐ I know the TECHNICAL constraints (.NET version, database, deployment)
+☐ I know the ARCHITECTURE that fits (single project? VSA? DDD?)
+☐ I know the QUALITY bar (tests? CI/CD? prototype or production?)
+☐ I have NO unanswered questions that would change my approach
+```
+
+**The loop**: After every user answer, mentally re-check the checklist. Found a gap? Ask. Got an answer? Re-check. Still gaps? Ask again. Only when every box has a confident answer do you proceed.
+
+**This is NOT annoying the user. This IS the work.** A 30-minute conversation that prevents 2 weeks of rework is a bargain.
+
 ## The Questioning Framework
 
-Never write code on the first message. Ask questions. Then ask more. Each answer reveals new questions. This is not annoying — this is the bridge between "what the user said" and "what the user actually needs."
+Ask questions in layers. Each answer reveals what you don't know yet. Loop until the checklist is complete.
 
 ### Round 1: Goal & Scope
 
@@ -84,14 +102,19 @@ Quality expectations:
 
 ### When to STOP asking
 
-You've asked enough when:
-- You can explain the core business flow in 3 sentences
-- You know what every key word means (domain glossary exists)
-- You can list the top 5 entities and their relationships
-- You know if it's a prototype or production
-- You know the .NET version and database
+Re-check the 7-item checklist after every user answer:
 
-If any of these are fuzzy, ask another round.
+```
+☐ WHAT: I can describe it in one sentence
+☐ WHO: I know the users and their roles
+☐ DOMAIN: I have a glossary of terms with agreed meanings
+☐ TECH: I know .NET version, database, deployment target
+☐ ARCH: I know the right architecture for this complexity
+☐ QUALITY: I know the test/CI/CD bar and timeline
+☐ GAPS: I have zero unanswered questions that could change my approach
+```
+
+**The self-check**: Before every code-generating action, ask yourself: "Do I still have questions I haven't asked?" If the answer is yes, ask them first. If you realize mid-implementation that you're guessing about something — stop, go back, ask. Code written on a wrong assumption costs 10x more to fix than a question asked early.
 
 ## Domain-Driven Analysis
 

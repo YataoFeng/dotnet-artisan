@@ -1,6 +1,6 @@
 ---
 name: dotnet-tooling
-description: Manages .NET SDK installation (dotnet-install, workloads), project bootstrapping (architecture selection, solution structure), project setup (.slnx, Directory.Build.props, CPM), MSBuild authoring, build optimization, performance (Span, ArrayPool, stackalloc), profiling (dotnet-counters, dotnet-trace), Native AOT/trimming, GC tuning, CLI apps (System.CommandLine, Spectre.Console, Terminal.Gui), ILSpy decompilation, VS Code debug config (launch.json, coreclr, remote), C# LSP (csharp-ls, OmniSharp), and version detection/upgrade. Spans 35 topic areas. Do not use for UI implementation or API security design.
+description: Manages .NET SDK installation (dotnet-install, workloads), project bootstrapping (architecture selection, solution structure, domain analysis), project setup (.slnx, Directory.Build.props, CPM), MSBuild authoring, build optimization, performance (Span, ArrayPool, stackalloc), profiling (dotnet-counters, dotnet-trace), Native AOT/trimming, GC tuning, CLI apps (System.CommandLine, Spectre.Console, Terminal.Gui), ILSpy decompilation, VS Code debug config (launch.json, coreclr, remote), C# LSP (csharp-ls, OmniSharp), and version detection/upgrade. Spans 36 topic areas. Do not use for UI implementation or API security design.
 license: MIT
 user-invocable: false
 ---
@@ -9,13 +9,14 @@ user-invocable: false
 
 ## Overview
 
-.NET project setup, build systems, performance, CLI apps, and developer tooling. This consolidated skill spans 35 topic areas. Load the appropriate companion file from `references/` based on the routing table below.
+.NET project setup, build systems, performance, CLI apps, and developer tooling. This consolidated skill spans 36 topic areas. Load the appropriate companion file from `references/` based on the routing table below.
 
 ## Routing Table
 
 | Topic | Keywords | Description | Companion File |
 |-------|----------|-------------|----------------|
 | Bootstrap project | architecture, scaffold, new project, startup | Architecture selection (single/VSA/DDD/Clean), project structure mapping, full bootstrapping flow | references/bootstrap-project.md |
+| Domain analysis | DDD, bounded context, ubiquitous language, event storming, context map | Event Storming, bounded contexts, ubiquitous language glossary, context mapping, aggregate design (analysis phase — before coding) | references/domain-analysis.md |
 | Project structure | solution, .slnx, CPM, analyzers | .slnx, Directory.Build.props, CPM, analyzers | references/project-structure.md |
 | Scaffold project | dotnet new, CPM, SourceLink, editorconfig | dotnet new with CPM, analyzers, editorconfig, SourceLink | references/scaffold-project.md |
 | Csproj reading | PropertyGroup, ItemGroup, CPM, props | SDK-style .csproj, PropertyGroup, ItemGroup, CPM | references/csproj-reading.md |

@@ -170,7 +170,7 @@ After choosing the architecture, run `references/scaffold-project.md` for the ac
 |-------------|-----------|
 | Single project | `references/minimal-apis.md` (in dotnet-api) |
 | Vertical Slice | `references/architecture-patterns-vsa.md` (in dotnet-api) |
-| DDD | `references/domain-modeling.md` (in dotnet-csharp) + `references/architecture-patterns.md` (in dotnet-api) |
+| DDD | `references/domain-analysis.md` FIRST, then `references/domain-modeling.md` (in dotnet-csharp) + `references/architecture-patterns.md` (in dotnet-api) |
 | Clean Architecture | `references/architecture-patterns.md` (in dotnet-api) |
 
 ## Step 4: Apply Conventions (always)

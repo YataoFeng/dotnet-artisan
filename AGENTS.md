@@ -14,8 +14,9 @@ Load path: `using-dotnet` → `dotnet-advisor` → domain skills. `dotnet-csharp
 4. **No DateTime.Now** — Use `TimeProvider` everywhere
 5. **DbContext directly** — Inject `AppDbContext`, not `IRepository<T>`
 6. **Free/open-source only** — MediatR→Mediator(MIT), AutoMapper→Mapperly, etc.
-7. **Self-documenting code** — All generated code MUST follow [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md). Fresh AI must understand any project in 30 seconds.
-8. **Question before coding** — Follow [USAGE.md](USAGE.md) questioning framework. Domain glossary before first class.
+7. **Exhaust questions before acting** — Check the 7-item checklist before writing code. If any answer is "I don't know", ask more. See [USAGE.md](USAGE.md).
+8. **Self-documenting code** — All generated code MUST follow [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md). Fresh AI must understand any project in 30 seconds.
+9. **Domain analysis for DDD** — When DDD is chosen, run full domain analysis: event storming, bounded contexts, ubiquitous language glossary, context mapping. See `dotnet-tooling/references/domain-analysis.md`.
 
 ## Key Files
 
