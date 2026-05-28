@@ -1,66 +1,47 @@
-# dotnet-artisan Harness
+# Harness (Built-In)
 
-Drop-in Claude Code configuration for .NET projects. Auto-activates when you open any .NET project.
+The harness is **built into the plugin**. You don't need to copy anything.
 
-## Quick Start
+When you install dotnet-artisan (`claude plugins install YataoFeng/dotnet-artisan`), the harness auto-activates in every .NET project you open.
 
-```bash
-# Copy to a single project
-cp harness/settings.json your-dotnet-project/.claude/settings.json
+## What It Does (Automatic)
 
-# Or copy to all .NET projects (global)
-cp harness/settings.json ~/.claude/settings.json
-```
-
-## What It Does
-
-### Session Start
-
-When Claude Code opens a directory containing `.cs`, `.csproj`, `.sln`, `.cshtml`, `.razor`, `.xaml` files:
-
-→ Prints: `[dotnet-artisan] .NET project detected. Loading skills...`
-→ The plugin's `using-dotnet` → `dotnet-advisor` chain activates
-→ Baseline C# standards (`dotnet-csharp`) auto-load
-
-### Prompt Detection
-
-When you type a prompt containing `.NET` keywords (`C#`, `ASP.NET`, `Blazor`, `MAUI`, `EF Core`, etc.):
-
-→ Prints: `[dotnet-artisan] .NET intent detected. Decision-maker will analyze version, route to specialists...`
-→ This is a REMINDER that the decision-maker is active. It doesn't block your prompt — it confirms routing is happening.
-
-### New File Quality
-
-When you create or edit a `.cs` file:
-
-→ Checks: does the file have a purpose comment at the top?
-→ If not: reminds you about `SELF_DOCUMENTING.md` (30-second rule)
-
-### Pre-Approved Permissions
-
-| Command | Pre-approved because |
-|---------|---------------------|
-| `dotnet *` | Build, test, restore — standard .NET CLI |
-| `git *` | Version control |
-| `docker *` | Container operations |
-| Read, Grep, Glob | Code search and analysis |
-| WebSearch, WebFetch | Documentation lookup |
-
-## Customization
-
-Edit `settings.json` to:
-- Add more allowed Bash patterns (e.g., `Bash(docker-compose:*)`)
-- Remove hooks you don't want (delete the hook block)
-- Add project-specific env vars in the `env` section
+| Event | What Happens |
+|-------|--------------|
+| Open a .NET project | Detects `.cs`/`.csproj`/`.sln` files → auto-loads `using-dotnet` + `dotnet-advisor` → shows .NET version |
+| Type a .NET prompt | Detects C#/ASP.NET/Blazor/etc. keywords → injects routing reminder |
+| Write/Edit a `.cs` file | Checks for one-line purpose comment → reminds you if missing (30-second rule) |
 
 ## How It Works
 
-The harness is a standard Claude Code `settings.json` file. Claude Code reads `.claude/settings.json` from the project directory (and `~/.claude/settings.json` globally) on every session start. The hooks fire at specific lifecycle events:
+The plugin's `hooks.json` registers three hooks:
 
 ```
-SessionStart → Check for .NET project files → Load skills
-UserPromptSubmit → Check prompt for .NET keywords → Confirm routing
-PostToolUse(Write/Edit) → Check for .cs files → Remind about comments
+SessionStart → session-start-context.js → Detects .NET project, injects routing
+UserPromptSubmit → user-prompt-dotnet-reminder.js → Detects .NET keywords
+PostToolUse → check-self-doc.js → Checks .cs file headers
 ```
 
-No GitHub Actions. No external servers. Everything runs inside Claude Code.
+All hooks are zero-block: if anything fails, they silently return empty context. They never prevent you from working.
+
+## Advanced: Per-Project Settings
+
+For project-specific overrides (custom permissions, env vars, additional hooks), create `.claude/settings.json` in your project:
+
+```json
+{
+  "permissions": {
+    "allow": ["Bash(dotnet:*)", "Bash(docker:*)"]
+  },
+  "env": {
+    "DOTNET_ENVIRONMENT": "Development"
+  }
+}
+```
+
+The plugin harness works alongside any project-level settings you add.
+
+## Reference
+
+See `hooks.json` in the plugin root for the full harness configuration.
+See `scripts/hooks/` for the hook scripts.

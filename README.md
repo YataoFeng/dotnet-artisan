@@ -83,24 +83,17 @@ claude plugins install YataoFeng/dotnet-artisan
 
 Also works with GitHub Copilot, VS Code, Cursor. Follows the [agentskills.io](https://agentskills.io) standard.
 
-### Harness (auto-pilot for your .NET projects)
+### Harness (built-in auto-pilot)
 
-Drop this into any .NET project to get auto-skill-loading, permission shortcuts, and quality reminders — no config needed:
+Installed automatically with the plugin. Opens your .NET project → harness detects it → skills load → decision-maker activates. No config, no copy-paste.
 
-```bash
-cp -r harness/.claude/ your-project/.claude/
-```
+| When | What happens |
+|------|--------------|
+| Open a .NET project | Detects `.cs`/`.csproj`/`.sln` → auto-loads skills → shows .NET version |
+| Type a .NET prompt | Detects C#/ASP.NET/Blazor keywords → confirms routing |
+| Create/edit a `.cs` file | Checks for one-line purpose comment → reminds you (30-second rule) |
 
-What it does:
-
-| Event | What happens |
-|-------|--------------|
-| You open a .NET project | Auto-detects .cs/csproj/sln files, loads skills, reminds you to read rules |
-| You type a .NET-related prompt | Decision-maker analyzes intent, checks your project version, routes to specialists |
-| You create a new .cs file | Reminds you to add a one-line purpose comment (30-second rule) |
-| dotnet/git/docker commands | Pre-authorized — no permission prompts |
-
-**[→ Full harness docs](harness/README.md)**
+**[→ How it works](harness/README.md)**
 
 ---
 

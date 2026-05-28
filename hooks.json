@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "description": "dotnet-artisan: smart defaults for .NET development",
+  "description": "dotnet-artisan harness — auto-loads skills, detects .NET intent, enforces quality. Installed automatically with the plugin.",
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup",
+        "matcher": "*.cs|*.csproj|*.sln|*.slnx|*.cshtml|*.razor|*.fs|*.fsproj|*.vb|*.xaml",
         "hooks": [
           {
             "type": "command",
@@ -16,11 +16,24 @@
     ],
     "UserPromptSubmit": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/user-prompt-dotnet-reminder.js\"",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hooks/check-self-doc.js\"",
+            "timeout": 5
           }
         ]
       }
