@@ -29,6 +29,21 @@ Before any .NET guidance, determine the project's target framework:
 
 > Load [skill:dotnet-tooling] version detection guidance to read TFMs from `.csproj`, `Directory.Build.props`, and `global.json`. Adapt all guidance to the detected .NET version (net8.0, net9.0, net10.0, net11.0).
 
+## Step 1.5: Align Requirements (NEW)
+
+For ANY request that is ambiguous, incomplete, or where you cannot confidently describe what needs to be built — **STOP. Ask questions first. Never write code on assumptions.**
+
+Follow the USAGE.md questioning framework. Key areas to clarify:
+
+1. **Goal & Scope** — What exactly needs to be built? Production or prototype? Timeline?
+2. **Domain Discovery** — Business terminology, entities, relationships, workflows, statuses
+3. **Technical Constraints** — .NET version, database, hosting, auth requirements, testing expectations
+4. **Quality & Process** — Tests needed? Performance targets? Security requirements? CI/CD?
+
+After aligning, capture the domain vocabulary and feed it to the domain skill for context.
+
+> When the user's request is a full, unambiguous spec (e.g., "Add a GET /products endpoint that returns all products"), skip this step and route directly.
+
 ## Step 2: Load Baseline
 
 For any task that may produce, change, or review C#/.NET code:
