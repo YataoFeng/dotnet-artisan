@@ -170,19 +170,19 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 | 分类 | 代理 | 定位 | 模式 |
 |------|------|------|------|
-| 构建 | [architect](agents/dotnet-architect.md) | 架构选型、文件夹结构、构建配置 | 只读 |
+| 设计 | [architect](agents/dotnet-architect.md) | 架构选型、文件夹结构、构建配置 | 只读 |
 | | [domain-analyst](agents/dotnet-domain-analyst.md) | 事件风暴、限界上下文、输出领域文档 | 读写 |
-| | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | 中间件管道、DI 生命周期、API 设计 | 只读 |
+| 开发 | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | 中间件管道、DI 生命周期、API 设计 | 只读 |
 | | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno 框架选择、渲染模式 | 只读 |
-| 验证 | [testing-specialist](agents/dotnet-testing-specialist.md) | 测试策略、金字塔设计、微服务测试 | 只读 |
-| | [code-review-agent](agents/dotnet-code-review-agent.md) | 正确性、性能、安全、架构审查 | 只读 |
-| | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP、密钥泄露、加密误用审计 | 只读 |
 | | [performance-specialist](agents/dotnet-performance-specialist.md) | 异步性能、火焰图、GC 分析、基准设计 | 只读 |
 | | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | 竞态条件、死锁、线程安全 | 只读 |
+| 质量 | [testing-specialist](agents/dotnet-testing-specialist.md) | 测试策略、金字塔设计、微服务测试 | 只读 |
+| | [code-review-agent](agents/dotnet-code-review-agent.md) | 正确性、性能、安全、架构审查 | 只读 |
+| | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP、密钥泄露、加密误用审计 | 只读 |
 | 运维 | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire、AKS、分布式追踪 | 只读 |
 | | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | 构建错误诊断 + 7 步质量流水线 | 读写 |
 | | [pr-workflow](agents/dotnet-pr-workflow.md) | PR 生命周期：创建 → 审查 → 合并 → 发布 | 读写 |
-| 增强 | [docs-generator](agents/dotnet-docs-generator.md) | DocFX、Mermaid 图、XML 文档、README | 读写 |
+| 辅助 | [docs-generator](agents/dotnet-docs-generator.md) | DocFX、Mermaid 图、XML 文档、README | 读写 |
 | | [dotnet-learning-agent](agents/dotnet-learning-agent.md) | 纠错捕获、模式泛化、记忆管理 | 读写 |
 
 ---
