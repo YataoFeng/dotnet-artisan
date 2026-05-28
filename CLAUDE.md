@@ -14,7 +14,8 @@ A Claude Code plugin containing 14 skills + 17 agents + 160+ reference files for
 | 2 | `AGENTS.md` | 1 min | Iron rules, anti-patterns, key file map |
 | 3 | `USAGE.md` | 3 min | Questioning framework, domain-driven analysis, workflow |
 | 4 | `SELF_DOCUMENTING.md` | 2 min | How to write code that any AI can read in 30 seconds |
-| 5 | `skills/CHEATSHEET.md` | 2 min | All rules in one page |
+| 5 | `BEHAVIORS.md` | 2 min | 30+ behavior catalog + decision-maker routing |
+| 6 | `skills/CHEATSHEET.md` | 2 min | All rules in one page |
 
 That's ~10 minutes to full context recovery. No session history needed.
 
