@@ -115,6 +115,7 @@ Quick navigation for all reference files. Each file contains implementation patt
 
 | File | Topic |
 |------|-------|
+| [bootstrap-project.md](dotnet-tooling/references/bootstrap-project.md) | Architecture selection, project structure mapping, full bootstrapping |
 | [project-structure.md](dotnet-tooling/references/project-structure.md) | .slnx, CPM, Directory.Build.props |
 | [scaffold-project.md](dotnet-tooling/references/scaffold-project.md) | dotnet new, project templates |
 | [build-analysis.md](dotnet-tooling/references/build-analysis.md) | Build errors, warnings, parallel builds |
