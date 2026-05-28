@@ -92,50 +92,28 @@ Seven common scenarios showing the decision-maker aligning requirements then rou
 
 ### 1. Building an Order Management System
 
-
-
 ```
-
 You: I need an order management system
 
-
-
 AI: What kind of orders? Purchase orders, work orders, or customer orders?
-
     Who will use this?
 
-
-
 You: Customer orders — handled by the sales team. We might split order and
-
      payment into separate services later.
 
-
-
 AI: Let me work out the architecture. If you might split later, I recommend
-
     a modular monolith to start — separate projects per domain, single deployment.
-
     Domain-Driven Design (DDD) fits here: Order, Payment, and Inventory as
-
     bounded contexts. Sound good?
 
-
-
 You: Yes, but our team hasn't used DDD before.
-
-
 
 AI: I will run strategic DDD first — Event Storming, bounded contexts, domain analysis doc.
     Tactical implementation uses aggregates, entities, value objects, domain events.
     Strategic design upfront avoids costly refactoring later.
     Tech stack: .NET 10 + PostgreSQL. Need CI/CD and tests?
 
-
-
 You: Yes.
-
-
 
 Chain: intent detection → 4 rounds of questions → invoke dotnet-domain-analyst →
        Event Storming → bounded contexts: [Order, Payment, Inventory] →
@@ -143,7 +121,6 @@ Chain: intent detection → 4 rounds of questions → invoke dotnet-domain-analy
        architecture decision: modular monolith + DDD strategic →
        parallel routing → dotnet-api + dotnet-testing +
        dotnet-devops + dotnet-tooling → one project per domain
-
 ```
 
 ### 2. Debugging a Production Crash (OOM)
