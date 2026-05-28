@@ -241,8 +241,8 @@ Two gateways activate first: `using-dotnet` detects .NET intent, `dotnet-advisor
 
 ```
 Gateway  │ using-dotnet · dotnet-advisor               →  intent detection + routing
-Baseline │ dotnet-csharp                                →  C# standards (always loaded)
-Build    │ dotnet-api · dotnet-ui                       →  Web API / EF Core / Blazor / MAUI / WPF
+Baseline │ dotnet-csharp                                →  C# language, async/await, DI, LINQ (always loaded)
+Build    │ dotnet-api · dotnet-ui                       →  API / EF Core / gRPC / SignalR / Blazor / MAUI / WPF / Uno
 Verify   │ dotnet-testing · dotnet-debugging            →  testing / debugging（WinDbg / dotnet-dump）
 Operate  │ dotnet-devops · dotnet-tooling               →  CI/CD / scaffold / migration + quality
 Augment  │ dotnet-ai · dotnet-workflow                  →  MCP, RAG / workflow + learning
