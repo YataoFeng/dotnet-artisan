@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dotnet-artisan — .NET AI Coding Skills</title>
+<style>
+  :root {
+    --bg: #0a0e14; --surface: #12171e; --card: #181e28; --card-hover: #1e2632;
+    --fg: #b8c4d0; --fg-dim: #6b7888; --fg-bright: #e2e8f0;
+    --accent: #5b9cf5; --accent-dim: #3b7dd4; --accent-glow: #5b9cf533;
+    --border: #222a36; --border-light: #2a3442;
+    --green: #4ade80; --red: #f87171; --yellow: #fbbf24;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    background: linear-gradient(180deg, #0d1520 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border); padding: 4rem 1.5rem 3rem; text-align: center;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
+  .hero h1 span { background: linear-gradient(135deg, #5b9cf5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .sub { font-size: 1.1rem; color: var(--fg-dim); max-width: 600px; margin: 0.75rem auto 1rem; }
+  .hero .stats { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem; }
+  .hero .stat { text-align: center; }
+  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: var(--fg-bright); }
+  .hero .stat .lbl { font-size: 0.75rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+  nav {
+    display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px);
+  }
+  nav button {
+    background: none; border: none; color: var(--fg-dim);
+    padding: 0.85rem 1.2rem; cursor: pointer; font-size: 0.88rem;
+    font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; font-family: inherit;
+  }
+  nav button:hover { color: var(--fg); }
+  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .tab { display: none; }
+  .tab.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; justify-content: center; }
+  .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .filters button {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg-dim);
+    padding: 0.4rem 0.9rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+    font-family: inherit; transition: all 0.2s; font-weight: 500;
+  }
+  .filters button:hover { border-color: var(--border-light); color: var(--fg); }
+  .filters button.on { background: var(--accent-glow); color: var(--accent); border-color: var(--accent); }
+  .search-box {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg);
+    padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.8rem;
+    width: 200px; outline: none; font-family: inherit; transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--fg-dim); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.85rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.35rem;
+    cursor: pointer; transition: all 0.2s; overflow: hidden;
+  }
+  .card:hover { background: var(--card-hover); border-color: var(--border-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  .card h3 { color: var(--accent); font-size: 0.95rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+  .card .tag { font-size: 0.65rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; background: var(--surface); padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .card p { color: var(--fg-dim); font-size: 0.85rem; line-height: 1.5; }
+  .card .arrow { font-size: 0.7rem; color: #3d4a5c; transition: transform 0.2s; }
+  .card.open .arrow { transform: rotate(180deg); }
+  .card .detail { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--fg-dim); }
+  .card.open .detail { display: block; }
+  .category-section { margin-bottom: 2rem; }
+  .category-section h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.75rem; }
+  .cat-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-bottom: 1rem; }
+  .cat-table th { text-align: left; padding: 0.5rem 0.7rem; color: var(--fg-dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+  .cat-table td { padding: 0.6rem 0.7rem; border-bottom: 1px solid var(--border); }
+  .cat-table tr:hover { background: var(--card-hover); }
+  .agent-list { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .agent-row:last-child { border-bottom: none; }
+  .agent-row:hover { background: var(--card-hover); }
+  .agent-row strong { color: var(--fg-bright); font-size: 0.88rem; font-weight: 600; }
+  .agent-row span { color: var(--fg-dim); font-size: 0.8rem; }
+  pre { background: #0a0e14; border-radius: var(--radius-sm); padding: 0.85rem 1rem; overflow-x: auto; font-size: 0.8rem; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.55; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; }
+  .good-code { border-left: 3px solid var(--green); background: #0a1a10; }
+  .bad-code { border-left: 3px solid var(--red); background: #1a0a0a; opacity: 0.85; }
+  .code-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+  .code-label.good { color: var(--green); }
+  .code-label.bad { color: var(--red); }
+  .install-block { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
+  .install-block code { background: #0a0e14; padding: 0.55rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.88rem; display: inline-block; }
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-top: 0.5rem; }
+  .principle-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
+  .principle-card h3 { color: var(--fg-bright); font-size: 0.9rem; margin-bottom: 0.35rem; }
+  .flow-example { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+  .flow-example h4 { color: var(--accent); margin-bottom: 0.5rem; }
+  .flow-example .flow-step { color: var(--fg-dim); font-size: 0.85rem; margin-bottom: 0.25rem; padding-left: 1rem; border-left: 2px solid var(--border); }
+  .doc-rule { display: flex; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; align-items: baseline; }
+  .doc-rule .do { color: var(--green); min-width: 200px; }
+  .doc-rule .dont { color: var(--red); }
+  h2 { font-size: 1.25rem; color: var(--fg-bright); margin-bottom: 1rem; font-weight: 700; border-left: 3px solid var(--accent); padding-left: 0.7rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 2.5rem 0 1.5rem; color: #3d4a5c; font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  @media (max-width: 640px) {
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .hero .stats { gap: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    nav button { padding: 0.7rem 0.8rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1><span>dotnet</span>-artisan</h1>
+  <p class="sub">.NET development skills for AI coding agents. Teaches AIs correct .NET patterns + ensures they re-understand any project in 30 seconds.</p>
+  <div class="stats">
+    <div class="stat"><div class="num">14</div><div class="lbl">Skills</div></div>
+    <div class="stat"><div class="num">17</div><div class="lbl">Agents</div></div>
+    <div class="stat"><div class="num">160+</div><div class="lbl">References</div></div>
+    <div class="stat"><div class="num">30+</div><div class="lbl">Behaviors</div></div>
+    <div class="stat"><div class="num">MIT</div><div class="lbl">License</div></div>
+  </div>
+</div>
+
+<nav>
+  <button class="active" onclick="switchTab('skills')">Skills</button>
+  <button onclick="switchTab('agents')">Agents</button>
+  <button onclick="switchTab('usage')">Usage</button>
+  <button onclick="switchTab('install')">Install</button>
+  <button onclick="switchTab('selfdoc')">30s Rule</button>
+  <button onclick="switchTab('flow')">Flow</button>
+  <a href="index.html" style="display:flex;align-items:center;padding:0.85rem 1rem;color:var(--fg-dim);font-size:0.85rem;text-decoration:none;border-bottom:2px solid transparent;transition:all 0.2s" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg-dim)'">中文</a>
+</nav>
+
+<div class="container">
+
+<!-- SKILLS TAB -->
+<div id="skills" class="tab active">
+  <p style="color:var(--fg-dim);margin-bottom:1rem">Gateway → Decision-Maker → Domain → Meta. Click to expand.</p>
+
+  <div class="category-section">
+    <h3>Gateway (Always Run First)</h3>
+    <div class="grid">
+      <div class="card"><h3>using-dotnet <span class="tag">gateway</span></h3><p>Intent detector. "Is this .NET?" Runs first, always.</p></div>
+      <div class="card" style="border-color:var(--accent)"><h3>dotnet-advisor <span class="tag" style="background:var(--accent-glow);color:var(--accent)">decision-maker</span></h3><p>Analyzes your prompt + project files. Detects version. Routes to skills. Asks if unclear.</p></div>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3>Baseline (Always Loaded)</h3>
+    <table class="cat-table">
+      <tr><td><strong>dotnet-csharp</strong></td><td>C# language standards: async/await, DI, LINQ, concurrency, type design. Active for every code path.</td></tr>
+    </table>
+  </div>
+
+  <div class="category-section">
+    <h3>Builders</h3>
+    <table class="cat-table">
+      <tr><td><strong>dotnet-api</strong></td><td>Web APIs, EF Core, gRPC, SignalR, auth, caching, YARP</td></tr>
+      <tr><td><strong>dotnet-ui</strong></td><td>Blazor, MAUI, Uno, WPF, WinUI, WinForms</td></tr>
+    </table>
+  </div>
+
+  <div class="category-section">
+    <h3>Verifiers</h3>
+    <table class="cat-table">
+      <tr><td><strong>dotnet-testing</strong></td><td>xUnit v3, Testcontainers, Playwright E2E, BenchmarkDotNet</td></tr>
+      <tr><td><strong>dotnet-debugging</strong></td><td>WinDbg crash dumps, deadlocks, memory leaks, high CPU</td></tr>
+      <tr><td><strong>dotnet-quality</strong></td><td>7-step pipeline: format → warnings → dead code → CancellationToken</td></tr>
+    </table>
+  </div>
+
+  <div class="category-section">
+    <h3>Operators</h3>
+    <table class="cat-table">
+      <tr><td><strong>dotnet-devops</strong></td><td>CI/CD, Docker, NuGet, OpenTelemetry</td></tr>
+      <tr><td><strong>dotnet-tooling</strong></td><td>MSBuild, Native AOT, CLI tools, SDK, profiling</td></tr>
+      <tr><td><strong>dotnet-upgrade</strong></td><td>.NET version migration (8→9→10→11), AOT compatibility</td></tr>
+    </table>
+  </div>
+
+  <div class="category-section">
+    <h3>Augmenters</h3>
+    <table class="cat-table">
+      <tr><td><strong>dotnet-ai</strong></td><td>MCP servers, Semantic Kernel, RAG, ML.NET</td></tr>
+      <tr><td><strong>dotnet-workflow</strong></td><td>Parallel worktrees, context management, verification loops</td></tr>
+      <tr><td><strong>dotnet-learning</strong></td><td>Correction capture, pattern generalization, memory storage</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- AGENTS TAB -->
+<div id="agents" class="tab">
+  <div class="category-section">
+    <h3>Role-Based Agents</h3>
+    <p style="color:var(--fg-dim);margin-bottom:0.75rem">Act like human specialists. Understand context, make judgment calls, explain reasoning.</p>
+    <div class="agent-list" id="roleAgents"></div>
+  </div>
+  <div class="category-section">
+    <h3>Tool-Based Agents</h3>
+    <p style="color:var(--fg-dim);margin-bottom:0.75rem">Perform specific technical deep-dive analysis.</p>
+    <div class="agent-list" id="toolAgents"></div>
+  </div>
+</div>
+
+<!-- USAGE TAB -->
+<div id="usage" class="tab">
+  <h2>The Decision-Maker at Work</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.5rem">Real examples of what happens when you use this repo. The decision-maker (dotnet-advisor) bridges your words and the right action.</p>
+
+  <div class="flow-example">
+    <h4>Example 1: "I need an order management system"</h4>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">You:</strong> "I need an order management system"</div>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--accent)">Decision-maker:</strong> "What kind of orders? Purchase orders? Work orders? Customer orders?"</div>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">You:</strong> "Customer orders. Status: Pending → Confirmed → Shipped."</div>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--accent)">Decision-maker:</strong> "Got it. .NET 10 or 8? PostgreSQL? Production or prototype? Need tests?"</div>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">You:</strong> ".NET 10, PostgreSQL, production, yes."</div>
+    <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">Behavior chain:</strong> Intent detection → 3 rounds of questions → domain glossary captured → architecture chosen → scaffold OrderManagement.Api → EF Core + Minimal APIs + auth → Testcontainers setup → every file follows 30-second rule</div>
+  </div>
+
+  <div class="flow-example">
+    <h4>Example 2: "My app crashes in production"</h4>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">You:</strong> "My app keeps crashing — OutOfMemoryException"</div>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--accent)">Decision-maker:</strong> "Do you have a .dmp file? If yes, I'll load WinDbg and analyze it."</div>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">You:</strong> "Yes, C:\dumps\crash.dmp"</div>
+    <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">Behavior chain:</strong> Intent detection → dotnet-debugging loaded → WinDbg opens dump → !analyze -v → !dumpheap -stat finds 850MB byte[] → !gcroot traces to ImageCache singleton → reports root cause + fix: use IMemoryCache with SizeLimit</div>
+  </div>
+
+  <div class="flow-example">
+    <h4>Example 3: "Review my code"</h4>
+    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">You:</strong> "Review this PR"</div>
+    <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">Behavior chain:</strong> Intent detection → dotnet-code-review-agent invoked (separate sub-session) → analyzes correctness, performance, security, architecture → reports: "3 issues: [Critical] Scoped→Singleton DI, [Perf] N+1 query, [Security] hardcoded API key"</div>
+  </div>
+
+  <p style="margin-top:1.5rem;color:var(--fg-dim)">Read the full questioning framework in <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/USAGE.md">USAGE.md</a>. See all 30+ behaviors in <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/BEHAVIORS.md">BEHAVIORS.md</a>.</p>
+</div>
+
+<!-- INSTALL TAB -->
+<div id="install" class="tab">
+  <h2>Plugin</h2>
+  <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+    <code style="flex:1;min-width:250px">claude plugins install YataoFeng/dotnet-artisan</code>
+    <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">Copy</button>
+  </div>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1rem">Compatible with GitHub Copilot, VS Code, Cursor — <a href="https://agentskills.io">agentskills.io</a> standard.</p>
+
+  <h2>Harness (Built-In)</h2>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Auto-installed with the plugin. Open any .NET project → harness detects it → skills load → decision-maker activates. Checks new .cs files for purpose comments. Zero config. <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/harness/README.md">How it works →</a></p>
+
+  <h2>Core Principles</h2>
+  <div class="principle-grid">
+    <div class="principle-card"><h3>KISS First</h3><p style="color:var(--fg-dim);font-size:0.82rem">Simple CRUD does not need DDD. Match pattern to problem scale.</p></div>
+    <div class="principle-card"><h3>No Repository Wrappers</h3><p style="color:var(--fg-dim);font-size:0.82rem">DbContext IS the UoW; DbSet IS the repository.</p></div>
+    <div class="principle-card"><h3>Free & Open Source</h3><p style="color:var(--fg-dim);font-size:0.82rem">Microsoft-recommended + MIT only. Zero commercial deps.</p></div>
+    <div class="principle-card"><h3>Self-Documenting Code</h3><p style="color:var(--fg-dim);font-size:0.82rem">Fresh AI understands any project in 30 seconds. <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">Guide →</a></p></div>
+  </div>
+</div>
+
+<!-- SELF-DOC TAB -->
+<div id="selfdoc" class="tab">
+  <h2>The 30-Second Rule</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.5rem">Every project generated by this repo MUST be understandable by a fresh AI session in 30 seconds. No chat history needed.</p>
+
+  <div class="doc-rule"><div class="do">Solution file at root</div><div class="dont">Never hidden in a subdirectory</div></div>
+  <div class="doc-rule"><div class="do">Domain project names: OrderManagement.Api</div><div class="dont">Never Core, Shared, Services</div></div>
+  <div class="doc-rule"><div class="do">One-line file headers: "Handles fulfillment: validates payment, reserves inventory"</div><div class="dont">Never "Order handler"</div></div>
+  <div class="doc-rule"><div class="do">Explicit dependencies: constructor(DbContext, IHybridCache)</div><div class="dont">Never Service Locator, IServiceProvider</div></div>
+  <div class="doc-rule"><div class="do">WHY comments: "IServiceScopeFactory because BackgroundService outlives Scoped"</div><div class="dont">Never "Saves the order"</div></div>
+  <div class="doc-rule"><div class="do">No generic names</div><div class="dont">Never Helper, Manager, Utils, Common, Shared</div></div>
+
+  <h2 style="margin-top:2rem">Discovery Pattern</h2>
+  <pre style="background:var(--card);padding:1.25rem;font-size:0.82rem;line-height:1.8;border:1px solid var(--border);border-radius:var(--radius)">
+1. Open .slnx → See all projects
+2. Open Program.cs → See DI, middleware, endpoints
+3. Open any .cs file → Class name + constructor = full story
+4. Open appsettings.json → See configuration shape
+
+Total: 30 seconds. Full context restored. Zero history needed.</pre>
+
+  <p style="margin-top:1.5rem;color:var(--fg-dim)">Full guide: <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a></p>
+</div>
+
+<!-- FLOW TAB -->
+<div id="flow" class="tab">
+  <h2>Decision-Maker Architecture</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.5rem">How the AI navigates from your words to the right action</p>
+  <div style="display:flex;flex-wrap:wrap;gap:1.5rem">
+  <div style="flex:1;min-width:300px">
+    <pre style="background:var(--card);padding:1.5rem;font-size:0.82rem;line-height:1.9;overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)">
+Your prompt
+    │
+    ▼
+┌──────────────┐
+│ using-dotnet │  Intent detection
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│dotnet-advisor│  THE DECISION-MAKER
+│              │  • Analyzes prompt
+│              │  • Reads .csproj
+│              │  • Detects version
+│              │  • Routes to skills
+│              │  • Asks if unclear
+└──────┬───────┘
+       ▼
+┌──────┴──────┐
+▼             ▼
+┌─────────┐ ┌──────────┐
+│ Builders │ │Verifiers │
+│ api, ui  │ │testing,  │
+│          │ │debug,    │
+│ Operators│ │quality   │
+│ devops,  │ │          │
+│ tooling, │ │Augmenters│
+│ upgrade  │ │ai,work-  │
+└─────────┘ │flow,learn│
+            └──────────┘
+  │
+  ▼
+┌──────────────┐
+│ dotnet-csharp │ Always loaded
+└──────────────┘</pre>
+  </div>
+  <div style="flex:1;min-width:280px">
+    <h2 style="font-size:1rem">Baseline (Always Loaded)</h2>
+    <div style="color:var(--fg-dim);font-size:0.85rem;line-height:2">
+      <div>1. anti-patterns.md — Good/bad code</div>
+      <div>2. code-smells.md — Common mistakes</div>
+      <div>3. async-patterns.md — Async conventions</div>
+      <div>4. solid-principles.md — SOLID</div>
+      <div>5. DECISIONS.md — Decision guides</div>
+      <div>6. CHEATSHEET.md — All rules</div>
+      <div>7. package-choices.md — Package mapping</div>
+      <div>8. coding-standards.md — Conventions</div>
+      <div>9. dotnet-releases.md — Version features</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+</div>
+
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})" id="topBtn" style="position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#fff;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;opacity:0;transition:opacity 0.3s;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,0.3)" title="Top">↑</button>
+<script>window.addEventListener('scroll',()=>document.getElementById('topBtn').style.opacity=window.scrollY>400?'1':'0')</script>
+
+<footer>
+  <p>Synthesized from <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>, <a href="https://github.com/dotnet/skills">dotnet/skills</a>, <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
+  <p style="margin-top:0.3rem">
+    <a href="https://github.com/YataoFeng/dotnet-artisan">GitHub</a> ·
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/USAGE.md">Usage</a> ·
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">30s Rule</a> ·
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/BEHAVIORS.md">Behaviors</a> ·
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/CLAUDE.md">CLAUDE.md</a>
+  </p>
+  <p style="margin-top:0.5rem;font-size:0.7rem">Page loaded <span id="loadTime"></span></p>
+</footer>
+
+<script>
+const roleAgents = [
+  ["dotnet-architect","Software architect — structure, patterns, framework choice"],
+  ["dotnet-code-review-agent","Code reviewer — correctness, perf, security, architecture"],
+  ["dotnet-security-reviewer","Security auditor — OWASP, secrets, crypto (read-only)"],
+  ["dotnet-testing-specialist","Test architect — strategy, test data, pyramid design"],
+  ["dotnet-docs-generator","Technical writer — DocFX, Mermaid, XML docs"],
+  ["dotnet-refactor-cleaner","Cleanup specialist — 7-step pipeline, dead code removal"]
+];
+const toolAgents = [
+  ["dotnet-aspnetcore-specialist","Middleware, DI, request pipelines"],
+  ["dotnet-async-performance-specialist","Async/await perf, ValueTask, ThreadPool"],
+  ["dotnet-benchmark-designer","BenchmarkDotNet, measurement validation"],
+  ["dotnet-blazor-specialist","Blazor render modes, components, hosting"],
+  ["dotnet-build-error-resolver","MSBuild errors, NuGet conflicts, SDK issues"],
+  ["dotnet-cloud-specialist","Aspire, AKS, cloud deployment"],
+  ["dotnet-csharp-concurrency-specialist","Race conditions, deadlocks, thread safety"],
+  ["dotnet-maui-specialist","MAUI development, Xamarin migration"],
+  ["dotnet-performance-analyst","Flame graphs, heap dumps, GC analysis"],
+  ["dotnet-uno-specialist","Uno Platform, MVUX, cross-platform"],
+  ["dotnet-pr-workflow","PR lifecycle: create → review → merge → release"]
+];
+
+function renderRoleAgents() {
+  document.getElementById('roleAgents').innerHTML = roleAgents.map(a =>
+    `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
+}
+function renderToolAgents() {
+  document.getElementById('toolAgents').innerHTML = toolAgents.map(a =>
+    `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
+}
+
+function copyInstall() {
+  navigator.clipboard.writeText('claude plugins install YataoFeng/dotnet-artisan');
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = 'Copied!'; btn.style.background = 'var(--green)';
+  setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = 'var(--accent)'; }, 2000);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  const btn = document.querySelector(`nav button[onclick*="${name}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+renderRoleAgents();
+renderToolAgents();
+document.getElementById('loadTime').textContent = new Date().toLocaleString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+</script>
+</body>
+</html>

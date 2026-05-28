@@ -30,7 +30,7 @@ dotnet-artisan/
 ├── CLAUDE.md              ← You are here. Reconnection entry point.
 ├── AGENTS.md              ← Iron rules. Read second.
 ├── USAGE.md               ← How to use skills. Read third.
-├── README.md              ← Human overview (also README.zh-CN.md)
+├── README.md              ← Chinese (default). README.en.md for English.
 ├── .claude-plugin/
 │   ├── plugin.json        ← Skill + agent registry (single source of truth)
 │   └── marketplace.json   ← Publication metadata

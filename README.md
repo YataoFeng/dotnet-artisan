@@ -1,213 +1,215 @@
 # dotnet-artisan
 
-[![中文](https://img.shields.io/badge/中文-简体中文-red)](README.zh-CN.md)
+[![English](https://img.shields.io/badge/English-README-blue)](README.en.md)
 
-**Makes your AI coding agent actually good at .NET.**
+**让你的 AI 编码代理真正擅长 .NET。** 装完即用，零配置。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/Skills-14-5b9cf5)](skills/)
-[![Agents](https://img.shields.io/badge/Agents-17-8b5cf6)](agents/)
+[![Skills](https://img.shields.io/badge/技能-14-5b9cf5)](skills/)
+[![Agents](https://img.shields.io/badge/代理-17-8b5cf6)](agents/)
+[![References](https://img.shields.io/badge/参考文件-168-4ade80)](skills/)
 
 ---
 
-## Why use this?
+## 为什么需要？
 
-If you use Claude Code (or Copilot, Cursor) for .NET development, you've probably seen these problems:
+AI 编码代理在 .NET 开发中有两个致命缺陷：
 
-| Problem | Without this plugin | With this plugin |
-|---------|-------------------|------------------|
-| Dead packages | AI recommends Swashbuckle (unmaintained), FluentValidation (no AOT), MediatR (commercial) | AI uses `Microsoft.AspNetCore.OpenApi`, `AddValidation()`, direct handlers — all built-in, free, AOT-safe |
-| Anti-patterns | AI wraps DbContext in useless IRepository/IUnitOfWork layers | AI injects DbContext directly. EF Core IS the repository. |
-| Frozen knowledge | AI doesn't know .NET 10 features: `HybridCache`, file-based apps, `field` keyword | AI knows every .NET version from 8 to 11 and adapts automatically |
-| Jumps to code | "Build me an order system" → AI immediately scaffolds a project with wrong assumptions | AI asks 3-4 rounds of questions first, captures a domain glossary, then builds |
-| Lost context | Disconnect → reconnect → AI has no idea what you built or why | AI reads the code in 30 seconds because every file is self-documenting |
-| Vague debugging | "My app crashes" → AI gives generic advice | AI opens .dmp in WinDbg, runs `!analyze -v`, traces root cause to exact line |
+| 问题 | 没装这个插件 | 装了这个插件 |
+|------|------------|------------|
+| 推荐过时/商业包 | Swashbuckle（停维护）、FluentValidation（不兼容 AOT）、MediatR（商业） | `Microsoft.AspNetCore.OpenApi`、`AddValidation()`、直接 Handler——全内置、免费、AOT 安全 |
+| 写反模式 | 给 DbContext 包一层 IRepository/IUnitOfWork | 直接注入 DbContext。EF Core 本身就是仓储 |
+| 知识冻结 | 不知道 .NET 10 的 `HybridCache`、文件级应用、`field` 关键字 | 自动识别 .NET 8 到 11，每个版本用什么特性都清楚 |
+| 上来就写代码 | "帮我做个订单系统" → 直接脚手架，建了一堆错的东西 | 先完成 7 项检查清单，捕捉领域词汇表，选对架构，再动手 |
+| 断开就失忆 | 重连后 AI 完全不认识你的项目 | 30 秒读懂项目——每个文件都是自文档化的 |
+| 调试靠猜 | "应用崩了" → 泛泛的建议 | 打开 .dmp 在 WinDbg 里 `!analyze -v`，一路追踪到具体哪行 |
 
----
+## 能做什么？
 
-## What can it do? (Practical)
+### 构建新项目
 
-### When you're building something new
+"帮我做一个顾客订单的 Web API"
+→ AI 提问澄清（订单类型？流程？.NET 版本？数据库？）
+→ 选架构（单项目/VSA/DDD/Clean）→ 搭脚手架
+→ EF Core + Minimal API + 认证 + OpenAPI + Scalar
+→ 集成测试（Testcontainers + 真实 PostgreSQL）
+→ 每个文件自文档化
 
-"Create a Web API for customer orders"
+Blazor 管理后台、CLI 工具、gRPC 服务、AI 功能（MCP/Semantic Kernel/RAG）——同样的流程。
 
-→ AI asks: What kind of orders? Who places them? What's the flow? .NET version? Database?
-→ Scaffolds project with EF Core, Minimal APIs, auth, OpenAPI, Scalar docs
-→ Sets up integration tests with real PostgreSQL via Testcontainers
-→ Every file follows self-documenting rules so it's readable forever
+### 修复故障
 
-"Build a Blazor dashboard" — same flow, but for UI: picks render mode, sets up components, auth state.
+"生产环境 OutOfMemoryException" → 加载调试专家 → WinDbg `!dumpheap -stat` → 发现 850MB byte[] 被 ImageCache 单例持有 → 报告根因 + 修复方案
 
-"Create a CLI tool" — System.CommandLine or Spectre.Console, Native AOT-ready.
+死锁检测（!dlk, !syncblk）、构建失败诊断、竞态条件分析——都覆盖。
 
-"Add AI to my app" — Semantic Kernel, MCP servers, RAG pipelines.
+### 审查和提升
 
-### When something's broken
+"审查这个 PR" → 多维度分析（正确性/性能/安全/架构）→ 分类报告 + 修复建议
+"这个安全吗？" → OWASP 审计（只读，不改代码）
+"清理代码" → 7 步流水线：格式化 → 警告 → 死代码 → CancellationToken
+"怎么架构？" → 架构专家根据复杂度推荐模式
 
-"Production is crashing with OutOfMemoryException"
+### 测试
 
-→ AI loads the **debugging specialist**, opens your .dmp file in WinDbg
-→ `!analyze -v` → `!dumpheap -stat` → finds 850MB of byte[] held by ImageCache
-→ Reports: "Your image cache has no eviction. Fix: IMemoryCache with SizeLimit."
+单元测试（xUnit v3）· 集成测试（Testcontainers）· E2E（Playwright）· BDD（Reqnroll + xUnit Given/When/Then）· 性能基准（BenchmarkDotNet）
 
-"My app freezes under load" → deadlock detection (!dlk, !syncblk)
+### 交付
 
-"Build fails" → MSBuild diagnostic specialist resolves NuGet conflicts, SDK issues
+Git 工作流（分支策略 + Conventional Commits）· CI/CD 管道 · Docker 容器 · 云部署（Aspire/AKS）· NuGet 发布 · PR 完整生命周期（创建→审查→合并→发布）
 
-"Race condition" → concurrency specialist finds unsynchronized shared state
+### 升级
 
-### When you need a second opinion
-
-"Review this code" → multi-dimensional analysis: correctness, performance, security, architecture. Returns categorized findings with fix suggestions.
-
-"Is this secure?" → OWASP audit. Finds hardcoded secrets, SQL injection risks, missing auth. Read-only.
-
-"How should I structure this?" → architecture specialist recommends patterns based on complexity.
-
-"Clean this up" → 7-step pipeline: format → unused usings → fix warnings → dead code → TODOs → sealed audit → CancellationToken. Each step verified with `dotnet build && dotnet test`.
-
-### When you're shipping
-
-"Set up CI/CD" → GitHub Actions pipeline with caching, testing, Docker build
-"Containerize" → multi-stage Dockerfile, chiseled images, non-root user
-"Deploy to cloud" → .NET Aspire orchestration, AKS, health checks
-"Add monitoring" → OpenTelemetry + Serilog structured logging
+.NET 版本迁移（8→9→10→11）· Native AOT 转换 · 从纠错中学习 · 并行工作流优化
 
 ---
 
-## How to install
+## 谁在干活？
+
+安装插件后，两个网关自动激活：
+
+```
+你说 .NET 相关的事
+  → using-dotnet（意图检测："是 .NET 吗？"）
+  → dotnet-advisor（决策者：读你的项目文件，检测 .NET 版本，分析意图，路由到正确技能，不确定时反问）
+  → 领域技能 + dotnet-csharp（基线，始终加载）+ 可选专家代理
+```
+
+### 技能（14 个）
+
+#### 网关 — 最先运行
+
+| 技能 | 做什么 |
+|------|--------|
+| `using-dotnet` | 意图检测。判断这是不是 .NET 请求。是 → 交给决策者 |
+| `dotnet-advisor` | **决策者。** 读你的 .csproj/global.json，检测 .NET 版本，分析意图，路由到正确专家。模糊时反问澄清 |
+
+#### 基线 — 始终加载
+
+| 技能 | 做什么 |
+|------|--------|
+| `dotnet-csharp` | C# 语言标准：async/await、DI、LINQ、并发、类型设计。25 个参考文件。所有代码路径都激活 |
+
+#### 构建者 — 创建东西
+
+| 技能 | 构建什么 | 参考文件 |
+|------|---------|---------|
+| `dotnet-api` | Web API、EF Core、gRPC、SignalR、认证、缓存、YARP | 32 |
+| `dotnet-ui` | Blazor、MAUI、Uno Platform、WPF、WinUI 3、WinForms | 20 |
+
+#### 验证者 — 检查和修复
+
+| 技能 | 检查什么 | 参考文件 |
+|------|---------|---------|
+| `dotnet-testing` | xUnit v3、Testcontainers、Playwright E2E、BDD、BenchmarkDotNet | 14 |
+| `dotnet-debugging` | WinDbg 崩溃转储、死锁、内存泄漏、高 CPU | 17 |
+| `dotnet-quality` | 7 步清理流水线：格式化 → 警告 → 死代码 → CancellationToken | — |
+
+#### 运维者 — 交付和维护
+
+| 技能 | 运维什么 | 参考文件 |
+|------|---------|---------|
+| `dotnet-devops` | CI/CD、Git 工作流、Docker、NuGet、OpenTelemetry | 19 |
+| `dotnet-tooling` | 项目启动器（架构选择→结构映射→脚手架）、MSBuild、Native AOT、CLI、SDK、领域分析 | 36 |
+| `dotnet-upgrade` | .NET 版本迁移（8→9→10→11）、AOT 兼容、nullable 迁移 | — |
+
+#### 增强者 — 扩展和提升
+
+| 技能 | 增强什么 | 参考文件 |
+|------|---------|---------|
+| `dotnet-ai` | MCP 服务、Semantic Kernel、RAG、ML.NET | — |
+| `dotnet-workflow` | 并行工作树、上下文管理、Claude Code 优化 | — |
+| `dotnet-learning` | 纠错捕获、模式泛化、记忆存储 | — |
+
+### 代理（17 个）
+
+#### 角色型代理 — 像人类专家一样判断
+
+| 代理 | 扮演角色 | 调用技能 | 什么时候叫 |
+|------|---------|---------|------------|
+| `dotnet-architect` | 软件架构师 | dotnet-advisor, dotnet-csharp, **dotnet-tooling** | "这个项目怎么架构？" |
+| `dotnet-code-review-agent` | 代码审查员 | **dotnet-csharp, dotnet-api, dotnet-ui**, dotnet-security-reviewer, dotnet-async-performance-specialist, dotnet-csharp-concurrency-specialist, dotnet-performance-analyst, dotnet-benchmark-designer, dotnet-blazor-specialist, dotnet-cloud-specialist, dotnet-testing-specialist | "审查这个 PR" |
+| `dotnet-security-reviewer` | 安全审计员 | dotnet-advisor, **dotnet-api** | "这个代码安全吗？"（只读） |
+| `dotnet-testing-specialist` | 测试架构师 | **dotnet-testing, dotnet-ui**, dotnet-benchmark-designer, dotnet-blazor-specialist, dotnet-maui-specialist, dotnet-uno-specialist, dotnet-security-reviewer | "怎么测试这个？" |
+| `dotnet-docs-generator` | 技术文档工程师 | **dotnet-tooling, dotnet-api, dotnet-csharp, dotnet-devops** | "生成文档" |
+| `dotnet-refactor-cleaner` | 清理专家 | —（独立运行 7 步清理流水线） | "清理这段代码" |
+
+#### 工具型代理 — 特定领域深度分析
+
+| 代理 | 分析对象 | 调用技能 | 什么时候叫 |
+|------|---------|---------|------------|
+| `dotnet-aspnetcore-specialist` | 中间件、DI、请求管道 | **dotnet-api, dotnet-csharp**, dotnet-async-performance-specialist, dotnet-blazor-specialist, dotnet-security-reviewer | "中间件顺序对吗？" |
+| `dotnet-async-performance-specialist` | Async/await 性能、ValueTask、ThreadPool | **dotnet-csharp, dotnet-tooling**, dotnet-performance-analyst, dotnet-benchmark-designer, dotnet-csharp-concurrency-specialist | "为什么异步代码这么慢？" |
+| `dotnet-benchmark-designer` | BenchmarkDotNet、测量方法 | **dotnet-testing, dotnet-tooling**, dotnet-performance-analyst | "设计一个基准测试" |
+| `dotnet-blazor-specialist` | Blazor 渲染模式、组件 | **dotnet-ui, dotnet-api, dotnet-tooling, dotnet-testing** | "选哪个渲染模式？" |
+| `dotnet-build-error-resolver` | MSBuild 错误、NuGet 冲突、SDK 版本 | —（直接 Read/Grep/Bash） | 构建失败 |
+| `dotnet-cloud-specialist` | Aspire、AKS、云部署 | **dotnet-devops, dotnet-api**, dotnet-architect, dotnet-security-reviewer, dotnet-performance-analyst | "部署到云？" |
+| `dotnet-csharp-concurrency-specialist` | 竞态条件、死锁、线程安全 | **dotnet-csharp** | "高并发下出问题" |
+| `dotnet-maui-specialist` | MAUI、Xamarin 迁移 | **dotnet-ui, dotnet-tooling** | "做手机应用" |
+| `dotnet-performance-analyst` | 火焰图、堆转储、GC | **dotnet-tooling, dotnet-testing, dotnet-devops**, dotnet-benchmark-designer | "找出性能瓶颈" |
+| `dotnet-uno-specialist` | Uno Platform、MVUX | **dotnet-ui, dotnet-csharp, dotnet-tooling, dotnet-testing** | "跨平台桌面应用？" |
+
+#### 工作流代理 — 管理开发流程
+
+| 代理 | 管理什么 | 什么时候叫 |
+|------|---------|------------|
+| `dotnet-pr-workflow` | PR 完整生命周期：分析 diff → Conventional Commit 标题 → PR 正文 → CI 验证 → 自动审查 → squash-merge → 版本号 + changelog + tag | "创建 PR"、"合并"、"发布" |
+
+---
+
+## 自文档化代码（30 秒法则）
+
+每个生成的项目遵循一条铁律：**新 AI 会话必须在 30 秒内理解它。**
+
+| 规则 | 做 | 不做 |
+|------|-----|------|
+| 解决方案在根目录 | `OrderManagement.slnx` 一眼看到 | 藏在 `/src/` 里 |
+| 项目名 = 领域名 | `OrderManagement.Api` | `Core`、`Shared`、`Services` |
+| 文件顶部一句话 | `// 处理履约：验证支付、预留库存、创建发货单` | `// 订单处理` |
+| 显式依赖 | `构造函数(AppDbContext, IHybridCache, TimeProvider)` | `IServiceProvider.GetService<T>()` |
+| 只写 WHY 注释 | `// IServiceScopeFactory：BackgroundService 活得比 Scoped 长` | `// 保存订单` |
+| 禁止通用名称 | — | `Helper`、`Manager`、`Utils`、`Common` |
+
+**[→ 完整指南](SELF_DOCUMENTING.md)**
+
+---
+
+## 怎么装
 
 ```bash
 claude plugins install YataoFeng/dotnet-artisan
 ```
 
-Also works with GitHub Copilot, VS Code, Cursor. Follows the [agentskills.io](https://agentskills.io) standard.
+兼容 GitHub Copilot、VS Code、Cursor。遵循 [agentskills.io](https://agentskills.io) 标准。
 
-### Harness (built-in auto-pilot)
-
-Installed automatically with the plugin. Opens your .NET project → harness detects it → skills load → decision-maker activates. No config, no copy-paste.
-
-| When | What happens |
-|------|--------------|
-| Open a .NET project | Detects `.cs`/`.csproj`/`.sln` → auto-loads skills → shows .NET version |
-| Type a .NET prompt | Detects C#/ASP.NET/Blazor keywords → confirms routing |
-| Create/edit a `.cs` file | Checks for one-line purpose comment → reminds you (30-second rule) |
-
-**[→ How it works](harness/README.md)**
+装完即用。打开 .NET 项目 → Harness 自动检测 → 技能加载 → 决策者激活。零配置。**[→ Harness 原理](harness/README.md)**
 
 ---
 
-## Who's in the team?
+## 核心原则
 
-### The Decision-Maker (always runs first)
-
-When you say anything .NET-related, two gateways fire:
-
-| Role | Who | What it does |
-|------|-----|--------------|
-| Intent detector | `using-dotnet` | "Is this a .NET request?" If yes, pass to decision-maker |
-| **Decision-maker** | `dotnet-advisor` | Reads your project files, detects .NET version, analyzes your intent, routes to the right specialists. Asks clarifying questions if your intent is ambiguous. |
-
-### The Specialists (loaded when needed)
-
-Each specialist has deep knowledge in one domain, backed by reference files with patterns and anti-patterns.
-
-#### Building things
-
-| Specialist | What it builds | Backed by |
-|------------|---------------|-----------|
-| `dotnet-api` | Web APIs, EF Core, gRPC, SignalR, auth, caching, YARP reverse proxy | 32 reference files |
-| `dotnet-ui` | Blazor, MAUI, Uno Platform, WPF, WinUI 3, WinForms | 20 reference files |
-
-**Tools they use**: project scaffolding, MSBuild, NuGet, SDK management (via `dotnet-tooling`)
-
-#### Checking things
-
-| Specialist | What it checks | Backed by |
-|------------|---------------|-----------|
-| `dotnet-testing` | Unit tests (xUnit v3), integration tests (Testcontainers), E2E (Playwright), benchmarks | 13 reference files |
-| `dotnet-debugging` | Crash dumps (WinDbg), deadlocks, memory leaks, high CPU | 17 reference files — uses MCP WinDbg tools |
-| `dotnet-quality` | 7-step cleanup: format → warnings → dead code → CancellationToken | Built-in pipeline |
-
-#### Shipping things
-
-| Specialist | What it handles | Backed by |
-|------------|-----------------|-----------|
-| `dotnet-devops` | CI/CD, Docker, NuGet publishing, OpenTelemetry | 18 reference files |
-| `dotnet-tooling` | MSBuild, Native AOT, CLI tools, SDK install, profiling | 34 reference files |
-| `dotnet-upgrade` | .NET version migration (8→9→10→11), AOT compatibility | Migration guides |
-
-#### Extending things
-
-| Specialist | What it adds | Backed by |
-|------------|-------------|-----------|
-| `dotnet-ai` | MCP servers, Semantic Kernel, RAG, ML.NET | AI integration patterns |
-| `dotnet-workflow` | Parallel worktrees, context management, Claude Code optimization | Workflow patterns |
-| `dotnet-learning` | Captures your corrections, generalizes into rules, stores in MEMORY.md | Learning system |
-
-**Always active**: `dotnet-csharp` is loaded on every code path. It enforces C# standards: async/await correctness, DI patterns, LINQ optimization, concurrency safety. 25 reference files.
-
-### The Expert Advisors (on-demand deep analysis)
-
-When a specialist needs a deeper look, it calls in an expert advisor. These are like calling a senior colleague for a second opinion.
-
-**Role-based advisors** — they act like human specialists, make judgment calls, explain their reasoning:
-
-| Advisor | Acts as | Call when... |
-|---------|---------|--------------|
-| `dotnet-architect` | Software architect | "How should I structure this project?" |
-| `dotnet-code-review-agent` | Senior code reviewer | "Review this PR thoroughly" |
-| `dotnet-security-reviewer` | Security auditor | "Is this code secure?" (read-only, doesn't change code) |
-| `dotnet-testing-specialist` | Test architect | "What's the right test strategy here?" |
-| `dotnet-docs-generator` | Technical writer | "Generate docs for this project" |
-| `dotnet-refactor-cleaner` | Cleanup specialist | "Clean up this codebase" |
-
-**Tool-based advisors** — they do deep technical analysis in one specific area:
-
-| Advisor | Analyzes | Call when... |
-|---------|----------|--------------|
-| `dotnet-aspnetcore-specialist` | Middleware, DI, request pipelines | "Is my middleware order correct?" |
-| `dotnet-async-performance-specialist` | Async/await, ValueTask, ThreadPool | "Why is my async code slow?" |
-| `dotnet-benchmark-designer` | BenchmarkDotNet, measurement | "I need an accurate benchmark" |
-| `dotnet-blazor-specialist` | Blazor render modes, components | "Which Blazor render mode?" |
-| `dotnet-build-error-resolver` | MSBuild errors, SDK conflicts | Build won't compile |
-| `dotnet-cloud-specialist` | .NET Aspire, AKS, cloud | "Deploy this to Azure?" |
-| `dotnet-csharp-concurrency-specialist` | Race conditions, deadlocks | "This breaks under concurrency" |
-| `dotnet-maui-specialist` | MAUI, Xamarin migration | "Build a mobile app" |
-| `dotnet-performance-analyst` | Flame graphs, heap dumps, GC | "Find the performance bottleneck" |
-| `dotnet-uno-specialist` | Uno Platform, MVUX | "Cross-platform desktop app?" |
-| `dotnet-pr-workflow` | PR lifecycle, merge, release | "Create a PR", "merge this", "release" |
+1. **先问再做** — 写代码前必须完成 7 项检查清单。任何一项是"我不确定"→ 继续问。[USAGE.md →](USAGE.md)
+2. **KISS 优先** — 简单 CRUD 不需要 DDD 或 CQRS。按问题规模选模式。
+3. **禁止仓储包装** — DbContext 就是工作单元；DbSet 就是仓储。直接注入。
+4. **禁止 DateTime.Now** — 全项目 `TimeProvider`。可注入、可测试。
+5. **禁止商业包** — 仅免费/开源。MediatR→Mediator(MIT)、AutoMapper→Mapperly。
+6. **自文档化代码** — 30 秒法则。[SELF_DOCUMENTING.md →](SELF_DOCUMENTING.md)
 
 ---
 
-## What makes the code good?
+## 指南
 
-Every project this plugin generates follows one rule: **a fresh AI session must understand it in 30 seconds.**
-
-| Rule | Good | Bad |
-|------|------|-----|
-| Solution at root | `OrderManagement.slnx` at top level | Hidden in `/src/` |
-| Project names = domain | `OrderManagement.Api` | `Core`, `Shared`, `Services` |
-| File headers | `// Handles fulfillment: validates payment, reserves inventory, creates shipment` | `// Order handler` |
-| Dependencies | `constructor(AppDbContext, IHybridCache, TimeProvider)` | `IServiceProvider.GetService<T>()` |
-| Comments | `// IServiceScopeFactory: BackgroundService outlives Scoped DbContext` | `// Saves the order` |
-
-[Full guide →](SELF_DOCUMENTING.md)
+| 指南 | 内容 |
+|------|------|
+| [USAGE.md](USAGE.md) | 7 项检查清单 + 4 轮提问框架 + 领域驱动分析 |
+| [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) | 30 秒法则、8 条 MUST、4 条 NEVER |
+| [BEHAVIORS.md](BEHAVIORS.md) | 30+ 行为目录 + 决策者路由逻辑 |
+| [CLAUDE.md](CLAUDE.md) | 上下文重连——新 AI 会话读的第一份文件 |
+| [CHEATSHEET.md](skills/CHEATSHEET.md) | 一页全规则速查 |
+| [DECISIONS.md](skills/DECISIONS.md) | "什么时候用什么" 决策指南 |
 
 ---
 
-## How to get the most out of it
-
-1. **Be specific about what you want.** "I need an order system" triggers the questioning framework. The more context you give, the fewer rounds of questions.
-
-2. **Let the AI ask questions.** Don't rush to code. The 3-4 rounds of domain discovery prevent weeks of rework.
-
-3. **Save crash dumps.** When something breaks in production, having a `.dmp` file means the debugging specialist can find the root cause in minutes.
-
-4. **Read the guides.** [USAGE.md](USAGE.md) shows the full workflow. [BEHAVIORS.md](BEHAVIORS.md) lists every behavior.
-
----
-
-## License
+## 许可
 
 MIT
