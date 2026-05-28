@@ -52,86 +52,119 @@ AI: .NET 10 + PostgreSQL. Let me capture the domain glossary first,
 
 ## Real-World Examples
 
-Here are seven common scenarios showing how the plugin goes from a single sentence to a delivered result.
+Seven common scenarios showing how the decision-maker aligns requirements before routing to the right skill.
 
 ### 1. Building a New API
 
 ```
-You: "Add an order management module to this project"
+You: I need an order management system
 
-AI: The decision-maker detects a new feature request and analyzes the project.
-    No EF Core configuration found — it asks about order types and status flow.
-    Confirmed: customer orders + PostgreSQL. Routes to dotnet-api which scaffolds
-    the project, configures DbContext, creates Minimal API endpoints, and adds
-    OpenAPI docs. All generated code follows existing conventions.
+AI: What kind of orders? Purchase orders, work orders, or customer orders?
+
+You: Customer orders. Status: Pending → Confirmed → Shipped.
+
+AI: Got it. Tech stack? .NET 10 or 8? PostgreSQL or SQLite? Production or prototype?
+    Should I include tests?
+
+You: .NET 10, PostgreSQL, production, with tests.
+
+Chain: intent detection → 3 rounds of questions → domain vocabulary capture →
+       architecture selection → scaffold OrderManagement.Api →
+       EF Core + Minimal API + auth → Testcontainers integration tests →
+       every file follows the 30-second rule
 ```
 
-### 2. Debugging a Production Crash (OutOfMemoryException)
+### 2. Debugging a Production Crash (OOM)
 
 ```
-You: "My app ran out of memory in production — here's the dump file"
+You: My app keeps crashing in production — OutOfMemoryException
 
-AI: Routed to dotnet-debugging. Opens the dump, runs !analyze -v, and finds
-    80% of memory held by a static ConcurrentDictionary. Deep-dive with !gcroot
-    traces to event handlers that were never unregistered. Delivers a fix with
-    pre-deployment verification steps.
+AI: Do you have a .dmp file? If so, I can load it in WinDbg for analysis.
+
+You: Yes, at C:\dumps\crash.dmp
+
+Chain: intent detection → load dotnet-debugging → WinDbg opens dump →
+       !analyze -v → !dumpheap -stat finds 850MB byte[] →
+       !gcroot traces to ImageCache singleton → root cause report +
+       fix: replace with IMemoryCache + SizeLimit
 ```
 
 ### 3. Code Review & Security Audit
 
 ```
-You: "Audit this code for security vulnerabilities"
+You: Audit this code for security vulnerabilities
 
-AI: Routed to dotnet-security-reviewer (read-only agent). Scans every file:
-    finds two SQL injection vectors, a hardcoded API key in appsettings.json,
-    and missing Audience validation in JWT config. Produces a ranked security
-    report with risk levels and remediation guidance. No code is modified.
+AI: I'll do a read-only security audit — no code will be modified.
+    Checking: OWASP Top 10, hardcoded secrets, SQL injection, auth.
+
+Chain: intent detection → route to dotnet-security-reviewer (read-only) →
+       file-by-file scan → finds SQL injection + hardcoded key +
+       missing JWT Audience validation → security report with risk levels
 ```
 
 ### 4. Writing Tests for Existing Code
 
 ```
-You: "Write tests for the order service"
+You: Write tests for the order service
 
-AI: Routed to dotnet-testing. Analyzes code and decides: unit tests for business
-    logic, integration tests for database operations. Generates an xUnit project
-    with WebApplicationFactory for test hosting and Testcontainers for a real
-    PostgreSQL instance. Covers happy path, edge cases, and error scenarios.
+AI: Let me look at the code first. Business logic needs unit tests,
+    database operations need integration tests.
+    xUnit + WebApplicationFactory + Testcontainers — sound good?
+
+You: Yes.
+
+Chain: intent detection → analyze code structure → route to dotnet-testing →
+       create test project → unit tests for business rules →
+       Testcontainers spins up PostgreSQL → integration tests for data access
 ```
 
 ### 5. Upgrading from .NET 8 to .NET 10
 
 ```
-You: "Upgrade this project from .NET 8 to .NET 10"
+You: Upgrade this project from .NET 8 to .NET 10
 
-AI: Routed to dotnet-upgrade. Assesses the current project: checks TFM, NuGet
-    compatibility, and deprecated APIs. Upgrades in two steps: 8→9 (handles
-    BinaryFormatter deprecation), then 9→10 (migrates to AddValidation). Each
-    step is verified with dotnet build + dotnet test. Incompatible packages are
-    replaced with free alternatives.
+AI: I'll run an upgrade assessment first. Checking TFM, NuGet compatibility,
+    and deprecated APIs. I recommend two steps: 8→9 then 9→10, with build
+    and test verification after each step. OK?
+
+You: Go ahead.
+
+Chain: intent detection → assess current project → route to dotnet-upgrade →
+       8→9: handle BinaryFormatter deprecation → build + test → commit →
+       9→10: migrate to AddValidation → build + test → commit →
+       replace incompatible packages with free alternatives
 ```
 
 ### 6. Setting Up CI/CD
 
 ```
-You: "Set up CI/CD for this project"
+You: Set up CI/CD for this project
 
-AI: Routed to dotnet-devops. Analyzes the project type (Web API) and platform
-    (GitHub). Generates a GitHub Actions workflow: dotnet build → dotnet format
-    --verify-no-changes → dotnet test (with Testcontainers) → Docker build & push.
-    Configures NuGet caching and triggers deployment only on pushes to main.
+AI: Let me check the project type and platform. Web API + GitHub — I'll
+    generate a GitHub Actions workflow: build → format check → test
+    (with Testcontainers) → Docker build. Deploys only on pushes to main.
+    Sound good?
+
+You: Yes.
+
+Chain: intent detection → analyze project + platform → route to dotnet-devops →
+       generate GHA workflow → build + format + test + docker →
+       configure NuGet caching + conditional deploy trigger
 ```
 
-### 7. Database Performance Investigation (EF Core N+1)
+### 7. Database Performance (EF Core N+1)
 
 ```
-You: "The order list page is getting slow — check the database"
+You: The order list page is getting slow — check the database
 
-AI: Routed to dotnet-performance-analyst. Reviews the repository and spots a
-    classic N+1 pattern: each order queries its line items in a loop. Adds
-    .Include() to collapse into a single SQL query. Further analysis reveals
-    two missing composite indexes — generates migration scripts and a before/after
-    performance comparison.
+AI: Let me examine the query code. This looks like a classic N+1 problem —
+    querying each order's line items in a loop. I'll add .Include() to
+    collapse into a single SQL query and check the indexes afterward.
+
+Chain: intent detection → route to dotnet-performance-analyst →
+       review code → find N+1 loop query → add .Include() →
+       single SQL query → find missing composite indexes →
+       migration script + before/after performance comparison
 ```
 
 ---

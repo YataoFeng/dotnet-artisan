@@ -51,81 +51,113 @@ AI：.NET 10 + PostgreSQL。先捕获领域词汇，再搭建模块。
 
 ## 真实场景
 
-以下是七个常见场景，展示插件如何从一句话到交付结果。
+以下七个常见场景，展示决策者如何先对齐需求，再路由到具体技能执行。
 
 ### 1. 从零搭建 Web API
 
 ```
-你："在这个项目里加一个订单管理模块"
+你：我需要一个订单管理系统
 
-AI：决策者检测到新功能需求，开始分析项目结构。发现尚无 EF Core 配置，
-    先问清订单类型和状态流转。确认是顾客下单 + PostgreSQL 后，路由到
-    dotnet-api。自动搭建项目结构、配置 DbContext、创建 Minimal API
-    端点、添加 OpenAPI 文档。全部遵循项目现有约定。
+AI：什么样的订单？采购订单？工单？还是顾客订单？
+
+你：顾客下单。状态：待确认 → 已确认 → 已发货。
+
+AI：明白了。用什么技术栈？.NET 10 还是 8？数据库用 PostgreSQL 还是 SQLite？
+    这是生产项目还是原型？需要包括测试吗？
+
+你：.NET 10，PostgreSQL，生产环境，需要测试。
+
+行为链：意图检测 → 3 轮提问 → 捕获领域词汇 → 选择架构 →
+       脚手架 OrderManagement.Api → EF Core + Minimal API + 认证 →
+       Testcontainers 集成测试 → 每文件 30 秒法则
 ```
 
 ### 2. 排查生产崩溃（内存溢出）
 
 ```
-你："生产环境 OOM 了，这是 dump 文件"
+你：我的应用在生产环境一直崩溃——OutOfMemoryException
 
-AI：决策者识别到调试需求，路由到 dotnet-debugging 代理。打开 dump 文件
-    运行 !analyze -v，发现 80% 内存被一个静态 ConcurrentDictionary 占用。
-    进一步 !gcroot 追踪到未注销的事件处理器在不断累积。给出修复方案和
-    上线前验证步骤。
+AI：有 .dmp 文件吗？有的话我加载 WinDbg 分析。
+
+你：有，在 C:\dumps\crash.dmp
+
+行为链：意图检测 → 加载 dotnet-debugging → WinDbg 打开转储 →
+       !analyze -v → !dumpheap -stat 发现 850MB byte[] →
+       !gcroot 追溯到 ImageCache 单例 → 报告根因 +
+       修复方案：用 IMemoryCache + SizeLimit
 ```
 
 ### 3. 代码审查与安全审计
 
 ```
-你："审查这段代码的安全性"
+你：审查这段代码的安全性
 
-AI：决策者路由到 dotnet-security-reviewer（只读代理）。逐文件检查代码：
-    发现两处 SQL 拼接、一处硬编码密钥、JWT 验证缺少 Audience 校验。
-    生成安全报告，标注风险等级和修复建议。不修改代码。
+AI：好的。我会做一次只读安全审计，不修改任何代码。
+    主要检查：OWASP Top 10、密钥硬编码、SQL 注入、认证授权。
+
+行为链：意图检测 → 路由到 dotnet-security-reviewer（只读）→
+       逐文件扫描 → 发现 SQL 拼接 + 硬编码密钥 + JWT 缺 Audience →
+       生成安全报告（风险等级 + 修复建议）
 ```
 
 ### 4. 为现有代码补测试
 
 ```
-你："给这个订单服务写测试"
+你：给这个订单服务写测试
 
-AI：决策者路由到 dotnet-testing。分析现有代码后判断：核心逻辑适合单元测试，
-    数据库操作需要集成测试。自动创建 xUnit 项目，用 WebApplicationFactory
-    启动测试宿主，Testcontainers 启动 PostgreSQL 容器。覆盖正常流程、
-    边界条件和异常路径。
+AI：我先看看现有代码结构。核心逻辑适合单元测试，数据库交互需要集成测试。
+    xUnit + WebApplicationFactory + Testcontainers，可以吗？
+
+你：可以。
+
+行为链：意图检测 → 分析代码架构 → 路由到 dotnet-testing →
+       创建测试项目 → 单元测试覆盖业务规则 →
+       Testcontainers 启动 PostgreSQL → 集成测试覆盖数据访问
 ```
 
 ### 5. 从 .NET 8 升级到 .NET 10
 
 ```
-你："把这个项目从 .NET 8 升到 .NET 10"
+你：把这个项目从 .NET 8 升到 .NET 10
 
-AI：决策者路由到 dotnet-upgrade 代理。先评估当前项目：检查 TFM、NuGet 包
-    兼容性、API 废弃标记。分两步升级：8→9（处理 BinaryFormatter 废弃）、
-    9→10（迁移到 AddValidation）。每步执行 dotnet build + dotnet test 验证。
-    遇到不兼容的包，查找免费替代方案。
+AI：我先做一次升级评估。检查 TFM、NuGet 兼容性、废弃 API。
+    建议分两步：8→9 再 9→10，每步都跑构建和测试。可以吗？
+
+你：按你说的来。
+
+行为链：意图检测 → 评估当前项目 → 路由到 dotnet-upgrade →
+       8→9：处理 BinaryFormatter 废弃 → build + test → commit →
+       9→10：迁移到 AddValidation → build + test → commit →
+       不兼容包替换为免费替代
 ```
 
 ### 6. 配置 CI/CD 流水线
 
 ```
-你："给这个项目配置 CI/CD 流水线"
+你：给这个项目配 CI/CD
 
-AI：决策者路由到 dotnet-devops。分析项目类型（Web API）和所用平台（GitHub），
-    生成 GitHub Actions 工作流：dotnet build → dotnet format --verify-no-changes
-    → dotnet test（含 Testcontainers）→ docker build & push。配置 NuGet
-    缓存加速构建，仅在推送到 main 时触发部署。
+AI：我看一下项目类型和平台。Web API + GitHub，我生成一套 GitHub Actions
+    工作流：构建 → 格式检查 → 测试（含 Testcontainers）→ Docker 构建。
+    只在推送到 main 时触发部署，可以吗？
+
+你：可以。
+
+行为链：意图检测 → 分析项目 + 平台 → 路由到 dotnet-devops →
+       生成 GHA 工作流 → build + format + test + docker →
+       配置 NuGet 缓存 + 条件部署触发器
 ```
 
 ### 7. 数据库性能排查（EF Core N+1）
 
 ```
-你："订单列表越来越慢了，查一下数据库"
+你：订单列表越来越慢了，查一下数据库
 
-AI：决策者路由到 dotnet-performance-analyst。审查代码发现经典 N+1 查询：
-    循环中每笔订单单独查询明细。添加 .Include() 改为单条 SQL。进一步
-    发现缺少两个复合索引，生成迁移脚本和前后性能对比。
+AI：让我检查一下查询代码。可能是经典的 N+1 问题——循环中每笔订单
+    单独查明细。找到后我会加 .Include() 改单条 SQL，再分析索引情况。
+
+行为链：意图检测 → 路由到 dotnet-performance-analyst →
+       审查代码 → 发现 N+1 循环查询 → 添加 .Include() 合并为单条 SQL →
+       发现缺少复合索引 → 生成迁移脚本 + 前后性能对比
 ```
 
 ---
