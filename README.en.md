@@ -49,25 +49,31 @@ Install and go. You describe what you need — the decision-maker handles the re
 
 ```mermaid
 flowchart TD
-    A[Your request] --> B[using-dotnet<br/>intent detection]
+    A[Your request<br/>e.g. Build an e-commerce system] --> B[using-dotnet<br/>intent detection]
     B --> C{dotnet-advisor<br/>decision-maker}
     C --> D[1. Detect .NET version]
     D --> E[1.5 Align requirements<br/>ask questions · capture domain]
     E --> F[2. Load baseline<br/>dotnet-csharp standards]
     F --> G[3. .NET-first defaults]
-    G --> H[4. Route to domain skill]
-    H --> I[dotnet-api]
-    H --> J[dotnet-ui]
-    H --> K[dotnet-testing]
-    H --> L[dotnet-devops]
-    H --> M[dotnet-tooling]
-    H --> N[dotnet-debugging]
-    I --> O[Specialist agents<br/>on demand]
-    J --> O
-    K --> O
-    L --> O
-    M --> O
-    N --> O
+    G --> H[4. Analyze request<br/>decompose domains]
+    H --> I1[Backend API]
+    H --> I2[Web frontend]
+    H --> I3[PC desktop]
+    H --> I4[Testing]
+    H --> I5[CI/CD]
+    H --> I6[Tooling]
+    I1 --> J1[dotnet-api]
+    I2 --> J2[dotnet-ui<br/>Blazor]
+    I3 --> J3[dotnet-ui<br/>MAUI / WPF]
+    I4 --> J4[dotnet-testing]
+    I5 --> J5[dotnet-devops]
+    I6 --> J6[dotnet-tooling]
+    J1 --> K[Specialist agents<br/>on demand]
+    J2 --> K
+    J3 --> K
+    J4 --> K
+    J5 --> K
+    J6 --> K
 ```
 
 **No skill names to memorize.** The decision-maker analyzes your project, aligns requirements, loads coding standards, and routes to the right skills and agents.

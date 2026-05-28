@@ -49,25 +49,31 @@ claude plugins install dotnet-artisan
 
 ```mermaid
 flowchart TD
-    A[你的需求] --> B[using-dotnet<br/>意图检测]
+    A[你的需求<br/>例：做一个电商系统] --> B[using-dotnet<br/>意图检测]
     B --> C{dotnet-advisor<br/>决策者}
     C --> D[1. 检测 .NET 版本]
     D --> E[1.5 需求对齐<br/>提问澄清 · 捕获领域词汇]
     E --> F[2. 加载基准<br/>dotnet-csharp 编码规范]
     F --> G[3. .NET 优先默认]
-    G --> H[4. 路由到领域技能]
-    H --> I[dotnet-api]
-    H --> J[dotnet-ui]
-    H --> K[dotnet-testing]
-    H --> L[dotnet-devops]
-    H --> M[dotnet-tooling]
-    H --> N[dotnet-debugging]
-    I --> O[按需调用<br/>专家代理]
-    J --> O
-    K --> O
-    L --> O
-    M --> O
-    N --> O
+    G --> H[4. 分析需求<br/>拆解所需领域]
+    H --> I1[后端 API]
+    H --> I2[Web 前端]
+    H --> I3[PC 桌面端]
+    H --> I4[测试]
+    H --> I5[CI/CD]
+    H --> I6[工具链]
+    I1 --> J1[dotnet-api]
+    I2 --> J2[dotnet-ui<br/>Blazor]
+    I3 --> J3[dotnet-ui<br/>MAUI / WPF]
+    I4 --> J4[dotnet-testing]
+    I5 --> J5[dotnet-devops]
+    I6 --> J6[dotnet-tooling]
+    J1 --> K[按需调用<br/>专家代理]
+    J2 --> K
+    J3 --> K
+    J4 --> K
+    J5 --> K
+    J6 --> K
 ```
 
 **你不需要记任何技能名。** 决策者自动分析项目、对齐需求、加载规范、路由到正确的技能和代理。
