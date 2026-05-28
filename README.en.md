@@ -256,7 +256,7 @@ Call them by name or let the decision-maker route automatically. Full names begi
 
 | You say... | Agent | Focus |
 |---|---|---|
-| "How should I structure this?" | architect | Architecture, patterns, framework choice |
+| "How should I structure this?" | architect | Architecture selection, solution structure, build config |
 | "Analyze the domain" / "Run DDD" | domain-analyst | Event storming, bounded contexts, domain docs |
 | "Review this PR" | code-review-agent | Correctness, performance, security |
 | "Is this secure?" | security-reviewer | OWASP Top 10, secrets, crypto (read-only) |
