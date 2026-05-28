@@ -4,15 +4,15 @@ Load this when writing ANY .NET code. One line per rule.
 
 ## Version-Aware Rules
 
-> All rules are relative to the project's TFM. Detect version first.
+> Detect the .NET version before applying patterns. Only officially supported versions (net8.0+).
 
-- DbContext direct, no Repository wrapper (net6.0+). Legacy: respect existing patterns.
-- TimeProvider, never DateTime.Now (net6.0+). Legacy: use DateTime.UtcNow.
-- AddValidation() + DataAnnotations (net10.0+). Earlier: FluentValidation OK.
-- Free/open-source only (all versions).
-- Microsoft.AspNetCore.OpenApi (net9.0+). Earlier: Swashbuckle OK.
-- System.Text.Json source-gen (net8.0+). Earlier: Newtonsoft OK.
-- IHttpClientFactory (netcoreapp3.1+). Legacy: new HttpClient() acceptable.
+- DbContext direct, no Repository/UoW wrapper
+- TimeProvider, never DateTime.Now
+- AddValidation() + DataAnnotations (net10.0+). net8.0-net9.0: FluentValidation OK.
+- Free/open-source only
+- Microsoft.AspNetCore.OpenApi (net9.0+). net8.0: Swashbuckle OK.
+- System.Text.Json source-gen (net8.0+). net8.0: OK. net9.0+: preferred.
+- IHttpClientFactory, never new HttpClient()
 
 ## Architecture
 

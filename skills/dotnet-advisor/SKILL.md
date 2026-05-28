@@ -29,15 +29,13 @@ Before any .NET guidance, determine the project's target framework:
 
 > Load [skill:dotnet-tooling] version detection guidance to read TFMs from `.csproj`, `Directory.Build.props`, and `global.json`. Adapt ALL guidance to the detected .NET version.
 
-**This is critical.** Modern patterns (TimeProvider, AddValidation, System.Text.Json source-gen, IHttpClientFactory) have minimum .NET version requirements. For legacy projects (.NET Framework 4.x, .NET Core 2-5, or net6.0), prefer patterns that work within the project's constraints. Do not force modern patterns on a legacy codebase — this breaks builds and confuses teams.
+Adapt patterns to the detected version. Some features are version-specific:
 
-| Detected TFM | Recommended patterns | Avoid |
-|-------------|---------------------|-------|
-| net10.0+ | AddValidation, TimeProvider, STJ source-gen, Mediator | FluentValidation, Newtonsoft, Swashbuckle |
-| net8.0-net9.0 | TimeProvider, STJ source-gen, IHttpClientFactory | AddValidation (requires 10+), Newtonsoft |
-| net6.0-net7.0 | TimeProvider, IHttpClientFactory | AddValidation, STJ source-gen |
-| netcoreapp3.1-net5.0 | IHttpClientFactory, System.Text.Json | TimeProvider (polyfill or DateTime.UtcNow) |
-| .NET Framework 4.x | Use existing patterns. Target net8.0+ for new work. | All modern patterns (upgrade first) |
+| Detected TFM | Use | Not available |
+|-------------|-----|---------------|
+| net10.0+ | AddValidation, TimeProvider, STJ source-gen, Mediator | — |
+| net9.0 | TimeProvider, STJ source-gen, IHttpClientFactory | AddValidation |
+| net8.0 | TimeProvider, IHttpClientFactory | AddValidation, STJ source-gen |
 
 ## Step 1.5: Align Requirements
 
