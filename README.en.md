@@ -22,37 +22,40 @@ Compatible with GitHub Copilot, VS Code, and Cursor. Open any .NET project and s
 
 ---
 
-## Quick Start
+## How It Works
 
-Install the plugin and just talk:
+Install and go. You describe what you need — the decision-maker handles the rest:
 
+```mermaid
+flowchart TD
+    A[Your request] --> B[using-dotnet<br/>intent detection]
+    B --> C{dotnet-advisor<br/>decision-maker}
+    C --> D[1. Detect .NET version]
+    D --> E[1.5 Align requirements<br/>ask questions · capture domain]
+    E --> F[2. Load baseline<br/>dotnet-csharp standards]
+    F --> G[3. .NET-first defaults]
+    G --> H[4. Route to domain skill]
+    H --> I[dotnet-api]
+    H --> J[dotnet-ui]
+    H --> K[dotnet-testing]
+    H --> L[dotnet-devops]
+    H --> M[dotnet-tooling]
+    H --> N[dotnet-debugging]
+    I --> O[Specialist agents<br/>on demand]
+    J --> O
+    K --> O
+    L --> O
+    M --> O
+    N --> O
 ```
-You: Add an order management module to this project
 
-AI: Before I write code — what kind of orders? Customer purchases or
-    internal work orders? What's the flow? What are the statuses?
-
-You: Customer orders. Status: Pending → Confirmed → Shipped.
-
-AI: .NET 10 + PostgreSQL. Let me capture the domain glossary first,
-    then build the module.
-```
-
-**No skill names to memorize.** The decision-maker analyzes your project, asks the right questions, and picks the right architecture. Try these:
-
-> "Add an order management module"
-> "My app ran out of memory — here's the dump"
-> "Audit this code for security vulnerabilities"
-> "Write tests for the order service"
-> "Upgrade from .NET 8 to .NET 10"
-> "Set up CI/CD"
-> "The order list is slow — check the database"
+**No skill names to memorize.** The decision-maker analyzes your project, aligns requirements, loads coding standards, and routes to the right skills and agents.
 
 ---
 
-## Real-World Examples
+## Example Scenarios
 
-Seven common scenarios showing how the decision-maker aligns requirements before routing to the right skill.
+Seven common scenarios showing the decision-maker aligning requirements then routing to execution.
 
 ### 1. Building a New API
 

@@ -1,6 +1,6 @@
 ---
 name: dotnet-advisor
-description: Routes .NET/C# requests to the correct domain skill and loads coding standards as baseline for all code paths. Determines whether the task needs API, UI, testing, devops, tooling, or debugging guidance based on prompt analysis and project signals, then invokes skills in the right order. Always invoked after [skill:using-dotnet] detects .NET intent. Do not use for deep API, UI, testing, devops, tooling, or debugging implementation guidance.
+description: Central orchestrator for ALL .NET development requests. Owns the entire flow: detects .NET version, aligns requirements via structured questioning (USAGE.md framework), loads coding standards, applies .NET-first defaults, and routes to the correct domain skills and specialist agents. Invoked after [skill:using-dotnet] confirms .NET intent. The single entry point for every .NET task — no request should bypass this skill. Do not use for domain-specific implementation guidance.
 license: MIT
 user-invocable: false
 ---
