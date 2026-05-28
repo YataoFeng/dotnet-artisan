@@ -38,11 +38,32 @@ AI: Understood. .NET 10 + PostgreSQL. Let me capture the domain
 
 ## Install
 
+### From GitHub Marketplace (recommended)
+
 ```bash
-claude plugins install fenzel999/dotnet-artisan
+# 1. Add the marketplace
+claude plugins marketplace add fenzel999/dotnet-artisan
+
+# 2. Install the plugin
+claude plugins install dotnet-artisan
 ```
 
-Compatible with GitHub Copilot, VS Code, Cursor. Open a .NET project and go. Harness auto-activates.
+### Local Install (development mode)
+
+```bash
+# Clone the repo
+git clone https://github.com/fenzel999/dotnet-artisan.git
+
+# Add as local marketplace
+claude plugins marketplace add ./dotnet-artisan --scope user
+
+# Install the plugin
+claude plugins install dotnet-artisan
+```
+
+---
+
+**Compatible with GitHub Copilot, VS Code, Cursor.** Open a .NET project and go. Zero config.
 
 ---
 
