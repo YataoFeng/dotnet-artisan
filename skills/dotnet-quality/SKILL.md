@@ -1,5 +1,7 @@
 ---
 name: dotnet-quality
+license: MIT
+user-invocable: false
 description: >
   Systematic code quality pipeline for .NET projects. Runs a 7-step cleanup:
   formatting, unused usings, analyzer warnings, dead code removal, TODO resolution,

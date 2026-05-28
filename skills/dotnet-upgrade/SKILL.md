@@ -1,5 +1,7 @@
 ---
 name: dotnet-upgrade
+license: MIT
+user-invocable: false
 description: >
   .NET version migration and project upgrade. Covers net8→net9→net10→net11 migration
   paths, AOT compatibility assessment, nullable reference migration, thread-abort

@@ -1,5 +1,6 @@
 {
   "name": "dotnet-artisan",
+  "description": "Comprehensive .NET development plugin for Claude Code: 14 skills, 17 agents, 160+ reference files covering C#, ASP.NET Core, Blazor, MAUI, EF Core, testing, debugging, and DevOps.",
   "owner": {
     "name": "Yatao Feng"
   },

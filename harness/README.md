@@ -2,7 +2,7 @@
 
 The harness is **built into the plugin**. You don't need to copy anything.
 
-When you install dotnet-artisan (`claude plugins install fenzel999/dotnet-artisan`), the harness auto-activates in every .NET project you open.
+When you install dotnet-artisan (`claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan`), the harness auto-activates in every .NET project you open.
 
 ## What It Does (Automatic)
 

@@ -1,5 +1,7 @@
 ---
 name: dotnet-learning
+license: MIT
+user-invocable: false
 description: >
   Compounding knowledge system for .NET projects. Detects user corrections, generalizes
   them into rules, and stores in MEMORY.md. Tracks project-specific patterns via

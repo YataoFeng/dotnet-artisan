@@ -1,5 +1,7 @@
 ---
 name: dotnet-ai
+license: MIT
+user-invocable: false
 description: >
   AI/ML integration patterns for .NET. Covers MCP server/client creation and debugging,
   LLM integration (Semantic Kernel, OpenAI, Azure AI), RAG pipelines, ML.NET model

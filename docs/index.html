@@ -226,7 +226,7 @@
 <div id="install" class="tab">
   <h2>插件</h2>
   <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
-    <code style="flex:1;min-width:250px">claude plugins install fenzel999/dotnet-artisan</code>
+    <code style="flex:1;min-width:250px">claude plugins marketplace add fenzel999/dotnet-artisan<br>claude plugins install dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">复制</button>
   </div>
   <p style="color:var(--fg-dim);margin:0.5rem 0 1rem">兼容 GitHub Copilot、VS Code、Cursor — <a href="https://agentskills.io">agentskills.io</a> 标准。</p>
@@ -375,7 +375,7 @@ function renderToolAgents() {
 }
 
 function copyInstall() {
-  navigator.clipboard.writeText('claude plugins install fenzel999/dotnet-artisan');
+  navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');
   const btn = document.getElementById('copyBtn');
   btn.textContent = '已复制！'; btn.style.background = 'var(--green)';
   setTimeout(() => { btn.textContent = '复制'; btn.style.background = 'var(--accent)'; }, 2000);

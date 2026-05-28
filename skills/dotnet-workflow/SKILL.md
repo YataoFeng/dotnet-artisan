@@ -1,5 +1,7 @@
 ---
 name: dotnet-workflow
+license: MIT
+user-invocable: false
 description: >
   Claude Code workflow optimization for .NET development. Covers parallel execution
   with git worktrees, context discipline (token budget management), plan mode strategy,
