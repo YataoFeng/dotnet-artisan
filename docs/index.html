@@ -219,27 +219,27 @@
     <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">行为链:</strong> 意图检测 → 启动 dotnet-code-review-agent（独立子会话）→ 分析正确性、性能、安全、架构 → 报告: "3 个问题：[严重] Scoped→Singleton DI，[性能] N+1 查询，[安全] 硬编码 API 密钥"</div>
   </div>
 
-  <p style="margin-top:1.5rem;color:var(--fg-dim)">完整提问框架见 <a href="https://github.com/fenzel/dotnet-artisan/blob/main/USAGE.md">USAGE.md</a>。全部 30+ 行为见 <a href="https://github.com/fenzel/dotnet-artisan/blob/main/BEHAVIORS.md">BEHAVIORS.md</a>。</p>
+  <p style="margin-top:1.5rem;color:var(--fg-dim)">完整提问框架见 <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/USAGE.md">USAGE.md</a>。全部 30+ 行为见 <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/BEHAVIORS.md">BEHAVIORS.md</a>。</p>
 </div>
 
 <!-- INSTALL TAB -->
 <div id="install" class="tab">
   <h2>插件</h2>
   <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
-    <code style="flex:1;min-width:250px">claude plugins install fenzel/dotnet-artisan</code>
+    <code style="flex:1;min-width:250px">claude plugins install fenzel-ai/dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">复制</button>
   </div>
   <p style="color:var(--fg-dim);margin:0.5rem 0 1rem">兼容 GitHub Copilot、VS Code、Cursor — <a href="https://agentskills.io">agentskills.io</a> 标准。</p>
 
   <h2>Harness（内置）</h2>
-  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">安装插件即自动启用。打开 .NET 项目 → harness 检测到 → 技能加载 → 决策者激活。检查新 .cs 文件的用途注释。零配置。<a href="https://github.com/fenzel/dotnet-artisan/blob/main/harness/README.md">工作原理 →</a></p>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">安装插件即自动启用。打开 .NET 项目 → harness 检测到 → 技能加载 → 决策者激活。检查新 .cs 文件的用途注释。零配置。<a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/harness/README.md">工作原理 →</a></p>
 
   <h2>核心原则</h2>
   <div class="principle-grid">
     <div class="principle-card"><h3>KISS 优先</h3><p style="color:var(--fg-dim);font-size:0.82rem">简单 CRUD 不需要 DDD。按问题规模选择模式。</p></div>
     <div class="principle-card"><h3>禁止仓储包装</h3><p style="color:var(--fg-dim);font-size:0.82rem">DbContext 就是工作单元；DbSet 就是仓储。</p></div>
     <div class="principle-card"><h3>免费 & 开源</h3><p style="color:var(--fg-dim);font-size:0.82rem">微软推荐 + MIT 协议。零商业依赖。</p></div>
-    <div class="principle-card"><h3>自文档化代码</h3><p style="color:var(--fg-dim);font-size:0.82rem">新 AI 30 秒理解任何项目。<a href="https://github.com/fenzel/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">指南 →</a></p></div>
+    <div class="principle-card"><h3>自文档化代码</h3><p style="color:var(--fg-dim);font-size:0.82rem">新 AI 30 秒理解任何项目。<a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">指南 →</a></p></div>
   </div>
 </div>
 
@@ -264,7 +264,7 @@
 
 总计：30 秒。完整上下文恢复。零历史依赖。</pre>
 
-  <p style="margin-top:1.5rem;color:var(--fg-dim)">完整指南：<a href="https://github.com/fenzel/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a></p>
+  <p style="margin-top:1.5rem;color:var(--fg-dim)">完整指南：<a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a></p>
 </div>
 
 <!-- FLOW TAB -->
@@ -333,11 +333,11 @@
 <footer>
   <p>融合自 <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>、<a href="https://github.com/dotnet/skills">dotnet/skills</a>、<a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
   <p style="margin-top:0.3rem">
-    <a href="https://github.com/fenzel/dotnet-artisan">GitHub</a> ·
-    <a href="https://github.com/fenzel/dotnet-artisan/blob/main/USAGE.md">使用指南</a> ·
-    <a href="https://github.com/fenzel/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">30 秒法则</a> ·
-    <a href="https://github.com/fenzel/dotnet-artisan/blob/main/BEHAVIORS.md">行为目录</a> ·
-    <a href="https://github.com/fenzel/dotnet-artisan/blob/main/CLAUDE.md">CLAUDE.md</a>
+    <a href="https://github.com/fenzel-ai/dotnet-artisan">GitHub</a> ·
+    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/USAGE.md">使用指南</a> ·
+    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">30 秒法则</a> ·
+    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/BEHAVIORS.md">行为目录</a> ·
+    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/CLAUDE.md">CLAUDE.md</a>
   </p>
   <p style="margin-top:0.5rem;font-size:0.7rem">页面加载于 <span id="loadTime"></span></p>
 </footer>
@@ -375,7 +375,7 @@ function renderToolAgents() {
 }
 
 function copyInstall() {
-  navigator.clipboard.writeText('claude plugins install fenzel/dotnet-artisan');
+  navigator.clipboard.writeText('claude plugins install fenzel-ai/dotnet-artisan');
   const btn = document.getElementById('copyBtn');
   btn.textContent = '已复制！'; btn.style.background = 'var(--green)';
   setTimeout(() => { btn.textContent = '复制'; btn.style.background = 'var(--accent)'; }, 2000);
