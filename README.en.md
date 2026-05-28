@@ -120,10 +120,9 @@ You: Yes, but our team hasn't used DDD before.
 
 
 
-AI: That's fine — we'll use DDD tactically (aggregates, entities, value objects,
-
-    domain events) without strategic context mapping. Your team can learn as we go.
-
+AI: I will run strategic DDD first — Event Storming, bounded contexts, domain analysis doc.
+    Tactical implementation uses aggregates, entities, value objects, domain events.
+    Strategic design upfront avoids costly refactoring later.
     Tech stack: .NET 10 + PostgreSQL. Need CI/CD and tests?
 
 
@@ -146,11 +145,11 @@ Chain: intent detection → 4 rounds of questions → invoke dotnet-domain-analy
 ```
 You: My app keeps crashing in production — OutOfMemoryException
 
-AI: Do you have a .dmp file? If so, I can load it in WinDbg for analysis.
+AI: Do you have a .dmp file? If so, I can load it in WinDbg (Windows) or dotnet-dump (Linux/macOS) for analysis.
 
 You: Yes, at C:\dumps\crash.dmp
 
-Chain: intent detection → load dotnet-debugging → WinDbg opens dump →
+Chain: intent detection → load dotnet-debugging → open dump (WinDbg / dotnet-dump) →
        !analyze -v → !dumpheap -stat finds 850MB byte[] →
        !gcroot traces to ImageCache singleton → root cause report +
        fix: replace with IMemoryCache + SizeLimit
@@ -228,7 +227,7 @@ AI: Let me examine the query code. This looks like a classic N+1 problem —
     querying each order's line items in a loop. I'll add .Include() to
     collapse into a single SQL query and check the indexes afterward.
 
-Chain: intent detection → route to dotnet-performance-specialist →
+Chain: intent detection → route to dotnet-api (EF Core patterns) →
        review code → find N+1 loop query → add .Include() →
        single SQL query → find missing composite indexes →
        migration script + before/after performance comparison
@@ -244,7 +243,7 @@ Two gateways activate first: `using-dotnet` detects .NET intent, `dotnet-advisor
 Gateway  │ using-dotnet · dotnet-advisor               →  intent detection + routing
 Baseline │ dotnet-csharp                                →  C# standards (always loaded)
 Build    │ dotnet-api · dotnet-ui                       →  Web API / EF Core / Blazor / MAUI / WPF
-Verify   │ dotnet-testing · dotnet-debugging            →  testing / WinDbg
+Verify   │ dotnet-testing · dotnet-debugging            →  testing / debugging（WinDbg / dotnet-dump）
 Operate  │ dotnet-devops · dotnet-tooling               →  CI/CD / scaffold / migration + quality
 Augment  │ dotnet-ai · dotnet-workflow                  →  MCP, RAG / workflow + learning
 ```
