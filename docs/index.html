@@ -250,12 +250,18 @@
 
 <!-- INSTALL TAB -->
 <div id="install" class="tab">
-  <h2>Claude Code</h2>
+  <h2>Plugin</h2>
   <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
     <code style="flex:1;min-width:250px">claude plugins install YataoFeng/dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">Copy</button>
   </div>
-  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Compatible with GitHub Copilot, VS Code, Cursor — <a href="https://agentskills.io">agentskills.io</a> standard.</p>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1rem">Compatible with GitHub Copilot, VS Code, Cursor — <a href="https://agentskills.io">agentskills.io</a> standard.</p>
+
+  <h2>Harness (Auto-Pilot)</h2>
+  <div class="install-block">
+    <code>cp harness/settings.json your-project/.claude/settings.json</code>
+  </div>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Drop into any .NET project. Auto-detects .cs/csproj/sln, loads skills, pre-approves dotnet/git/docker commands. No more permission prompts. <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/harness/README.md">Docs →</a></p>
 
   <h2>Core Principles</h2>
   <div class="principle-grid">
