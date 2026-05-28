@@ -1,5 +1,7 @@
 # WinUI
 
+> **Quick Ref**: WinUI 3 = Windows App SDK | UseWinUI in .csproj | x:Bind for compiled bindings (not Binding) | x:Load for deferred loading | CommunityToolkit.Mvvm for MVVM | MSIX packaged or unpackaged deployment | Mica/Acrylic materials for Fluent design | Adaptive triggers for responsive layout |
+
 WinUI 3 / Windows App SDK development: project setup with `UseWinUI` and Windows 10 TFM, XAML patterns with compiled bindings (`x:Bind`) and deferred loading (`x:Load`), MVVM with CommunityToolkit.Mvvm, MSIX and unpackaged deployment modes, Windows integration (lifecycle, notifications, widgets), UWP migration guidance, and common agent pitfalls.
 
 **Version assumptions:** .NET 8.0+ baseline. Windows App SDK 1.6+ (current stable). TFM `net8.0-windows10.0.19041.0`. .NET 9 features explicitly marked.

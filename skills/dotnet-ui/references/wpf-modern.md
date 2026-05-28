@@ -1,5 +1,7 @@
 # Modern WPF
 
+> **Quick Ref**: WPF on .NET 8+ (not .NET Framework) | HostBuilder with DI in App.xaml.cs | CommunityToolkit.Mvvm source-gen for MVVM | Fluent theme in .NET 9+ | System theme detection | records + primary constructors in ViewModels | Replace System.Drawing with SkiaSharp | x:Bind not available in WPF (Binding only) |
+
 WPF on .NET 8+: Host builder and dependency injection, MVVM with CommunityToolkit.Mvvm source generators, hardware-accelerated rendering improvements, modern C# patterns (records, primary constructors, pattern matching), Fluent theme (.NET 9+), system theme detection, and what changed from .NET Framework WPF.
 
 **Version assumptions:** .NET 8.0+ baseline (current LTS). TFM `net8.0-windows`. .NET 9 features (Fluent theme) explicitly marked.

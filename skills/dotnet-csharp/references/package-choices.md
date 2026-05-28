@@ -1,5 +1,7 @@
 # Package Choices — Free & Microsoft-Recommended
 
+> **Quick Ref**: MediatR→Mediator(MIT) | FluentValidation→AddValidation() | AutoMapper→Mapperly | Newtonsoft→System.Text.Json | Swashbuckle→Microsoft.AspNetCore.OpenApi | SwaggerUI→Scalar | IdentityServer4→Duende/Keycloak | MongoDB.Driver→PostgreSQL+EF Core | No commercial packages, free/open-source only |
+
 Prioritize free/open-source and Microsoft-recommended packages. Avoid commercial, unmaintained, or reflection-dependent alternatives.
 
 ## Replacement Guide

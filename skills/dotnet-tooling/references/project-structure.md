@@ -1,5 +1,7 @@
 # Project Structure
 
+> **Quick Ref**: .slnx for .NET 9+ | CPM with Directory.Packages.props | Directory.Build.props for shared properties | .editorconfig with AnalysisLevel=latest | global.json pins SDK version | src/ + tests/ layout | Project names match domain: OrderManagement.Api not Core | No Shared/Common/Utils projects |
+
 Reference guide for modern .NET project structure and solution layout. Use when creating new solutions, reviewing existing structure, or recommending improvements.
 
 **Prerequisites:** Run `references/version-detection.md` first to determine TFM and SDK version — this affects which features are available (e.g., .slnx requires .NET 9+ SDK).
