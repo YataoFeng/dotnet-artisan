@@ -122,8 +122,7 @@ jobs:
           gh pr create \
             --title "🔄 Cycle Report: $(date +%Y-%m-%d)" \
             --body "$(cat .github/cycle-report.md)" \
-            --base main --head "$BRANCH" \
-            --label "auto-evolution" 2>&1
+            --base main --head "$BRANCH" 2>&1
         env:
           GH_TOKEN: ${{ github.token }}
 
