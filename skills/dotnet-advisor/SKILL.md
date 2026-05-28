@@ -39,7 +39,13 @@ Adapt patterns to the detected version. Some features are version-specific:
 
 ## Step 1.5: Align Requirements
 
-For ANY request that is ambiguous, incomplete, or where you cannot confidently describe what needs to be built — **STOP. Ask questions first.**
+For ANY request that is ambiguous, incomplete, or where you cannot confidently describe what needs to be built — **STOP. Ask questions first. Never guess.**
+
+This includes existing code you don't understand. If you open a file and can't grasp what it does within 30 seconds:
+
+> Ask the user. "I see this file contains X, but I don't fully understand its role. Can you explain what it does?"
+
+Do NOT add or modify purpose comments in existing files unless you wrote them. Only update comments you or another AI in this session created.
 
 Load `references/requirements-alignment.md` for the 4-round dialogue framework (Goal, Architecture, Tech, Quality). Load `references/architecture-discovery.md` when the user's project architecture is unclear (monolith vs microservices, DDD decision, bounded contexts).
 

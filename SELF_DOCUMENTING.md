@@ -4,7 +4,7 @@
 
 ## The 30-Second Rule
 
-When a new AI session opens a project, it must answer these within 30 seconds:
+When I open a project, I must answer these within 30 seconds:
 
 | Question | Answer found in | Time |
 |----------|----------------|------|
@@ -14,7 +14,14 @@ When a new AI session opens a project, it must answer these within 30 seconds:
 | What are the key domain concepts? | Class names + namespace | 10s |
 | How is it configured? | appsettings.json | 5s |
 
-If any answer is unclear, the code is not self-documenting.
+**If I cannot answer any of these questions — STOP. Ask the user for an explanation. Never guess.**
+
+Existing code often has context I don't understand. If I can't understand a file within 30 seconds of reading:
+1. Ask the user what this code does
+2. Let them explain the domain
+3. Then proceed with changes
+
+**Respect existing comments.** If a `.cs` file already has a purpose comment at the top and I didn't write it, leave it alone. I can only update comments that I (or another AI in the same session) created. Modifying original developer comments risks introducing inaccuracies.
 
 ## Rules (MUST)
 

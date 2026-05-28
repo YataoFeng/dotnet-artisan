@@ -57,11 +57,10 @@ try {
     process.exit(0);
   }
 
-  // Only check pure new files: no namespace, no using, no existing code.
-  // If the file has any pre-existing structure, skip the check — the AI
-  // may not understand the domain well enough to write a useful comment.
-  const hasExistingStructure = content.includes("namespace ") || content.includes("using ");
-  if (hasExistingStructure) {
+  // Skip existing project files. If the file has a namespace, it's part
+  // of an established project — the AI may not understand the domain and
+  // should NOT modify or add comments it didn't write.
+  if (content.includes("namespace ") || content.includes("using ")) {
     process.exit(0);
   }
 
