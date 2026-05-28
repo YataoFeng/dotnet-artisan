@@ -6,6 +6,16 @@
 
 ---
 
+## About
+
+dotnet-artisan is a Claude Code plugin that teaches AI coding agents to write correct .NET code.
+
+It's not a collection of scattered tools — it's a **complete .NET development agent system**. A decision-maker orchestrator analyzes requirements, captures domain vocabulary, designs architecture, then routes to the right skills for execution. From building APIs to debugging crashes, security audits to CI/CD setup, it covers the full development lifecycle.
+
+Install and go. Zero configuration required.
+
+---
+
 ## Install
 
 ```bash
