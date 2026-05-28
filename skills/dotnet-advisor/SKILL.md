@@ -73,7 +73,7 @@ Scan the request for signals across ALL domains. A complex project (e.g., e-comm
 | Backend services, Web APIs, EF Core, gRPC, SignalR, middleware, auth, OWASP, messaging, caching, YARP, document generation | [skill:dotnet-api] |
 | Web UI (Blazor), cross-platform mobile/desktop (MAUI), cross-platform all-targets (Uno), WPF, WinUI, WinForms | [skill:dotnet-ui] |
 | Unit tests, integration tests, E2E, Playwright, benchmarks, BDD, snapshot testing, mutation testing | [skill:dotnet-testing] |
-| GitHub Actions, Azure DevOps, containers, Docker, NuGet packaging, MSIX, release management, observability, OpenTelemetry | [skill:dotnet-devops] |
+| GitHub Actions, Azure DevOps, containers, Docker, Git workflow, branch strategy, NuGet packaging, MSIX, release management, observability, OpenTelemetry | [skill:dotnet-devops] |
 | Project setup, MSBuild, build optimization, Native AOT, trimming, GC tuning, profiling, CLI apps, SDK versions, code quality cleanup | [skill:dotnet-tooling] |
 | Crash dumps, WinDbg, hang analysis, memory diagnostics (Windows) | [skill:dotnet-debugging] |
 | Crash dumps, dotnet-dump, lldb, container diagnostics (Linux/macOS) | [skill:dotnet-debugging] |
