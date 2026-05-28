@@ -78,7 +78,7 @@ Scan the request for signals across ALL domains. A complex project (e.g., e-comm
 | Crash dumps, WinDbg, hang analysis, memory diagnostics (Windows) | [skill:dotnet-debugging] |
 | Crash dumps, dotnet-dump, lldb, container diagnostics (Linux/macOS) | [skill:dotnet-debugging] |
 | AI/ML, LLM integration, MCP servers, RAG, ML.NET, Semantic Kernel | [skill:dotnet-ai] |
-| Claude Code workflow, parallel worktrees, context discipline, corrections capture, pattern learning | [skill:dotnet-workflow] |
+| Claude Code workflow, parallel worktrees, context discipline, plan mode, verification loops | [skill:dotnet-workflow] |
 
 ### 4b. Parallel Invocation
 
@@ -125,7 +125,7 @@ When multiple skills are active, coordinate across them:
 | [skill:dotnet-tooling] | Project setup, MSBuild, Native AOT, profiling, CLI apps, version detection | Build system, performance, and developer tools |
 | [skill:dotnet-debugging] | WinDbg MCP, crash dumps, hang analysis, memory diagnostics | Live and post-mortem dump analysis |
 | [skill:dotnet-ai] | MCP servers, Semantic Kernel, RAG, ML.NET, LLM integration | AI/ML frameworks and agent-tool protocols |
-| [skill:dotnet-workflow] | Parallel worktrees, context discipline, verification loops, correction capture, instinct system | Claude Code productivity + compounding knowledge |
+| [skill:dotnet-workflow] | Parallel worktrees, context discipline, verification loops, plan mode | Claude Code productivity optimization |
 | dotnet-advisor | This skill -- routes to domain skills above | Entry point, loaded after [skill:using-dotnet] |
 
 ---
