@@ -85,6 +85,25 @@ claude plugins install YataoFeng/dotnet-artisan
 
 装完即用。你说 .NET 相关的事，插件自动激活。零配置。
 
+### Harness（.NET 项目自动驾驶）
+
+把配置文件放入任何 .NET 项目，获得自动技能加载、权限快捷方式、代码质量提醒：
+
+```bash
+cp harness/settings.json 你的项目/.claude/settings.json
+```
+
+做什么：
+
+| 事件 | 行为 |
+|-------|--------------|
+| 打开 .NET 项目 | 自动检测 .cs/csproj/sln 文件，加载技能 |
+| 输入 .NET 相关提示 | 决策者分析意图、检测项目版本、路由到专家 |
+| 创建新 .cs 文件 | 提醒添加一行用途注释（30 秒法则） |
+| dotnet/git/docker 命令 | 预授权——不会弹出权限确认 |
+
+**[→ 完整 harness 文档](harness/README.md)**
+
 ---
 
 ## 谁在干活？
