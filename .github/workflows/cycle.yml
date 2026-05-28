@@ -11,9 +11,6 @@ on:
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/cycle.yml']
 
 jobs:
   cycle:
@@ -103,18 +100,17 @@ jobs:
             [ -z "$file" ] && continue
             [ ! -f "$file" ] && echo "⚠️ $file not found, skipping $name" >> $GITHUB_STEP_SUMMARY && continue
             echo "✅ Adding '$name' to $file" >> $GITHUB_STEP_SUMMARY
-            cat >> "$file" << PATCH
-
-### $name
-
-\`\`\`csharp
-// BAD
-$bad
-
-// GOOD
-$good
-\`\`\`
-PATCH
+            echo "" >> "$file"
+            echo "### $name" >> "$file"
+            echo "" >> "$file"
+            echo '```csharp' >> "$file"
+            echo "// BAD" >> "$file"
+            echo "$bad" >> "$file"
+            echo "" >> "$file"
+            echo "// GOOD" >> "$file"
+            echo "$good" >> "$file"
+            echo '```' >> "$file"
+            echo "" >> "$file"
           done
 
           git add -A
