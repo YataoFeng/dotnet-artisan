@@ -44,7 +44,7 @@ No guessing. No `find . -name "*.csproj"`. The solution file tells the story.
 | `Data`, `Infrastructure` | `OrderManagement.Postgres` | Says WHAT technology |
 | `Common`, `Shared`, `Utils` | Never create these | Dumping ground for things that should have a real home |
 
-### 3. One sentence at the top of every file
+### 3. One sentence at the top of new files
 
 ```csharp
 // Handles order fulfillment: validates payment, reserves inventory, creates shipment
@@ -215,7 +215,7 @@ Before committing any generated code, verify:
 
 - [ ] Solution file (.slnx or .sln) at repo root
 - [ ] Project names use domain terms (not `Core`, `Shared`, `Utils`)
-- [ ] Each file has a one-sentence purpose comment at the top
+- [ ] New AI-created files have a one-sentence purpose comment at the top (skip existing files)
 - [ ] Class names describe WHAT they do (not generic like `Handler`, `Service`)
 - [ ] All dependencies are explicit in constructor parameters
 - [ ] Zero XML `<summary>` tags that restate the name
