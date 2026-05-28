@@ -48,11 +48,8 @@ dotnet-artisan/
 │   ├── dotnet-tooling/    ← MSBuild/AOT/CLI (36 refs)
 │   ├── dotnet-debugging/  ← WinDbg/crash dumps (17 refs)
 │   ├── dotnet-ai/         ← MCP/Semantic Kernel/RAG
-│   ├── dotnet-upgrade/    ← .NET version migration
-│   ├── dotnet-quality/    ← 7-step cleanup pipeline
-│   ├── dotnet-workflow/   ← Parallel worktrees, context
-│   └── dotnet-learning/   ← Correction capture
-├── agents/                ← 17 specialist agent .md files
+│   ├── dotnet-workflow/   ← Parallel worktrees, context, corrections, learning
+├── agents/                ← 13 specialist agent .md files
 ├── docs/                  ← GitHub Pages (index.html = Chinese, index.en.html = English)
 ├── scripts/hooks/         ← Node.js hook scripts
 └── hooks.json             ← Hook configuration

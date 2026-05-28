@@ -27,11 +27,10 @@ Load path: `using-dotnet` → `dotnet-advisor` → domain skills. `dotnet-csharp
 | Choosing packages | [package-choices.md](skills/dotnet-csharp/references/package-choices.md) — commercial→free alternatives |
 | Architecture decisions | [DECISIONS.md](skills/DECISIONS.md) — "when to use what" quick lookups |
 | Find a reference | [INDEX.md](skills/INDEX.md) — all 166 reference files by domain |
-| Cleanup/quality | [dotnet-quality](skills/dotnet-quality/SKILL.md) — 7-step pipeline |
-| Workflow optimization | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) — parallel worktrees, context discipline |
-| Pattern learning | [dotnet-learning](skills/dotnet-learning/SKILL.md) — correction capture, instincts |
+| Code quality + project setup | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) — build, AOT, CLI, cleanup |
+| Workflow optimization + learning | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) — worktrees, context, corrections |
 | AI/ML features | [dotnet-ai](skills/dotnet-ai/SKILL.md) — MCP, RAG, Semantic Kernel |
-| Framework upgrade | [dotnet-upgrade](skills/dotnet-upgrade/SKILL.md) — migration paths |
+| Version upgrade | [dotnet-devops](skills/dotnet-devops/SKILL.md) — CI/CD, containers, migration |
 
 ## Anti-Patterns Quick Reference
 

@@ -26,7 +26,7 @@ description: >
 
 4. **Automate the repetitive** — If done more than once a day: make it a hook, slash command, or subagent. Pre-allow safe permissions. Eliminate friction.
 
-5. **Compound your knowledge** — Every correction becomes a rule in MEMORY.md (see dotnet-learning skill). Over time, mistake rate drops as knowledge base grows.
+5. **Compound your knowledge** — Every correction becomes a rule in MEMORY.md (see Learning System section below). Over time, mistake rate drops as knowledge base grows.
 
 ## Context Discipline (Token Budget)
 

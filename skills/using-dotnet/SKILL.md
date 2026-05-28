@@ -17,8 +17,8 @@ user-invocable: false
 ## Out of scope
 
 - C# implementation details and coding-standard specifics -> [skill:dotnet-csharp]
-- Deep domain implementation patterns -> [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging], [skill:dotnet-ai], [skill:dotnet-upgrade]
-- Meta/workflow/quality -> [skill:dotnet-quality], [skill:dotnet-workflow], [skill:dotnet-learning]
+- Deep domain implementation patterns -> [skill:dotnet-api], [skill:dotnet-ui], [skill:dotnet-testing], [skill:dotnet-devops], [skill:dotnet-tooling], [skill:dotnet-debugging], [skill:dotnet-ai]
+- Meta/workflow/quality -> [skill:dotnet-workflow]
 - Specialist deep-review workflows -> [skill:dotnet-security-reviewer], [skill:dotnet-performance-specialist], [skill:dotnet-testing-specialist]
 
 ## Simplicity First (KISS)

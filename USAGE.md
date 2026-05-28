@@ -221,10 +221,10 @@ Employee: internal staff member (from existing AD/Azure AD, not a new user syste
       ├─ Project setup/MSBuild  → dotnet-tooling (34 refs)
       ├─ Crash/deadlock/memory  → dotnet-debugging (17 refs)
       ├─ MCP/Semantic Kernel    → dotnet-ai
-      ├─ Framework migration    → dotnet-upgrade
-      ├─ Code cleanup           → dotnet-quality
+      ├─ Framework migration    → dotnet-devops
+      ├─ Code quality cleanup   → dotnet-tooling
       ├─ Workflow optimization  → dotnet-workflow
-      └─ Learning from mistakes → dotnet-learning
+      ├─ Workflow + learning    → dotnet-workflow
 ```
 
 ## Context Persistence
