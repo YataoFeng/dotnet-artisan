@@ -266,6 +266,7 @@ Call them by name or let the decision-maker route automatically. Full names begi
 | "Is my middleware order correct?" | aspnetcore-specialist | Middleware, DI, request pipeline |
 | "Why is it slow?" / "Design a benchmark" | performance-specialist | Async, profiling, benchmarks |
 | "Build a cross-platform UI" | ui-specialist | Blazor / MAUI / Uno Platform |
+| "Remember this" / "Learn this pattern" | workflow (skill) | Correction capture, generalization, memory |
 | Build fails / "Clean this up" | code-lifecycle-agent | Build errors + quality pipeline |
 | "Deploy to cloud?" | cloud-specialist | Aspire, AKS, App Service |
 | "Crashes under load" | concurrency-specialist | Race conditions, deadlocks, locks |
