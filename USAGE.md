@@ -237,6 +237,7 @@ Any AI reconnecting in a fresh session recovers full context in ~10 minutes:
 | 2 | `AGENTS.md` | 1 min — iron rules, anti-patterns, key files |
 | 3 | `USAGE.md` (this file) | 3 min — questioning framework, domain analysis |
 | 4 | `SELF_DOCUMENTING.md` | 2 min — how to write code that survives sessions |
-| 5 | `skills/CHEATSHEET.md` | 2 min — all rules in one page |
+| 5 | `BEHAVIORS.md` | 2 min — 30+ behavior catalog + decision-maker routing |
+| 6 | `skills/CHEATSHEET.md` | 2 min — all rules in one page |
 
 All generated code must follow SELF_DOCUMENTING.md so a fresh AI can understand the project in 30 seconds: solution file → Program.cs → any .cs file → config.

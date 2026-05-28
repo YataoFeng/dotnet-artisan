@@ -67,7 +67,7 @@ dotnet-artisan/
 5. **Exhaust questions before acting** — Check the 7-item checklist in `USAGE.md`. If any answer is "I don't know", ask more. Never write code on assumptions.
 6. **English only in skills/agents/references** — Docs (README, Pages) support Chinese + English.
 7. **SKILL.md under 500 lines** — Detailed content in `references/` subdirectory.
-8. **Every reference file follows**: Core Principles → Patterns (GOOD code) → Anti-patterns (BAD/GOOD) → Decision Guide.
+8. **Reference file format**: Core Principles → Patterns (GOOD code) → Anti-patterns (BAD/GOOD or inline "AVOID" examples) → Decision Guide. Inline BAD/GOOD examples are acceptable instead of dedicated sections.
 9. **All generated code MUST follow SELF_DOCUMENTING.md** — A fresh AI must understand any project in 30 seconds. Zero exceptions.
 
 ## Skill Format

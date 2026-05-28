@@ -64,3 +64,9 @@ Focus 80% of review effort on the 20% of code most likely to contain issues:
 - **Batch cleanup without testing** — 500 files changed, zero tests run = guaranteed regression
 - **Aggressive dead code removal** — Verify via reflection, DI, serialization first
 - **Formatting holy wars** — Use `.editorconfig`, not personal preference
+
+## Out of Scope
+
+- Implementing new features or business logic (see [dotnet-api](../dotnet-api/SKILL.md) or [dotnet-ui](../dotnet-ui/SKILL.md))
+- Performance profiling or benchmark design (see [dotnet-tooling](../dotnet-tooling/SKILL.md))
+- CI/CD pipeline authoring (see [dotnet-devops](../dotnet-devops/SKILL.md))

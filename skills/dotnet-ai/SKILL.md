@@ -89,3 +89,9 @@ var response = await kernel.InvokePromptAsync(
 - **RAG without hybrid search** — Vector-only retrieval misses exact keyword matches
 - **Embedding entire documents** — Chunk first; large embeddings lose semantic precision
 - **Ignoring token costs** — Cache embeddings, use streaming responses, set max_tokens
+
+## Out of Scope
+
+- General ASP.NET Core API development (see [dotnet-api](../dotnet-api/SKILL.md))
+- Frontend UI frameworks or rendering patterns (see [dotnet-ui](../dotnet-ui/SKILL.md))
+- CI/CD pipeline configuration (see [dotnet-devops](../dotnet-devops/SKILL.md))

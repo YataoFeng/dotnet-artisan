@@ -62,3 +62,9 @@ After every code change, run the verification chain:
 - **Skipping verification** — "This change is simple" is how bugs ship
 - **Overloading one session** — One session = one concern; use worktrees for parallelism
 - **Skipping design for "simple" tasks** — unexamined assumptions cause the most wasted work
+
+## Out of Scope
+
+- .NET coding standards or language features (see [dotnet-csharp](../dotnet-csharp/SKILL.md))
+- Debugging or crash analysis (see [dotnet-debugging](../dotnet-debugging/SKILL.md))
+- Specific API, UI, or testing implementation patterns (see respective domain skills)

@@ -95,3 +95,9 @@ Strategy: enable per-project, starting from leaf dependencies, fixing warnings b
 - **Skipping versions** — net8→net10 bypasses net9 deprecation warnings
 - **Upgrading without running tests** — Migration + no test suite = undetected breaking changes
 - **Mixing migration with feature work** — Separate PRs; pure migration only
+
+## Out of Scope
+
+- Normal application development without migration context (see [dotnet-api](../dotnet-api/SKILL.md))
+- Debugging production crashes (see [dotnet-debugging](../dotnet-debugging/SKILL.md))
+- Setting up CI/CD for the upgraded project (see [dotnet-devops](../dotnet-devops/SKILL.md))

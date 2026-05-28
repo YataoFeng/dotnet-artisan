@@ -55,3 +55,9 @@ Store per-project in `.claude/instincts.md`. Instincts do not transfer between p
 - **Overly specific rules** — "In CreateOrder line 47, use TimeProvider" → wrong. Generalize.
 - **Never reviewing memory** — Audit every 5-10 sessions: remove contradictions, merge overlaps, verify accuracy.
 - **Ignoring corrections** — Fixing without capturing guarantees the same mistake next session.
+
+## Out of Scope
+
+- One-time code generation or feature implementation (see domain skills)
+- Code quality cleanup (see [dotnet-quality](../dotnet-quality/SKILL.md))
+- Performance optimization or profiling (see [dotnet-tooling](../dotnet-tooling/SKILL.md))

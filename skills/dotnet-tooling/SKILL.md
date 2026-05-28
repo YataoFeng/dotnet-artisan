@@ -78,4 +78,6 @@ user-invocable: false
 
 ## Scripts
 
-- `scripts/scan-dotnet-targets.py` -- Scan repository for .NET TFM and SDK version signals
+- `scripts/hooks/session-start-context.js` -- SessionStart hook for .NET project detection
+- `scripts/hooks/user-prompt-dotnet-reminder.js` -- UserPromptSubmit hook for .NET keyword detection
+- `scripts/hooks/check-self-doc.js` -- PostToolUse hook for .cs file quality reminders
