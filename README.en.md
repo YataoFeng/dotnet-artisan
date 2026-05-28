@@ -2,7 +2,7 @@
 
 **Makes your AI coding agent actually good at .NET.** Install and go. Zero config.
 
-[![中文](README.md)](README.md) [![MIT](LICENSE)](LICENSE) 11 skills · 14 agents · 169 references · 30+ behaviors
+[![中文](README.md)](README.md) [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) 11 skills · 14 agents · 169 references · 30+ behaviors
 
 ---
 
@@ -163,7 +163,7 @@ Chain: dotnet-workflow → detect correction → generalize rule →
 | Operate | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD, containers, migration, Git workflow |
 | | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | Project structure, AOT, CLI, performance, quality |
 | Augment | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP servers, Semantic Kernel, RAG |
-| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | Parallel workflows, correction learning, memory |
+| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | Parallel workflows, context management, verification loops |
 
 ---
 

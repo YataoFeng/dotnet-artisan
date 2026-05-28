@@ -2,7 +2,7 @@
 
 **让你的 AI 编码代理真正精通 .NET。** 即装即用，零配置。
 
-[![English](README.en.md)](README.en.md) [![MIT](LICENSE)](LICENSE) 11 技能 · 14 代理 · 169 参考文件 · 30+ 行为
+[![English](README.en.md)](README.en.md) [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) 11 技能 · 14 代理 · 169 参考文件 · 30+ 行为
 
 ---
 
@@ -162,7 +162,7 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 | 运维 | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD、容器、版本迁移、Git 工作流 |
 | | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | 项目结构、AOT、CLI、性能、代码质量 |
 | 增强 | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP 服务器、Semantic Kernel、RAG |
-| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | 并行工作流、纠错学习、模式记忆 |
+| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | 并行工作流、上下文管理、验证循环 |
 
 ---
 

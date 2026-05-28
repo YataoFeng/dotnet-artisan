@@ -7,11 +7,9 @@ description: >
   with git worktrees, context discipline (token budget management), plan mode strategy,
   autonomous loops, verification patterns, and permission setup. Load when setting up
   Claude Code for a .NET project, running parallel sessions, context is running low,
-  or optimizing productivity. Also manages compounding knowledge: captures user
-  corrections, generalizes them into rules, and tracks project-specific patterns
-  via confidence-scored instincts. Merges workflow-mastery + context-discipline +
-  autonomous-loops + verification-loop + self-correction-loop + instinct-system +
-  learning-log.
+  or optimizing productivity. Contains the Learning System reference used by
+  dotnet-learning-agent for correction capture and memory management.
+  Merges workflow-mastery + context-discipline + autonomous-loops + verification-loop.
 ---
 
 # dotnet-workflow
