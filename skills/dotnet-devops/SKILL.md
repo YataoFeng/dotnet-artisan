@@ -1,6 +1,6 @@
 ---
 name: dotnet-devops
-description: Configures .NET CI/CD pipelines (GitHub Actions with setup-dotnet, NuGet cache, reusable workflows; Azure DevOps with DotNetCoreCLI, templates, multi-stage), containerization (multi-stage Dockerfiles, Compose, rootless), packaging (NuGet authoring, source generators, MSIX signing), release management (NBGV, SemVer, changelogs, GitHub Releases), and observability (OpenTelemetry, health checks, structured logging, PII). Spans 18 topic areas. Do not use for application-layer API or UI implementation patterns.
+description: Configures .NET CI/CD pipelines (GitHub Actions with setup-dotnet, NuGet cache, reusable workflows; Azure DevOps with DotNetCoreCLI, templates, multi-stage), Git workflow (branch strategies, Conventional Commits, PR lifecycle), containerization (multi-stage Dockerfiles, Compose, rootless), packaging (NuGet authoring, source generators, MSIX signing), release management (NBGV, SemVer, changelogs, GitHub Releases), and observability (OpenTelemetry, health checks, structured logging, PII). Spans 19 topic areas. Do not use for application-layer API or UI implementation patterns.
 license: MIT
 user-invocable: false
 ---
@@ -9,7 +9,7 @@ user-invocable: false
 
 ## Overview
 
-CI/CD, packaging, release management, and operational tooling for .NET. This consolidated skill spans 18 topic areas. Load the appropriate companion file from `references/` based on the routing table below.
+CI/CD, packaging, Git workflow, release management, and operational tooling for .NET. This consolidated skill spans 19 topic areas. Load the appropriate companion file from `references/` based on the routing table below.
 
 ## Routing Table
 
@@ -28,6 +28,7 @@ CI/CD, packaging, release management, and operational tooling for .NET. This con
 | NuGet authoring | SDK-style, source generators, multi-TFM | NuGet package authoring (SDK-style, source generators, multi-TFM) | references/nuget-authoring.md |
 | MSIX | creation, signing, Store, sideload, auto-update | MSIX packaging (creation, signing, Store, sideload, auto-update) | references/msix.md |
 | GitHub Releases | creation, assets, notes, pre-release | GitHub Releases (creation, assets, notes, pre-release) | references/github-releases.md |
+| Git workflow | branch, PR, Conventional Commits, merge strategy | Branch strategies, Conventional Commits, PR lifecycle, merge/squash/rebase, tag-based release | references/git-workflow.md |
 | Release management | NBGV, SemVer, changelogs, branching | Release lifecycle (NBGV, SemVer, changelogs, branching) | references/release-management.md |
 | Observability | OpenTelemetry, health checks, custom metrics | Observability (OpenTelemetry, health checks, custom metrics) | references/observability.md |
 | Structured logging | aggregation, sampling, PII, correlation | Log pipelines (aggregation, sampling, PII, correlation) | references/structured-logging.md |
@@ -36,6 +37,8 @@ CI/CD, packaging, release management, and operational tooling for .NET. This con
 
 ## Scope
 
+- Git workflow and branch strategies (GitHub Flow, Trunk-Based, GitFlow)
+- Conventional Commits, PR lifecycle, automated review
 - GitHub Actions workflows (build, test, deploy, publish)
 - Azure DevOps pipelines (build, test, publish, environments)
 - Container builds and deployment (Docker, Compose)

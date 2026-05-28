@@ -99,11 +99,13 @@ Quick navigation for all reference files. Each file contains implementation patt
 | [playwright.md](dotnet-testing/references/playwright.md) | E2E browser testing |
 | [benchmarkdotnet.md](dotnet-testing/references/benchmarkdotnet.md) | Microbenchmarks, memory diagnoser |
 | [snapshot-testing.md](dotnet-testing/references/snapshot-testing.md) | Verify, snapshot scrubbing |
+| [bdd.md](dotnet-testing/references/bdd.md) | Reqnroll, Given/When/Then, lightweight BDD patterns |
 
 ## DevOps
 
 | File | Topic |
 |------|-------|
+| [git-workflow.md](dotnet-devops/references/git-workflow.md) | Branch strategies, Conventional Commits, PR lifecycle |
 | [gha-patterns.md](dotnet-devops/references/gha-patterns.md) | GitHub Actions, dotnet setup, caching, deployment |
 | [containers.md](dotnet-devops/references/containers.md) | Docker multi-stage, non-root, health checks |
 | [observability.md](dotnet-devops/references/observability.md) | OpenTelemetry, metrics, tracing |

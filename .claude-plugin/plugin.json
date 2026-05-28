@@ -40,6 +40,7 @@
     "./agents/dotnet-refactor-cleaner.md",
     "./agents/dotnet-security-reviewer.md",
     "./agents/dotnet-testing-specialist.md",
-    "./agents/dotnet-uno-specialist.md"
+    "./agents/dotnet-uno-specialist.md",
+    "./agents/dotnet-pr-workflow.md"
   ]
 }

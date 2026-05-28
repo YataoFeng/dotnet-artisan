@@ -15,11 +15,13 @@ Initial release. Synthesized from [dotnet-artisan](https://github.com/novotnyllc
 | Operators | `dotnet-devops`, `dotnet-tooling`, `dotnet-upgrade` |
 | Augmenters | `dotnet-ai`, `dotnet-workflow`, `dotnet-learning` |
 
-### Agents (16)
+### Agents (17)
 
 **Role-based (6)**: `dotnet-architect`, `dotnet-code-review-agent`, `dotnet-security-reviewer`, `dotnet-testing-specialist`, `dotnet-docs-generator`, `dotnet-refactor-cleaner`
 
 **Tool-based (10)**: `dotnet-aspnetcore-specialist`, `dotnet-async-performance-specialist`, `dotnet-benchmark-designer`, `dotnet-blazor-specialist`, `dotnet-build-error-resolver`, `dotnet-cloud-specialist`, `dotnet-csharp-concurrency-specialist`, `dotnet-maui-specialist`, `dotnet-performance-analyst`, `dotnet-uno-specialist`
+
+**Workflow (1)**: `dotnet-pr-workflow` — full PR lifecycle: create → validate → review → merge → release
 
 ### Guides
 

@@ -1,6 +1,6 @@
 ---
 name: dotnet-testing
-description: Defines .NET test strategy and implementation patterns across xUnit v3 (Facts, Theories, fixtures, IAsyncLifetime), integration testing (WebApplicationFactory, Testcontainers), Aspire testing (DistributedApplicationTestingBuilder), snapshot testing (Verify, scrubbing), Playwright E2E browser automation, BenchmarkDotNet microbenchmarks, code coverage (Coverlet), mutation testing (Stryker.NET), UI testing (page objects, selectors), and AOT WASM test compilation. Spans 13 topic areas. Do not use for production API architecture or CI workflow authoring.
+description: Defines .NET test strategy and implementation patterns across xUnit v3 (Facts, Theories, fixtures, IAsyncLifetime), integration testing (WebApplicationFactory, Testcontainers), BDD (Reqnroll, lightweight xUnit Given/When/Then), Aspire testing (DistributedApplicationTestingBuilder), snapshot testing (Verify, scrubbing), Playwright E2E browser automation, BenchmarkDotNet microbenchmarks, code coverage (Coverlet), mutation testing (Stryker.NET), UI testing (page objects, selectors), and AOT WASM test compilation. Spans 14 topic areas. Do not use for production API architecture or CI workflow authoring.
 license: MIT
 user-invocable: false
 ---
@@ -9,7 +9,7 @@ user-invocable: false
 
 ## Overview
 
-Testing strategy, frameworks, and quality tooling for .NET applications. This consolidated skill spans 13 topic areas. Load the appropriate companion file from `references/` based on the routing table below.
+Testing strategy, frameworks, and quality tooling for .NET applications. This consolidated skill spans 14 topic areas. Load the appropriate companion file from `references/` based on the routing table below.
 
 Baseline dependency: `references/testing-strategy.md` defines the unit vs integration vs E2E decision tree and test doubles selection that inform all testing decisions. Load it by default whenever a testing approach needs to be chosen.
 
@@ -32,12 +32,14 @@ Most-shared companion: `references/xunit.md` covers xUnit v3 framework features 
 | AOT WASM | Blazor/Uno WASM AOT, size, lazy loading | Blazor/Uno WASM AOT compilation, size vs speed, lazy loading, Brotli | references/aot-wasm.md |
 | UI testing core | page objects, selectors, async waits | Page object model, test selectors, async waits, accessibility testing | references/ui-testing-core.md |
 | Aspire testing | DistributedApplicationTestingBuilder, Aspire test host | Aspire test host, service HTTP clients, resource health | references/aspire-testing.md |
+| BDD | Given/When/Then, Reqnroll, SpecFlow alternative, scenario | Reqnroll (MIT), lightweight xUnit BDD, .feature files, scenario outlines | references/bdd.md |
 
 ## Scope
 
 - Test strategy and architecture (unit, integration, E2E)
 - xUnit v3 test authoring
 - Integration testing (WebApplicationFactory, Testcontainers)
+- BDD (Reqnroll, lightweight Given/When/Then patterns)
 - E2E browser testing (Playwright)
 - Snapshot testing (Verify)
 - Benchmarking (BenchmarkDotNet, CI gating)

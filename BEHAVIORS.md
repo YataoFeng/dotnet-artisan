@@ -60,8 +60,18 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 | **Write unit tests** | `dotnet-testing` + `dotnet-csharp` | xUnit v3, Facts/Theories, mocking strategy |
 | **Write integration tests** | `dotnet-testing` + `dotnet-api` | WebApplicationFactory, Testcontainers with real PostgreSQL |
 | **Write E2E tests** | `dotnet-testing` | Playwright browser automation, CI caching |
+| **Write BDD scenarios** | `dotnet-testing` | Reqnroll (MIT) for .feature files or lightweight xUnit Given/When/Then |
 | **Write benchmarks** | `dotnet-benchmark-designer` | BenchmarkDotNet with MemoryDiagnoser, avoids measurement bias |
 | **Snapshot testing** | `dotnet-testing` | Verify with scrubbing for stable output tests |
+
+### Manage Code
+
+| Behavior | Skills Used | What Happens |
+|----------|-------------|--------------|
+| **Create a PR** | `dotnet-pr-workflow` | Analyzes diff, generates conventional commit title, creates PR with body |
+| **Merge a PR** | `dotnet-pr-workflow` | Verifies CI + approval, squash-merges, deletes branch |
+| **Release a version** | `dotnet-devops` + `dotnet-pr-workflow` | Determines version bump, generates changelog, tags and pushes |
+| **Set up branch strategy** | `dotnet-devops` | Recommends Trunk-Based/GitHub Flow/GitFlow based on team size |
 
 ### Ship It
 
@@ -107,6 +117,7 @@ The decision-maker invokes specialist agents for one-shot deep analysis. Each ag
 | `dotnet-security-reviewer` | OWASP, secrets, crypto | "Is this secure?" |
 | `dotnet-testing-specialist` | Test architecture, test data | "How should I test this?" |
 | `dotnet-uno-specialist` | Uno Platform, MVUX | "Cross-platform Uno app" |
+| `dotnet-pr-workflow` | PR lifecycle, merge, release tagging | "Create PR", "merge this", "release" |
 
 ## Routing Logic
 
