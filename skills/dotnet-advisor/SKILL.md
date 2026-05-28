@@ -67,47 +67,57 @@ In a .NET repository, default to .NET solutions for ambiguous requests:
 
 Only suggest non-.NET alternatives when there's a specific reason (e.g., the user explicitly asks for Python, or the task requires a JS-only ecosystem like npm packages).
 
-## Step 4: Route to Domain Skill
+## Step 4: Decompose & Route
 
-Identify the primary domain from the request, then invoke the matching skill. If the request spans multiple domains, invoke them in the order shown.
+For ANY request, especially broad ones like "build an e-commerce system", first DECOMPOSE the request into all domains it touches, then invoke EVERY matching skill in parallel.
+
+### 4a. Domain Detection
+
+Scan the request for signals across ALL domains. A complex project (e.g., e-commerce system) will match multiple rows simultaneously:
 
 | If the request involves... | Invoke |
 |---------------------------|--------|
-| Web APIs, EF Core, gRPC, SignalR, middleware, security hardening | [skill:dotnet-api] |
-| Blazor, MAUI, Uno Platform, WPF, WinUI, WinForms | [skill:dotnet-ui] |
-| Unit tests, integration tests, E2E, Playwright, benchmarks | [skill:dotnet-testing] |
-| CI/CD, GitHub Actions, Azure DevOps, containers, NuGet publishing | [skill:dotnet-devops] |
-| Project setup, MSBuild, Native AOT, CLI apps, SDK versions | [skill:dotnet-tooling] |
+| Backend services, Web APIs, EF Core, gRPC, SignalR, middleware, auth, OWASP, messaging, caching, YARP, document generation | [skill:dotnet-api] |
+| Web UI (Blazor), cross-platform mobile/desktop (MAUI), cross-platform all-targets (Uno), WPF, WinUI, WinForms | [skill:dotnet-ui] |
+| Unit tests, integration tests, E2E, Playwright, benchmarks, BDD, snapshot testing, mutation testing | [skill:dotnet-testing] |
+| GitHub Actions, Azure DevOps, containers, Docker, NuGet packaging, MSIX, release management, observability, OpenTelemetry | [skill:dotnet-devops] |
+| Project setup, MSBuild, build optimization, Native AOT, trimming, GC tuning, profiling, CLI apps, SDK versions, code quality cleanup | [skill:dotnet-tooling] |
 | Crash dumps, WinDbg, hang analysis, memory diagnostics (Windows) | [skill:dotnet-debugging] |
 | Crash dumps, dotnet-dump, lldb, container diagnostics (Linux/macOS) | [skill:dotnet-debugging] |
-| Missing .NET SDK, install dotnet, workloads | [skill:dotnet-tooling] (references/dotnet-sdk-install.md) |
-| Quick script, utility, single-file tool | [skill:dotnet-api] (references/file-based-apps.md) |
-| Excel, Word, PowerPoint, PDF, spreadsheet, document generation | [skill:dotnet-api] (references/office-documents.md) |
 | AI/ML, LLM integration, MCP servers, RAG, ML.NET, Semantic Kernel | [skill:dotnet-ai] |
-| .NET version upgrade, framework migration, AOT assessment, nullable migration | [skill:dotnet-devops] |
-| Code cleanup, quality pipeline, dead code removal, code review, tech debt | [skill:dotnet-tooling] |
-| Claude Code workflow, context discipline, parallel sessions, git worktrees | [skill:dotnet-workflow] |
-| User corrections, pattern learning, project conventions, memory management | [skill:dotnet-workflow] |
-| New project (unclear domain) | [skill:dotnet-tooling], then route to the owning domain skill |
+| Claude Code workflow, parallel worktrees, context discipline, corrections capture, pattern learning | [skill:dotnet-workflow] |
 
-### Cross-Domain Routing
+### 4b. Parallel Invocation
 
-Many tasks naturally span multiple domains. After invoking the primary domain skill, also load supporting skills when these patterns appear:
+Invoke ALL matched skills. For a full-stack project this typically means:
 
-| When the task involves... | Also load |
-|--------------------------|-----------|
-| Performance optimization or profiling | [skill:dotnet-tooling] (profiling, performance-patterns references) |
-| Testing a specific framework (minimal API, Blazor, EF Core) | The framework's domain skill ([skill:dotnet-api] or [skill:dotnet-ui]) for context |
-| Authentication or security hardening in a UI app | [skill:dotnet-api] (security, auth middleware references) |
-| Multi-targeting or platform-specific project setup | [skill:dotnet-tooling] (project structure, TFM configuration) |
-| Building a new app (any "build me" request) | [skill:dotnet-tooling] (project setup) + [skill:dotnet-testing] (test strategy) |
-| CI/CD that runs tests | [skill:dotnet-testing] (test framework configuration) |
-| AI/ML feature in a web API | [skill:dotnet-api] (context) + [skill:dotnet-ai] |
-| Upgrading .NET version | [skill:dotnet-devops] (version upgrade section) + [skill:dotnet-tooling] (SDK/version) |
-| Code review or cleanup pass | [skill:dotnet-tooling] (code quality section) + relevant domain skill for the project |
-| Setting up Claude Code for a project | [skill:dotnet-workflow] |
+```
+[skill:dotnet-csharp] (baseline — always)
++ [skill:dotnet-tooling] (project setup)
++ [skill:dotnet-api] (if backend)
++ [skill:dotnet-ui] (if frontend/mobile/desktop — multiple frameworks if needed)
++ [skill:dotnet-testing] (if tests requested or implied)
++ [skill:dotnet-devops] (if CI/CD, containers, or deployment needed)
++ [skill:dotnet-debugging] (if debugging needed)
++ [skill:dotnet-ai] (if AI features needed)
+```
 
-For broad "build me an app" requests, load comprehensively: [skill:dotnet-csharp] -> [skill:dotnet-tooling] -> primary domain -> [skill:dotnet-testing] -> [skill:dotnet-devops].
+Order: baseline → project setup → domain skills → testing → DevOps. Each skill operates independently on its domain.
+
+### 4c. Cross-Domain Coordination
+
+When multiple skills are active, coordinate across them:
+
+| When the task involves... | Coordinate |
+|--------------------------|------------|
+| Performance optimization or profiling | [skill:dotnet-tooling] (profiling references) + domain skill for the code being optimized |
+| Testing a specific framework | The framework's domain skill provides context; [skill:dotnet-testing] writes the tests |
+| Authentication in a UI app | [skill:dotnet-api] (security references) + [skill:dotnet-ui] (auth integration) |
+| Building a new app (any "build me" request) | [skill:dotnet-tooling] (scaffold) -> domain skills -> [skill:dotnet-testing] -> [skill:dotnet-devops] |
+| CI/CD that runs tests | [skill:dotnet-devops] (pipeline) + [skill:dotnet-testing] (test config) |
+| AI/ML feature in a web API | [skill:dotnet-api] (hosting) + [skill:dotnet-ai] (AI logic) |
+| Upgrading .NET version | [skill:dotnet-devops] (migration path) + [skill:dotnet-tooling] (SDK/version) |
+| Code review or cleanup pass | [skill:dotnet-tooling] (code quality) + domain skill for the project |
 
 ## Skill Catalog
 
