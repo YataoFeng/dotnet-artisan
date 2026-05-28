@@ -18,7 +18,11 @@ claude plugins marketplace add fenzel999/dotnet-artisan
 claude plugins install dotnet-artisan
 ```
 
-兼容 GitHub Copilot、VS Code、Cursor。装完打开任意 .NET 项目即用，Harness 自动激活。
+兼容 GitHub Copilot、VS Code、Cursor。装完打开任意 .NET 项目即用，Harness 自动激活：
+
+- 打开 .NET 项目 → 自动加载技能 + 检测版本
+- 输入 .NET 提示 → 自动路由到领域技能
+- 编辑 `.cs` 文件 → 检查 30 秒法则合规
 
 ---
 

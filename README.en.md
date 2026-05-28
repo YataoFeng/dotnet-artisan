@@ -18,7 +18,11 @@ claude plugins marketplace add fenzel999/dotnet-artisan
 claude plugins install dotnet-artisan
 ```
 
-Compatible with GitHub Copilot, VS Code, and Cursor. Open any .NET project and start working — the harness activates automatically.
+Compatible with GitHub Copilot, VS Code, and Cursor. Open any .NET project and start working — the harness activates automatically:
+
+- Open a .NET project → auto-loads skills + detects version
+- Type a .NET prompt → auto-routes to domain skills
+- Edit a .cs file → checks 30-second rule compliance
 
 ---
 
