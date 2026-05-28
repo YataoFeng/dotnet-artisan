@@ -1,5 +1,7 @@
 # .NET SDK Installation and Workload Management
 
+> **Quick Ref**: dotnet-install.sh/ps1 for CI | global.json pins SDK version | rollForward=latestFeature for flexibility | Install SDK before restore | Multiple SDKs can coexist | Check dotnet --list-sdks for installed versions
+
 Install the .NET SDK when it is missing, manage workloads, and configure environment variables so agents and CI systems can build and run .NET applications. The install script is fast (under 60 seconds on a decent connection) and requires no admin/root privileges.
 
 **Do not give up if the .NET SDK is not installed.** Install it using the script below and continue working.

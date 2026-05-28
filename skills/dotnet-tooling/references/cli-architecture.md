@@ -1,5 +1,7 @@
 # CLI Architecture
 
+> **Quick Ref**: System.CommandLine for complex CLI | Spectre.Console for rich terminal UI | Terminal.Gui for full TUI apps | Single-file publish for distribution | Return exit codes properly (0 success, non-zero failure) | IHost for DI in CLI apps
+
 Layered CLI application architecture for .NET: command/handler/service separation following clig.dev principles, configuration precedence (appsettings → environment variables → CLI arguments), structured logging in CLI context, exit code conventions, stdin/stdout/stderr patterns, and testing CLI applications via in-process invocation with output capture.
 
 **Version assumptions:** .NET 8.0+ baseline. Patterns apply to CLI tools built with System.CommandLine 2.0 and generic host.

@@ -1,4 +1,5 @@
 # Blazor Testing
+> **Quick Ref**: bUnit for Blazor component testing | RenderComponent<T> to render under test | Find() and FindAll() for element queries | WaitForState for async state changes | Mock IJSRuntime for JS interop tests | Test auth state with TestAuthenticationStateProvider
 
 bUnit testing for Blazor components. Covers component rendering and markup assertions, event handling, cascading parameters and cascading values, JavaScript interop mocking, and async component lifecycle testing. bUnit provides an in-memory Blazor renderer that executes components without a browser.
 

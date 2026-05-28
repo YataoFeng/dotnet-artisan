@@ -1,4 +1,5 @@
 # Uno Platform
+> **Quick Ref**: Uno Platform for cross-platform .NET UI | Single codebase: Windows, Web, iOS, Android, macOS, Linux | MVUX for reactive state management | Uno Toolkit for ready-made controls | Figma plugin for design-to-code | Uno Extensions for common patterns
 
 Uno Platform core development: Extensions ecosystem (Navigation, DI, Configuration, Serialization, Localization, Logging, HTTP, Authentication), MVUX reactive pattern, Toolkit controls, Theme resources (Material/Cupertino/Fluent), Hot Reload, and single-project structure. Covers Uno Platform 5.x+ on .NET 8.0+ baseline.
 

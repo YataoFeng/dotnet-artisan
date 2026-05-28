@@ -1,4 +1,5 @@
 # Platform Bindings
+> **Quick Ref**: #if ANDROID / IOS for conditional code | partial class with platform-specific files | DependencyService or DI for platform services | Java.Interop for Android binding | ObjCRuntime for iOS binding | IPlatformApplication for MAUI platform access
 
 Custom native bindings for Android (Java.Interop) and Apple (ObjCRuntime) platforms in .NET MAUI and Uno Platform. Covers when to create custom bindings vs using community packages, binding library project setup, Slim Bindings (.NET 9+), and common patterns for wrapping native SDKs.
 

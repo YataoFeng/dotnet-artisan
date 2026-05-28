@@ -1,5 +1,7 @@
 # Type Design and Performance
 
+> **Quick Ref**: readonly struct for small immutable data | sealed class by default (JIT can devirtualize) | Span<T> for stack-only slices | struct for < 16 bytes, frequently allocated | ArrayPool<T> for temporary arrays | StringBuilder for string concatenation | Avoid boxing with generics
+
 Upfront type design choices that affect performance throughout an application's lifetime. Covers the struct vs class decision matrix, sealed by default for library types, readonly struct for defensive copy elimination, ref struct and Span\<T\>/Memory\<T\> selection, and collection type selection including FrozenDictionary. This skill focuses on **designing types correctly from the start**, not on optimizing existing code.
 
 **Version assumptions:** .NET 8.0+ baseline. FrozenDictionary (requires .NET 8+) is in-scope by default.

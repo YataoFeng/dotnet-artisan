@@ -1,5 +1,7 @@
 # NuGet Authoring
 
+> **Quick Ref**: SDK-style project for NuGet | PackageId + Version in .csproj | Source generators need separate packaging | Multi-TFM with TargetFrameworks | .nuspec only for advanced scenarios | Include XML docs for IntelliSense
+
 NuGet package authoring for .NET library authors: SDK-style `.csproj` package properties (`PackageId`, `PackageTags`, `PackageReadmeFile`, `PackageLicenseExpression`), source generator NuGet packaging with `analyzers/dotnet/cs/` folder layout and `buildTransitive` targets, multi-TFM packages, symbol packages (snupkg) with deterministic builds, package signing (author signing with certificates, repository signing), package validation (`EnablePackageValidation`, `Microsoft.DotNet.ApiCompat.Task` for API compatibility), and NuGet versioning strategies (SemVer 2.0, pre-release suffixes, NBGV integration).
 
 **Version assumptions:** .NET 8.0+ baseline. NuGet client bundled with .NET 8+ SDK. `Microsoft.DotNet.ApiCompat.Task` 8.0+ for API compatibility validation.

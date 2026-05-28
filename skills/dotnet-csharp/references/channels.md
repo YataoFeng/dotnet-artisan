@@ -1,5 +1,7 @@
 # Channels
 
+> **Quick Ref**: Channel<T> for producer-consumer | Bounded channel with backpressure in prod | Unbounded only when consumption is guaranteed | WaitToReadAsync + TryRead pattern | Complete writing before reading finishes | Batch read with ReadAllAsync for performance | Never leave writers uncompleted
+
 Deep guide to `System.Threading.Channels` for high-performance, thread-safe producer/consumer communication in .NET. Covers channel creation, backpressure strategies, IAsyncEnumerable integration, and graceful shutdown patterns.
 
 Cross-references: `references/async-patterns.md` for async patterns used in channel consumers, `references/dependency-injection.md` for integrating channels with hosted services.

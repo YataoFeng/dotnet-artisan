@@ -1,5 +1,7 @@
 # GitHub Actions Deploy
 
+> **Quick Ref**: azure/webapps-deploy for App Service | docker/build-push-action for containers | github-pages-deploy-action for Pages | Deploy from artifacts not rebuild | Environment protection rules for production
+
 Deployment patterns for .NET applications in GitHub Actions: GitHub Pages deployment for documentation sites (Starlight/Docusaurus), container registry push patterns for GHCR and ACR, Azure Web Apps deployment via `azure/webapps-deploy`, GitHub Environments with protection rules for staged rollouts, and rollback strategies for failed deployments.
 
 **Version assumptions:** GitHub Actions workflow syntax v2. `azure/webapps-deploy@v3` for Azure App Service. `azure/login@v2` for Azure credential management. GitHub Environments for deployment gates.

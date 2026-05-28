@@ -1,5 +1,7 @@
 # API Security
 
+> **Quick Ref**: Identity API endpoints for user auth | OIDC with MapInboundClaims = false | JWT bearer with tight ClockSkew | Named CORS policies only, never AllowAnyOrigin() in prod | Rate limiting on auth endpoints | Middleware order: CORS > Auth > Authorization
+
 API-level authentication, authorization, and security patterns for ASP.NET Core. This skill owns API auth implementation: ASP.NET Core Identity configuration, OAuth 2.0/OIDC integration, JWT bearer token handling, passkey (WebAuthn) authentication, CORS policies, Content Security Policy headers, and rate limiting.
 
 ## ASP.NET Core Identity

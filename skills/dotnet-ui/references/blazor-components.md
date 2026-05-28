@@ -1,4 +1,5 @@
 # Blazor Components
+> **Quick Ref**: [Parameter] for parent→child data | EventCallback<T> for child→parent events | CascadingValue for deep prop drilling | RenderFragment for template slots | @ref for component references | ShouldRender() for performance optimization
 
 Blazor component architecture: lifecycle methods, state management (cascading values, DI, browser storage), JavaScript interop (AOT-safe), EditForm validation, and QuickGrid. Covers per-render-mode behavior differences where relevant.
 

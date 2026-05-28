@@ -1,5 +1,7 @@
 # Task: Hang / UI Unresponsive
 
+> **Quick Ref**: !syncblk for lock contention | !dlk for deadlock detection | ~*e!clrstack to see all thread stacks | !threadpool for thread pool starvation | !dumpheap -type WaitHandle for async hangs | Check if GC is blocking
+
 ## Commands
 - `!analyze -hang`
 - `~* kb`

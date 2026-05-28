@@ -1,5 +1,7 @@
 # Performance Patterns
 
+> **Quick Ref**: Span&lt;T&gt; for stack-only slices | ArrayPool&lt;T&gt; for temporary buffers | StringBuilder for string concatenation | ValueTask for high-throughput async | struct under 16 bytes, sealed classes by default | Avoid boxing with generics
+
 Performance-oriented architecture patterns for .NET applications. Covers zero-allocation coding with Span\<T\> and Memory\<T\>, buffer pooling with ArrayPool\<T\>, struct design for performance (readonly struct, ref struct, in parameters), sealed class devirtualization by the JIT, stack-based allocation with stackalloc, and string handling performance. Focuses on the **why** (performance rationale and measurement) rather than the **how** (language syntax).
 
 **Version assumptions:** .NET 8.0+ baseline. Span\<T\> and Memory\<T\> are available from .NET Core 2.1+ but this skill targets modern usage patterns on .NET 8+.

@@ -1,4 +1,5 @@
 # Localization
+> **Quick Ref**: .resx files for string resources | IStringLocalizer<T> for DI-injected localization | CultureInfo.CurrentCulture for formatting | RequestCultureProvider for per-request culture | Satellite assemblies for compiled resources | [Display] attributes for model metadata
 
 Comprehensive .NET internationalization and localization: .resx resource files and satellite assemblies, modern alternatives (JSON resources, source generators for AOT), IStringLocalizer patterns, date/number/currency formatting with CultureInfo, RTL layout support, pluralization engines, and per-framework localization integration for Blazor, MAUI, Uno Platform, and WPF.
 

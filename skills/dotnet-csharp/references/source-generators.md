@@ -1,5 +1,7 @@
 # Source Generators
 
+> **Quick Ref**: IIncrementalGenerator for all new generators | ForAttributeWithMetadataName for typed filtering | Never allocate in incremental pipeline | GeneratedRegex for compile-time regex | LoggerMessage for high-perf logging | StrongName for deterministic builds | Separate generator from consuming project
+
 Guidance for both **creating** and **consuming** Roslyn source generators in .NET. Creating: `IIncrementalGenerator`, syntax providers, semantic analysis, emit patterns, diagnostic reporting, testing with `CSharpGeneratorDriver`. Consuming: `[GeneratedRegex]`, `[LoggerMessage]`, System.Text.Json source generation, `[JsonSerializable]`.
 
 Cross-references: `references/roslyn-analyzers.md` for Roslyn analyzers and code fix providers, `references/modern-patterns.md` for partial properties and related C# features, `references/coding-standards.md` for naming conventions.

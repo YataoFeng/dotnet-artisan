@@ -1,5 +1,7 @@
 # Crash Dump Analysis Report Template
 
+> **Quick Ref**: Report: symptom → root cause → evidence → fix | Cite specific WinDbg commands and output | Include stack traces for key threads | Attach before/after memory stats | Give concrete fix, not general advice | One report per issue
+
 Use this exact structure.
 
 ## Report Header

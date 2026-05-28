@@ -1,5 +1,7 @@
 # Task: High CPU
 
+> **Quick Ref**: !runaway to find CPU-consuming threads | !clrstack on top consumers | ~Ns to switch to thread | !dumpstack for native frames | Tight loop vs GC pressure vs JIT | Check !threadpool queue depth
+
 ## Commands
 - `!runaway`
 - `~* kb`

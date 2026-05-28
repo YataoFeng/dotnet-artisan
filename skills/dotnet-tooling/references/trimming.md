@@ -1,5 +1,7 @@
 # Trimming
 
+> **Quick Ref**: Trimming = removing unused code | PublishTrimmed=true enables trimming | TrimmerRootAssembly for reflection-heavy code | DynamicDependency for private reflection | IL Linker warnings are errors | Native AOT includes trimming by default
+
 Trim-safe development for .NET 8+ applications and libraries: trimming annotations (`[RequiresUnreferencedCode]`, `[DynamicallyAccessedMembers]`, `[DynamicDependency]`), ILLink descriptor XML for type preservation, `TrimmerSingleWarn` for granular diagnostics, testing trimmed output, fixing IL2xxx/IL3xxx warnings, and library authoring with `IsTrimmable`.
 
 **Version assumptions:** .NET 8.0+ baseline. Trimming shipped in .NET 6, but .NET 8 provides the most complete annotation surface and analyzer coverage. .NET 9 improved warning accuracy and library compat.

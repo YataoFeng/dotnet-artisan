@@ -1,5 +1,7 @@
 # Add CI
 
+> **Quick Ref**: Detect existing CI before adding | Scaffold .github/workflows for GHA | Scaffold .azuredevops for ADO | Template must match project type (API/Blazor/MAUI) | Include build + test + lint | Add NuGet caching for speed
+
 Add starter CI/CD workflows to an existing .NET project. Detects the hosting platform (GitHub Actions or Azure DevOps) and generates an appropriate starter workflow for build, test, and pack.
 
 ## Platform Detection

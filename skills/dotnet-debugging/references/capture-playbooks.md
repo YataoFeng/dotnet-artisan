@@ -1,5 +1,7 @@
 # Capture Playbooks
 
+> **Quick Ref**: Collect .dmp before any analysis | procdump -ma for crash dumps | dotnet-dump collect for Linux | createdump for containers | Always capture with -ma (full dump) for .NET | Collect multiple dumps before restarting
+
 ## Single Dump (Fast Snapshot)
 Use when app is unstable and may exit soon.
 

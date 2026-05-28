@@ -1,5 +1,7 @@
 # Semantic Kernel
 
+> **Quick Ref**: Semantic Kernel for AI orchestration | Plugins expose C# functions to LLM | KernelPlugin for function calling | IMemoryStore for RAG scenarios | Auto Function Calling for tool selection | Plan for prompt-based planning | Use ChatCompletionService directly for simple calls
+
 Microsoft Semantic Kernel for AI and LLM orchestration in .NET applications. Covers kernel setup and configuration, plugin/function calling, prompt templates with Handlebars and Liquid syntax, memory and vector store integration, planners, the agents framework, and integration with Azure OpenAI, OpenAI, and local models.
 
 ## Kernel Setup

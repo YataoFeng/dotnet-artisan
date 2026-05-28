@@ -1,5 +1,7 @@
 # Vertical Slice Architecture (VSA)
 
+> **Quick Ref**: Feature folders, not layer folders | Handler is unit of work | Source-generated Mediator for decoupling | Minimal API direct handler for simple cases | VSA for 50+ endpoints or 3+ devs | Simple CRUD: controller + DbContext suffices | Avoid god-services
+
 VSA organizes code by feature, not by technical layer. Each feature is a self-contained slice containing its endpoint, handler, request/response, and validation.
 
 ## Core Principles

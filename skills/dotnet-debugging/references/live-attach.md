@@ -1,5 +1,7 @@
 # Live Attach Workflow
 
+> **Quick Ref**: dotnet-trace for performance tracing (not debugging) | dotnet-counters for live metrics | dotnet-dump collect for process dumps | dotnet-gcdump for heap analysis | Never debug directly on prod (collect dump, analyze offline)
+
 ## Purpose
 Attach to a currently hung or misbehaving process through a WinDbg debug server.
 

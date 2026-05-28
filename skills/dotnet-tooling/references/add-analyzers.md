@@ -1,5 +1,7 @@
 # Add Analyzers
 
+> **Quick Ref**: Enable AnalysisLevel=latest-recommended | Add Microsoft.CodeAnalysis.NetAnalyzers | CA2007=warning for ConfigureAwait | EnableEnforceCodeStyleInBuild=true | Add IDE analyzers for code style | Directory.Build.props for solution-wide settings
+
 Add and configure .NET code analyzers to an existing project. Covers built-in Roslyn CA rules, nullable reference types enforcement, trimming/AOT compatibility analyzers, and third-party analyzer packages.
 
 **Prerequisites:** Run `references/version-detection.md` first — analyzer features vary by SDK version. Run `references/project-analysis.md` to understand the current project layout.

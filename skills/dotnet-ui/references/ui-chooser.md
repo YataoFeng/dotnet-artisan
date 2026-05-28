@@ -1,4 +1,5 @@
 # UI Chooser
+> **Quick Ref**: Blazor Hybrid for web+desktop/mobile | MAUI for cross-platform Mobile/Desktop | WPF/WinUI for Windows-only rich desktop | WinForms for legacy Windows LOB | Uno Platform for pixel-perfect cross-platform | Match framework to deployment target not tech preference
 
 UI framework selection decision tree for .NET applications. Covers Web (Blazor Server, Blazor WebAssembly, Blazor Hybrid), cross-platform (MAUI, Uno Platform, Avalonia), and Windows-only (WinUI 3, WPF, WinForms) frameworks. Presents structured trade-off analysis across five decision factors to help teams evaluate options based on their specific constraints.
 

@@ -1,5 +1,7 @@
 # Library API Compatibility
 
+> **Quick Ref**: Binary vs source compatibility are distinct | Use [TypeForwardedTo] when moving types | [TypeForwardedFrom] for serialization of moved types | Remove member = Major, add = Minor, bugfix = Patch | EnablePackageValidation for automated compat checks
+
 Binary and source compatibility rules for .NET library authors. Covers which API changes break consumers at the binary level (assembly loading, JIT resolution) versus at the source level (compilation), how to use type forwarders for assembly reorganization without breaking consumers, and how versioning decisions map to SemVer major/minor/patch increments.
 
 **Version assumptions:** .NET 8.0+ baseline. Compatibility rules apply to all .NET versions but examples target modern SDK-style projects.

@@ -1,5 +1,7 @@
 # .NET Releases
 
+> **Quick Ref**: net10.0 = LTS (Nov 2028) | net8.0 = LTS (Nov 2026) | C# 14 = .NET 10 | New in .NET 10: file-based apps, field keyword, HybridCache | Use global.json to pin SDK | Check dotnet/sdk releases for features | One TFM per migration step
+
 Quick reference for .NET and C# versions beyond the model's training data. Always check the project's TFM to determine which features are available.
 
 ## Version Matrix

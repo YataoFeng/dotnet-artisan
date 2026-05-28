@@ -1,5 +1,7 @@
 # Release Management
 
+> **Quick Ref**: NBGV for deterministic versions from git | version.json defines major.minor | SemVer: break = major, feat = minor, fix = patch | Keep a Changelog format | git-cliff for auto-generated changelogs | Tag triggers release workflow
+
 Release lifecycle management for .NET projects: Nerdbank.GitVersioning (NBGV) setup with `version.json` configuration, version height calculation, and public release vs pre-release modes; SemVer 2.0 strategy for .NET libraries (when to bump major/minor/patch, API compatibility considerations) and applications (build metadata, deployment versioning); changelog generation (Keep a Changelog format, auto-generation with git-cliff and conventional commits); pre-release version workflows (alpha, beta, rc, stable progression); and release branching patterns (release branches, hotfix branches, trunk-based releases with tags).
 
 **Version assumptions:** .NET 8.0+ baseline. `Nerdbank.GitVersioning` 3.6+ (current stable). SemVer 2.0 specification.

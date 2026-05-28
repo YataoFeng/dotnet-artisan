@@ -1,5 +1,7 @@
 # Task: Kernel Triage
 
+> **Quick Ref**: Kernel dumps need different approach | !process to find target process | .process /r to switch | Check IRQL for driver issues | !analyze -v may work differently | Rarely needed for .NET (user-mode is sufficient)
+
 ## When To Use
 - BSOD/bugcheck analysis.
 - Kernel dump or kernel remote debug session.

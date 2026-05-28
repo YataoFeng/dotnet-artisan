@@ -1,5 +1,7 @@
 # MSBuild Authoring
 
+> **Quick Ref**: Directory.Build.props for shared properties | Directory.Build.targets for shared targets | Conditions with $(Configuration) and $(TargetFramework) | Import order: props before targets | Avoid MSBuild inline tasks over compiled ITask | binlog for debugging build issues
+
 Guidance for authoring MSBuild project system elements: custom targets with `BeforeTargets`/`AfterTargets`/`DependsOnTargets`, incremental build with `Inputs`/`Outputs`, props vs targets import ordering, items and item metadata (`Include`/`Exclude`/`Update`/`Remove`), conditions, property functions, well-known metadata, and advanced `Directory.Build.props`/`Directory.Build.targets` patterns.
 
 **Version assumptions:** .NET 8.0+ SDK (MSBuild 17.8+). All examples use SDK-style projects.

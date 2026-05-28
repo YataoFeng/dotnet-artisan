@@ -1,5 +1,7 @@
 # Real-Time Communication
 
+> **Quick Ref**: SignalR for bidirectional real-time | SSE for server-to-client streaming, no reconnect | gRPC streaming for high-throughput binary | SignalR Azure + Redis for scale-out | Always auth SignalR hubs | JSON-RPC 2.0 for lightweight RPC over persistent connections
+
 Real-time communication patterns for .NET applications. Compares SignalR (full-duplex over WebSockets with automatic fallback), Server-Sent Events (SSE, built-in to ASP.NET Core in .NET 10), JSON-RPC 2.0 (structured request-response over any transport), and gRPC streaming (high-performance binary streaming). Provides decision guidance for choosing the right protocol based on requirements.
 
 ## Protocol Comparison

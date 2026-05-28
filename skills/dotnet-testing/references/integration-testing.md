@@ -1,5 +1,7 @@
 # Integration Testing
 
+> **Quick Ref**: Testcontainers for real database testing | WebApplicationFactory for in-memory API | Always use real DB (not InMemory) | Dispose containers after test class | Async lifetime with IAsyncLifetime | Seed data per test for isolation
+
 Integration testing patterns for .NET applications using WebApplicationFactory, Testcontainers, and .NET Aspire testing. Covers in-process API testing, disposable infrastructure via containers, database fixture management, and test isolation strategies.
 
 **Version assumptions:** .NET 8.0+ baseline, Testcontainers 3.x+, .NET Aspire 9.0+. Package versions for `Microsoft.AspNetCore.Mvc.Testing` must match the project's target framework major version (e.g., 8.x for net8.0, 9.x for net9.0, 10.x for net10.0). Examples below use Testcontainers 4.x APIs; the patterns apply equally to 3.x with minor namespace differences.

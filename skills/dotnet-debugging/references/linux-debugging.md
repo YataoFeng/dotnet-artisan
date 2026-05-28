@@ -1,5 +1,7 @@
 # Linux and macOS .NET Debugging
 
+> **Quick Ref**: dotnet-dump analyze for .dmp on Linux | createdump for generating dumps | lldb + SOS for live debugging | No WinDbg on Linux (use dotnet-dump) | comPlus_DbgMiniDumpType=4 for full Linux dumps | Check /tmp for dump files
+
 Covers tools and workflows for .NET debugging on Linux and macOS. The primary skill references target Windows/WinDbg; this file provides the cross-platform equivalent commands and gotchas.
 
 ## Core Tools

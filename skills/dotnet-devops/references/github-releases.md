@@ -1,5 +1,7 @@
 # GitHub Releases
 
+> **Quick Ref**: Tag-based release triggering | softprops/action-gh-release for automation | Auto-generate notes from conventional commits | Upload build artifacts to release | Pre-release flag for beta/rc | Link to changelog in release body
+
 GitHub Releases for .NET projects: release creation via `gh release create` CLI and GitHub API, asset attachment patterns (NuGet packages, binaries, SBOMs, checksums), `softprops/action-gh-release` GitHub Actions usage, release notes generation strategies (GitHub auto-generated, changelog-based, conventional commits), pre-release management (draft releases, pre-release flag, promoting pre-release to stable), and tag-triggered vs release-triggered workflow concepts.
 
 **Version assumptions:** GitHub CLI (`gh`) 2.x+. `softprops/action-gh-release@v2`. GitHub REST API v3 / GraphQL API v4. .NET 8.0+ baseline.

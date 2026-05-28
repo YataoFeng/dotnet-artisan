@@ -1,5 +1,7 @@
 # Globalization
 
+> **Quick Ref**: StringComparison.Ordinal for keys/IDs | StringComparison.CurrentCulture for user display | CultureInfo.InvariantCulture for machine-to-machine | Always specify StringComparison | Use ISO 8601 for dates in APIs | RTL strings need explicit formatting | TimeZoneInfo over TimeZone
+
 Culture-aware C# coding patterns: string comparison semantics, culture-sensitive parsing and formatting, time zone handling (IANA and Windows IDs), DateTimeOffset, character processing (Rune, StringInfo), encoding, and globalization analyzer rules. Cross-reference [skill:dotnet-ui] `references/localization.md` for resource files (.resx/.resw), IStringLocalizer, and per-framework UI localization patterns.
 
 **Version assumptions:** .NET 8.0+ baseline. TimeZoneInfo.TryConvertIanaIdToWindowsId available since .NET 6. Rune type since .NET Core 3.0. .NET 9+ features explicitly marked.

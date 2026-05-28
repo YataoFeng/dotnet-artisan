@@ -1,5 +1,7 @@
 # System.CommandLine
 
+> **Quick Ref**: RootCommand with AddOption/AddArgument | Option&lt;T&gt; for typed options | Argument&lt;T&gt; for positional args | Handler for command logic | Parse(args) for error handling | --help auto-generated from definitions
+
 System.CommandLine 2.0 stable API for building .NET CLI applications. Covers RootCommand, Command, Option\<T\>, Argument\<T\>, SetAction for handler binding, ParseResult-based value access, custom type parsing, validation, tab completion, and testing with TextWriter capture.
 
 **Version assumptions:** .NET 8.0+ baseline. System.CommandLine 2.0.0+ (stable NuGet package, GA since November 2025). All examples target the 2.0.0 GA API surface.

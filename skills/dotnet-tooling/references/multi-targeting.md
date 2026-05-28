@@ -1,5 +1,7 @@
 # Multi-Targeting
 
+> **Quick Ref**: TargetFrameworks for multi-TFM | Condition on $(TargetFramework) for conditional code | #if NET8_0 for preprocessor | Only multi-target when necessary | Per-TFM reference tracking via RoslynPublicApiPerTfm | Test each TFM in CI
+
 Comprehensive guide for .NET multi-targeting strategies with a polyfill-first approach. This skill consumes the structured output from `references/version-detection.md` (TFM, C# version, preview flags) and provides actionable guidance on backporting language features, handling runtime gaps, and validating API compatibility across target frameworks.
 
 ## Decision Matrix: Polyfill vs Conditional Compilation

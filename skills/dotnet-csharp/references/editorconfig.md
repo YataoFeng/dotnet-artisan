@@ -1,5 +1,7 @@
 # Editorconfig
 
+> **Quick Ref**: root = true at repo root | AnalysisLevel = latest-recommended | EnforceCodeStyleInBuild = true | CA2007 = warning (ConfigureAwait) | IDE0290 = error (primary constructor) | IDE0028 = suggestion (collection initializer) | globalconfig for analyzer options | IDE severity over CA for style
+
 Comprehensive guide to configuring .NET code analysis rules via `.editorconfig` and global AnalyzerConfig files. Covers code style rules (IDE*), code quality rules (CA*), severity levels, `AnalysisLevel`, `EnforceCodeStyleInBuild`, directory hierarchy precedence, and `.globalconfig` files.
 
 ## EditorConfig Overview

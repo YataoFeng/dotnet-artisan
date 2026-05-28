@@ -1,5 +1,7 @@
 # MCP Setup
 
+> **Quick Ref**: WinDbg MCP server connects Claude to WinDbg | Install via WinDbg MCP GitHub releases | mcp__mcp-windbg__open_windbg_dump to load a dump | Symbols set via .sympath | Verify connection with basic command first
+
 ## Prerequisites
 - `uvx` installed and available in PATH.
 - `cdb.exe` installed (from Debugging Tools for Windows).

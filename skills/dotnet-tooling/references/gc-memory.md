@@ -1,5 +1,7 @@
 # GC and Memory
 
+> **Quick Ref**: Server GC for ASP.NET, Workstation GC for desktop | LOH compaction in .NET 9+ | ArrayPool&lt;T&gt; for temporary buffers | Span&lt;T&gt; to avoid allocations | GC.TryStartNoGCRegion for latency-sensitive code | DOTNET_GCServer=1 for multi-core servers
+
 Garbage collection and memory management for .NET applications. Covers GC modes (workstation vs server, concurrent vs non-concurrent), Large Object Heap (LOH) and Pinned Object Heap (POH), generational tuning (Gen0/1/2), memory pressure notifications, deep Span<T>/Memory<T> ownership patterns beyond basics, buffer pooling with ArrayPool<T> and MemoryPool<T>, weak references, finalizers vs IDisposable, and memory profiling with dotMemory and PerfView.
 
 ## GC Modes and Configuration

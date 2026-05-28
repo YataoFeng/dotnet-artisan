@@ -1,5 +1,7 @@
 # Snapshot Testing
 
+> **Quick Ref**: Verify for snapshot testing | Verify(object) for basic snapshots | Scrub machine-specific data (dates, GUIDs, paths) | .received.txt vs .verified.txt comparison | CI: auto-accept with DiffEngine | Don't snapshot non-deterministic output
+
 Snapshot (approval) testing with the Verify library for .NET. Covers verifying API responses, serialized objects, rendered emails, and other complex outputs by comparing them against approved baseline files. Includes scrubbing and filtering patterns to handle non-deterministic values (dates, GUIDs, timestamps), custom converters for domain-specific types, and strategies for organizing and reviewing snapshot files.
 
 **Version assumptions:** Verify 20.x+ (.NET 8.0+ baseline). Examples use the `Verify.Xunit` integration package; equivalent packages exist for NUnit (`Verify.NUnit`) and MSTest (`Verify.MSTest`). Verify auto-discovers the test framework from the referenced package.

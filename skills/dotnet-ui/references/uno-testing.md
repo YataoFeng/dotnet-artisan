@@ -1,4 +1,5 @@
 # Uno Testing
+> **Quick Ref**: Uno.UITest for cross-platform UI tests | NUnit-based test framework | Platform-specific test initialization | Screenshot testing for visual verification | Test on each target platform | Mock platform features for unit tests
 
 Testing Uno Platform applications across target heads (WASM, Desktop, Mobile). Covers Playwright-based browser automation for Uno WASM apps, platform-specific testing patterns for different runtime heads, and test infrastructure for cross-platform Uno projects.
 

@@ -1,5 +1,7 @@
 # Task: Crash / Exception
 
+> **Quick Ref**: !analyze -v → exception type and faulting thread | .exr -1 for exception record | !pe for detailed exception info | !clrstack -p for managed stack with params | Check inner exceptions | Verify crash is not OOM first
+
 ## Commands
 - `!analyze -v`
 - `.ecxr`

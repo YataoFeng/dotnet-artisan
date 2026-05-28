@@ -1,5 +1,7 @@
 # Container Deployment
 
+> **Quick Ref**: Compose for multi-container | Health check probes for orchestration | Secrets via environment/docker secrets | Resource limits (CPU/memory) in prod | Read-only root filesystem | docker compose up -d for daemon mode
+
 Deploying .NET containers to Kubernetes and local development environments. Covers Kubernetes Deployment + Service + probe YAML, Docker Compose for local dev workflows, and CI/CD integration for building and pushing container images.
 
 ## Kubernetes Deployment

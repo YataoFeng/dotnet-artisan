@@ -1,4 +1,5 @@
 # WPF Migration
+> **Quick Ref**: Upgrade WPF .NET Framework → .NET 8+ | Upgrade Assistant for automated migration | Replace app.config with appsettings.json | Replace System.Drawing with SkiaSharp/ImageSharp | Fluent theme via Microsoft.Web.WebView2 | Keep WPF if it works, migrate only if needed
 
 Context-dependent migration guidance for Windows desktop applications. Covers WPF .NET Framework to .NET 8+, WPF to WinUI 3 (Windows-only modernization), WPF to Uno Platform (cross-platform), WinForms .NET Framework to .NET 8+, UWP to WinUI 3, UWP to Uno Platform (cross-ref), and a decision matrix for choosing the right migration target based on project constraints.
 

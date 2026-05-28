@@ -1,5 +1,7 @@
 # AOT Architecture
 
+> **Quick Ref**: No reflection/Assembly.Load in AOT | Source-gen serialization required | Dynamic DI scanning replaced with explicit registration | PublishAot=true in .csproj | Test with dotnet publish -p:PublishAot=true | Trimming warnings are errors
+
 AOT-first application design patterns for .NET 8+: preferring source generators over reflection, explicit DI registration over assembly scanning, AOT-safe serialization choices, library compatibility assessment, and factory patterns replacing `Activator.CreateInstance`.
 
 **Version assumptions:** .NET 8.0+ baseline. Patterns apply to all AOT-capable project types (console, ASP.NET Core Minimal APIs, worker services).

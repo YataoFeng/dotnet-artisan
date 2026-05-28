@@ -1,5 +1,7 @@
 # LINQ Optimization
 
+> **Quick Ref**: IQueryable filters before enumeration | Compiled queries for hot paths | Select projection over full entity load | Any() over Count() > 0 | FirstOrDefault() over Where().FirstOrDefault() | AsNoTracking() for read-only queries | Beware client-side evaluation | AsSplitQuery() for Cartesian explosion
+
 LINQ performance patterns for .NET applications. Covers the critical distinction between `IQueryable<T>` server-side evaluation and `IEnumerable<T>` client-side materialization, compiled queries for EF Core hot paths, deferred execution pitfalls, LINQ-to-Objects allocation patterns and when to drop to manual loops, and Span-based alternatives for zero-allocation processing.
 
 ## IQueryable vs IEnumerable Materialization

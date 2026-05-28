@@ -1,5 +1,7 @@
 # Roslyn Analyzers
 
+> **Quick Ref**: DiagnosticAnalyzer registers symbol/operation/syntax actions | Never allocate in analyzer callbacks | Use Compilation.StartWithAsync over GetSemanticModel | Report diagnostics via ReportDiagnostic | AnalyzerReleases files track shipped analyzers | Use AdditionalFiles for configuration | CodeFixProvider over CodeRefactoring for error fixes
+
 Guidance for **authoring** custom Roslyn analyzers, code fix providers, code refactoring providers, and diagnostic suppressors. Covers project setup, DiagnosticDescriptor conventions, analysis context registration, code fix actions, code refactoring actions, multi-Roslyn-version targeting (3.8 through 4.14), testing with Microsoft.CodeAnalysis.Testing, NuGet packaging, and performance best practices.
 
 For extended code examples (CodeRefactoringProvider implementation, multi-version project structure, test matrix configuration), see the **Extended Examples** section at the end of this file.

@@ -1,5 +1,7 @@
 # CI Benchmarking
 
+> **Quick Ref**: Run benchmarks in CI with --filter * | Set baseline in BenchmarkDotNet config | Store baseline JSON as CI artifact | Compare current vs baseline on PR | Fail CI if regression exceeds threshold | Use dedicated CI runner (not shared)
+
 Continuous benchmarking guidance for detecting performance regressions in CI pipelines. Covers baseline file management with BenchmarkDotNet JSON exporters, GitHub Actions workflows for artifact-based baseline comparison, regression detection patterns with configurable thresholds, and alerting strategies for performance degradation.
 
 **Version assumptions:** BenchmarkDotNet v0.14+ for JSON export, GitHub Actions runner environment. Examples use `actions/upload-artifact@v4` and `actions/download-artifact@v4`.

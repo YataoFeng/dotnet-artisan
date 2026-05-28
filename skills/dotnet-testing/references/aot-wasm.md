@@ -1,5 +1,7 @@
 # AOT and WASM Testing
 
+> **Quick Ref**: WASM AOT = faster execution, larger bundle | Brotli compression reduces bundle size | Enable with WasmEnableAot and RunAOTCompilation | AOT incompatible with dynamic code/reinterpretation | Test AOT apps on target browsers | Lazy loading assemblies reduces initial download
+
 WebAssembly AOT compilation for Blazor WASM and Uno WASM applications: compilation pipeline, download size vs runtime speed tradeoffs, trimming interplay, lazy loading assemblies, and Brotli pre-compression for download optimization.
 
 **Version assumptions:** .NET 8.0+ baseline. Blazor WASM AOT shipped in .NET 6 and has been refined through .NET 8-10. Uno WASM uses a similar compilation pipeline with Uno-specific tooling.

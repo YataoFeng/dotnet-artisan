@@ -1,5 +1,7 @@
 # CLI Distribution and Packaging
 
+> **Quick Ref**: dotnet tool install for team tools | Single-file publish for standalone | Native AOT for fastest startup | NuGet for library distribution | Version with NBGV or GitVersion | Chocolatey/Winget for Windows users
+
 CLI distribution strategy and multi-platform packaging for .NET tools: choosing between Native AOT single-file publish, framework-dependent deployment, and `dotnet tool` packaging. Runtime Identifier (RID) matrix planning for cross-platform targets, single-file publish configuration, binary size optimization, and packaging for Homebrew, apt/deb, winget, Scoop, Chocolatey, and `dotnet tool`.
 
 **Version assumptions:** .NET 8.0+ baseline. Native AOT for console apps is fully supported since .NET 8. Package manager formats are stable across .NET versions.

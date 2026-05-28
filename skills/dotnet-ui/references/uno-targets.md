@@ -1,4 +1,5 @@
 # Uno Targets
+> **Quick Ref**: WinAppSDK for Windows desktop | Skia for Linux/macOS/Web | .NET Native for iOS/Android | WASM for browser | TargetFramework per platform | Uno.UI.Sdk for simplified project setup
 
 Per-target deployment guidance for Uno Platform applications: Web/WASM, iOS, Android, macOS (Catalyst), Windows, Linux (Skia/GTK), and Embedded (Skia/Framebuffer). Each target section covers project setup, debugging workflow, packaging/distribution, platform-specific gotchas, AOT/trimming implications, and behavior differences from other targets.
 

@@ -1,5 +1,7 @@
 # MSIX Packaging
 
+> **Quick Ref**: MSIX for Windows app packaging | Sign with trusted certificate | Store submission via Partner Center | Sideload with Add-AppDevPackage | Auto-update via App Installer | .msixbundle for architecture bundles
+
 MSIX packaging pipeline for .NET desktop applications: package creation from csproj (`WindowsPackageType`) and WAP projects, certificate signing (self-signed for development, trusted CA for production, Microsoft Store signing), distribution channels (Microsoft Store submission, App Installer sideloading, enterprise deployment via SCCM/Intune), auto-update configuration (App Installer XML, version checking, differential updates), MSIX bundle format for multi-architecture (`.msixbundle`), and CI/CD MSIX build steps.
 
 **Version assumptions:** Windows App SDK 1.6+ (current stable). Windows 10 build 19041+ minimum for MSIX with Windows App SDK. Windows 10 build 1709+ for App Installer auto-update protocol. .NET 8.0+ baseline.

@@ -1,5 +1,7 @@
 # ILSpy Decompilation
 
+> **Quick Ref**: dnx ilspycmd for .NET 10+ decompilation | Decompile assembly to C# source | List types without full decompilation | View IL for implementation details | Locate assemblies in NuGet/runtime/SDK paths | Understand APIs without documentation
+
 Decompile .NET assemblies to understand API internals, inspect NuGet package source, view framework implementation details, or analyze compiled binaries. Uses `ilspycmd` (the CLI for ILSpy).
 
 ## Quick Start

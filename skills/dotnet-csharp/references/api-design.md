@@ -1,5 +1,7 @@
 # API Design
 
+> **Quick Ref**: Method names use verbs (Get/Find/Create) | Boolean returns end with Is/Has/Can | Async methods end with Async | IReadOnlyCollection<T> for exposed collections | IReadOnlyList<T> only when order matters | ImmutableArray<T> for truly immutable data | Primary constructor captures for DI | Don't expose List<T> as return type
+
 Design-time principles for creating public .NET APIs that are intuitive, consistent, and forward-compatible. Covers naming conventions for API surface, parameter ordering, return type selection, error reporting strategies, extension points, and wire compatibility for serialized types. This skill addresses the **design decisions** that make APIs compatible and usable in the first place, before enforcement tooling gets involved.
 
 **Version assumptions:** .NET 8.0+ baseline. Examples use modern C# features (primary constructors, collection expressions) where appropriate.

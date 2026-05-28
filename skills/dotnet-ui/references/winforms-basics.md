@@ -1,4 +1,5 @@
 # WinForms Basics
+> **Quick Ref**: .NET 8+ modern WinForms | High DPI with PerMonitorV2 | Dark mode with ApplyApplicationDarkMode | ApplicationConfiguration.Initialize() first | Use async event handlers sparingly | Consider WPF/WinUI for new apps
 
 WinForms on .NET 8+: updated project templates with Host builder and DI, high-DPI support with `PerMonitorV2`, dark mode via `Application.SetColorMode` (experimental in .NET 9, targeting finalization in .NET 11), when to use WinForms, modernization tips for migrating from .NET Framework, and common agent pitfalls.
 

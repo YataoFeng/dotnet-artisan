@@ -1,5 +1,7 @@
 # Nullable Reference Types
 
+> **Quick Ref**: Enable nullable in .csproj | Constructor-initialized properties = init or required | Use null-forgiving (!) only with proof | ArgumentNullException.ThrowIfNull for guard clauses | Try pattern returns Result not null | Migration: enable per-project, not solution-wide
+
 Nullable reference type (NRT) annotation strategies, migration guidance for legacy codebases, and the most common annotation mistakes AI agents make. NRT is enabled by default in all modern .NET templates (net6.0+), but many existing codebases still need migration.
 
 Cross-references: `references/coding-standards.md` for null-handling style, `references/modern-patterns.md` for pattern matching with nulls.

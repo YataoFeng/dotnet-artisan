@@ -1,5 +1,7 @@
 # Build Optimization
 
+> **Quick Ref**: -m for parallel builds | /graph for solution dependency order | binlog analysis with MSBuild Log Viewer | Cache NuGet packages in CI | Don't clean before every build | Avoid MSBuild task over exec
+
 Guidance for diagnosing and fixing build performance problems: incremental build failure diagnosis workflows, binary log analysis with MSBuild Structured Log Viewer, parallel build configuration, build caching, and restore optimization. Covers the diagnostic workflow from symptom (full rebuild on every build) through root cause (missing Inputs/Outputs, timestamp corruption, generator side effects) to fix.
 
 **Version assumptions:** .NET 8.0+ SDK (MSBuild 17.8+). All examples use SDK-style projects.

@@ -1,5 +1,7 @@
 # Documentation Strategy
 
+> **Quick Ref**: DocFX for API reference docs | Mermaid for architecture diagrams in markdown | XML doc comments on public APIs | README as landing page | CONTRIBUTING.md for PR process | Wiki for living documentation
+
 Documentation tooling recommendation for .NET projects: decision tree for selecting Starlight (Astro-based, modern default), Docusaurus (React-based, plugin-rich), or DocFX (community-maintained, .NET-native XML doc integration). Covers MarkdownSnippets for verified code inclusion from source files, Mermaid rendering support across all platforms, migration paths between tools, and project-context-driven recommendation based on team size, project type, and existing ecosystem.
 
 **Version assumptions:** Starlight v0.x+ (Astro 4+). Docusaurus v3.x (React 18+). DocFX v2.x (community-maintained). MarkdownSnippets as `dotnet tool` (.NET 8.0+ baseline). Mermaid v10+ (GitHub, Starlight, Docusaurus render natively).

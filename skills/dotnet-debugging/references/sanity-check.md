@@ -1,5 +1,7 @@
 # Sanity Check
 
+> **Quick Ref**: Verify dump is .NET (check clr/modules) | !eeversion for runtime version | .cordll -ve -u -l for DAC | lm to verify symbols loaded | !verifyheap to check heap integrity | Run before any deep analysis
+
 ## 60-Second Preflight
 1. Confirm WinDbg MCP tools are available.
 2. Confirm `cdb.exe` exists.

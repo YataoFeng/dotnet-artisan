@@ -1,5 +1,7 @@
 # Dump Workflow
 
+> **Quick Ref**: Open dump → !analyze -v → classify (crash/hang/memory/CPU) → load task-specific playbook → check symbols → diagnose → report | Always capture EXCEPTION_POINTERS | Verify dump is not corrupted before analysis
+
 ## Purpose
 Analyze a saved dump when live attach is not available.
 

@@ -1,5 +1,7 @@
 # Slopwatch
 
+> **Quick Ref**: Slopwatch detects LLM reward hacking in code | slopwatch init for baseline | slopwatch analyze for new slop | Fail CI on new slop (not legacy) | SW001: disabled tests | SW002: warning suppression | SW003: empty catch blocks | SW004: arbitrary delays in tests
+
 Slopwatch: LLM Anti-Cheat Quality Gate for .NET
 
 Run the `Slopwatch.Cmd` dotnet tool as an automated quality gate after code modifications to detect "slop" -- shortcuts that make builds/tests pass without fixing real problems.

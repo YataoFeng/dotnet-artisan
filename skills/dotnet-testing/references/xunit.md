@@ -1,5 +1,7 @@
 # xUnit
 
+> **Quick Ref**: xUnit v3 for new projects | [Fact] for parameterless tests | [Theory] + [InlineData] for parameterized | IAsyncLifetime for async setup/teardown | IClassFixture for shared context | CollectionDefinition for serial execution
+
 xUnit v3 testing framework features for .NET. Covers `[Fact]` and `[Theory]` attributes, test fixtures (`IClassFixture`, `ICollectionFixture`), parallel execution configuration, `IAsyncLifetime` for async setup/teardown, custom assertions, and xUnit analyzers.
 
 **Version assumptions:** xUnit v3 primary (.NET 8.0+ baseline). Where v3 behavior differs from v2, compatibility notes are provided inline.

@@ -1,5 +1,7 @@
 # I/O Pipelines
 
+> **Quick Ref**: PipeReader + PipeWriter replace stream buffer management | Always call AdvanceTo after ReadAsync | Backpressure via PauseWriterThreshold/ResumeWriterThreshold | Zero-copy parsing with ReadOnlySequence&lt;byte&gt; | Never access buffer after AdvanceTo | Don't use Pipe for simple stream copying
+
 High-performance I/O patterns using `System.IO.Pipelines`. Covers `PipeReader`, `PipeWriter`, backpressure management, protocol parser implementation, and Kestrel integration. Pipelines solve the classic problems of buffer management, incomplete reads, and memory copying that plague traditional stream-based network code.
 
 ## Why Pipelines Over Streams

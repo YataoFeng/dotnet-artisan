@@ -1,5 +1,7 @@
 # Modernize
 
+> **Quick Ref**: Upgrade SDK first, then TFM | One TFM version per migration step | Upgrade Assistant for .NET Framework migration | Fix nullable after upgrade | AOT after modernization | Test after each version bump
+
 Analyze existing .NET code for modernization opportunities. Identifies outdated target frameworks, deprecated packages, superseded API patterns, and missing modern best practices. Provides actionable recommendations for each finding.
 
 ## Modernization Checklist

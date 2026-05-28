@@ -1,5 +1,7 @@
 # Aspire Testing
 
+> **Quick Ref**: DistributedApplicationTestingBuilder for Aspire tests | CreateAsync starts Aspire host | CreateHttpClient for service communication | Resource health checks verify services | Use existing AppHost project as fixture | Await resource ready before testing
+
 Integration testing for .NET Aspire distributed applications using `DistributedApplicationTestingBuilder` from `Aspire.Hosting.Testing`. Covers creating test hosts, getting HTTP clients, waiting for resource health, environment customization, container cleanup, and when to choose Aspire testing vs WebApplicationFactory.
 
 Cross-references: `references/integration-testing.md` for WebApplicationFactory and Testcontainers, `references/xunit.md` for xUnit fixture lifecycle.

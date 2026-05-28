@@ -1,4 +1,5 @@
 # WinUI Controls and Styling
+> **Quick Ref**: ControlTemplate for control structure | Style with TargetType and Setter | ThemeResource for light/dark theming | Mica/Acrylic for Fluent materials | Custom controls: inherit from Control | Adaptive triggers for responsive layout
 
 WinUI 3 control selection by scenario, ScrollViewer ownership rules, adaptive layout, theming, materials, typography, icons, and resource organization. Complements `references/winui.md` which covers project setup, XAML patterns, MVVM, packaging, and UWP migration.
 

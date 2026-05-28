@@ -1,5 +1,7 @@
 # Coding Standards
 
+> **Quick Ref**: PascalCase for public, camelCase for private | _prefix for private fields | One class per file | Using statements outside namespace | Implicit usings enabled | file-scoped namespaces | Primary constructors for DI | No regions | No unused usings
+
 Modern .NET coding standards based on Microsoft Framework Design Guidelines and C# Coding Conventions. This reference covers naming, file organization, and code style rules that agents should follow when generating or reviewing C# code.
 
 This reference is a baseline dependency that should be loaded before domain-specific C#/.NET references. Load it by default for any task that plans, designs, generates, modifies, or reviews C#/.NET code.

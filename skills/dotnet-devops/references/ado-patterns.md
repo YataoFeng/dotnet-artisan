@@ -1,5 +1,7 @@
 # ADO Patterns
 
+> **Quick Ref**: Templates over inline steps for reuse | Variable groups for shared config | Multi-stage for build→test→deploy | Environment approvals for production | Condition: succeeded() for dependencies | Service connections for Azure auth
+
 Composable Azure DevOps YAML pipeline patterns for .NET projects: template references with `extends`, `stages`, `jobs`, and `steps` keywords for hierarchical pipeline composition, variable groups and variable templates for centralized configuration, conditional insertion with `${{ if }}` and `${{ each }}` expressions, multi-stage pipelines (build, test, deploy), and pipeline triggers for CI, PR, and scheduled runs.
 
 **Version assumptions:** Azure Pipelines YAML schema. `DotNetCoreCLI@2` task for .NET 8/9/10 builds. Template expressions syntax v2.

@@ -1,5 +1,7 @@
 # API Surface Validation
 
+> **Quick Ref**: PublicApiAnalyzers track shipped/unshipped APIs | Both .txt files need #nullable enable header | Move entries at release time only | Verify reflection snapshots complement analyzers | ApiCompat via EnablePackageValidation | Per-TFM tracking with RoslynPublicApiPerTfm
+
 Tools and workflows for validating and tracking the public API surface of .NET libraries. Covers three complementary approaches: **PublicApiAnalyzers** for text-file tracking of shipped/unshipped APIs with Roslyn diagnostics, the **Verify snapshot pattern** for reflection-based API surface snapshot testing, and **ApiCompat CI enforcement** for gating pull requests on API surface changes.
 
 **Version assumptions:** .NET 8.0+ baseline. PublicApiAnalyzers 3.3+ (ships with `Microsoft.CodeAnalysis.Analyzers` or standalone `Microsoft.CodeAnalysis.PublicApiAnalyzers`). ApiCompat tooling included in .NET 8+ SDK.

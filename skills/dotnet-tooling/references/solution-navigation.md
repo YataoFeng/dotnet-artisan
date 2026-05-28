@@ -1,5 +1,7 @@
 # Solution Navigation
 
+> **Quick Ref**: .slnx for .NET 9+ solutions | Solution folder structure mirrors filesystem | Solution items for shared configs | Solution filter (.slnf) for partial loads | dotnet sln add to add projects | Keep same folder naming as project names
+
 ```bash
 find . -maxdepth 2 \( -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | head -5
 ```

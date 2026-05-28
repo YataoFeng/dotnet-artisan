@@ -1,5 +1,7 @@
 # CLI Release Pipeline
 
+> **Quick Ref**: CI builds on tag push | dotnet pack for NuGet packages | dotnet publish for standalone tools | Push to NuGet.org with API key | GitHub Release with binary attachments | Sign binaries before distribution
+
 Unified release CI/CD pipeline for .NET CLI tools: GitHub Actions workflow producing all distribution formats from a single version tag trigger, build matrix per Runtime Identifier (RID), artifact staging between jobs, GitHub Releases with SHA-256 checksums, automated Homebrew formula and winget manifest PR creation, and SemVer versioning strategy with git tags.
 
 **Version assumptions:** .NET 8.0+ baseline. GitHub Actions workflow syntax v2. Patterns apply to any CI system but examples use GitHub Actions.

@@ -1,5 +1,7 @@
 # Playwright
 
+> **Quick Ref**: Playwright for cross-browser E2E | Install browsers with playwright install | IPage for page interactions | Trace viewer for debugging failures | CI needs --headless flag | Cache browser binaries in CI
+
 Playwright for .NET: browser automation and end-to-end testing. Covers browser lifecycle management, page interactions, assertions, CI caching of browser binaries, trace viewer for debugging failures, and codegen for rapid test scaffolding.
 
 **Version assumptions:** Playwright 1.40+ for .NET, .NET 8.0+ baseline. Playwright supports Chromium, Firefox, and WebKit browsers.

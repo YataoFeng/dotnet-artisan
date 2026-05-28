@@ -1,5 +1,7 @@
 # MSBuild Tasks
 
+> **Quick Ref**: ITask for custom build tasks | ToolTask for external tool wrappers | UsingTask for inline .cs tasks | IIncrementalTask for caching | TaskFactory for data flow between tasks | Separate task DLL from consuming project
+
 Guidance for authoring custom MSBuild tasks: implementing the `ITask` interface, extending `ToolTask` for CLI wrappers, using `IIncrementalTask` (MSBuild 17.8+) for incremental execution, defining inline tasks with `CodeTaskFactory`, registering tasks via `UsingTask`, declaring task parameters, debugging tasks, and packaging tasks as NuGet packages.
 
 **Version assumptions:** .NET 8.0+ SDK (MSBuild 17.8+). `IIncrementalTask` requires MSBuild 17.8+ (VS 2022 17.8+, .NET 8 SDK). All examples use SDK-style projects. All C# examples assume `using Microsoft.Build.Framework;` and `using Microsoft.Build.Utilities;` are in scope unless shown explicitly.

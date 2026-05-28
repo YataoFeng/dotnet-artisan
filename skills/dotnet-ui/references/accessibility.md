@@ -1,4 +1,5 @@
 # Accessibility
+> **Quick Ref**: SemanticProperties for screen readers | ARIA attributes on interactive elements | Keyboard navigation with TabIndex | Focus management after navigation | Color contrast 4.5:1 minimum | AutomationProperties for UI testing | aria-label for icon buttons
 
 Cross-platform accessibility patterns for .NET UI frameworks: semantic markup, keyboard navigation, focus management, color contrast, and screen reader integration. In-depth coverage for Blazor (HTML ARIA), MAUI (SemanticProperties), and WinUI (AutomationProperties / UI Automation). Brief guidance with cross-references for WPF, Uno Platform, and TUI frameworks.
 

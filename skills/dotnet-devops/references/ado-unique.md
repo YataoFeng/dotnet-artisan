@@ -1,5 +1,7 @@
 # ADO Unique Features
 
+> **Quick Ref**: Azure DevOps exclusive features | Environments with approvals and checks | Variable groups with Key Vault linking | Deployment groups for on-prem targets | Test plans integration | Work item linking from commits
+
 Azure DevOps-exclusive features not available in GitHub Actions: Environments with approvals and gates (pre-deployment checks, business hours restrictions), deployment groups vs environments (when to use each), service connections (Azure Resource Manager, Docker Registry, NuGet), classic release pipelines (legacy migration guidance to YAML), variable groups and library (linked to Azure Key Vault), pipeline decorators for organization-wide policy, and Azure Artifacts universal packages.
 
 **Version assumptions:** Azure DevOps Services (cloud). YAML pipelines with multi-stage support. Classic release pipelines for legacy migration context only.

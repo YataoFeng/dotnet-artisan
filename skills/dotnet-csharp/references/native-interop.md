@@ -1,5 +1,7 @@
 # Native Interop
 
+> **Quick Ref**: LibraryImport over DllImport for AOT | Source-generated marshalling | ComWrappers over built-in COM | Use SafeHandle for native resources | NativeMemory.Alloc for manual allocation | SuppressGCTransition for short calls | Never use Marshal directly in AOT paths
+
 Platform Invoke (P/Invoke) patterns for calling native C/C++ libraries from .NET: `[LibraryImport]` (preferred, .NET 7+) vs `[DllImport]` (legacy), struct marshalling, string marshalling, function pointer callbacks, `NativeLibrary.SetDllImportResolver` for cross-platform library resolution, and platform-specific considerations for Windows, macOS, Linux, iOS, and Android.
 
 **Version assumptions:** .NET 7.0+ baseline for `[LibraryImport]`. `[DllImport]` available in all .NET versions. `NativeLibrary` API available since .NET Core 3.0.

@@ -1,5 +1,7 @@
 # ADO Publish
 
+> **Quick Ref**: DotNetCoreCLI@2 pack for NuGet | NuGetCommand@2 push with API key | Docker@2 for container push to ACR | PublishBuildArtifacts for artifact sharing | AzureCLI@2 for Azure deployment | Feed auth via service connections
+
 Publishing pipelines for .NET projects in Azure DevOps: NuGet package push to Azure Artifacts and nuget.org, container image build and push to Azure Container Registry (ACR) using `Docker@2`, artifact staging with `PublishBuildArtifacts@1` and `PublishPipelineArtifact@1`, and pipeline artifacts for multi-stage release pipelines.
 
 **Version assumptions:** `DotNetCoreCLI@2` for pack/push operations. `Docker@2` for container image builds. `NuGetCommand@2` for NuGet push to external feeds. `PublishPipelineArtifact@1` (preferred over `PublishBuildArtifacts@1`).

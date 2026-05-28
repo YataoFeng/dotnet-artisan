@@ -1,5 +1,7 @@
 # Cryptography
 
+> **Quick Ref**: AES-GCM for symmetric encryption | SHA-256+ for hashing, never MD5/SHA-1 | PBKDF2 (600K iterations) or Argon2 for passwords | CryptographicOperations.FixedTimeEquals for hash comparison | Never reuse nonce with AES-GCM | ASP.NET Core Data Protection for web apps
+
 Modern .NET cryptography covering hashing (SHA-256/384/512), symmetric encryption (AES-GCM), asymmetric cryptography (RSA, ECDSA), key derivation (PBKDF2, Argon2), and post-quantum algorithms (ML-KEM, ML-DSA, SLH-DSA) for .NET 10+. Includes TFM-aware guidance: what's available on net10.0 vs fallback strategies for net8.0/net9.0.
 
 ## Prerequisites

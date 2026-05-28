@@ -1,4 +1,5 @@
 # MAUI AOT
+> **Quick Ref**: AOT on iOS/Catalyst in .NET 10+ | No dynamic code in AOT paths | Use source-gen serialization | Profile AOT builds for size | interpreters for debug, AOT for release | <MtouchInterpreter> for mixed mode
 
 Native AOT compilation for .NET MAUI on iOS and Mac Catalyst: compilation pipeline, publish profiles, up to 50% app size reduction and up to 50% startup improvement, library compatibility gaps, opt-out mechanisms, trimming interplay (RD.xml, source generators), and testing AOT builds on device.
 

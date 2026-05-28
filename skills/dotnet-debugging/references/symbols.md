@@ -1,5 +1,7 @@
 # Symbols
 
+> **Quick Ref**: .sympath srv*c:\symbols*https://msdl.microsoft.com/download/symbols | .reload /f to force reload | Verify with lm (module list) | Microsoft symbols from public server | NuGet symbols for packages | No symbols = useless stack traces
+
 ## Quick Setup
 Run in WinDbg session:
 

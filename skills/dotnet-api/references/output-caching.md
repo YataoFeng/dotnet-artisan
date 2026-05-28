@@ -1,5 +1,7 @@
 # Output Caching and Response Caching
 
+> **Quick Ref**: AddOutputCache for HTTP response caching | Map policy per endpoint with CacheOutput() | Built-in cache-control headers | Evict by tag with IOutputCacheStore.EvictByTagAsync() | Separate short and long-lived policies | Don't cache authenticated responses by default
+
 ASP.NET Core provides two HTTP response caching mechanisms: output caching (server-controlled, .NET 7+) and response caching (HTTP-header-driven). Output caching is preferred for most scenarios because the server controls cache behavior independently of client headers.
 
 ## Output Caching vs Response Caching

@@ -1,4 +1,5 @@
 # MAUI Testing
+> **Quick Ref**: Appium for MAUI UI automation | xUnit for unit tests | Test on real devices before release | Platform-specific test attributes | Mock platform services for unit tests | Screenshot comparison for visual regression
 
 Testing .NET MAUI applications using Appium for UI automation and XHarness for cross-platform test execution. Covers device and emulator testing, platform-specific behavior validation, element location strategies for MAUI controls, and test infrastructure for mobile/desktop apps.
 

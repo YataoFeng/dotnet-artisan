@@ -1,5 +1,7 @@
 # Access WinDbg MCP
 
+> **Quick Ref**: WinDbg MCP server must be running before commands | Connect via mcp__mcp-windbg__run_windbg_cmd | Test connection with basic command first | All WinDbg commands go through MCP tools | MCP handles symbol path and session management
+
 ## 1. Install Prerequisites
 - Follow [mcp setup](./mcp-setup.md) to install `uvx` and `cdb.exe`.
 

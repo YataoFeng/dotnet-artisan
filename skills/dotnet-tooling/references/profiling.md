@@ -1,5 +1,7 @@
 # Profiling
 
+> **Quick Ref**: dotnet-trace for CPU sampling | dotnet-counters for live metrics | dotnet-gcdump for heap analysis | dotnet-dump for crash analysis | PerfView for Windows advanced profiling | Always profile before optimizing
+
 Diagnostic tool guidance for investigating .NET performance problems. Covers real-time metric monitoring with dotnet-counters, event tracing and flame graph generation with dotnet-trace, and memory dump capture and analysis with dotnet-dump. Focuses on interpreting profiling data (reading flame graphs, analyzing heap dumps, correlating GC metrics) rather than just invoking tools.
 
 **Version assumptions:** .NET SDK 8.0+ baseline. All three diagnostic tools (dotnet-counters, dotnet-trace, dotnet-dump) ship with the .NET SDK -- no separate installation required.

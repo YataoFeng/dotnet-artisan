@@ -1,5 +1,7 @@
 # Data Access Strategy
 
+> **Quick Ref**: EF Core default for CRUD + migrations | Dapper for complex/performance queries | Raw ADO.NET for max AOT compatibility | Hybrid: EF commands + Dapper queries | Share connections via GetDbConnection() | Measure before optimizing
+
 Decision framework for choosing between Entity Framework Core, Dapper, and raw ADO.NET in .NET applications. Covers performance tradeoffs, feature comparisons, AOT/trimming compatibility, hybrid approaches, and migration paths. Use this skill to make an informed technology decision before writing data access code.
 
 ## Decision Matrix

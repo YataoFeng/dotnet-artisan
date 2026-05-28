@@ -1,5 +1,7 @@
 # ADO Build and Test
 
+> **Quick Ref**: Use DotNetCoreCLI@2 task | Restore with NuGetCommand@2 | Build with --no-restore | Test with --no-build | PublishTestResults@2 for test reports | matrix strategy for multi-TFM
+
 .NET build and test pipeline patterns for Azure DevOps: `DotNetCoreCLI@2` task for build, test, and pack operations, NuGet restore with Azure Artifacts feeds using `NuGetAuthenticate@1`, test result publishing with `PublishTestResults@2` for TRX and JUnit formats, code coverage with `PublishCodeCoverageResults@2` for Cobertura and JaCoCo formats, and multi-TFM matrix strategy across net8.0 and net9.0.
 
 **Version assumptions:** `DotNetCoreCLI@2` task (current). `UseDotNet@2` for SDK installation. `NuGetAuthenticate@1` for Azure Artifacts. `PublishTestResults@2` and `PublishCodeCoverageResults@2` for reporting.

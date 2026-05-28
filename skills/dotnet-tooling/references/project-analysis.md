@@ -1,5 +1,7 @@
 # Project Analysis
 
+> **Quick Ref**: Read .csproj for project type and TFMs | Check global.json for SDK pinning | Analyze package references for outdated/deprecated | Verify Directory.Build.props inheritance | Cross-reference solution vs project dependencies
+
 ```bash
 find . -maxdepth 3 \( -name "*.csproj" -o -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | head -20
 ```

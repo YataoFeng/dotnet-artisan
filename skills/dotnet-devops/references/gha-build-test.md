@@ -1,5 +1,7 @@
 # GitHub Actions Build and Test
 
+> **Quick Ref**: setup-dotnet@v5 for SDK | Cache NuGet packages with actions/cache | dotnet build --no-restore | dotnet test --no-build | publish test results with dorny/test-reporter | matrix for multi-TFM testing
+
 .NET build and test workflow patterns for GitHub Actions: `actions/setup-dotnet@v4` configuration with multi-version installs and NuGet authentication, NuGet restore caching for fast CI, `dotnet test` with result publishing via `dorny/test-reporter`, code coverage upload to Codecov and Coveralls, multi-TFM matrix testing across net8.0 and net9.0, and test sharding strategies for large projects.
 
 **Version assumptions:** `actions/setup-dotnet@v4` for .NET 8/9/10 support. `dorny/test-reporter@v1` for test result visualization. Codecov and Coveralls GitHub Apps for coverage reporting.

@@ -1,5 +1,7 @@
 # Csproj Reading
 
+> **Quick Ref**: SDK attribute defines project type | TargetFramework for single TFM | TargetFrameworks for multi-TFM | ImplicitUsings for auto-using | ManagePackageVersionsCentrally for CPM | PackageReference for NuGet deps
+
 Teaches agents to read and safely modify SDK-style .csproj files. Covers project structure, PropertyGroup conventions, ItemGroup patterns, conditional expressions, Directory.Build.props/.targets, and central package management (Directory.Packages.props). Each subsection provides annotated XML examples and common modification patterns.
 
 ## Prerequisites

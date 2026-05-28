@@ -1,5 +1,7 @@
 # Service Communication
 
+> **Quick Ref**: REST for CRUD + external APIs | gRPC for internal microservice comms | SignalR for real-time user updates | SSE for one-way server push | Decision matrix: latency, payload, direction, browser support | Use HTTP/3 only where QUIC matters
+
 Higher-level routing skill for choosing the right service communication protocol. Provides a decision matrix mapping requirements (latency, direction, client type, payload format, browser support) to the five primary .NET communication protocols: gRPC, SignalR, SSE, JSON-RPC 2.0, and REST. Routes to specialized skills for implementation depth.
 
 ## Decision Matrix

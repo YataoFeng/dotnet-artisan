@@ -1,4 +1,5 @@
 # Blazor Authentication
+> **Quick Ref**: AuthenticationStateProvider for auth state | [Authorize] attribute on pages | CascadingAuthenticationState for nested access | Policy-based authorization over role strings | Redirect to login on unauthenticated | Manage auth state via cookies/tokens
 
 Authentication and authorization across all Blazor hosting models. Covers AuthorizeView, CascadingAuthenticationState, Identity UI scaffolding, role/policy-based authorization, per-hosting-model auth flow differences (cookie vs token), and external identity providers.
 

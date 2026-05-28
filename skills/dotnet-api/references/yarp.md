@@ -1,5 +1,7 @@
 # YARP (Yet Another Reverse Proxy)
 
+> **Quick Ref**: YARP for .NET reverse proxy + API gateway | Route match on path/host/method/headers | Cluster for multiple destination servers | Transforms modify requests/responses in pipeline | Session affinity for sticky sessions | Health checks for active/passive destination monitoring | BFF pattern: single backend per frontend
+
 YARP is Microsoft's extensible .NET reverse proxy library built on ASP.NET Core. It provides configuration-driven routing, load balancing, health checks, transforms, and session affinity for API gateways, BFF patterns, and microservice routing.
 
 ## Setup

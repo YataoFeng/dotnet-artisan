@@ -1,5 +1,7 @@
 # Version Detection
 
+> **Quick Ref**: global.json > .csproj > Directory.Build.props > environment | dotnet --list-sdks for installed versions | netX.Y format in TargetFramework | rollForward controls SDK resolution | Check before scaffolding or upgrading
+
 ```bash
 dotnet --version 2>/dev/null
 ```

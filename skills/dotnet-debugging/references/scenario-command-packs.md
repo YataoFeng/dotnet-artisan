@@ -1,5 +1,7 @@
 # Task Index
 
+> **Quick Ref**: Crash → !analyze + !pe + !clrstack | Hang → !syncblk + !dlk + !threads | Memory → !dumpheap -stat + !gcroot | CPU → !runaway + !threadpool | Each scenario maps to a command sequence
+
 Choose one primary task, run its commands, then summarize findings with [report template](./report-template.md).
 
 - [task-crash](./task-crash.md)

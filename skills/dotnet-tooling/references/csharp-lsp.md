@@ -1,5 +1,7 @@
 # C# Language Server Protocol (LSP)
 
+> **Quick Ref**: csharp-ls for non-MS editors | OmniSharp for legacy | Roslyn-based LSP for VS Code | Configure .editorconfig for consistent IDE behavior | Solution file required for project context | Global.json for SDK pinning
+
 C# LSP servers provide code intelligence — go to definition, find references, hover info, symbol search, and call hierarchies — that agents can use to navigate and understand .NET codebases. This reference covers available C# LSP servers, how to install and configure them, and standard LSP operations agents should use for .NET code navigation.
 
 ## Why Agents Should Use LSP

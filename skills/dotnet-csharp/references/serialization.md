@@ -1,5 +1,7 @@
 # Serialization
 
+> **Quick Ref**: System.Text.Json with source-gen for AOT | [JsonSerializable] marks types for generation | JsonSerializerContext for source-gen serialization | Protobuf for gRPC/microservices | MessagePack for binary/compact | Never use BinaryFormatter (removed in .NET 9) | Newtonsoft only for legacy migration
+
 AOT-friendly serialization patterns for .NET applications. Covers System.Text.Json source generators for compile-time serialization, Protocol Buffers (Protobuf) for efficient binary serialization, and MessagePack for high-performance compact binary format. Includes performance tradeoff guidance for choosing the right serializer and warnings about reflection-based serialization in AOT scenarios.
 
 Cross-references: `references/source-generators.md` for understanding how STJ source generators work under the hood. See [skill:dotnet-testing] for testing serialization round-trip correctness.

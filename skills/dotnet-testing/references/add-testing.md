@@ -1,5 +1,7 @@
 # Add Testing
 
+> **Quick Ref**: dotnet new xunit for test project | Coverlet for code coverage | Directory.Build.props for shared test config | Test project references source project | .csproj must include Microsoft.NET.Test.Sdk | Add coverlet.runsettings for threshold config
+
 Add test infrastructure scaffolding to an existing .NET project. Creates test projects with xUnit, configures code coverage with coverlet, and sets up the conventional directory structure.
 
 ## Test Project Structure

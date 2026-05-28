@@ -1,5 +1,7 @@
 # UI Testing Core
 
+> **Quick Ref**: Page Object Model for UI test organization | Dedicated test selectors (data-testid) | Never use CSS classes for test selection | Async waits over Thread.Sleep | Accessibility testing with axe-core | Screenshot on test failure
+
 Core UI testing patterns applicable across .NET UI frameworks (Blazor, MAUI, Uno Platform). Covers the page object model for maintainable test structure, test selector strategies for reliable element identification, async wait patterns for non-deterministic UI, and accessibility testing approaches.
 
 **Version assumptions:** .NET 8.0+ baseline. Framework-specific details are delegated to dedicated skills.

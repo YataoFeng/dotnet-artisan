@@ -1,5 +1,7 @@
 # GitHub Documentation
 
+> **Quick Ref**: README.md with badges (build/test/NuGet) | CONTRIBUTING.md for PR guidelines | ISSUE_TEMPLATE for bug reports | PULL_REQUEST_TEMPLATE for PR checklist | SECURITY.md for vulnerability reporting | CODEOWNERS for review assignment
+
 GitHub-native documentation patterns for .NET projects: README structure with NuGet/CI/coverage badges and installation instructions, CONTRIBUTING.md with fork-PR workflow and development setup, issue templates (bug report with .NET version and repro steps, feature request with problem/solution/alternatives), PR templates with testing checklist and breaking changes section, GitHub Pages setup for documentation sites, repository metadata (CODEOWNERS, FUNDING.yml, social preview, topics/tags), and Mermaid diagram embedding in README files.
 
 **Version assumptions:** .NET 8.0+ baseline for code examples. GitHub Actions for CI badges. NuGet.org for package badges.

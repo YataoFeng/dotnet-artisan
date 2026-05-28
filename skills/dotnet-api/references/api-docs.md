@@ -1,5 +1,7 @@
 # API Docs
 
+> **Quick Ref**: DocFX metadata from assemblies | OpenAPI + Scalar for live docs | XML doc completeness via CS1591 | CI validation of doc builds | Breaking change docs include migration code | Versioned URLs must redirect to latest
+
 API documentation generation for .NET projects: DocFX setup for API reference from assemblies (`docfx.json` configuration, metadata extraction, template customization, cross-referencing), OpenAPI spec as living API documentation (Scalar and Swagger UI embedding, versioned OpenAPI documents), documentation-code synchronization (CI validation with `-warnaserror:CS1591`, broken link detection, automated doc builds on PR), API changelog patterns (breaking change documentation, migration guides, deprecated API tracking), and versioned API documentation (version selectors, multi-version maintenance, URL patterns).
 
 **Version assumptions:** DocFX v2.x (community-maintained). OpenAPI 3.x via `Microsoft.AspNetCore.OpenApi` (.NET 9+ built-in). Scalar UI for modern OpenAPI visualization. .NET 8.0+ baseline for code examples.

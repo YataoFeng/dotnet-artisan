@@ -1,5 +1,7 @@
 # Common Patterns
 
+> **Quick Ref**: !analyze -v first on any dump | Check exception type before thread analysis | Correlate managed/native stacks | Verify symbols before trusting output | Run .cordll -ve -u -l first | Many simple crashes are OOM or StackOverflow
+
 ## COM/RPC Wait Chain
 Signals:
 - `combase`/`RPCRT4` frames on blocked threads.

@@ -1,5 +1,7 @@
 # File I/O
 
+> **Quick Ref**: FileStream for large files with buffer control | RandomAccess for concurrent thread-safe IO | File.ReadAllTextAsync for small text files | StreamReader for line-by-line text | FileSystemWatcher for file change detection | Always use async IO in server apps | Never sync IO in ASP.NET request path
+
 File I/O patterns for .NET applications. Covers FileStream construction with async flags, RandomAccess API for thread-safe offset-based I/O, File convenience methods, FileSystemWatcher event handling and debouncing, MemoryMappedFile for large files and IPC, path handling security (Combine vs Join), secure temp file creation, cross-platform considerations, IOException hierarchy, and buffer sizing guidance.
 
 ## FileStream

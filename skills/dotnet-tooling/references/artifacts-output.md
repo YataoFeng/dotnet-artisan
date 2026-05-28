@@ -1,5 +1,7 @@
 # Artifacts Output
 
+> **Quick Ref**: UseArtifactsOutput=true for clean structure | ArtifactsPath for custom output location | .gitignore artifacts/ directory | CI reuses artifacts from build step | Separates binaries from source tree
+
 Reference guide for the .NET SDK artifacts output layout, which centralizes build outputs (`bin/`, `obj/`, `publish/`, `package/`) into a single `artifacts/` directory at the repo root. Available since .NET 8 as an opt-in feature. Recommended for new projects; evaluate tradeoffs before migrating existing projects.
 
 **Prerequisites:** Run `references/version-detection.md` first to confirm .NET 8+ SDK -- artifacts output layout is not available in earlier SDK versions.

@@ -1,5 +1,7 @@
 # Tool Management
 
+> **Quick Ref**: dotnet tool install for global tools | .config/dotnet-tools.json for local tools | dotnet tool restore to install manifest | dnx for .NET 10+ zero-install tool running | Pin tool versions in manifest | CI: dotnet tool restore before build
+
 Consumer-side management of .NET CLI tools: installing global and local tools, creating and maintaining `.config/dotnet-tools.json` manifests, version pinning for team reproducibility, `dotnet tool restore` in CI pipelines, updating and uninstalling tools, and troubleshooting common tool issues.
 
 **Version assumptions:** .NET 8.0+ baseline. Local tools and tool manifests available since .NET Core 3.0. RID-specific tool packaging available since .NET 10.

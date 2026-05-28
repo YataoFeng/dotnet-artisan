@@ -1,5 +1,7 @@
 # Mermaid Diagrams
 
+> **Quick Ref**: Mermaid in markdown for architecture diagrams | graph TD for data flow | sequenceDiagram for API flows | classDiagram for domain models | GitHub renders Mermaid natively | Keep diagrams focused (5-10 nodes)
+
 Mermaid diagram reference for .NET projects: architecture diagrams (C4-style context, container, component views, layered architecture, microservice topology), sequence diagrams (API request flows, async/await patterns, middleware pipeline, authentication flows), class diagrams (domain models, DI registration graphs, inheritance hierarchies, interface implementations), deployment diagrams (container deployment, Kubernetes pod layout, CI/CD pipeline flow), ER diagrams (EF Core model relationships, database schema visualization), state diagrams (workflow states, order processing, saga patterns, state machine patterns), and flowcharts (decision trees, framework selection, architecture choices). Includes diagram-as-code conventions for naming, grouping, GitHub rendering, and dark mode considerations.
 
 **Version assumptions:** Mermaid v10+ (supported by GitHub, Starlight, Docusaurus natively). GitHub renders Mermaid in Markdown files, issues, PRs, and discussions. .NET 8.0+ baseline for code examples.

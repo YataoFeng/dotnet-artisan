@@ -1,5 +1,7 @@
 # Background Services
 
+> **Quick Ref**: BackgroundService for loops, IHostedService for hooks | Always inject IServiceScopeFactory not scoped services | Always wrap loop body in try/catch | Respect stoppingToken | Back off on empty/error with Task.Delay | PeriodicTimer for accurate intervals
+
 Patterns for long-running background work in .NET applications. Covers `BackgroundService`, `IHostedService`, hosted service lifecycle, and graceful shutdown handling.
 
 ## BackgroundService vs IHostedService

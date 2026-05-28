@@ -1,5 +1,7 @@
 # Secrets Management
 
+> **Quick Ref**: dotnet user-secrets for dev only | appsettings.json NEVER contains secrets | Environment variables for container/cloud | Azure Key Vault / AWS Secrets Manager for production | Rotate secrets before expiry | Never commit secrets to source control
+
 Cloud-agnostic secrets management for .NET applications. Covers the full lifecycle: user secrets for local development, environment variables for production, IConfiguration binding patterns, secret rotation, and managed identity as a production best practice. Includes anti-patterns to avoid (secrets in source, appsettings.json, hardcoded connection strings).
 
 ## Secrets Lifecycle

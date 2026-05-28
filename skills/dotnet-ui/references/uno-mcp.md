@@ -1,4 +1,5 @@
 # Uno MCP
+> **Quick Ref**: Uno Platform MCP integration | Expose Uno APIs to AI agents via MCP | MCP server in Uno app for tool access | Use for debugging live Uno apps | MCP tools for UI inspection and testing
 
 MCP (Model Context Protocol) server integration for Uno Platform live documentation lookups. Covers tool detection (`mcp__uno__` prefix), search-then-fetch workflow, initialization rules invocation, graceful fallback when MCP is unavailable, citation requirements, and safety guidelines for external data. Includes inline documentation that provides useful guidance without MCP server availability.
 

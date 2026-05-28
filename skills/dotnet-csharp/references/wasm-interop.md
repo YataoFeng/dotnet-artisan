@@ -1,5 +1,7 @@
 # WASM Interop
 
+> **Quick Ref**: JSImport/JSExport for AOT-safe interop | IJSInProcessRuntime only in WASM | Use JSHost.ImportAsync for module loading | Avoid IJSRuntime.InvokeAsync for hot paths | JSExport static methods for .NET → JS calls | Never use eval() in interop | Module-level imports over per-call
+
 .NET WebAssembly interop patterns: `[JSImport]`/`[JSExport]` source-generated JavaScript interop (.NET 7+), standalone .NET WASM without Blazor or Uno, the `wasm-experimental` workload, browser API access, and module loading. For Blazor-specific JS interop (`IJSRuntime`), see [skill:dotnet-ui] `references/blazor-components.md`. For Uno Platform WASM targets, see [skill:dotnet-ui] `references/uno-targets.md`.
 
 **Version assumptions:** .NET 7+ for `[JSImport]`/`[JSExport]`. .NET 8+ for improved WASM threading and `wasm-tools` AOT. .NET 9+ for `wasm-experimental` stability improvements.

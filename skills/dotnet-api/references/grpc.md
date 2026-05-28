@@ -1,5 +1,7 @@
 # gRPC
 
+> **Quick Ref**: .proto files as single source of truth | Set GrpcServices on Protobuf items | AddGrpcClient with DI for connection pooling | Always set deadlines on calls | Throw RpcException not generic Exception | gRPC-Web supports only unary + server streaming
+
 Full gRPC lifecycle for .NET applications. Covers `.proto` service definition, code generation, ASP.NET Core gRPC server implementation and endpoint hosting, `Grpc.Net.Client` client patterns, all four streaming patterns (unary, server streaming, client streaming, bidirectional streaming), authentication, load balancing, and health checks.
 
 For detailed code examples (server implementation, client patterns, streaming, auth, interceptors, gRPC-Web), see the "Detailed Examples" section below.

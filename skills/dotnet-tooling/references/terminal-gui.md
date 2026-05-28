@@ -1,5 +1,7 @@
 # Terminal.Gui
 
+> **Quick Ref**: Terminal.Gui for full TUI applications | Window + View composition | Button, TextView, ListView for UI | Application.Run for event loop | Cross-platform (Windows/Linux/macOS) | Use for complex CLI over Spectre.Console
+
 Terminal.Gui v2 for building full terminal user interfaces with windows, menus, dialogs, views, layout, event handling, color themes, and mouse support. Cross-platform across Windows, macOS, and Linux terminals.
 
 **Version assumptions:** .NET 8.0+ baseline. Terminal.Gui 2.0.0-alpha (v2 Alpha is the active development line for new projects -- API is stable with comprehensive features; breaking changes possible before Beta but core architecture is solid). v1.x (1.19.0) is in maintenance mode with no new features.

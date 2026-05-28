@@ -1,5 +1,7 @@
 # GitHub Actions Publish
 
+> **Quick Ref**: dotnet pack for NuGet | actions/upload-artifact for packages | softprops/action-gh-release for GitHub Releases | docker push for container images | NuGet API key via GitHub Secrets | SBOM with sbom-tool
+
 Publishing workflows for .NET projects in GitHub Actions: NuGet package push to nuget.org and GitHub Packages, container image build and push to GHCR/DockerHub/ACR, artifact signing with NuGet signing and sigstore, SBOM generation with Microsoft SBOM tool, and conditional publishing triggered by tags and releases.
 
 **Version assumptions:** `actions/setup-dotnet@v4` for .NET 8/9/10. `docker/build-push-action@v6` for container image builds. `docker/login-action@v3` for registry authentication. .NET SDK container publish (`dotnet publish` with `PublishContainer`) for Dockerfile-free container builds.

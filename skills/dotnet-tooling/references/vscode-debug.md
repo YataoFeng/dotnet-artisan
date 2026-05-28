@@ -1,5 +1,7 @@
 # VS Code Debug Configuration
 
+> **Quick Ref**: C# Dev Kit for VS Code | launch.json with coreclr type | Tasks.json for pre-launch build | Remote debugging via SSH tunnel | Attach to process for running apps | Configure justMyCode for framework debugging
+
 Configure VS Code for .NET debugging with `launch.json` and `tasks.json`. Covers `coreclr` launch/attach configurations, multi-project debugging, environment variables, hot reload with `dotnet watch`, and common debugging scenarios. Applicable to any agent that creates or modifies `.vscode/` configuration files.
 
 ## Quick Setup
