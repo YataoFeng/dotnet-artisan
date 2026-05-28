@@ -48,19 +48,13 @@ Does the project have a UI? Which platforms?
 - Team has no DDD experience and no time to learn
 - The "domain" is purely technical (e.g., a file converter)
 
-### DDD Tactical Patterns
-
-For teams new to DDD, start with tactical patterns only (skip strategic context mapping):
-
-- **Aggregate** — Cluster of domain objects treated as a unit. One aggregate = one transaction boundary.
-- **Entity** — Object with identity. Two entities with same ID are the same thing.
-- **Value Object** — Immutable object defined by its attributes. Two VOs with same values are interchangeable.
-- **Domain Event** — Something that happened that other parts of the system care about.
-- **Repository** — Collection-like interface for aggregates (only use if you need domain logic; for simple CRUD, use DbContext directly per dotnet artisani rules).
-
 ### DDD Strategic Patterns (MUST)
 
-When DDD is chosen, strategic design is REQUIRED — not optional. Tactical patterns without strategic boundaries lead to a Big Ball of Mud.
+When DDD is chosen, strategic design is REQUIRED — not optional. Tactical patterns without strategic boundaries lead to a Big Ball of Mud. Run the full domain analysis BEFORE any coding.
+
+### DDD Tactical Patterns (After Strategic Design)
+
+Once strategic boundaries are defined, implement using these tactical patterns:
 
 - **Bounded Context** — Explicit boundary where a domain model applies. Each context has its own ubiquitous language. MUST be identified and diagrammed.
 - **Ubiquitous Language** — Shared vocabulary between developers and domain experts. MUST be documented per context.
