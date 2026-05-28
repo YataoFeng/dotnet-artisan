@@ -75,6 +75,7 @@ flowchart TD
     J4 --> K
     J5 --> K
     J6 --> K
+    K --> L[dotnet-workflow<br/>workflow + learning<br/>capture corrections]
 ```
 
 **No skill names to memorize.** The decision-maker analyzes your project, aligns requirements, loads coding standards, and routes to the right skills and agents.
@@ -232,6 +233,19 @@ Chain: intent detection → route to dotnet-api (EF Core patterns) →
        review code → find N+1 loop query → add .Include() →
        single SQL query → find missing composite indexes →
        migration script + before/after performance comparison
+```
+
+### 8. Learning Project Conventions
+
+```
+You: Remember, this project uses TimeProvider instead of DateTime.Now
+
+AI: Got it. Rule captured: prefer TimeProvider constructor injection over
+    DateTime.Now/UtcNow. Applies to all new code. Stored in MEMORY.md.
+
+Chain: intent detection → route to dotnet-workflow →
+       detect correction → generalize to rule → check existing memory →
+       deduplicate and write to MEMORY.md → confirm learned
 ```
 
 ---
