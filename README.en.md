@@ -49,7 +49,7 @@ flowchart TD
     I --> O[dotnet-debugging]
     J --> P[Specialist agents<br/>on demand]
     K --> P; L --> P; M --> P; N --> P; O --> P
-    P --> Q[dotnet-workflow<br/>workflow + learning]
+    P --> Q[dotnet-learning-agent<br/>correction learning]
 ```
 
 **No skill names to memorize.** The decision-maker analyzes, aligns requirements, loads standards, and routes to the right skills and agents.
@@ -143,7 +143,7 @@ You: Remember, this project uses TimeProvider instead of DateTime.Now
 AI: Rule captured: TimeProvider constructor injection preferred.
     Applied to all new code. Stored in MEMORY.md.
 
-Chain: dotnet-workflow → detect correction → generalize rule →
+Chain: dotnet-learning-agent → detect correction → generalize rule →
        deduplicate → write to MEMORY.md → confirm
 ```
 

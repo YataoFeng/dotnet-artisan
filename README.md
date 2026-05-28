@@ -49,7 +49,7 @@ flowchart TD
     I --> O[dotnet-debugging]
     J --> P[专家代理<br/>按需调用]
     K --> P; L --> P; M --> P; N --> P; O --> P
-    P --> Q[dotnet-workflow<br/>工作流 + 学习]
+    P --> Q[dotnet-learning-agent<br/>纠错学习]
 ```
 
 **你不需要记任何技能名。** 决策者自动分析项目、对齐需求、加载规范、路由到正确的技能和代理。
@@ -142,7 +142,7 @@ AI：Web API + GitHub，生成 GitHub Actions 工作流，
 AI：已捕获规则：TimeProvider 构造函数注入优先。
     适用于所有新代码，已存入 MEMORY.md。
 
-行为链：dotnet-workflow → 检测纠错 → 泛化规则 →
+行为链：dotnet-learning-agent → 检测纠错 → 泛化规则 →
        去重 → 写入 MEMORY.md → 确认
 ```
 
