@@ -1,14 +1,14 @@
 {
   "name": "dotnet-artisan",
-  "description": "Comprehensive .NET development plugin for Claude Code: 14 skills, 17 agents, 160+ reference files covering C#, ASP.NET Core, Blazor, MAUI, EF Core, testing, debugging, and DevOps.",
+  "description": "让你的 AI 编码代理真正精通 .NET。11 技能、14 代理、169 参考文件，覆盖 API、UI、测试、DevOps、调试、工具链、AI。装完即用，零配置。",
   "owner": {
-    "name": "Yatao Feng"
+    "name": "fenzel"
   },
   "plugins": [
     {
       "name": "dotnet-artisan",
       "source": "./",
-      "description": "Comprehensive .NET development skills for Claude Code: 14 skills, 17 agents, 160+ reference files covering C#, ASP.NET Core, Blazor, MAUI, EF Core, testing, debugging, and DevOps."
+      "description": "Makes your AI coding agent actually good at .NET. 11 skills, 14 agents, 169 reference files covering C#, ASP.NET Core, Blazor, MAUI, EF Core, testing, debugging, DevOps, and AI. Install and go. Zero config."
     }
   ]
 }
