@@ -37,15 +37,15 @@ dotnet-artisan/
 ├── skills/
 │   ├── CHEATSHEET.md      ← One-page all-rules
 │   ├── DECISIONS.md       ← "When to use what"
-│   ├── INDEX.md           ← 80+ references by domain
+│   ├── INDEX.md           ← 166 references by domain
 │   ├── using-dotnet/      ← Gateway skill (auto-loaded)
 │   ├── dotnet-advisor/    ← Router skill (auto-loaded)
-│   ├── dotnet-csharp/     ← Baseline C# (always loaded, 25 refs)
-│   ├── dotnet-api/        ← Backend (32 refs)
+│   ├── dotnet-csharp/     ← Baseline C# (always loaded, 27 refs)
+│   ├── dotnet-api/        ← Backend (33 refs)
 │   ├── dotnet-ui/         ← Blazor/MAUI/WPF/WinUI (20 refs)
-│   ├── dotnet-testing/    ← xUnit/Playwright/Benchmark (13 refs)
-│   ├── dotnet-devops/     ← CI/CD/Docker/NuGet (18 refs)
-│   ├── dotnet-tooling/    ← MSBuild/AOT/CLI (34 refs)
+│   ├── dotnet-testing/    ← xUnit/Playwright/Benchmark (14 refs)
+│   ├── dotnet-devops/     ← CI/CD/Docker/NuGet (19 refs)
+│   ├── dotnet-tooling/    ← MSBuild/AOT/CLI (36 refs)
 │   ├── dotnet-debugging/  ← WinDbg/crash dumps (17 refs)
 │   ├── dotnet-ai/         ← MCP/Semantic Kernel/RAG
 │   ├── dotnet-upgrade/    ← .NET version migration
