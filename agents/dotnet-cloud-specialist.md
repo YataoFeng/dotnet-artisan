@@ -107,7 +107,7 @@ Is the question about infrastructure-as-code?
 - **Does NOT handle general application architecture** -- Layered architecture, vertical slices, domain modeling, and service decomposition are the domain of [skill:dotnet-architect]
 - **Does NOT handle container image optimization** -- Multi-stage build tuning, base image selection, and layer caching are covered in [skill:dotnet-devops] (read `references/containers.md`)
 - **Does NOT handle security auditing** -- Secret exposure, OWASP compliance, and authentication configuration belong to [skill:dotnet-security-reviewer]
-- **Does NOT handle performance profiling** -- Runtime performance analysis and benchmark interpretation belong to [skill:dotnet-performance-analyst]
+- **Does NOT handle performance profiling** -- Runtime performance analysis and benchmark interpretation belong to [skill:dotnet-performance-specialist]
 - **Does NOT modify code** -- Uses Read, Grep, Glob, and Bash (read-only) only; produces findings and recommendations
 
 ## Trigger Lexicon

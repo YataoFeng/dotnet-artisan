@@ -135,7 +135,7 @@ When multiple skills are active, coordinate across them:
 For complex analysis that benefits from domain expertise, delegate to specialist agents. Group by concern area:
 
 **Architecture and Design**
-- Architecture review, framework selection, design patterns -> [skill:dotnet-architect]
+- Architecture review, solution structure, build config, design patterns -> [skill:dotnet-architect]
 - Strategic DDD analysis, event storming, bounded contexts, domain modeling -> [skill:dotnet-domain-analyst]
 - General code review (correctness, performance, security) -> [skill:dotnet-code-review-agent]
 
