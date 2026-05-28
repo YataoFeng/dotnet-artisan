@@ -101,8 +101,8 @@
   <h1><span>dotnet</span>-artisan</h1>
   <p class="sub">面向 AI 编码代理的 .NET 开发技能库。教会 AI 写正确的 .NET 代码，并确保它们在 30 秒内重新理解任何项目。</p>
   <div class="stats">
-    <div class="stat"><div class="num">14</div><div class="lbl">技能</div></div>
-    <div class="stat"><div class="num">17</div><div class="lbl">代理</div></div>
+    <div class="stat"><div class="num">11</div><div class="lbl">技能</div></div>
+    <div class="stat"><div class="num">13</div><div class="lbl">代理</div></div>
     <div class="stat"><div class="num">160+</div><div class="lbl">参考文件</div></div>
     <div class="stat"><div class="num">30+</div><div class="lbl">行为</div></div>
     <div class="stat"><div class="num">MIT</div><div class="lbl">许可</div></div>
@@ -153,16 +153,14 @@
     <table class="cat-table">
       <tr><td><strong>dotnet-testing</strong></td><td>xUnit v3、Testcontainers、Playwright E2E、BenchmarkDotNet</td></tr>
       <tr><td><strong>dotnet-debugging</strong></td><td>WinDbg 崩溃转储、死锁、内存泄漏、高 CPU</td></tr>
-      <tr><td><strong>dotnet-quality</strong></td><td>7 步流水线：格式化 → 警告 → 死代码 → CancellationToken</td></tr>
     </table>
   </div>
 
   <div class="category-section">
     <h3>运维者（交付 & 维护）</h3>
     <table class="cat-table">
-      <tr><td><strong>dotnet-devops</strong></td><td>CI/CD、Docker、NuGet、OpenTelemetry</td></tr>
-      <tr><td><strong>dotnet-tooling</strong></td><td>MSBuild、Native AOT、CLI 工具、SDK、性能分析</td></tr>
-      <tr><td><strong>dotnet-upgrade</strong></td><td>.NET 版本迁移 (8→9→10→11)、AOT 兼容</td></tr>
+      <tr><td><strong>dotnet-devops</strong></td><td>CI/CD、Docker、NuGet、OpenTelemetry、版本迁移</td></tr>
+      <tr><td><strong>dotnet-tooling</strong></td><td>MSBuild、Native AOT、CLI 工具、SDK、性能分析、代码质量清理</td></tr>
     </table>
   </div>
 
@@ -170,8 +168,7 @@
     <h3>增强者（扩展 & 提升）</h3>
     <table class="cat-table">
       <tr><td><strong>dotnet-ai</strong></td><td>MCP 服务、Semantic Kernel、RAG、ML.NET</td></tr>
-      <tr><td><strong>dotnet-workflow</strong></td><td>并行工作树、上下文管理、验证循环</td></tr>
-      <tr><td><strong>dotnet-learning</strong></td><td>纠错捕获、模式泛化、记忆存储</td></tr>
+      <tr><td><strong>dotnet-workflow</strong></td><td>并行工作树、上下文管理、验证循环、纠错学习</td></tr>
     </table>
   </div>
 </div>
@@ -344,24 +341,24 @@
 
 <script>
 const roleAgents = [
-  ["dotnet-architect","软件架构师 — 结构、模式、框架选择"],
+  ["dotnet-architect","架构师 — 架构选型、文件夹结构、构建配置"],
   ["dotnet-code-review-agent","代码审查员 — 正确性、性能、安全、架构"],
   ["dotnet-security-reviewer","安全审计员 — OWASP、密钥、加密（只读）"],
   ["dotnet-testing-specialist","测试架构师 — 策略、测试数据、金字塔设计"],
   ["dotnet-docs-generator","技术文档工程师 — DocFX、Mermaid、XML 文档"],
-  ["dotnet-refactor-cleaner","清理专家 — 7 步流水线、死代码移除"]
+  ["dotnet-domain-analyst","领域分析师 — 事件风暴、限界上下文、领域文档"],
+  ["dotnet-code-review-agent","代码审查员 — 正确性、性能、安全、架构"],
+  ["dotnet-security-reviewer","安全审计员 — OWASP、密钥、加密（只读）"],
+  ["dotnet-testing-specialist","测试架构师 — 策略、测试数据、金字塔设计"],
+  ["dotnet-docs-generator","技术文档工程师 — DocFX、Mermaid、XML 文档"]
 ];
 const toolAgents = [
   ["dotnet-aspnetcore-specialist","中间件、DI、请求管道"],
-  ["dotnet-async-performance-specialist","Async/await 性能、ValueTask、ThreadPool"],
-  ["dotnet-benchmark-designer","BenchmarkDotNet、测量验证"],
-  ["dotnet-blazor-specialist","Blazor 渲染模式、组件、托管"],
-  ["dotnet-build-error-resolver","MSBuild 错误、NuGet 冲突、SDK 问题"],
+  ["dotnet-performance-specialist","异步、性能分析、基准测试"],
+  ["dotnet-ui-specialist","Blazor / MAUI / Uno 跨平台 UI"],
+  ["dotnet-code-lifecycle-agent","构建错误 + 质量清理流水线"],
   ["dotnet-cloud-specialist","Aspire、AKS、云部署"],
   ["dotnet-csharp-concurrency-specialist","竞态条件、死锁、线程安全"],
-  ["dotnet-maui-specialist","MAUI 开发、Xamarin 迁移"],
-  ["dotnet-performance-analyst","火焰图、堆转储、GC 分析"],
-  ["dotnet-uno-specialist","Uno Platform、MVUX、跨平台"],
   ["dotnet-pr-workflow","PR 生命周期：创建 → 审查 → 合并 → 发布"]
 ];
 

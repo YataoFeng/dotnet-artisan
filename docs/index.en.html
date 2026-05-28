@@ -127,8 +127,8 @@
   <h1><span>dotnet</span>-artisan</h1>
   <p class="sub">.NET development skills for AI coding agents. Teaches AIs correct .NET patterns + ensures they re-understand any project in 30 seconds.</p>
   <div class="stats">
-    <div class="stat"><div class="num">14</div><div class="lbl">Skills</div></div>
-    <div class="stat"><div class="num">17</div><div class="lbl">Agents</div></div>
+    <div class="stat"><div class="num">11</div><div class="lbl">Skills</div></div>
+    <div class="stat"><div class="num">13</div><div class="lbl">Agents</div></div>
     <div class="stat"><div class="num">160+</div><div class="lbl">References</div></div>
     <div class="stat"><div class="num">30+</div><div class="lbl">Behaviors</div></div>
     <div class="stat"><div class="num">MIT</div><div class="lbl">License</div></div>
@@ -179,16 +179,14 @@
     <table class="cat-table">
       <tr><td><strong>dotnet-testing</strong></td><td>xUnit v3, Testcontainers, Playwright E2E, BenchmarkDotNet</td></tr>
       <tr><td><strong>dotnet-debugging</strong></td><td>WinDbg crash dumps, deadlocks, memory leaks, high CPU</td></tr>
-      <tr><td><strong>dotnet-quality</strong></td><td>7-step pipeline: format → warnings → dead code → CancellationToken</td></tr>
     </table>
   </div>
 
   <div class="category-section">
     <h3>Operators</h3>
     <table class="cat-table">
-      <tr><td><strong>dotnet-devops</strong></td><td>CI/CD, Docker, NuGet, OpenTelemetry</td></tr>
-      <tr><td><strong>dotnet-tooling</strong></td><td>MSBuild, Native AOT, CLI tools, SDK, profiling</td></tr>
-      <tr><td><strong>dotnet-upgrade</strong></td><td>.NET version migration (8→9→10→11), AOT compatibility</td></tr>
+      <tr><td><strong>dotnet-devops</strong></td><td>CI/CD, Docker, NuGet, OpenTelemetry, version migration</td></tr>
+      <tr><td><strong>dotnet-tooling</strong></td><td>MSBuild, Native AOT, CLI tools, SDK, profiling, code quality</td></tr>
     </table>
   </div>
 
@@ -196,8 +194,7 @@
     <h3>Augmenters</h3>
     <table class="cat-table">
       <tr><td><strong>dotnet-ai</strong></td><td>MCP servers, Semantic Kernel, RAG, ML.NET</td></tr>
-      <tr><td><strong>dotnet-workflow</strong></td><td>Parallel worktrees, context management, verification loops</td></tr>
-      <tr><td><strong>dotnet-learning</strong></td><td>Correction capture, pattern generalization, memory storage</td></tr>
+      <tr><td><strong>dotnet-workflow</strong></td><td>Parallel worktrees, context management, verification loops, correction learning</td></tr>
     </table>
   </div>
 </div>
@@ -370,24 +367,20 @@ Your prompt
 
 <script>
 const roleAgents = [
-  ["dotnet-architect","Software architect — structure, patterns, framework choice"],
+  ["dotnet-architect","Architect — solution structure, build config, design patterns"],
+  ["dotnet-domain-analyst","Domain analyst — event storming, bounded contexts, domain docs"],
   ["dotnet-code-review-agent","Code reviewer — correctness, perf, security, architecture"],
   ["dotnet-security-reviewer","Security auditor — OWASP, secrets, crypto (read-only)"],
   ["dotnet-testing-specialist","Test architect — strategy, test data, pyramid design"],
-  ["dotnet-docs-generator","Technical writer — DocFX, Mermaid, XML docs"],
-  ["dotnet-refactor-cleaner","Cleanup specialist — 7-step pipeline, dead code removal"]
+  ["dotnet-docs-generator","Technical writer — DocFX, Mermaid, XML docs"]
 ];
 const toolAgents = [
   ["dotnet-aspnetcore-specialist","Middleware, DI, request pipelines"],
-  ["dotnet-async-performance-specialist","Async/await perf, ValueTask, ThreadPool"],
-  ["dotnet-benchmark-designer","BenchmarkDotNet, measurement validation"],
-  ["dotnet-blazor-specialist","Blazor render modes, components, hosting"],
-  ["dotnet-build-error-resolver","MSBuild errors, NuGet conflicts, SDK issues"],
+  ["dotnet-performance-specialist","Async, profiling, benchmarks"],
+  ["dotnet-ui-specialist","Blazor / MAUI / Uno cross-platform UI"],
+  ["dotnet-code-lifecycle-agent","Build errors + quality cleanup pipeline"],
   ["dotnet-cloud-specialist","Aspire, AKS, cloud deployment"],
   ["dotnet-csharp-concurrency-specialist","Race conditions, deadlocks, thread safety"],
-  ["dotnet-maui-specialist","MAUI development, Xamarin migration"],
-  ["dotnet-performance-analyst","Flame graphs, heap dumps, GC analysis"],
-  ["dotnet-uno-specialist","Uno Platform, MVUX, cross-platform"],
   ["dotnet-pr-workflow","PR lifecycle: create → review → merge → release"]
 ];
 
