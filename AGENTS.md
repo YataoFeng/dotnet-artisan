@@ -8,10 +8,10 @@ Load path: `using-dotnet` → `dotnet-advisor` → domain skills. `dotnet-csharp
 
 ## Rules (Non-Negotiable)
 
-1. **No Repository/UoW wrappers** — DbContext IS the UoW; DbSet<T> IS the repository. Inject DbContext directly.
-2. **No FluentValidation** — .NET 10+ uses `AddValidation()` + DataAnnotations. Built-in, source-gen, AOT-safe.
+1. **No Repository/UoW wrappers (net6.0+)** — DbContext IS the UoW; DbSet<T> IS the repository. Inject DbContext directly. For legacy .NET Framework projects, respect existing patterns.
+2. **No FluentValidation (net10.0+)** — .NET 10+ uses `AddValidation()` + DataAnnotations. Built-in, source-gen, AOT-safe. For earlier versions, FluentValidation is acceptable.
 3. **No commercial packages** — Free/open-source only. See [package-choices.md](skills/dotnet-csharp/references/package-choices.md).
-4. **No DateTime.Now** — Use `TimeProvider` constructor-injected everywhere.
+4. **No DateTime.Now (net6.0+)** — Use `TimeProvider` constructor-injected everywhere. For .NET Framework, use `DateTime.UtcNow`.
 5. **English only in skills/agents/references** — Docs (README, Pages) support Chinese + English.
 6. **SKILL.md under 500 lines** — Detailed content in `references/` subdirectory.
 7. **Every reference file follows**: Core Principles → Patterns (GOOD code) → Anti-patterns (BAD/GOOD) → Decision Guide.

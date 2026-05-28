@@ -2,15 +2,17 @@
 
 Load this when writing ANY .NET code. One line per rule.
 
-## Non-Negotiable
+## Version-Aware Rules
 
-- DbContext direct, no IRepository/IUnitOfWork wrapper
-- TimeProvider, never DateTime.Now
-- AddValidation() + DataAnnotations, never FluentValidation
-- Free/open-source only: Mediator(MIT) not MediatR, Mapperly not AutoMapper
-- Microsoft.AspNetCore.OpenApi, never Swashbuckle
-- System.Text.Json source-gen, never Newtonsoft
-- IHttpClientFactory, never new HttpClient()
+> All rules are relative to the project's TFM. Detect version first.
+
+- DbContext direct, no Repository wrapper (net6.0+). Legacy: respect existing patterns.
+- TimeProvider, never DateTime.Now (net6.0+). Legacy: use DateTime.UtcNow.
+- AddValidation() + DataAnnotations (net10.0+). Earlier: FluentValidation OK.
+- Free/open-source only (all versions).
+- Microsoft.AspNetCore.OpenApi (net9.0+). Earlier: Swashbuckle OK.
+- System.Text.Json source-gen (net8.0+). Earlier: Newtonsoft OK.
+- IHttpClientFactory (netcoreapp3.1+). Legacy: new HttpClient() acceptable.
 
 ## Architecture
 

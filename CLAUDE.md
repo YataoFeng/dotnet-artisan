@@ -55,12 +55,14 @@ dotnet-artisan/
 └── hooks.json             ← Hook configuration
 ```
 
-## Non-Negotiable Rules (MUST)
+## Core Rules (Version-Aware)
 
-1. **No Repository/UoW wrappers** — DbContext IS the UoW. DbSet<T> IS the repository. Inject DbContext directly.
-2. **No FluentValidation** — .NET 10+ uses `AddValidation()` + DataAnnotations. Built-in, source-gen, AOT-safe.
+> **Critical:** All rules are relative to the project's target framework. Always detect the .NET version first (Step 1 in dotnet-advisor). Modern patterns may not apply to legacy projects — never force .NET 10 patterns on a .NET Framework 4.x codebase.
+
+1. **No Repository/UoW wrappers (net6.0+)** — DbContext IS the UoW. DbSet<T> IS the repository. Inject DbContext directly. For legacy .NET Framework projects, respect existing patterns and migrate incrementally.
+2. **No FluentValidation (net10.0+)** — Use `AddValidation()` + DataAnnotations. Built-in, source-gen, AOT-safe. For earlier versions, FluentValidation is acceptable.
 3. **No commercial packages** — Free/open-source only. See `skills/dotnet-csharp/references/package-choices.md`.
-4. **No DateTime.Now** — Use `TimeProvider` constructor-injected everywhere.
+4. **No DateTime.Now (net6.0+)** — Use `TimeProvider` constructor-injected everywhere. For .NET Framework projects where TimeProvider is unavailable, use `DateTime.UtcNow` as the safer alternative.
 5. **Exhaust questions before acting** — Check the 7-item checklist in `USAGE.md`. If any answer is "I don't know", ask more. Never write code on assumptions.
 6. **English only in skills/agents/references** — Docs (README, Pages) support Chinese + English.
 7. **SKILL.md under 500 lines** — Detailed content in `references/` subdirectory.
