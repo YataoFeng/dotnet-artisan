@@ -5,9 +5,9 @@
 [![中文](https://img.shields.io/badge/中文-简体中文-red)](README.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/Skills-11-5b9cf5)](skills/)
-[![Agents](https://img.shields.io/badge/Agents-12-8b5cf6)](agents/)
+[![Agents](https://img.shields.io/badge/Agents-13-8b5cf6)](agents/)
 
-11 skills · 12 agents · 160+ references · 30+ behaviors
+11 skills · 13 agents · 160+ references · 30+ behaviors
 
 ---
 
@@ -132,14 +132,11 @@ You: Yes.
 
 
 
-Chain: intent detection → 4 rounds of questions (domain → architecture →
-
-       tech → quality) → domain vocabulary capture → architecture decision
-
-       (modular monolith + DDD tactical) → decompose domains: [Order, Payment,
-
-       Inventory] → parallel routing → dotnet-api + dotnet-testing +
-
+Chain: intent detection → 4 rounds of questions → invoke dotnet-domain-analyst →
+       Event Storming → bounded contexts: [Order, Payment, Inventory] →
+       domain analysis doc (glossary + context diagram + aggregate design) →
+       architecture decision: modular monolith + DDD strategic →
+       parallel routing → dotnet-api + dotnet-testing +
        dotnet-devops + dotnet-tooling → one project per domain
 
 ```
@@ -261,6 +258,7 @@ Call them by name or let the decision-maker route automatically. Full names begi
 | You say... | Agent | Focus |
 |---|---|---|
 | "How should I structure this?" | architect | Architecture, patterns, framework choice |
+| "Analyze the domain" / "Run DDD" | domain-analyst | Event storming, bounded contexts, domain docs |
 | "Review this PR" | code-review-agent | Correctness, performance, security |
 | "Is this secure?" | security-reviewer | OWASP Top 10, secrets, crypto (read-only) |
 | "How should I test this?" | testing-specialist | Strategy, pyramid design, test data |
