@@ -1,6 +1,6 @@
 # Blazor Patterns
 
-> **速查**: RenderMode 从页面设置不从子组件 | JS Interop 只在 OnAfterRender 不在 OnInitialized | 导航时 Cancel 组件操作 | Blazor Server→WebApp 迁移用 AuthState 不用 HttpContext | 不用 Scoped Service 存 UI 状态
+> **Quick Ref**: Set RenderMode from the page, not from child components | JS Interop only in OnAfterRender, not OnInitialized | Cancel component operations during navigation | Blazor Server→WebApp migration uses AuthState, not HttpContext | Don't use Scoped Service to store UI state
 Blazor hosting models, render modes, project setup, routing, enhanced navigation, streaming rendering, and AOT-safe patterns. Covers all five hosting models (InteractiveServer, InteractiveWebAssembly, InteractiveAuto, Static SSR, Hybrid) with trade-off analysis for each.
 
 ## Hosting Models & Render Modes

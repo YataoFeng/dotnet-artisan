@@ -1,6 +1,6 @@
 # File-Based Apps
 
-> **速查**: `#:package` 指令引用 NuGet | `#:sdk Microsoft.NET.Sdk.Web` 做 Web 应用 | `dotnet run script.cs` 直接执行 | 支持 Native AOT 发布 | 用 Shebang `#!/usr/bin/env dotnet` 做 Unix 工具 |
+> **Quick Ref**: #:package directive references NuGet | #:sdk Microsoft.NET.Sdk.Web for Web apps | dotnet run script.cs executes directly | Supports Native AOT publishing | Use shebang #!/usr/bin/env dotnet for Unix tools |
 
 .NET 10 SDK file-based apps let you build, run, and publish C# applications from a single `.cs` file without creating a `.csproj` project file. The SDK auto-generates project configuration from `#:` directives embedded in the source file. This feature targets scripts, utilities, and small applications where traditional project scaffolding is unnecessary.
 

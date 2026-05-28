@@ -1,6 +1,6 @@
 # Architecture Patterns
 
-> **速查**: 简单 CRUD 单项目+Controller | 50+ 端点用 VSA | 复杂业务规则用 DDD | 需要换持久化用 Clean Architecture | 微服务每个服务内用 VSA | 不为了简单 CRUD 上 DDD/CQRS
+> **Quick Ref**: Simple CRUD = single project + Controller | 50+ endpoints = VSA | Complex business rules = DDD | Need to swap persistence = Clean Architecture | Microservices = VSA inside each service | Don't use DDD/CQRS for simple CRUD
 
 Modern architecture patterns for .NET applications. Covers practical approaches to organizing minimal APIs at scale, vertical slice architecture, request pipeline composition, validation strategies, caching, error handling, and idempotency/outbox patterns.
 

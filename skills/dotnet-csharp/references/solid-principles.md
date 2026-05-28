@@ -1,6 +1,6 @@
 # SOLID Principles
 
-> **速查**: SRP 一个 Handler 做一件事 | OCP 加行为用新类型不改 switch | LSP 子类替换父类不坏行为 | ISP 接口拆小不用 Header Interface | DIP 依赖 DbContext 不依赖具体实现 |
+> **Quick Ref**: SRP: one Handler does one thing | OCP: add behavior with new types, don't modify switch | LSP: subclass replaces parent without breaking behavior | ISP: keep interfaces small, don't use Header Interface | DIP: depend on DbContext abstractions, not concrete implementations |
 
 Foundational design principles for .NET applications. Covers each SOLID principle with concrete C# anti-patterns and fixes, plus DRY guidance with nuance on when duplication is acceptable. These principles guide class design, interface contracts, and dependency management across all .NET project types.
 

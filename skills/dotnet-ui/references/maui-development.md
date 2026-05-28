@@ -1,6 +1,6 @@
 # MAUI Development
 
-> **速查**: SafeArea 包裹内容避硬件特征 | `OnResume/OnSleep` 管理前后台切换 | `dotnet maui doctor` 诊断环境 | Shell 做导航 | CollectionView 代替 ListView |
+> **Quick Ref**: SafeArea wraps content to avoid hardware features | OnResume/OnSleep manages foreground/background transitions | dotnet maui doctor diagnoses environment | Shell for navigation | CollectionView replaces ListView |
 
 .NET MAUI cross-platform development: single-project structure with platform folders, XAML data binding with MVVM (CommunityToolkit.Mvvm), Shell navigation, platform services via partial classes and conditional compilation, dependency injection, Hot Reload per platform, and .NET 11 improvements (XAML source gen, CoreCLR for Android, `dotnet run` device selection). Includes honest current-state assessment and migration options.
 

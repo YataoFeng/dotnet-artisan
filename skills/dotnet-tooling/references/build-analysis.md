@@ -1,6 +1,6 @@
 # Build Analysis
 
-> **速查**: 默认串行用 `-m` 并行 | 大方案用 `/graph` 图构建 | `<Exec>` 改用内置 Task (MakeDir/Copy/Delete) | Condition 用双引号包裹 | 旧项目迁移到 SDK-style | binlog 分析用 MSBuild Structured Log Viewer
+> **Quick Ref**: Default to serial, use -m for parallel | Large solutions use /graph build | Replace <Exec> with built-in Tasks (MakeDir/Copy/Delete) | Wrap Condition values in double quotes | Migrate old projects to SDK-style | Analyze binlog with MSBuild Structured Log Viewer
 Help agents interpret and act on MSBuild build output. Covers error code prefixes, NuGet restore failures, analyzer warning interpretation, multi-targeting build differences, and "works locally, fails in CI" diagnosis patterns. Each subsection includes example output, diagnosis steps, and a fix pattern.
 
 ## Prerequisites

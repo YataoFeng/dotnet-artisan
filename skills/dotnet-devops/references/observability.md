@@ -1,6 +1,6 @@
 # Observability
 
-> **速查**: Meter 用单例不用每请求创建 | Metric Tag 低基数不用 OrderId/CustomerId | 自定义 ActivitySource 必须注册 | OTLP exporter 只用一种注册方式 | 不用 `UseOtlpExporter` 和 `AddOtlpExporter` 混用 | Null check Activity 防 NullReferenceException
+> **Quick Ref**: Meter as singleton, not created per request | Metric tags use low cardinality, not OrderId/CustomerId | Custom ActivitySource must be registered | OTLP exporter uses only one registration method | Don't mix UseOtlpExporter and AddOtlpExporter | Null-check Activity to prevent NullReferenceException
 
 Modern observability for .NET applications using OpenTelemetry, structured logging, health checks, and custom metrics. Covers the three pillars of observability (traces, metrics, logs), integration with `Microsoft.Extensions.Diagnostics` and `System.Diagnostics`, and production-ready health check patterns.
 

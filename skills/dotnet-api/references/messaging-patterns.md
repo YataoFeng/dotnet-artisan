@@ -1,6 +1,6 @@
 # Messaging Patterns
 
-> **速查**: 用 Wolverine (MIT 免费) 做消息抽象 | 事务性发件箱保证一致性 | 消息合约只放数据不放逻辑 | 事件从 Handler 派发不从 Entity 内部派发 | Saga 用于长时间流程 | 死信队列处理失败消息
+> **Quick Ref**: Use Wolverine (MIT, free) for message abstraction | Transactional outbox ensures consistency | Message contracts contain data only, no logic | Dispatch events from Handlers, not from inside Entities | Saga for long-running processes | Dead-letter queue for failed messages
 
 Durable messaging patterns for .NET event-driven architectures. Covers publish/subscribe, competing consumers, dead-letter queues, saga/process manager orchestration, and delivery guarantee strategies using Azure Service Bus, RabbitMQ, and Wolverine.
 

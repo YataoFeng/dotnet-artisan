@@ -1,6 +1,6 @@
 # Spectre.Console
 
-> **速查**: AnsiConsole 做格式化输出 | Table/Panel/BarChart 做可视化 | LiveDisplay 做动态刷新 | 生产环境用 TimeProvider 不直接调 DateTime
+> **Quick Ref**: AnsiConsole for formatted output | Table/Panel/BarChart for visualization | LiveDisplay for dynamic refresh | Use TimeProvider in production, not DateTime directly
 
 Spectre.Console for building rich console output (tables, trees, progress bars, prompts, markup, live displays) and Spectre.Console.Cli for structured command-line application parsing. Cross-platform across Windows, macOS, and Linux terminals.
 

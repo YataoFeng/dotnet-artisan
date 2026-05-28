@@ -1,6 +1,6 @@
 # OpenAPI
 
-> **速查**: .NET 10 用 `Microsoft.AspNetCore.OpenApi` 不用 Swashbuckle | `TypedResults` 贡献 OpenAPI schema | 不暴露 Entity 到 OpenAPI | 用 Scalar 替换 SwaggerUI | Transformers 替换 Swashbuckle Filters | Native AOT 兼容
+> **Quick Ref**: .NET 10 uses Microsoft.AspNetCore.OpenApi, not Swashbuckle | TypedResults contribute to OpenAPI schema | Don't expose Entities to OpenAPI | Replace SwaggerUI with Scalar | Replace Swashbuckle Filters with Transformers | Native AOT compatible
 
 OpenAPI/Swagger integration for ASP.NET Core. Microsoft.AspNetCore.OpenApi is the recommended first-party approach for .NET 9+ and is the default in new project templates. Swashbuckle is no longer actively maintained; existing projects using Swashbuckle should plan migration. NSwag remains an alternative for client generation and advanced scenarios.
 

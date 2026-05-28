@@ -1,6 +1,6 @@
 # Domain Modeling
 
-> **速查**: Aggregate Root 控制子实体访问 | 用 ID 值对象不建导航属性跨聚合根 | 不用 `IRepository<T>`，DbContext 直接操作聚合 | Value Object 不可变用 `readonly record struct` | 领域事件在 SaveChanges 后派发 |
+> **Quick Ref**: Aggregate Root controls child entity access | Use ID value objects, don't create navigation properties across aggregate roots | Don't use IRepository<T>, operate aggregates directly via DbContext | Value Objects are immutable, use readonly record struct | Dispatch domain events after SaveChanges |
 
 Domain-Driven Design tactical patterns in C#. Covers aggregate roots, entities, value objects, domain events, integration events, domain services, repository contract design, and the distinction between rich and anemic domain models. These patterns apply to the domain layer itself -- the pure C# model that encapsulates business rules -- independent of any persistence technology.
 

@@ -1,6 +1,6 @@
 # API Versioning
 
-> **速查**: URL 路径版本 `/api/v1/` 不用查询字符串 | 整个 Group 版本化不单个端点 | 弃用版本加 Sunset Header | `Asp.Versioning.Http` 做 API 版本管理 |
+> **Quick Ref**: URL path versioning /api/v1/ not query strings | Version entire Groups, not individual endpoints | Add Sunset Header for deprecated versions | Asp.Versioning.Http for API version management |
 
 API versioning strategies for ASP.NET Core using the `Asp.Versioning` library family. URL segment versioning (`/api/v1/`) is the preferred approach for simplicity and discoverability. This skill covers URL, header, and query string versioning with configuration for both Minimal APIs and MVC controllers, sunset policy enforcement, and migration from legacy packages.
 

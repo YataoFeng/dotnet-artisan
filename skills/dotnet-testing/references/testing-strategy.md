@@ -1,6 +1,6 @@
 # Testing Strategy
 
-> **速查**: 单元测试业务逻辑(xUnit) | 集成测试 API(Testcontainers) | E2E 测试关键流程(Playwright) | 不测实现细节测行为 | 不用 InMemory 做集成测试 | BenchmarkDotNet 做性能回归 |
+> **Quick Ref**: Unit test business logic (xUnit) | Integration test API (Testcontainers) | E2E test critical flows (Playwright) | Don't test implementation details, test behavior | Don't use InMemory for integration tests | BenchmarkDotNet for performance regression |
 
 Decision framework for choosing the right test type, organizing test projects, and selecting test doubles in .NET applications. Covers unit vs integration vs E2E trade-offs with concrete criteria, naming conventions, and when to use mocks vs fakes vs stubs.
 

@@ -1,6 +1,6 @@
 # EF Core Patterns
 
-> **速查**: DbContext 直接注入不加 Repository 包装 | 用 `.Select()` 投影不用懒加载 | 批量操作用 `ExecuteUpdateAsync/ExecuteDeleteAsync` | 热路径用 `EF.CompileAsyncQuery` | 迁移 SQL 必须 review | 不用 InMemory 做集成测试 | `AsNoTracking()` 读、`Include()` 写 | `AsSplitQuery()` 防笛卡尔爆炸
+> **Quick Ref**: Inject DbContext directly, don't wrap in Repository | Use .Select() projections, not lazy loading | Use ExecuteUpdateAsync/ExecuteDeleteAsync for batch operations | Use EF.CompileAsyncQuery for hot paths | Migration SQL must be reviewed | Don't use InMemory for integration tests | AsNoTracking() for reads, Include() for writes | AsSplitQuery() to prevent Cartesian explosion
 
 Tactical patterns for Entity Framework Core in .NET applications. Covers DbContext lifetime management, read-only query optimization, query splitting, migration workflows, interceptors, compiled queries, and connection resiliency. These patterns apply to EF Core 8+ and are compatible with SQL Server, PostgreSQL, and SQLite providers.
 

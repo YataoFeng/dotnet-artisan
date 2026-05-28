@@ -7,7 +7,6 @@ description: >
   and the 80-20 review principle. Load when "clean up", "de-sloppify", "code review",
   "tidy up", "remove dead code", "fix warnings", "tech debt".
   Merges de-sloppify + code-review-workflow + 80-20-review + wrap-up-ritual.
-  Merges de-sloppify + code-review-workflow + 80-20-review + wrap-up-ritual.
 ---
 
 # dotnet-quality

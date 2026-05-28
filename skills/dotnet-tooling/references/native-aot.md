@@ -1,6 +1,6 @@
 # Native AOT
 
-> **速查**: 不用反射/动态类型 | `System.Text.Json` 源生成代替 Newtonsoft | Mapperly 代替 AutoMapper | Mediator(MIT) 代替 MediatR | 显式 DI 注册代替动态扫描 | `dotnet publish -p:PublishAot=true` 验证 |
+> **Quick Ref**: Don't use reflection/dynamic types | System.Text.Json source-gen replaces Newtonsoft | Mapperly replaces AutoMapper | Mediator (MIT) replaces MediatR | Explicit DI registration replaces dynamic scanning | dotnet publish -p:PublishAot=true to verify |
 
 Full Native AOT compilation pipeline for .NET 8+ applications: `PublishAot` configuration, ILLink descriptor XML for type preservation, reflection-free coding patterns, P/Invoke considerations, binary size optimization, self-contained deployment with `runtime-deps` base images, and diagnostic analyzers (`EnableAotAnalyzer`/`EnableTrimAnalyzer`).
 

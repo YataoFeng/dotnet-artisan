@@ -1,6 +1,6 @@
 # Resilience
 
-> **速查**: 用 Polly v8 不用 v7 语法 | `AddStandardResilienceHandler()` 一行搞定 | 重试不用于非幂等 POST | 熔断器 + 重试 + 超时组合 | HttpClient 级别配置不用每次调用手动注入 | Polly v8 pipeline 通过 DI 注册
+> **Quick Ref**: Use Polly v8, not v7 syntax | AddStandardResilienceHandler() does it in one line | Don't use retry for non-idempotent POST | Circuit breaker + retry + timeout combination | Configure at HttpClient level, don't manually inject per call | Polly v8 pipeline registered through DI
 
 Modern resilience patterns for .NET applications using Polly v8 and `Microsoft.Extensions.Http.Resilience`. Covers the standard resilience pipeline (rate limiter, total timeout, retry, circuit breaker, attempt timeout), custom pipeline configuration, and integration with the .NET dependency injection system.
 

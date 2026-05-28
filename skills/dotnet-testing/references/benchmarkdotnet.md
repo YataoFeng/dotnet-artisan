@@ -1,6 +1,6 @@
 # BenchmarkDotNet
 
-> **速查**: `[Benchmark]` 标记被测方法 | MemoryDiagnoser 看分配 | 固定测试数据不用随机 | TimeProvider 代替 DateTime | 不看单次运行看统计 |
+> **Quick Ref**: [Benchmark] marks the method under test | MemoryDiagnoser to see allocations | Use fixed test data, not random | TimeProvider instead of DateTime | Don't look at single runs, look at statistics |
 
 
 Microbenchmarking guidance for .NET using BenchmarkDotNet v0.14+. Covers benchmark class setup, memory and disassembly diagnosers, exporters for CI artifact collection, baseline comparisons, and common pitfalls that invalidate measurements.

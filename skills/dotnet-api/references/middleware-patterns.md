@@ -1,6 +1,6 @@
 # Middleware Patterns
 
-> **速查**: `UseExceptionHandler` 在最前 | `UseAuthentication` 在 `UseAuthorization` 之前 | 不用异常做流程控制 | 错误返回统一用 RFC 9457 ProblemDetails | 不泄露内部实现到生产错误消息 | catch 特定异常不吞所有 | 生产环境 `env.IsDevelopment()` 只做调试
+> **Quick Ref**: UseExceptionHandler at the very front | UseAuthentication before UseAuthorization | Don't use exceptions for flow control | Use consistent RFC 9457 ProblemDetails for error responses | Don't leak internal implementation in production error messages | Catch specific exceptions, don't swallow all
 
 ASP.NET Core middleware patterns for the HTTP request pipeline. Covers correct ordering, writing custom middleware as classes or inline delegates, short-circuit logic, request/response manipulation, exception handling middleware, and conditional middleware registration.
 

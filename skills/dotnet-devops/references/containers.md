@@ -1,6 +1,6 @@
 # Containers
 
-> **速查**: 多阶段构建（SDK 编译 + Runtime 运行）| `COPY *.csproj` 先 restore 后 copy 源码用 Docker 缓存 | 不用 root 用户 `USER appuser` | 健康检查 `HEALTHCHECK` | SDK 镜像不用于运行 | `dotnet publish` 不用 SDK 容器工具时需要认证
+> **Quick Ref**: Multi-stage build (SDK compile + Runtime run) | COPY *.csproj first, restore, then copy source to leverage Docker cache | Don't use root, use USER appuser | HEALTHCHECK for health checks | SDK images are not for running | dotnet publish without SDK container tools requires authentication
 
 Best practices for containerizing .NET applications. Covers multi-stage Dockerfile patterns, the `dotnet publish` container image feature (.NET 8+), rootless container configuration, optimized layer caching, and container health checks.
 

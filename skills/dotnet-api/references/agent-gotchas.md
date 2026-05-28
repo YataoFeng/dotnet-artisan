@@ -1,6 +1,6 @@
 # Agent Gotchas
 
-> **速查**: Swashbuckle 不要加→用 Microsoft.AspNetCore.OpenApi | Scoped 不注入 Singleton | 不吞异常 | 不新建 HttpClient | 迁移先 Review SQL | User-Secrets 不硬编码密钥
+> **Quick Ref**: Don't add Swashbuckle—use Microsoft.AspNetCore.OpenApi | Don't inject Scoped into Singleton | Don't swallow exceptions | Don't create new HttpClient | Review SQL before migration | Don't hardcode secrets—use User-Secrets
 
 Common mistakes AI agents make when generating or modifying .NET code, organized by category. Each category provides a brief warning, anti-pattern code, corrected code, and a cross-reference to the canonical skill that owns the deep guidance. This skill does NOT provide full implementation walkthroughs -- it surfaces the mistake and points to the right skill.
 

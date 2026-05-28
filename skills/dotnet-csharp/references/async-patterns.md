@@ -1,6 +1,6 @@
 # Async Patterns
 
-> **速查**: async/await 一路到底不用 .Result/.Wait() | CancellationToken 端到端传播 | `async void` 仅限 UI 事件处理 | `ConfigureAwait(false)` 仅库代码 | `Task.Run` 不在 ASP.NET 中用 | BackgroundService 做后台任务 |
+> **Quick Ref**: async/await all the way, don't use .Result/.Wait() | CancellationToken propagated end-to-end | async void only for UI event handlers | ConfigureAwait(false) only in library code | Task.Run not used in ASP.NET | BackgroundService for background tasks |
 
 
 Async/await best practices for .NET applications. Covers correct task usage, cancellation propagation, and the most common mistakes AI agents make when generating async code.

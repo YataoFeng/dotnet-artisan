@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dotnet-artisan — .NET AI 编码技能库</title>
+<style>
+  :root {
+    --bg: #0a0e14; --surface: #12171e; --card: #181e28; --card-hover: #1e2632;
+    --fg: #b8c4d0; --fg-dim: #6b7888; --fg-bright: #e2e8f0;
+    --accent: #5b9cf5; --accent-dim: #3b7dd4; --accent-glow: #5b9cf533;
+    --border: #222a36; --border-light: #2a3442;
+    --green: #4ade80; --red: #f87171;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    background: linear-gradient(180deg, #0d1520 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border); padding: 4rem 1.5rem 3rem; text-align: center;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
+  .hero h1 span { background: linear-gradient(135deg, #5b9cf5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .sub { font-size: 1.1rem; color: var(--fg-dim); max-width: 560px; margin: 0.75rem auto 1rem; }
+  .hero .stats { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem; }
+  .hero .stat { text-align: center; }
+  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: var(--fg-bright); }
+  .hero .stat .lbl { font-size: 0.75rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+  nav {
+    display: flex; justify-content: center; gap: 0;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px);
+  }
+  nav button {
+    background: none; border: none; color: var(--fg-dim);
+    padding: 0.85rem 1.5rem; cursor: pointer; font-size: 0.9rem;
+    font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; font-family: inherit;
+  }
+  nav button:hover { color: var(--fg); }
+  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .tab { display: none; }
+  .tab.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; justify-content: center; }
+  .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .filters button {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg-dim);
+    padding: 0.4rem 0.9rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+    font-family: inherit; transition: all 0.2s; font-weight: 500;
+  }
+  .filters button:hover { border-color: var(--border-light); color: var(--fg); }
+  .filters button.on { background: var(--accent-glow); color: var(--accent); border-color: var(--accent); }
+  .search-box {
+    background: var(--card); border: 1px solid var(--border); color: var(--fg);
+    padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.8rem;
+    width: 200px; outline: none; font-family: inherit; transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--fg-dim); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.85rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.35rem;
+    cursor: pointer; transition: all 0.2s; overflow: hidden;
+  }
+  .card:hover { background: var(--card-hover); border-color: var(--border-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+  .card h3 { color: var(--accent); font-size: 0.95rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+  .card .tag { font-size: 0.65rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; background: var(--surface); padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .card p { color: var(--fg-dim); font-size: 0.85rem; line-height: 1.5; }
+  .card .arrow { font-size: 0.7rem; color: #3d4a5c; transition: transform 0.2s; }
+  .card.open .arrow { transform: rotate(180deg); }
+  .card .detail { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--fg-dim); }
+  .card.open .detail { display: block; }
+  .agent-list { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .agent-row:last-child { border-bottom: none; }
+  .agent-row:hover { background: var(--card-hover); }
+  .agent-row strong { color: var(--fg-bright); font-size: 0.88rem; font-weight: 600; }
+  .agent-row span { color: var(--fg-dim); font-size: 0.8rem; }
+  pre { background: #0a0e14; border-radius: var(--radius-sm); padding: 0.85rem 1rem; overflow-x: auto; font-size: 0.8rem; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.55; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; }
+  .good-code { border-left: 3px solid var(--green); background: #0a1a10; }
+  .bad-code { border-left: 3px solid var(--red); background: #1a0a0a; opacity: 0.85; }
+  .code-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+  .code-label.good { color: var(--green); }
+  .code-label.bad { color: var(--red); }
+  .install-block { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
+  .install-block code { background: #0a0e14; padding: 0.55rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.88rem; display: inline-block; }
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-top: 0.5rem; }
+  .principle-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
+  .principle-card h3 { color: var(--fg-bright); font-size: 0.9rem; margin-bottom: 0.35rem; }
+  h2 { font-size: 1.25rem; color: var(--fg-bright); margin-bottom: 1rem; font-weight: 700; border-left: 3px solid var(--accent); padding-left: 0.7rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 2.5rem 0 1.5rem; color: #3d4a5c; font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+  @media (max-width: 640px) {
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .hero .stats { gap: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    nav button { padding: 0.7rem 0.9rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1><span>dotnet</span>-artisan</h1>
+  <p class="sub">面向 AI 编码代理的 .NET 开发技能库 — Claude Code / GitHub Copilot / VS Code / Cursor</p>
+  <div class="stats">
+    <div class="stat"><div class="num">14</div><div class="lbl">技能</div></div>
+    <div class="stat"><div class="num">17</div><div class="lbl">代理</div></div>
+    <div class="stat"><div class="num">160+</div><div class="lbl">参考文件</div></div>
+    <div class="stat"><div class="num">90+</div><div class="lbl">反模式</div></div>
+    <div class="stat"><div class="num">MIT</div><div class="lbl">许可</div></div>
+  </div>
+  <div style="margin-top:1rem">
+    <span style="display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:0.15rem 0.7rem;font-size:0.72rem;color:var(--fg-dim);margin:0.15rem">零商业依赖</span>
+    <span style="display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:0.15rem 0.7rem;font-size:0.72rem;color:var(--fg-dim);margin:0.15rem">agentskills.io 标准</span>
+    <span style="display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:0.15rem 0.7rem;font-size:0.72rem;color:var(--fg-dim);margin:0.15rem">.NET 8–11</span>
+  </div>
+  <div style="margin-top:0.6rem"><span style="display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin-right:0.4rem;animation:pulse 2s infinite"></span><span style="color:var(--fg-dim);font-size:0.78rem">持续进化中：找老师 → 学模式 → 自优化 → 磨页面 → 重复</span></div>
+</div>
+
+<nav>
+  <button class="active" onclick="switchTab('skills')">技能</button>
+  <button onclick="switchTab('agents')">代理</button>
+  <button onclick="switchTab('install')">安装</button>
+  <button onclick="switchTab('patterns')">反模式</button>
+  <button onclick="switchTab('rules')">铁律</button>
+  <button onclick="switchTab('packages')">包对照</button>
+  <button onclick="switchTab('flow')">架构</button>
+  <a href="index.html" style="display:flex;align-items:center;padding:0.85rem 1rem;color:var(--fg-dim);font-size:0.85rem;text-decoration:none;border-bottom:2px solid transparent;transition:all 0.2s" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg-dim)'">EN</a>
+</nav>
+
+<div class="container">
+
+<div id="skills" class="tab active">
+  <div class="controls">
+    <div class="filters">
+      <button class="on" onclick="filterSkills('all', this)">全部</button>
+      <button onclick="filterSkills('core', this)">核心</button>
+      <button onclick="filterSkills('domain', this)">领域</button>
+      <button onclick="filterSkills('meta', this)">元技能</button>
+    </div>
+    <input type="text" class="search-box" placeholder="搜索技能..." oninput="searchSkills()" id="skillSearch">
+  </div>
+  <div class="grid" id="skillGrid"></div>
+</div>
+
+<div id="agents" class="tab">
+  <p style="color:var(--fg-dim);margin-bottom:1rem">17 个专家子代理，由 dotnet-advisor 自动调用进行深度分析。</p>
+  <div class="agent-list" id="agentList"></div>
+</div>
+
+<div id="install" class="tab">
+  <h2>Claude Code</h2>
+  <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+    <code style="flex:1;min-width:250px">claude plugins install YataoFeng/dotnet-artisan</code>
+    <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">复制</button>
+  </div>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">同时兼容 GitHub Copilot、VS Code、Cursor — 遵循 <a href="https://agentskills.io">agentskills.io</a> 开放标准。</p>
+
+  <h2>核心原则</h2>
+  <div class="principle-grid">
+    <div class="principle-card"><h3>KISS 优先</h3><p style="color:var(--fg-dim);font-size:0.82rem">简单 CRUD 不需要 DDD 或 CQRS。按问题规模选择模式。</p></div>
+    <div class="principle-card"><h3>禁止仓储包装</h3><p style="color:var(--fg-dim);font-size:0.82rem">直接使用 DbContext。EF Core 本身就是仓储和工作单元。</p></div>
+    <div class="principle-card"><h3>版本自适应</h3><p style="color:var(--fg-dim);font-size:0.82rem">自动适配 net8.0 到 net11.0，知道每个 TFM 可用的特性。</p></div>
+    <div class="principle-card"><h3>免费 & 开源</h3><p style="color:var(--fg-dim);font-size:0.82rem">仅用微软推荐 + MIT 协议包。零商业依赖。</p></div>
+  </div>
+</div>
+
+<div id="patterns" class="tab">
+  <p style="color:var(--fg-dim);margin-bottom:1rem">最常见的错误 vs 正确写法。点击展开查看详情。</p>
+  <div class="grid">
+    <div class="card" onclick="this.classList.toggle('open')"><h3>DI 生命周期不匹配 <span class="tag">严重</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — Scoped 注入到 Singleton</div><pre class="bad-code"><code>builder.Services.AddSingleton&lt;ICache, MyCache&gt;();
+public class MyCache(AppDbContext db) : ICache { } // DbContext 是 Scoped！</code></pre><div class="code-label good">正确 — 在 Singleton 中使用 IServiceScopeFactory</div><pre class="good-code"><code>public class MyCache(IServiceScopeFactory sf) : ICache
+{
+  public async Task&lt;T&gt; Get&lt;T&gt;(string k, Func&lt;AppDbContext,Task&lt;T&gt;&gt; f) {
+    using var scope = sf.CreateScope();
+    return await f(scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;());
+  }
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>DateTime.Now → TimeProvider <span class="tag">常见</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 不可测试</div><pre class="bad-code"><code>var order = new Order { CreatedAt = DateTime.Now };</code></pre><div class="code-label good">正确 — 可注入可测试</div><pre class="good-code"><code>public class OrderService(AppDbContext db, TimeProvider clock) {
+  var order = new Order { CreatedAt = clock.GetLocalNow().DateTime };
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>EF Core N+1 查询 <span class="tag">性能</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 每个订单一次查询</div><pre class="bad-code"><code>var orders = await db.Orders.Where(...).ToListAsync();
+foreach (var o in orders)
+  o.Items = await db.OrderItems.Where(i => i.OrderId == o.Id).ToListAsync();</code></pre><div class="code-label good">正确 — 一次 Include 查询</div><pre class="good-code"><code>var orders = await db.Orders.Include(o => o.Items).AsNoTracking().ToListAsync();</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>仓储包装 DbContext <span class="tag">反模式</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 无用抽象，隐藏 IQueryable</div><pre class="bad-code"><code>public interface IRepository&lt;T&gt; { Task&lt;T&gt; GetById(int id); }
+public class Repository&lt;T&gt;(AppDbContext db) : IRepository&lt;T&gt; { }</code></pre><div class="code-label good">正确 — 直接使用 DbContext</div><pre class="good-code"><code>public class OrderService(AppDbContext db) {
+  public async Task&lt;Order?&gt; Get(int id) => await db.Orders.FindAsync(id);
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>.Result / .Wait() 死锁 <span class="tag">严重</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 阻塞线程，可能死锁</div><pre class="bad-code"><code>var data = GetDataAsync().Result; // 同步等异步 = 死锁</code></pre><div class="code-label good">正确 — 异步一路到底</div><pre class="good-code"><code>var data = await GetDataAsync();</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>缺少 CancellationToken <span class="tag">常见</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 无法取消</div><pre class="bad-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q)
+  => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync();</code></pre><div class="code-label good">正确 — 传播 CancellationToken</div><pre class="good-code"><code>public async Task&lt;List&lt;Product&gt;&gt; Search(string q, CancellationToken ct = default)
+  => await db.Products.Where(p => p.Name.Contains(q)).ToListAsync(ct);</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>new HttpClient() 耗尽 Socket <span class="tag">性能</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 每次请求创建新连接，高负载下耗尽端口</div><pre class="bad-code"><code>using var client = new HttpClient();
+var result = await client.GetStringAsync(url);</code></pre><div class="code-label good">正确 — IHttpClientFactory 管理连接池</div><pre class="good-code"><code>public class ApiClient(IHttpClientFactory factory) {
+  public async Task&lt;string&gt; Get(string url) {
+    var client = factory.CreateClient("api");
+    return await client.GetStringAsync(url);
+  }
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>异常做流程控制 <span class="tag">严重</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 异常用于预期业务结果</div><pre class="bad-code"><code>public Order GetOrder(Guid id) {
+  return db.Orders.Find(id) ?? throw new NotFoundException();
+}</code></pre><div class="code-label good">正确 — Result 模式处理预期失败</div><pre class="good-code"><code>public Result&lt;Order&gt; GetOrder(Guid id) {
+  var order = db.Orders.Find(id);
+  return order is not null ? Result.Success(order) : Result.Failure();
+}</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>硬编码密钥 <span class="tag">安全</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — 密钥提交到源码控制</div><pre class="bad-code"><code>const string ApiKey = "sk-abc123xyz";
+var connStr = "Server=prod;Password=Secret123!";</code></pre><div class="code-label good">正确 — User Secrets + 环境变量 / Key Vault</div><pre class="good-code"><code>var apiKey = builder.Configuration["ApiKey"];
+var connStr = builder.Configuration.GetConnectionString("Default");</code></pre></div></div>
+
+    <div class="card" onclick="this.classList.toggle('open')"><h3>Swashbuckle 用于 .NET 10 <span class="tag">过时</span><span class="arrow">&#9660;</span></h3><div class="detail"><div class="code-label bad">错误 — Swashbuckle 停止维护，不支持 Native AOT</div><pre class="bad-code"><code>builder.Services.AddSwaggerGen();
+app.UseSwagger(); app.UseSwaggerUI();</code></pre><div class="code-label good">正确 — 微软内置 OpenAPI + Scalar</div><pre class="good-code"><code>builder.Services.AddOpenApi();
+app.MapOpenApi(); // /openapi/v1.json
+app.MapScalarApiReference(); // 现代 API 文档 UI</code></pre></div></div>
+  </div>
+</div>
+
+<div id="rules" class="tab">
+  <h2>不可协商的铁律</h2>
+  <div class="grid">
+    <div class="card"><h3>1. 禁止 Repository / UoW</h3><p>DbContext 就是工作单元，DbSet&lt;T&gt; 就是仓储。不要包一层无意义的 IRepository 和 IUnitOfWork。</p></div>
+    <div class="card"><h3>2. 禁止 FluentValidation</h3><p>.NET 10+ 使用内置 AddValidation() + DataAnnotations。源生成、AOT 兼容、零依赖。</p></div>
+    <div class="card"><h3>3. 禁止 DateTime.Now</h3><p>全项目使用 TimeProvider。构造函数注入，单元测试用 TimeProvider.Fake()。</p></div>
+    <div class="card"><h3>4. 仅免费/开源</h3><p>MediatR→Mediator(MIT)、AutoMapper→Mapperly、Newtonsoft→STJ、Swashbuckle→Microsoft.AspNetCore.OpenApi。</p></div>
+    <div class="card"><h3>5. DbContext 直接注入</h3><p>注入 AppDbContext 到 Handler，不创建 IOrderRepository 接口。EF Core 本身就是完整的仓储实现。</p></div>
+    <div class="card"><h3>6. async/await 一路到底</h3><p>禁止 .Result、.Wait()、async void（UI 事件除外）。CancellationToken 端到端传播。</p></div>
+    <div class="card"><h3>7. 参数化查询</h3><p>禁止 SQL 字符串拼接。用 FromSqlInterpolated 或 LINQ。密钥放 user-secrets/KeyVault，禁止硬编码。</p></div>
+    <div class="card"><h3>8. 测试用 Testcontainers</h3><p>集成测试用真实数据库（Testcontainers），禁止 InMemory。测行为不测实现细节。</p></div>
+  </div>
+</div>
+
+<div id="flow" class="tab">
+  <h2>技能路由架构</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.5rem">AI 代理如何导航技能系统</p>
+  <div style="display:flex;flex-wrap:wrap;gap:1.5rem">
+  <div style="flex:1;min-width:300px">
+    <pre style="background:var(--card);padding:1.5rem;font-size:0.82rem;line-height:1.9;overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)">
+  用户提问 (.NET)
+       │
+       ▼
+  ┌─────────────┐
+  │ using-dotnet │  ← 意图检测
+  └──────┬──────┘
+         ▼
+  ┌──────────────┐
+  │ dotnet-advisor│  ← 技能路由
+  └──────┬───────┘
+         ▼
+  ┌──────┴──────┐
+  ▼             ▼
+┌─────────┐ ┌──────────┐
+│dotnet-  │ │dotnet-ui │
+│api      │ │dotnet-   │
+│testing  │ │devops    │
+│tooling  │ │debugging │
+│ai       │ └──────────┘
+│upgrade  │
+└─────────┘
+  │
+  ▼
+┌──────────────┐
+│ dotnet-csharp │ ← 始终加载
+└──────────────┘
+  │
+  ▼
+┌──────────────┐
+│ 元技能 (按需) │
+│ quality      │
+│ workflow     │
+│ learning     │
+└──────────────┘</pre>
+  </div>
+  <div style="flex:1;min-width:280px">
+    <h2 style="font-size:1rem">常驻基线（始终加载）</h2>
+    <div style="color:var(--fg-dim);font-size:0.85rem;line-height:2">
+      <div>1. anti-patterns.md — 好/坏代码</div>
+      <div>2. code-smells.md — 常见错误</div>
+      <div>3. async-patterns.md — 异步规范</div>
+      <div>4. solid-principles.md — SOLID 原则</div>
+      <div>5. DECISIONS.md — 决策指南</div>
+      <div>6. CHEATSHEET.md — 一页速查</div>
+      <div>7. package-choices.md — 包对照</div>
+      <div>8. coding-standards.md — 编码规范</div>
+      <div>9. dotnet-releases.md — 版本特性</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div id="packages" class="tab">
+  <h2>商业/废弃包 → 免费/开源替代</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1.25rem">本项目强制使用免费开源方案。以下为对照表。</p>
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+    <thead><tr style="text-align:left;border-bottom:2px solid var(--border)">
+      <th style="padding:0.7rem;color:var(--red)">禁止使用</th>
+      <th style="padding:0.7rem;color:var(--green)">替代方案</th>
+      <th style="padding:0.7rem;color:var(--fg-dim)">原因</th>
+    </tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">MediatR（商业）</td><td style="padding:0.6rem 0.7rem">直接 Handler 调用 / Mediator (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">免费，AOT 兼容，零反射</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">FluentValidation</td><td style="padding:0.6rem 0.7rem">AddValidation() + DataAnnotations</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">内置，源生成，AOT 兼容</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">AutoMapper（商业）</td><td style="padding:0.6rem 0.7rem">手动映射 / Mapperly (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">编译时，更快，无运行时魔法</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">Newtonsoft.Json</td><td style="padding:0.6rem 0.7rem">System.Text.Json + 源生成</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">内置，AOT 兼容，更快</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">Swashbuckle（停止维护）</td><td style="padding:0.6rem 0.7rem">Microsoft.AspNetCore.OpenApi</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">微软官方，OpenAPI 3.1</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">SwaggerUI</td><td style="padding:0.6rem 0.7rem">Scalar API Reference (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">现代、轻量、MIT</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">BinaryFormatter（已删除）</td><td style="padding:0.6rem 0.7rem">System.Text.Json / Protobuf</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">安全、跨平台</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">log4net / NLog</td><td style="padding:0.6rem 0.7rem">Serilog (Apache 2.0)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">结构化日志，更好的生态</td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.6rem 0.7rem">IdentityServer4（EOL）</td><td style="padding:0.6rem 0.7rem">Duende（社区版免费）/ Keycloak</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">维护中，安全更新</td></tr>
+      <tr><td style="padding:0.6rem 0.7rem">MongoDB.Driver (SSPL)</td><td style="padding:0.6rem 0.7rem">PostgreSQL + EF Core / Marten (MIT)</td><td style="padding:0.6rem 0.7rem;color:var(--fg-dim)">真正开源，无协议顾虑</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+</div>
+
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})" id="topBtn" style="position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#fff;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;opacity:0;transition:opacity 0.3s;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,0.3)" title="回到顶部">↑</button>
+<script>window.addEventListener('scroll',()=>document.getElementById('topBtn').style.opacity=window.scrollY>400?'1':'0')</script>
+
+<footer>
+  <p>融合自 <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>、<a href="https://github.com/dotnet/skills">dotnet/skills</a> 和 <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
+  <p style="margin-top:0.3rem">
+    <a href="https://github.com/YataoFeng/dotnet-artisan">GitHub</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/INDEX.md">索引</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/DECISIONS.md">决策</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/AGENTS.md">AGENTS.md</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/YataoFeng/dotnet-artisan/blob/main/skills/CHEATSHEET.md">速查表</a>
+  </p>
+  <p style="margin-top:0.5rem;font-size:0.7rem">持续进化中：找老师 → 学模式 → 自优化 → 磨页面 → 重复。页面加载于 <span id="loadTime"></span></p>
+</footer>
+
+<script>
+const skills = [
+  { name:"using-dotnet", cat:"core", desc:"检测 .NET 意图，路由网关 — 始终最先加载" },
+  { name:"dotnet-advisor", cat:"core", desc:"技能路由器，版本检测，跨域协调" },
+  { name:"dotnet-csharp", cat:"core", desc:"C# 模式、async/await、DI、LINQ、领域建模、源生成器" },
+  { name:"dotnet-api", cat:"domain", desc:"ASP.NET Core、EF Core、gRPC、SignalR、安全、弹性、缓存" },
+  { name:"dotnet-ui", cat:"domain", desc:"Blazor、MAUI、Uno Platform、WPF、WinUI、WinForms" },
+  { name:"dotnet-testing", cat:"domain", desc:"xUnit v3、Playwright、基准测试、测试质量分析" },
+  { name:"dotnet-devops", cat:"domain", desc:"CI/CD、GitHub Actions、Azure DevOps、容器、NuGet" },
+  { name:"dotnet-tooling", cat:"domain", desc:"MSBuild、Native AOT、CLI 应用、性能分析、SDK 安装" },
+  { name:"dotnet-debugging", cat:"domain", desc:"WinDbg、崩溃转储、死锁分析、内存诊断" },
+  { name:"dotnet-ai", cat:"domain", desc:"MCP 服务器、Semantic Kernel、RAG 流水线、ML.NET" },
+  { name:"dotnet-upgrade", cat:"domain", desc:".NET 版本迁移、AOT 兼容性、nullable 迁移" },
+  { name:"dotnet-quality", cat:"meta", desc:"7 步清理流水线、代码评审、死代码移除、技术债" },
+  { name:"dotnet-workflow", cat:"meta", desc:"并行工作树、上下文管理、验证循环、Claude Code 优化" },
+  { name:"dotnet-learning", cat:"meta", desc:"纠错捕获、直觉系统、模式学习、MEMORY.md 管理" }
+];
+
+const agents = [
+  ["dotnet-architect","架构审查、框架选择、设计模式"],
+  ["dotnet-aspnetcore-specialist","ASP.NET Core 中间件、请求流水线、DI 生命周期"],
+  ["dotnet-async-performance-specialist","Async/await 性能、ValueTask、ConfigureAwait"],
+  ["dotnet-benchmark-designer","基准测试方法、测量验证"],
+  ["dotnet-blazor-specialist","Blazor 组件、渲染模式、托管模型"],
+  ["dotnet-build-error-resolver","MSBuild 错误诊断和系统化解决"],
+  ["dotnet-cloud-specialist","云部署、Aspire、AKS、CI/CD"],
+  ["dotnet-code-review-agent","代码评审：正确性、性能、安全"],
+  ["dotnet-csharp-concurrency-specialist","竞态条件、死锁、线程安全"],
+  ["dotnet-docs-generator","文档生成、XML 文档、Mermaid 图表"],
+  ["dotnet-maui-specialist",".NET MAUI 开发、平台目标"],
+  ["dotnet-performance-analyst","性能分析、火焰图、堆转储"],
+  ["dotnet-refactor-cleaner","7 步清理流水线、死代码移除"],
+  ["dotnet-security-reviewer","OWASP 合规、密钥暴露、加密审查"],
+  ["dotnet-testing-specialist","测试架构、测试数据管理"],
+  ["dotnet-uno-specialist","Uno Platform、Extensions、MVUX"]
+];
+
+function searchSkills() {
+  const q = document.getElementById('skillSearch').value.toLowerCase();
+  const grid = document.getElementById('skillGrid');
+  const filtered = skills.filter(s => !q || s.name.includes(q) || s.desc.toLowerCase().includes(q));
+  grid.innerHTML = filtered.map(s => `<div class="card" onclick="this.classList.toggle('open')">
+    <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
+    <p>${s.desc}</p>
+    <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">查看 SKILL.md &rarr;</a></div>
+  </div>`).join('');
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
+}
+
+function renderList(filter) {
+  document.getElementById('skillGrid').innerHTML = skills.filter(s => filter === 'all' || s.cat === filter)
+    .map(s => `<div class="card" onclick="this.classList.toggle('open')">
+      <h3>${s.name} <span class="tag">${s.cat}</span><span class="arrow">&#9660;</span></h3>
+      <p>${s.desc}</p>
+      <div class="detail"><a href="https://github.com/YataoFeng/dotnet-artisan/tree/main/skills/${s.name}">查看 SKILL.md &rarr;</a></div>
+    </div>`).join('');
+}
+
+function filterSkills(cat, btn) {
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('skillSearch').value = '';
+  renderList(cat);
+}
+
+function renderAgents() {
+  document.getElementById('agentList').innerHTML = agents.map(a =>
+    `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
+}
+
+function copyInstall() {
+  navigator.clipboard.writeText('claude plugins install YataoFeng/dotnet-artisan');
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = '已复制！';
+  btn.style.background = 'var(--green)';
+  setTimeout(() => { btn.textContent = '复制'; btn.style.background = 'var(--accent)'; }, 2000);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  document.querySelector(`nav button[onclick*="${name}"]`).classList.add('active');
+}
+
+renderList('all');
+renderAgents();
+document.getElementById('loadTime').textContent = new Date().toLocaleString('zh-CN', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+</script>
+</body>
+</html>

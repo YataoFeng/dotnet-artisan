@@ -1,6 +1,6 @@
 # HTTP Client
 
-> **速查**: 用 `IHttpClientFactory` 不用 `new HttpClient()` | Typed Client 不注册为 Singleton | 用 `AddStandardResilienceHandler()` 一行搞定重试+熔断+超时 | 不修改共享 Client 的 DefaultRequestHeaders | 每个请求都传 CancellationToken | 不多层叠 Resilience Handler
+> **Quick Ref**: Use IHttpClientFactory, not new HttpClient() | Don't register Typed Client as Singleton | Use AddStandardResilienceHandler() for retry+circuit breaker+timeout in one line | Don't modify a shared Client's DefaultRequestHeaders | Pass CancellationToken with every request
 
 Best practices for consuming HTTP APIs in .NET applications using `IHttpClientFactory`. Covers named and typed clients, resilience pipeline integration, `DelegatingHandler` chains for cross-cutting concerns, and testing strategies.
 

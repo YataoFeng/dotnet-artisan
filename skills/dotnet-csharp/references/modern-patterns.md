@@ -1,6 +1,6 @@
 # Modern Patterns
 
-> **速查**: DTO 用 `record` | 集合用 `[]` 不用 `new List<T>()` | 主构造函数做 DI 注入 | `field` 关键字做属性验证 | 模式匹配不用深层嵌套 | `var` 只在类型明显时用 | `required` 修饰必填属性
+> **Quick Ref**: Use record for DTOs | Use [] for collections, not new List<T>() | Primary constructors for DI injection | field keyword for property validation | Pattern matching without deep nesting | var only when type is obvious | required for mandatory properties
 Modern C# language feature guidance adapted to the project's target framework. Always run [skill:dotnet-tooling] first to determine TFM and C# version.
 
 ## Quick Reference: TFM to C# Version

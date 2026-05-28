@@ -1,6 +1,6 @@
 # Aspire Patterns
 
-> **速查**: AppHost 只做本地开发不做生产部署 | `AddServiceDefaults()` 一行搞定 OTEL+健康检查+弹性 | 不用硬编码连接串→用 Aspire Integration | `AddNpgsqlDbContext<T>("name")` 自动注入连接串 |
+> **Quick Ref**: AppHost for local dev only, not production deployment | AddServiceDefaults() sets up OTEL + health checks + resilience in one line | Don't hardcode connection strings—use Aspire Integration | AddNpgsqlDbContext<T>("name") auto-injects the connection string |
 
 .NET Aspire orchestration patterns for building cloud-ready distributed applications. Covers AppHost configuration, service discovery, the component model for integrating backing services (databases, caches, message brokers), the Aspire dashboard for local observability, distributed health checks, and when to choose Aspire vs manual container orchestration.
 

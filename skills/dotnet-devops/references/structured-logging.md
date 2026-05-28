@@ -1,6 +1,6 @@
 # Structured Logging
 
-> **速查**: 用消息模板不用字符串插值 `LogInformation("Order {Id}", id)` 不 `$"Order {id}"` | 不记录密码/Token/PII | 生产用 Warning 级别 | Serilog `CloseAndFlush()` 在退出前 | 解构用 `@` 但限制深度 | 健康检查分 `/health/live` 和 `/health/ready`
+> **Quick Ref**: Use message templates, not string interpolation: LogInformation("Order {Id}", id) not $"Order {id}" | Don't log passwords/Tokens/PII | Use Warning level in production | Serilog CloseAndFlush() before exit | Use @ for destructuring but limit depth | Separate health checks into /health/live and /health/ready
 
 Log pipeline design and operations for .NET distributed systems. Covers log aggregation architecture (ELK, Seq, Grafana Loki), structured query patterns for each platform, log sampling and volume management strategies, PII scrubbing and destructuring policies, and cross-service correlation beyond single-service log scopes. This skill addresses what happens _after_ log emission -- the pipeline, query, and operations layer.
 

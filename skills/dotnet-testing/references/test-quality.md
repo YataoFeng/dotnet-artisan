@@ -1,6 +1,6 @@
 # Test Quality
 
-> **速查**: 不用 InMemory 做集成测试→用 Testcontainers | 测试行为不测试实现细节 | 每个测试独立不共享可变状态 | 断言具体结果不用 Assert.True() 无上下文 | 不用 static shared state | CRAP>20 必须重构加测试
+> **Quick Ref**: Don't use InMemory for integration tests—use Testcontainers | Test behavior, not implementation details | Each test is independent, don't share mutable state | Assert specific results, don't use Assert.True() without context | Don't use static shared state | CRAP > 20 must be refactored and tested
 Test quality analysis for .NET projects. Covers code coverage collection with coverlet, human-readable coverage reports with ReportGenerator, CRAP (Change Risk Anti-Patterns) score analysis to identify undertested complex code, mutation testing with Stryker.NET to evaluate test suite effectiveness, and strategies for detecting and managing flaky tests.
 
 **Version assumptions:** Coverlet 6.x+, ReportGenerator 5.x+, Stryker.NET 4.x+ (.NET 8.0+ baseline). Coverlet supports both the MSBuild integration (`coverlet.msbuild`) and the `coverlet.collector` data collector; examples use `coverlet.collector` as the recommended approach.
