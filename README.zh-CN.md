@@ -178,6 +178,7 @@ claude plugins install YataoFeng/dotnet-artisan
 | `dotnet-maui-specialist` | MAUI、Xamarin 迁移 | "做一个手机应用" |
 | `dotnet-performance-analyst` | 火焰图、堆转储、GC | "找出性能瓶颈在哪" |
 | `dotnet-uno-specialist` | Uno Platform、MVUX | "跨平台桌面应用？" |
+| `dotnet-pr-workflow` | PR 生命周期、合并、发布 | "创建 PR"、"合并"、"发布" |
 
 ---
 

@@ -176,6 +176,7 @@ When a specialist needs a deeper look, it calls in an expert advisor. These are 
 | `dotnet-maui-specialist` | MAUI, Xamarin migration | "Build a mobile app" |
 | `dotnet-performance-analyst` | Flame graphs, heap dumps, GC | "Find the performance bottleneck" |
 | `dotnet-uno-specialist` | Uno Platform, MVUX | "Cross-platform desktop app?" |
+| `dotnet-pr-workflow` | PR lifecycle, merge, release | "Create a PR", "merge this", "release" |
 
 ---
 
