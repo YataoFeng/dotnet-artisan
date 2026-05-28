@@ -84,24 +84,64 @@ flowchart TD
 
 Seven common scenarios showing the decision-maker aligning requirements then routing to execution.
 
-### 1. Building a New API
+### 1. Building an Order Management System
+
+
 
 ```
+
 You: I need an order management system
+
+
 
 AI: What kind of orders? Purchase orders, work orders, or customer orders?
 
-You: Customer orders. Status: Pending → Confirmed → Shipped.
+    Who will use this?
 
-AI: Got it. Tech stack? .NET 10 or 8? PostgreSQL or SQLite? Production or prototype?
-    Should I include tests?
 
-You: .NET 10, PostgreSQL, production, with tests.
 
-Chain: intent detection → 3 rounds of questions → domain vocabulary capture →
-       architecture selection → scaffold OrderManagement.Api →
-       EF Core + Minimal API + auth → Testcontainers integration tests →
-       every file follows the 30-second rule
+You: Customer orders — handled by the sales team. We might split order and
+
+     payment into separate services later.
+
+
+
+AI: Let me work out the architecture. If you might split later, I recommend
+
+    a modular monolith to start — separate projects per domain, single deployment.
+
+    Domain-Driven Design (DDD) fits here: Order, Payment, and Inventory as
+
+    bounded contexts. Sound good?
+
+
+
+You: Yes, but our team hasn't used DDD before.
+
+
+
+AI: That's fine — we'll use DDD tactically (aggregates, entities, value objects,
+
+    domain events) without strategic context mapping. Your team can learn as we go.
+
+    Tech stack: .NET 10 + PostgreSQL. Need CI/CD and tests?
+
+
+
+You: Yes.
+
+
+
+Chain: intent detection → 4 rounds of questions (domain → architecture →
+
+       tech → quality) → domain vocabulary capture → architecture decision
+
+       (modular monolith + DDD tactical) → decompose domains: [Order, Payment,
+
+       Inventory] → parallel routing → dotnet-api + dotnet-testing +
+
+       dotnet-devops + dotnet-tooling → one project per domain
+
 ```
 
 ### 2. Debugging a Production Crash (OOM)

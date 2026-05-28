@@ -29,20 +29,48 @@ Before any .NET guidance, determine the project's target framework:
 
 > Load [skill:dotnet-tooling] version detection guidance to read TFMs from `.csproj`, `Directory.Build.props`, and `global.json`. Adapt all guidance to the detected .NET version (net8.0, net9.0, net10.0, net11.0).
 
-## Step 1.5: Align Requirements (NEW)
+## Step 1.5: Align Requirements & Architecture
 
 For ANY request that is ambiguous, incomplete, or where you cannot confidently describe what needs to be built — **STOP. Ask questions first. Never write code on assumptions.**
 
-Follow the USAGE.md questioning framework. Key areas to clarify:
+This is a multi-round dialogue. Do not try to ask everything at once — start with the highest-uncertainty items and narrow down.
 
-1. **Goal & Scope** — What exactly needs to be built? Production or prototype? Timeline?
-2. **Domain Discovery** — Business terminology, entities, relationships, workflows, statuses
-3. **Technical Constraints** — .NET version, database, hosting, auth requirements, testing expectations
-4. **Quality & Process** — Tests needed? Performance targets? Security requirements? CI/CD?
+### Round 1: Goal & Domain
 
-After aligning, capture the domain vocabulary and feed it to the domain skill for context.
+What exactly needs to be built? What business domain does it serve? Who uses it?
 
-> When the user's request is a full, unambiguous spec (e.g., "Add a GET /products endpoint that returns all products"), skip this step and route directly.
+> **Example dialogue:**
+> User: "I need an order management system."
+> AI: "What kind of orders? Purchase orders, work orders, or customer orders? Who will use this?"
+> User: "Customer orders. Our sales team will process them."
+
+### Round 2: Architecture & Decomposition
+
+Based on the domain, determine the architecture approach:
+
+- **Is this a monolith, modular monolith, or microservices?** — If unsure, start with modular monolith. You can split later.
+- **Are we using DDD?** — Only if the domain has real complexity (multiple bounded contexts, evolving business rules,ubiquitous language needed). Simple CRUD does not need DDD.
+- **What are the bounded contexts / service boundaries?** — Map them from domain events and workflows.
+- **What communication patterns between services?** — HTTP for request-response, gRPC for high-performance, messaging (RabbitMQ/ Azure Service Bus) for events.
+- **What data strategy?** — Database per service for microservices; shared database for monolith.
+- **What UI platforms?** — Web (Blazor), desktop (WPF/MAUI), mobile (MAUI), or all?
+
+When DDD is chosen, load [skill:dotnet-tooling] `references/domain-analysis.md` for event storming, bounded context mapping, and ubiquitous language glossary.
+
+### Round 3: Technical Constraints
+
+- .NET version, database (PostgreSQL/SQL Server/Cosmos DB?), hosting (cloud/on-prem?), authentication, CI/CD requirements
+- Production or prototype? Timeline?
+
+### Round 4: Quality & Process
+
+- Tests needed? Performance targets? Security requirements? Observability?
+
+### Output
+
+After aligning, produce a **domain vocabulary** (key terms and their meanings) and an **architecture sketch** (service boundaries, communication patterns, data strategy). Feed these to all domain skills invoked in Step 4.
+
+> When the user's request is a full, unambiguous spec (e.g., "Add a GET /products endpoint that returns all products"), skip all rounds and route directly.
 
 ## Step 2: Load Baseline
 
