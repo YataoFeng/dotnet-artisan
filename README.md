@@ -39,10 +39,94 @@ AI：.NET 10 + PostgreSQL。先捕获领域词汇，再搭建模块。
 
 **你不需要记任何技能名。** 决策者会自动分析项目、问清需求、选对架构。试试这些话：
 
-> "帮我看看这个项目的架构有没有问题"
+> "加个订单管理模块"
+> "生产环境 OOM 了，这是 dump 文件"
 > "审查这段代码的安全性"
-> "我的应用在生产环境崩了，这是转储文件"
+> "给这个订单服务写测试"
 > "从 .NET 8 升级到 .NET 10"
+> "配置 CI/CD 流水线"
+> "订单列表越来越慢了，查一下数据库"
+
+---
+
+## 真实场景
+
+以下是七个常见场景，展示插件如何从一句话到交付结果。
+
+### 1. 从零搭建 Web API
+
+```
+你："在这个项目里加一个订单管理模块"
+
+AI：决策者检测到新功能需求，开始分析项目结构。发现尚无 EF Core 配置，
+    先问清订单类型和状态流转。确认是顾客下单 + PostgreSQL 后，路由到
+    dotnet-api。自动搭建项目结构、配置 DbContext、创建 Minimal API
+    端点、添加 OpenAPI 文档。全部遵循项目现有约定。
+```
+
+### 2. 排查生产崩溃（内存溢出）
+
+```
+你："生产环境 OOM 了，这是 dump 文件"
+
+AI：决策者识别到调试需求，路由到 dotnet-debugging 代理。打开 dump 文件
+    运行 !analyze -v，发现 80% 内存被一个静态 ConcurrentDictionary 占用。
+    进一步 !gcroot 追踪到未注销的事件处理器在不断累积。给出修复方案和
+    上线前验证步骤。
+```
+
+### 3. 代码审查与安全审计
+
+```
+你："审查这段代码的安全性"
+
+AI：决策者路由到 dotnet-security-reviewer（只读代理）。逐文件检查代码：
+    发现两处 SQL 拼接、一处硬编码密钥、JWT 验证缺少 Audience 校验。
+    生成安全报告，标注风险等级和修复建议。不修改代码。
+```
+
+### 4. 为现有代码补测试
+
+```
+你："给这个订单服务写测试"
+
+AI：决策者路由到 dotnet-testing。分析现有代码后判断：核心逻辑适合单元测试，
+    数据库操作需要集成测试。自动创建 xUnit 项目，用 WebApplicationFactory
+    启动测试宿主，Testcontainers 启动 PostgreSQL 容器。覆盖正常流程、
+    边界条件和异常路径。
+```
+
+### 5. 从 .NET 8 升级到 .NET 10
+
+```
+你："把这个项目从 .NET 8 升到 .NET 10"
+
+AI：决策者路由到 dotnet-upgrade 代理。先评估当前项目：检查 TFM、NuGet 包
+    兼容性、API 废弃标记。分两步升级：8→9（处理 BinaryFormatter 废弃）、
+    9→10（迁移到 AddValidation）。每步执行 dotnet build + dotnet test 验证。
+    遇到不兼容的包，查找免费替代方案。
+```
+
+### 6. 配置 CI/CD 流水线
+
+```
+你："给这个项目配置 CI/CD 流水线"
+
+AI：决策者路由到 dotnet-devops。分析项目类型（Web API）和所用平台（GitHub），
+    生成 GitHub Actions 工作流：dotnet build → dotnet format --verify-no-changes
+    → dotnet test（含 Testcontainers）→ docker build & push。配置 NuGet
+    缓存加速构建，仅在推送到 main 时触发部署。
+```
+
+### 7. 数据库性能排查（EF Core N+1）
+
+```
+你："订单列表越来越慢了，查一下数据库"
+
+AI：决策者路由到 dotnet-performance-analyst。审查代码发现经典 N+1 查询：
+    循环中每笔订单单独查询明细。添加 .Include() 改为单条 SQL。进一步
+    发现缺少两个复合索引，生成迁移脚本和前后性能对比。
+```
 
 ---
 

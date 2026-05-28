@@ -40,10 +40,99 @@ AI: .NET 10 + PostgreSQL. Let me capture the domain glossary first,
 
 **No skill names to memorize.** The decision-maker analyzes your project, asks the right questions, and picks the right architecture. Try these:
 
-> "Review this project's architecture"
-> "Is this code secure? Do a security audit"
-> "My app crashed in production — here's the dump file"
+> "Add an order management module"
+> "My app ran out of memory — here's the dump"
+> "Audit this code for security vulnerabilities"
+> "Write tests for the order service"
 > "Upgrade from .NET 8 to .NET 10"
+> "Set up CI/CD"
+> "The order list is slow — check the database"
+
+---
+
+## Real-World Examples
+
+Here are seven common scenarios showing how the plugin goes from a single sentence to a delivered result.
+
+### 1. Building a New API
+
+```
+You: "Add an order management module to this project"
+
+AI: The decision-maker detects a new feature request and analyzes the project.
+    No EF Core configuration found — it asks about order types and status flow.
+    Confirmed: customer orders + PostgreSQL. Routes to dotnet-api which scaffolds
+    the project, configures DbContext, creates Minimal API endpoints, and adds
+    OpenAPI docs. All generated code follows existing conventions.
+```
+
+### 2. Debugging a Production Crash (OutOfMemoryException)
+
+```
+You: "My app ran out of memory in production — here's the dump file"
+
+AI: Routed to dotnet-debugging. Opens the dump, runs !analyze -v, and finds
+    80% of memory held by a static ConcurrentDictionary. Deep-dive with !gcroot
+    traces to event handlers that were never unregistered. Delivers a fix with
+    pre-deployment verification steps.
+```
+
+### 3. Code Review & Security Audit
+
+```
+You: "Audit this code for security vulnerabilities"
+
+AI: Routed to dotnet-security-reviewer (read-only agent). Scans every file:
+    finds two SQL injection vectors, a hardcoded API key in appsettings.json,
+    and missing Audience validation in JWT config. Produces a ranked security
+    report with risk levels and remediation guidance. No code is modified.
+```
+
+### 4. Writing Tests for Existing Code
+
+```
+You: "Write tests for the order service"
+
+AI: Routed to dotnet-testing. Analyzes code and decides: unit tests for business
+    logic, integration tests for database operations. Generates an xUnit project
+    with WebApplicationFactory for test hosting and Testcontainers for a real
+    PostgreSQL instance. Covers happy path, edge cases, and error scenarios.
+```
+
+### 5. Upgrading from .NET 8 to .NET 10
+
+```
+You: "Upgrade this project from .NET 8 to .NET 10"
+
+AI: Routed to dotnet-upgrade. Assesses the current project: checks TFM, NuGet
+    compatibility, and deprecated APIs. Upgrades in two steps: 8→9 (handles
+    BinaryFormatter deprecation), then 9→10 (migrates to AddValidation). Each
+    step is verified with dotnet build + dotnet test. Incompatible packages are
+    replaced with free alternatives.
+```
+
+### 6. Setting Up CI/CD
+
+```
+You: "Set up CI/CD for this project"
+
+AI: Routed to dotnet-devops. Analyzes the project type (Web API) and platform
+    (GitHub). Generates a GitHub Actions workflow: dotnet build → dotnet format
+    --verify-no-changes → dotnet test (with Testcontainers) → Docker build & push.
+    Configures NuGet caching and triggers deployment only on pushes to main.
+```
+
+### 7. Database Performance Investigation (EF Core N+1)
+
+```
+You: "The order list page is getting slow — check the database"
+
+AI: Routed to dotnet-performance-analyst. Reviews the repository and spots a
+    classic N+1 pattern: each order queries its line items in a loop. Adds
+    .Include() to collapse into a single SQL query. Further analysis reveals
+    two missing composite indexes — generates migration scripts and a before/after
+    performance comparison.
+```
 
 ---
 
