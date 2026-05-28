@@ -168,22 +168,22 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 ## 代理
 
-| 你说 | 代理 | 定位 |
+| 代理 | 定位 | 模式 |
 |------|------|------|
-| "这个项目怎么架构？" | [architect](agents/dotnet-architect.md) | 架构选型、文件夹结构、构建配置 |
-| "分析领域" | [domain-analyst](agents/dotnet-domain-analyst.md) | 事件风暴、限界上下文、输出领域文档 |
-| "审查 PR" | [code-review-agent](agents/dotnet-code-review-agent.md) | 正确性、性能、安全、架构审查 |
-| "代码安全吗？" | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP、密钥泄露、加密误用审计 |
-| "怎么测试？" | [testing-specialist](agents/dotnet-testing-specialist.md) | 测试策略、金字塔设计、微服务测试 |
-| "生成文档" | [docs-generator](agents/dotnet-docs-generator.md) | DocFX、Mermaid 图、XML 文档、README |
-| "中间件顺序对吗？" | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | 中间件管道、DI 生命周期、API 设计 |
-| "为什么慢？" | [performance-specialist](agents/dotnet-performance-specialist.md) | 异步性能、火焰图、GC 分析、基准设计 |
-| "做跨平台 UI" | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno 框架选择、渲染模式 |
-| "记住这个" | workflow（[dotnet-workflow](skills/dotnet-workflow/SKILL.md)） | 纠错捕获、模式泛化、写入记忆 |
-| 构建失败 / "清理代码" | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | 构建错误诊断 + 7 步质量流水线 |
-| "部署到云？" | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire、AKS、分布式追踪 |
-| "高并发出问题" | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | 竞态条件、死锁、线程安全 |
-| "创建 PR" / "发布" | [pr-workflow](agents/dotnet-pr-workflow.md) | PR 生命周期：创建 → 审查 → 合并 → 发布 |
+| [architect](agents/dotnet-architect.md) | 架构选型、文件夹结构、构建配置 | 只读 |
+| [domain-analyst](agents/dotnet-domain-analyst.md) | 事件风暴、限界上下文、输出领域文档 | 读写 |
+| [code-review-agent](agents/dotnet-code-review-agent.md) | 正确性、性能、安全、架构审查 | 只读 |
+| [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP、密钥泄露、加密误用审计 | 只读 |
+| [testing-specialist](agents/dotnet-testing-specialist.md) | 测试策略、金字塔设计、微服务测试 | 只读 |
+| [docs-generator](agents/dotnet-docs-generator.md) | DocFX、Mermaid 图、XML 文档、README | 读写 |
+| [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | 中间件管道、DI 生命周期、API 设计 | 只读 |
+| [performance-specialist](agents/dotnet-performance-specialist.md) | 异步性能、火焰图、GC 分析、基准设计 | 只读 |
+| [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno 框架选择、渲染模式 | 只读 |
+| workflow（[dotnet-workflow](skills/dotnet-workflow/SKILL.md)） | 纠错捕获、模式泛化、写入记忆 | 读写 |
+| [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | 构建错误诊断 + 7 步质量流水线 | 读写 |
+| [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire、AKS、分布式追踪 | 只读 |
+| [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | 竞态条件、死锁、线程安全 | 只读 |
+| [pr-workflow](agents/dotnet-pr-workflow.md) | PR 生命周期：创建 → 审查 → 合并 → 发布 | 读写 |
 
 ---
 
