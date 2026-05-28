@@ -2,9 +2,8 @@
 //
 // check-self-doc.js — PostToolUse hook for .cs file quality reminders.
 //
-// After Write/Edit on a .cs file, checks only domain-meaningful files
-// for a one-line purpose comment. Skips scaffolding, config, and
-// boilerplate files.
+// Only checks NEW domain files created by the AI. Does NOT check
+// existing project files where the AI doesn't know the domain.
 //
 // Output: JSON with additionalContext on stdout.
 // Exit code: always 0 (never blocks).
@@ -37,7 +36,7 @@ try {
 
   const fileName = path.basename(filePath);
 
-  // Skip common scaffolding / boilerplate files.
+  // Skip scaffolding / boilerplate files.
   const skipPatterns = [
     "Program.cs", "Startup.cs", "GlobalUsings.cs", "Usings.cs",
     /^.*Extensions\.cs$/, /^.*Registration\.cs$/, /^.*Module\.cs$/,
@@ -45,29 +44,30 @@ try {
     /^.*Configuration\.cs$/, /^.*Middleware\.cs$/,
   ];
   for (const p of skipPatterns) {
-    if (p instanceof RegExp && p.test(fileName)) {
-      console.log(JSON.stringify({ additionalContext: "" }));
-      process.exit(0);
-    }
-    if (typeof p === "string" && fileName === p) {
-      console.log(JSON.stringify({ additionalContext: "" }));
-      process.exit(0);
-    }
+    if (p instanceof RegExp && p.test(fileName)) { process.exit(0); }
+    if (typeof p === "string" && fileName === p) { process.exit(0); }
   }
 
-  // Read first 10 lines.
+  // Skip existing project files — if the file has pre-existing namespace
+  // from an established project, the AI didn't create it from scratch.
   let content;
   try {
     content = fs.readFileSync(filePath, "utf8");
   } catch {
-    console.log(JSON.stringify({ additionalContext: "" }));
     process.exit(0);
   }
 
-  // Skip if no real domain code.
+  // Only check pure new files: no namespace, no using, no existing code.
+  // If the file has any pre-existing structure, skip the check — the AI
+  // may not understand the domain well enough to write a useful comment.
+  const hasExistingStructure = content.includes("namespace ") || content.includes("using ");
+  if (hasExistingStructure) {
+    process.exit(0);
+  }
+
+  // At this point it's likely a new domain file created by the AI.
   const hasDomainCode = content.includes(" class ") || content.includes(" record ");
   if (!hasDomainCode) {
-    console.log(JSON.stringify({ additionalContext: "" }));
     process.exit(0);
   }
 
@@ -82,14 +82,11 @@ try {
 
   if (!hasPurposeComment) {
     const context =
-      "[dotnet-artisan] Suggestion: consider adding a one-line comment at the top explaining what this class does. See SELF_DOCUMENTING.md for the 30-second rule.";
+      "[dotnet-artisan] Suggestion: for new files, add a one-line comment explaining the class purpose. This helps future AI sessions. Skip if unsure about the domain.";
     console.log(JSON.stringify({ additionalContext: context }));
-    process.exit(0);
   }
-
-  console.log(JSON.stringify({ additionalContext: "" }));
 } catch {
-  console.log(JSON.stringify({ additionalContext: "" }));
+  // Silently ignore all errors — never block.
 }
 
 process.exit(0);
