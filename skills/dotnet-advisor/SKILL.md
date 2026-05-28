@@ -136,6 +136,7 @@ For complex analysis that benefits from domain expertise, delegate to specialist
 
 **Architecture and Design**
 - Architecture review, framework selection, design patterns -> [skill:dotnet-architect]
+- Strategic DDD analysis, event storming, bounded contexts, domain modeling -> [skill:dotnet-domain-analyst]
 - General code review (correctness, performance, security) -> [skill:dotnet-code-review-agent]
 
 **Performance and Concurrency**

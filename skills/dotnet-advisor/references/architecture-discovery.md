@@ -58,14 +58,16 @@ For teams new to DDD, start with tactical patterns only (skip strategic context 
 - **Domain Event** — Something that happened that other parts of the system care about.
 - **Repository** — Collection-like interface for aggregates (only use if you need domain logic; for simple CRUD, use DbContext directly per dotnet artisani rules).
 
-### DDD Strategic Patterns (for advanced teams)
+### DDD Strategic Patterns (MUST)
 
-- **Bounded Context** — Explicit boundary where a domain model applies. Each context has its own ubiquitous language.
-- **Ubiquitous Language** — Shared vocabulary between developers and domain experts.
-- **Context Map** — Relationships between bounded contexts (partnership, shared kernel, anti-corruption layer, etc.).
-- **Event Storming** — Workshop technique to discover domain events and bounded contexts.
+When DDD is chosen, strategic design is REQUIRED — not optional. Tactical patterns without strategic boundaries lead to a Big Ball of Mud.
 
-When using DDD, load [skill:dotnet-tooling] `references/domain-analysis.md` for event storming workflow.
+- **Bounded Context** — Explicit boundary where a domain model applies. Each context has its own ubiquitous language. MUST be identified and diagrammed.
+- **Ubiquitous Language** — Shared vocabulary between developers and domain experts. MUST be documented per context.
+- **Context Map** — Relationships between bounded contexts (partnership, shared kernel, anti-corruption layer, etc.). MUST be drawn.
+- **Event Storming** — Workshop technique to discover domain events and bounded contexts. MUST be run before coding.
+
+**Output:** A domain analysis MD file containing: domain glossary, context diagram (Mermaid), aggregate decision table, and event catalog. See [skill:dotnet-tooling] `references/domain-analysis.md` for the full workflow and templates.
 
 ## Communication Patterns
 

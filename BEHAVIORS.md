@@ -51,6 +51,7 @@ The decision-maker doesn't just route — it **analyzes**: your prompt, your pro
 | **7-step cleanup** | `dotnet-code-lifecycle-agent` | Format → unused usings → fix warnings → dead code → TODOs → seal audit → CancellationToken |
 | **Refactor safely** | `dotnet-code-lifecycle-agent` | Runs cleanup pipeline, verifies each step with build+test |
 | **Architecture review** | `dotnet-architect` | Recommends patterns, catches over-engineering, suggests structure |
+| **Domain analysis** | `dotnet-domain-analyst` + `dotnet-tooling` | Event storming, bounded contexts, ubiquitous language, context map, aggregate design |
 | **Test quality check** | `dotnet-testing` + `dotnet-testing-specialist` | CRAP scores, coverage gaps, test smell detection |
 
 ### Test It
@@ -102,6 +103,7 @@ The decision-maker invokes specialist agents for one-shot deep analysis. Each ag
 | Agent | Specialization | Example Trigger |
 |-------|---------------|-----------------|
 | `dotnet-architect` | Architecture, framework choice | "How should I structure this?" |
+| `dotnet-domain-analyst` | Domain analysis, event storming, bounded contexts | "Analyze the domain", "Run DDD analysis" |
 | `dotnet-aspnetcore-specialist` | Middleware, DI, request pipeline | "Is my middleware order correct?" |
 | `dotnet-performance-specialist` | Async, profiling, benchmarks | "Why is it slow?", "Design a benchmark" |
 | `dotnet-ui-specialist` | Blazor, MAUI, Uno Platform | "Build a Blazor/MAUI/Uno app" |
