@@ -169,35 +169,22 @@ Chain: dotnet-workflow → detect correction → generalize rule →
 
 ## Agents
 
-**Build**
-| Agent | Focus | Mode |
-|-------|-------|------|
-| [architect](agents/dotnet-architect.md) | Architecture, folder structure, build config | Read-only |
-| [domain-analyst](agents/dotnet-domain-analyst.md) | Event storming, bounded contexts, domain doc | Read-Write |
-| [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | Middleware pipeline, DI lifetimes, API design | Read-only |
-| [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno framework choice, render modes | Read-only |
-
-**Verify**
-| Agent | Focus | Mode |
-|-------|-------|------|
-| [testing-specialist](agents/dotnet-testing-specialist.md) | Strategy, pyramid design, microservice tests | Read-only |
-| [code-review-agent](agents/dotnet-code-review-agent.md) | Correctness, performance, security review | Read-only |
-| [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP, secrets, crypto audit | Read-only |
-| [performance-specialist](agents/dotnet-performance-specialist.md) | Async, flame graphs, GC, benchmarks | Read-only |
-| [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | Race conditions, deadlocks, thread safety | Read-only |
-
-**Operate**
-| Agent | Focus | Mode |
-|-------|-------|------|
-| [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire, AKS, distributed tracing | Read-only |
-| [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | Build errors + 7-step quality pipeline | Read-Write |
-| [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release | Read-Write |
-
-**Augment**
-| Agent | Focus | Mode |
-|-------|-------|------|
-| [docs-generator](agents/dotnet-docs-generator.md) | DocFX, Mermaid, XML docs, README | Read-Write |
-| [dotnet-learning-agent](agents/dotnet-learning-agent.md) | Correction capture, generalization, memory | Read-Write |
+| Category | Agent | Focus | Mode |
+|----------|-------|-------|------|
+| Build | [architect](agents/dotnet-architect.md) | Architecture, folder structure, build config | Read-only |
+| | [domain-analyst](agents/dotnet-domain-analyst.md) | Event storming, bounded contexts, domain doc | Read-Write |
+| | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | Middleware pipeline, DI lifetimes, API design | Read-only |
+| | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno framework choice, render modes | Read-only |
+| Verify | [testing-specialist](agents/dotnet-testing-specialist.md) | Strategy, pyramid design, microservice tests | Read-only |
+| | [code-review-agent](agents/dotnet-code-review-agent.md) | Correctness, performance, security review | Read-only |
+| | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP, secrets, crypto audit | Read-only |
+| | [performance-specialist](agents/dotnet-performance-specialist.md) | Async, flame graphs, GC, benchmarks | Read-only |
+| | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | Race conditions, deadlocks, thread safety | Read-only |
+| Operate | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire, AKS, distributed tracing | Read-only |
+| | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | Build errors + 7-step quality pipeline | Read-Write |
+| | [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release | Read-Write |
+| Augment | [docs-generator](agents/dotnet-docs-generator.md) | DocFX, Mermaid, XML docs, README | Read-Write |
+| | [dotnet-learning-agent](agents/dotnet-learning-agent.md) | Correction capture, generalization, memory | Read-Write |
 
 ---
 
