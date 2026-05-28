@@ -196,5 +196,3 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 - [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) — 30 秒法则：让代码自文档化
 
 ---
-
-MIT

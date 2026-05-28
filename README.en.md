@@ -197,5 +197,3 @@ Chain: dotnet-learning-agent → detect correction → generalize rule →
 - [SELF_DOCUMENTING.md](SELF_DOCUMENTING.md) — 30-second rule: write code any AI can read
 
 ---
-
-MIT
