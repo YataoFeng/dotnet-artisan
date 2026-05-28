@@ -4,9 +4,9 @@
   "description": "Comprehensive .NET development skills and agents for Claude Code — covering C#, ASP.NET Core, Blazor, MAUI, EF Core, testing, debugging, DevOps, and more",
   "author": {
     "name": "Yatao Feng",
-    "url": "https://github.com/YataoFeng"
+    "url": "https://github.com/fenzel"
   },
-  "repository": "https://github.com/YataoFeng/dotnet-artisan",
+  "repository": "https://github.com/fenzel/dotnet-artisan",
   "license": "MIT",
   "skills": [
     "./skills/using-dotnet",

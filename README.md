@@ -11,6 +11,36 @@
 
 ---
 
+## 30 秒上手
+
+装完插件后，打开你的 .NET 项目，直接说需求：
+
+```
+你：帮我在这个项目里加一个订单管理模块
+
+AI：写代码之前，先了解几个问题——
+    订单类型？顾客下单还是内部工单？流程是什么？状态有哪些？
+    （这是决策者在问——分析需求后才动手）
+
+你：顾客下单。状态：待确认→已确认→已发货。
+
+AI：明白了。目前项目是 .NET 10 + PostgreSQL 对吧？
+    我先捕获领域词汇表，然后搭建这个模块。
+
+（AI 开始工作——选架构、搭结构、写代码、加测试）
+```
+
+**你只需要正常说话。** 决策者会自动分析你的项目、问清需求、选对架构、写出正确代码。不用记技能名，不用理解路由，什么都不用学。
+
+试试第一句话：
+
+> "帮我看看这个项目的架构有没有问题"
+> "这个代码安全吗？帮我审查"
+> "我的应用在生产环境崩了，这是转储文件"
+> "我想从 .NET 8 升级到 .NET 10"
+
+---
+
 ## 为什么需要？
 
 AI 编码代理在 .NET 开发中有两个致命缺陷：
@@ -177,7 +207,7 @@ Git 工作流（分支策略 + Conventional Commits）· CI/CD 管道 · Docker 
 ## 怎么装
 
 ```bash
-claude plugins install YataoFeng/dotnet-artisan
+claude plugins install fenzel/dotnet-artisan
 ```
 
 兼容 GitHub Copilot、VS Code、Cursor。遵循 [agentskills.io](https://agentskills.io) 标准。

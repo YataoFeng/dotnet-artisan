@@ -11,6 +11,36 @@
 
 ---
 
+## 30-Second Start
+
+Install the plugin, open your .NET project, and just talk:
+
+```
+You: Add an order management module to this project
+
+AI: Before I write code — what kind of orders? Customer purchases or
+    internal work orders? What's the flow? What are the statuses?
+    (The decision-maker is analyzing before acting)
+
+You: Customer orders. Status: Pending → Confirmed → Shipped.
+
+AI: Understood. This is .NET 10 + PostgreSQL, right?
+    Let me capture the domain glossary, then build this module.
+
+(AI starts — picks architecture, scaffolds, writes code, adds tests)
+```
+
+**You just talk normally.** The decision-maker analyzes your project, asks the right questions, picks the right architecture, and writes correct code. No skill names to memorize. Nothing to learn.
+
+Try any of these:
+
+> "Review this project's architecture"
+> "Is this code secure? Do a security audit"
+> "My app crashed in production — here's the dump file"
+> "I want to upgrade from .NET 8 to .NET 10"
+
+---
+
 ## Why?
 
 | Problem | Without this plugin | With this plugin |
@@ -175,7 +205,7 @@ Every generated project follows one rule: **a fresh AI must understand it in 30 
 ## Install
 
 ```bash
-claude plugins install YataoFeng/dotnet-artisan
+claude plugins install fenzel/dotnet-artisan
 ```
 
 Compatible with GitHub Copilot, VS Code, Cursor. [agentskills.io](https://agentskills.io) standard.
