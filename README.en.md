@@ -205,7 +205,7 @@ Every generated project follows one rule: **a fresh AI must understand it in 30 
 ## Install
 
 ```bash
-claude plugins install fenzel-ai/dotnet-artisan
+claude plugins install fenzel999/dotnet-artisan
 ```
 
 Compatible with GitHub Copilot, VS Code, Cursor. [agentskills.io](https://agentskills.io) standard.

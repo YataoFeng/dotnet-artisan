@@ -207,7 +207,7 @@ Git 工作流（分支策略 + Conventional Commits）· CI/CD 管道 · Docker 
 ## 怎么装
 
 ```bash
-claude plugins install fenzel-ai/dotnet-artisan
+claude plugins install fenzel999/dotnet-artisan
 ```
 
 兼容 GitHub Copilot、VS Code、Cursor。遵循 [agentskills.io](https://agentskills.io) 标准。

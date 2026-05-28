@@ -245,27 +245,27 @@
     <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">Behavior chain:</strong> Intent detection → dotnet-code-review-agent invoked (separate sub-session) → analyzes correctness, performance, security, architecture → reports: "3 issues: [Critical] Scoped→Singleton DI, [Perf] N+1 query, [Security] hardcoded API key"</div>
   </div>
 
-  <p style="margin-top:1.5rem;color:var(--fg-dim)">Read the full questioning framework in <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/USAGE.md">USAGE.md</a>. See all 30+ behaviors in <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/BEHAVIORS.md">BEHAVIORS.md</a>.</p>
+  <p style="margin-top:1.5rem;color:var(--fg-dim)">Read the full questioning framework in <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/USAGE.md">USAGE.md</a>. See all 30+ behaviors in <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/BEHAVIORS.md">BEHAVIORS.md</a>.</p>
 </div>
 
 <!-- INSTALL TAB -->
 <div id="install" class="tab">
   <h2>Plugin</h2>
   <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
-    <code style="flex:1;min-width:250px">claude plugins install fenzel-ai/dotnet-artisan</code>
+    <code style="flex:1;min-width:250px">claude plugins install fenzel999/dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">Copy</button>
   </div>
   <p style="color:var(--fg-dim);margin:0.5rem 0 1rem">Compatible with GitHub Copilot, VS Code, Cursor — <a href="https://agentskills.io">agentskills.io</a> standard.</p>
 
   <h2>Harness (Built-In)</h2>
-  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Auto-installed with the plugin. Open any .NET project → harness detects it → skills load → decision-maker activates. Checks new .cs files for purpose comments. Zero config. <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/harness/README.md">How it works →</a></p>
+  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">Auto-installed with the plugin. Open any .NET project → harness detects it → skills load → decision-maker activates. Checks new .cs files for purpose comments. Zero config. <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/harness/README.md">How it works →</a></p>
 
   <h2>Core Principles</h2>
   <div class="principle-grid">
     <div class="principle-card"><h3>KISS First</h3><p style="color:var(--fg-dim);font-size:0.82rem">Simple CRUD does not need DDD. Match pattern to problem scale.</p></div>
     <div class="principle-card"><h3>No Repository Wrappers</h3><p style="color:var(--fg-dim);font-size:0.82rem">DbContext IS the UoW; DbSet IS the repository.</p></div>
     <div class="principle-card"><h3>Free & Open Source</h3><p style="color:var(--fg-dim);font-size:0.82rem">Microsoft-recommended + MIT only. Zero commercial deps.</p></div>
-    <div class="principle-card"><h3>Self-Documenting Code</h3><p style="color:var(--fg-dim);font-size:0.82rem">Fresh AI understands any project in 30 seconds. <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">Guide →</a></p></div>
+    <div class="principle-card"><h3>Self-Documenting Code</h3><p style="color:var(--fg-dim);font-size:0.82rem">Fresh AI understands any project in 30 seconds. <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">Guide →</a></p></div>
   </div>
 </div>
 
@@ -290,7 +290,7 @@
 
 Total: 30 seconds. Full context restored. Zero history needed.</pre>
 
-  <p style="margin-top:1.5rem;color:var(--fg-dim)">Full guide: <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a></p>
+  <p style="margin-top:1.5rem;color:var(--fg-dim)">Full guide: <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a></p>
 </div>
 
 <!-- FLOW TAB -->
@@ -359,11 +359,11 @@ Your prompt
 <footer>
   <p>Synthesized from <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>, <a href="https://github.com/dotnet/skills">dotnet/skills</a>, <a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
   <p style="margin-top:0.3rem">
-    <a href="https://github.com/fenzel-ai/dotnet-artisan">GitHub</a> ·
-    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/USAGE.md">Usage</a> ·
-    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">30s Rule</a> ·
-    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/BEHAVIORS.md">Behaviors</a> ·
-    <a href="https://github.com/fenzel-ai/dotnet-artisan/blob/main/CLAUDE.md">CLAUDE.md</a>
+    <a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> ·
+    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/USAGE.md">Usage</a> ·
+    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">30s Rule</a> ·
+    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/BEHAVIORS.md">Behaviors</a> ·
+    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/CLAUDE.md">CLAUDE.md</a>
   </p>
   <p style="margin-top:0.5rem;font-size:0.7rem">Page loaded <span id="loadTime"></span></p>
 </footer>
@@ -401,7 +401,7 @@ function renderToolAgents() {
 }
 
 function copyInstall() {
-  navigator.clipboard.writeText('claude plugins install fenzel-ai/dotnet-artisan');
+  navigator.clipboard.writeText('claude plugins install fenzel999/dotnet-artisan');
   const btn = document.getElementById('copyBtn');
   btn.textContent = 'Copied!'; btn.style.background = 'var(--green)';
   setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = 'var(--accent)'; }, 2000);
