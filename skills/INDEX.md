@@ -162,10 +162,15 @@ Quick navigation for all reference files. Each file contains implementation patt
 | [profiling.md](dotnet-tooling/references/profiling.md) | Diagnostic tool profiling guidance |
 | [project-analysis.md](dotnet-tooling/references/project-analysis.md) | Project file analysis |
 | [project-structure.md](dotnet-tooling/references/project-structure.md) | Solution and project structure |
+| [pr-workflow.md](dotnet-tooling/references/pr-workflow.md) | PR lifecycle, conventional commits, versioning |
 | [scaffold-project.md](dotnet-tooling/references/scaffold-project.md) | New project scaffolding |
 | [solution-navigation.md](dotnet-tooling/references/solution-navigation.md) | Solution navigation and management |
 | [spectre-console.md](dotnet-tooling/references/spectre-console.md) | Spectre.Console rich terminal output |
 | [system-commandline.md](dotnet-tooling/references/system-commandline.md) | System.CommandLine CLI API |
+| [template-authoring.md](dotnet-tooling/references/template-authoring.md) | Custom dotnet new template creation |
+| [template-discovery.md](dotnet-tooling/references/template-discovery.md) | Template search and inspection |
+| [template-instantiation.md](dotnet-tooling/references/template-instantiation.md) | Project creation from templates |
+| [template-validation.md](dotnet-tooling/references/template-validation.md) | Template.json validation |
 | [terminal-gui.md](dotnet-tooling/references/terminal-gui.md) | Terminal.Gui TUI applications |
 | [tool-management.md](dotnet-tooling/references/tool-management.md) | .NET CLI tool management |
 | [trimming.md](dotnet-tooling/references/trimming.md) | Trim-safe development patterns |
