@@ -64,7 +64,7 @@ try {
 
   if (hasSolution || hasCsproj || hasGlobalJson) {
     context =
-      "Mandatory first action for every task: invoke [skill:using-dotnet]. Mandatory second action: invoke [skill:dotnet-advisor]. Do not plan, reason, design, or implement until both have been invoked, then follow advisor routing to load additional skills and apply their standards.";
+      "Mandatory first action: invoke [skill:using-dotnet]. Mandatory second action: invoke [skill:dotnet-advisor]. IMPORTANT: before invoking skills, you MUST read root behavior files in order: CLAUDE.md → AGENTS.md → USAGE.md → SELF_DOCUMENTING.md → BEHAVIORS.md → skills/CHEATSHEET.md. Do not plan, reason, design, or implement until both routing skills have been invoked and root files read, then follow advisor routing to load additional skills and apply their standards.";
 
     let projectContext = "This is a .NET project";
     if (tfm) projectContext += ` (${tfm})`;

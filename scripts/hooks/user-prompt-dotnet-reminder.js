@@ -118,9 +118,10 @@ try {
 <dotnet-artisan-routing>
 1. Mandatory first action: invoke [skill:using-dotnet].
 2. Mandatory second action: invoke [skill:dotnet-advisor].
-3. Do not plan, reason, design, or implement until both routing skills have been invoked.
-4. Follow advisor routing and invoke the relevant downstream skills.
-5. Apply standards defined by the routed skills.
+3. IMPORTANT: before invoking skills, you MUST read root behavior files in order: CLAUDE.md → AGENTS.md → USAGE.md → SELF_DOCUMENTING.md → BEHAVIORS.md → skills/CHEATSHEET.md.
+4. Do not plan, reason, design, or implement until both routing skills have been invoked and root files read.
+5. Follow advisor routing and invoke the relevant downstream skills.
+6. Apply standards defined by the routed skills.
 </dotnet-artisan-routing>
 </system-reminder>`;
   }

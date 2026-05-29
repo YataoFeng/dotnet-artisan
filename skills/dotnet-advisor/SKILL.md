@@ -57,7 +57,18 @@ Load `references/requirements-alignment.md` for the 4-round dialogue framework (
 
 For any task that may produce, change, or review C#/.NET code:
 
-1. Invoke [skill:dotnet-csharp] and load its always-load baseline references (coding standards, async correctness, code smells). These are correctness concerns the agent handles by default — the user should not need to ask for correct async/await usage, thread safety, or avoiding anti-patterns.
+1. Invoke [skill:dotnet-csharp] and **Read()** its always-load baseline references (use the Read tool to open each file, don't just scan the list):
+   - `references/coding-standards.md`
+   - `references/async-patterns.md`
+   - `references/solid-principles.md`
+   - `references/code-smells.md`
+   - `references/anti-patterns.md`
+   - `references/package-choices.md`
+   - `../DECISIONS.md`
+   - `../CHEATSHEET.md`
+   - `references/dotnet-releases.md`
+   
+   These are correctness concerns the agent handles by default — the user should not need to ask for correct async/await usage, thread safety, or avoiding anti-patterns.
 2. Apply standards throughout planning and implementation, not only in final cleanup.
 3. Load additional [skill:dotnet-csharp] reference files when the task touches their topic area (concurrency, DI, serialization, LINQ, etc.).
 
@@ -127,6 +138,36 @@ When multiple skills are active, coordinate across them:
 | AI/ML feature in a web API | [skill:dotnet-api] (hosting) + [skill:dotnet-ai] (AI logic) |
 | Upgrading .NET version | [skill:dotnet-devops] (migration path) + [skill:dotnet-tooling] (SDK/version) |
 | Code review or cleanup pass | [skill:dotnet-tooling] (code quality) + domain skill for the project |
+
+## Step 5: Quality Gate
+
+Before generating, writing, or committing any code, verify against these checklists:
+
+### Self-Documenting Checklist (from SELF_DOCUMENTING.md)
+- [ ] New AI-created `.cs` files have a one-sentence `// Handles X: does Y, Z` purpose comment at top
+- [ ] Class names describe WHAT they do (not `Handler`, `Service`, `Manager`)
+- [ ] All dependencies explicit in constructor (no service locator)
+- [ ] Zero XML `<summary>` tags that only restate the method name
+- [ ] WHY comments for non-obvious decisions only (not WHAT comments)
+- [ ] Zero `Helper`, `Manager`, `Utils`, `Common`, `Shared` classes
+
+### Iron Rules (from AGENTS.md)
+- [ ] `TimeProvider` used instead of `DateTime.Now`
+- [ ] No commercial NuGet packages (check against CHEATSHEET.md)
+- [ ] No Repository/UoW wrappers (use DbContext/DbSet directly)
+- [ ] `IHttpClientFactory` or typed client, never `new HttpClient()`
+- [ ] No `.Result`/`.Wait()` — async/await all the way
+
+### .NET Version Rules
+- [ ] Patterns match the detected TFM (net10.0: use `field` keyword, net9.0: don't)
+- [ ] Package choices match version (`AddValidation()` for net10.0+, FluentValidation for net8.0-9.0)
+
+### USAGE.md Checklist Confirmation
+- [ ] I know WHAT is being built (one sentence)
+- [ ] I know the DOMAIN terms and their meanings
+- [ ] I have NO unanswered questions that would change my approach
+
+If any box is unchecked, **STOP** and resolve before proceeding.
 
 ## Skill Catalog
 

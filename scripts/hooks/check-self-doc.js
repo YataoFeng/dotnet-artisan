@@ -57,10 +57,14 @@ try {
     process.exit(0);
   }
 
-  // Skip existing project files. If the file has a namespace, it's part
-  // of an established project — the AI may not understand the domain and
-  // should NOT modify or add comments it didn't write.
-  if (content.includes("namespace ") || content.includes("using ")) {
+  // Skip existing project files. Check if this file has a class or record
+  // definition that matches the filename — if it doesn't, the AI likely
+  // created it as a minor edit to an existing file, not a new domain file.
+  const className = path.basename(fileName, ".cs");
+  const hasMatchingClass = new RegExp(
+    `(class |record |struct |interface )\\s*${className}\\b`
+  ).test(content);
+  if (!hasMatchingClass) {
     process.exit(0);
   }
 
