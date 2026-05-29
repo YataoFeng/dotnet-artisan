@@ -8,77 +8,109 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
-    background: #f5f7fa; color: #1a2332; line-height: 1.7; font-size: 15px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0a0e17; color: #b8d0e0; line-height: 1.7; font-size: 15px;
+    min-height: 100vh; overflow-x: hidden;
   }
-  a { color: #4f7ec9; text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0,150,255,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 50%, rgba(120,50,255,0.06) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 90%, rgba(255,255,255,0.2) 0%, transparent 100%);
+    animation: twinkle 4s ease-in-out infinite alternate;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes twinkle { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
-  .hero { background: linear-gradient(135deg, #1a2332 0%, #2a3a5c 100%); color: #fff; padding: 3.5rem 1.5rem 2.5rem; text-align: center; }
-  .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; }
-  .hero h1 span { background: linear-gradient(135deg, #7bb3ff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero .sub { font-size: 1.05rem; color: #a0b8d4; margin-top: 0.4rem; }
+  a { color: #5b9cf5; text-decoration: none; transition: color 0.3s; }
+  a:hover { color: #7bb3ff; text-shadow: 0 0 12px rgba(91,156,245,0.4); }
+
+  .hero { position: relative; z-index: 1; text-align: center; padding: 4rem 1.5rem 2.5rem; border-bottom: 1px solid rgba(91,156,245,0.15); background: linear-gradient(180deg, rgba(0,100,200,0.08) 0%, transparent 100%); }
+  .hero h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, #5b9cf5, #a78bfa, #5b9cf5); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientShift 4s ease-in-out infinite; }
+  @keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  .hero h1::after { content: '◈'; display: block; font-size: 0.6rem; margin-top: -0.3rem; -webkit-text-fill-color: initial; color: rgba(91,156,245,0.3); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+  .hero .sub { font-size: 1rem; color: #6b8db8; margin-top: 0.3rem; }
   .hero .stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   .hero .stat { text-align: center; }
-  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: #fff; }
-  .hero .stat .lbl { font-size: 0.72rem; color: #8aa3c4; letter-spacing: 0.07em; text-transform: uppercase; }
+  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: #5b9cf5; text-shadow: 0 0 20px rgba(91,156,245,0.3); }
+  .hero .stat .lbl { font-size: 0.7rem; color: #4a6a8a; letter-spacing: 0.1em; text-transform: uppercase; }
 
-  nav { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
-  nav button { background: none; border: none; color: #6b7d99; padding: 0.8rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
-  nav button:hover { color: #1a2332; background: #f0f4f8; }
-  nav button.active { color: #4f7ec9; border-bottom-color: #4f7ec9; }
-  nav a { padding: 0.8rem 1.1rem; font-size: 0.85rem; color: #6b7d99; display: flex; align-items: center; }
+  nav { position: sticky; top: 0; z-index: 10; display: flex; justify-content: center; gap: 0; flex-wrap: wrap; background: rgba(10,14,23,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91,156,245,0.12); }
+  nav button { background: none; border: none; color: #4a6a8a; padding: 0.75rem 1.1rem; font-size: 0.82rem; font-family: inherit; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.3s; letter-spacing: 0.03em; }
+  nav button:hover { color: #7bb3ff; background: rgba(91,156,245,0.05); }
+  nav button.active { color: #5b9cf5; border-bottom-color: #5b9cf5; text-shadow: 0 0 12px rgba(91,156,245,0.3); }
+  nav a { padding: 0.75rem 1.1rem; font-size: 0.82rem; color: #4a6a8a; display: flex; align-items: center; }
 
-  .container { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .container { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
   .tab { display: none; }
-  .tab.active { display: block; animation: fadeIn 0.2s ease; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .tab.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  h2 { font-size: 1.25rem; font-weight: 700; color: #1a2332; margin: 1.5rem 0 0.8rem; }
-  .category-label { font-size: 0.8rem; font-weight: 600; color: #4f7ec9; text-transform: uppercase; letter-spacing: 0.05em; margin: 1.2rem 0 0.5rem; }
+  h2 { font-size: 1.15rem; font-weight: 700; color: #d0e0f0; margin: 1.5rem 0 0.8rem; letter-spacing: 0.02em; }
+  h2::before { content: '◆ '; color: #5b9cf5; font-size: 0.7rem; }
+  .category-label { font-size: 0.75rem; font-weight: 600; color: #5b9cf5; text-transform: uppercase; letter-spacing: 0.1em; margin: 1.2rem 0 0.5rem; text-shadow: 0 0 10px rgba(91,156,245,0.2); }
 
-  .skill-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.5rem; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .skill-table th { text-align: left; padding: 0.6rem 0.8rem; color: #6b7d99; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-  .skill-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eef2f6; }
-  .skill-table tr:last-child td { border-bottom: none; }
-  .skill-table tr:hover { background: #f8fafc; }
-  .skill-table .cat td { font-weight: 600; color: #4f7ec9; background: #f0f6ff; padding-top: 0.7rem; }
+  .card-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 1.5rem; background: rgba(20,30,50,0.5); border-radius: 8px; overflow: hidden; border: 1px solid rgba(91,156,245,0.12); backdrop-filter: blur(4px); }
+  .card-table th { text-align: left; padding: 0.6rem 0.8rem; color: #4a6a8a; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(91,156,245,0.05); border-bottom: 1px solid rgba(91,156,245,0.1); }
+  .card-table td { padding: 0.55rem 0.8rem; border-bottom: 1px solid rgba(91,156,245,0.06); }
+  .card-table tr:last-child td { border-bottom: none; }
+  .card-table tr:hover td { background: rgba(91,156,245,0.04); }
+  .card-table .cat td { color: #5b9cf5; font-weight: 600; background: rgba(91,156,245,0.06); padding-top: 0.7rem; }
 
-  .agent-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.15s; }
-  .agent-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-color: #c8d2e0; }
-  .agent-card a { color: #1a2332; font-weight: 600; font-size: 0.85rem; }
-  .agent-card span { color: #6b7d99; font-size: 0.82rem; }
-  .mode-ro { background: #fef2f2; color: #dc2626; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; }
-  .mode-rw { background: #f0fdf4; color: #16a34a; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; }
+  .agent-card { background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.1); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.45rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; backdrop-filter: blur(4px); }
+  .agent-card:hover { border-color: rgba(91,156,245,0.3); background: rgba(20,35,60,0.6); box-shadow: 0 0 20px rgba(91,156,245,0.08); transform: translateX(3px); }
+  .agent-card a { color: #c0d8f0; font-weight: 600; font-size: 0.85rem; }
+  .agent-card span { color: #6b8db8; font-size: 0.82rem; }
+  .mode-ro { background: rgba(220,38,38,0.1); color: #f87171; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; border: 1px solid rgba(220,38,38,0.2); }
+  .mode-rw { background: rgba(22,163,74,0.1); color: #4ade80; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; border: 1px solid rgba(22,163,74,0.2); }
 
-  .about-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1rem; line-height: 1.7; }
-  .about-section p { color: #3a4a62; font-size: 0.85rem; margin-bottom: 0.5rem; }
-  .about-section .highlight { color: #4f7ec9; font-weight: 600; }
+  .about-section { background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.1); border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1rem; backdrop-filter: blur(4px); line-height: 1.8; }
+  .about-section p { color: #8aaac8; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .about-section .highlight { color: #5b9cf5; font-weight: 600; }
 
-  .install-box { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; }
-  .install-box code { flex: 1; min-width: 280px; background: #f0f4f8; padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.88rem; color: #1a2332; line-height: 1.6; }
-  .install-box button { background: #4f7ec9; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; white-space: nowrap; }
+  .install-box { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.12); border-radius: 8px; padding: 1rem 1.2rem; backdrop-filter: blur(4px); }
+  .install-box code { flex:1; min-width:280px; background: rgba(0,0,0,0.3); padding:0.7rem 1rem; border-radius:6px; font-size:0.85rem; color:#7bb3ff; line-height:1.6; border:1px solid rgba(91,156,245,0.1); }
+  .install-box button { background: linear-gradient(135deg, #5b9cf5, #7c5bf5); color:#fff; border:none; padding:0.55rem 1.2rem; border-radius:6px; cursor:pointer; font-size:0.82rem; font-weight:600; font-family:inherit; transition: all 0.3s; }
+  .install-box button:hover { box-shadow: 0 0 20px rgba(91,156,245,0.3); transform: translateY(-1px); }
 
-  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
-  .principle-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.8rem 1rem; text-align: center; }
-  .principle-card h3 { font-size: 0.85rem; color: #1a2332; margin-bottom: 0.2rem; }
-  .principle-card p { font-size: 0.78rem; color: #6b7d99; }
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .principle-card { background: rgba(20,30,50,0.3); border: 1px solid rgba(91,156,245,0.08); border-radius: 6px; padding: 0.8rem 1rem; text-align: center; backdrop-filter: blur(4px); }
+  .principle-card h3 { font-size: 0.82rem; color: #c0d8f0; margin-bottom: 0.1rem; }
+  .principle-card p { font-size: 0.75rem; color: #5a7a9a; }
 
-  .flow-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
-  .flow-box h4 { color: #4f7ec9; font-size: 0.85rem; margin-bottom: 0.4rem; }
-  .flow-line { font-size: 0.82rem; color: #3a4a62; margin-bottom: 0.25rem; }
-  .flow-line strong { color: #1a2332; }
+  .flow-box { background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.1); border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; backdrop-filter: blur(4px); }
+  .flow-box h4 { color: #5b9cf5; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .flow-line { font-size: 0.82rem; color: #7a9ab8; margin-bottom: 0.25rem; }
+  .flow-line strong { color: #c8dde8; }
 
-  .link-list { line-height: 2.2; }
-  .link-list a { display: inline-block; margin-right: 1.5rem; font-size: 0.85rem; }
+  .link-list { line-height: 2.4; }
+  .link-list a { display: inline-block; margin-right: 1.5rem; font-size: 0.85rem; color: #5b9cf5; }
 
-  footer { text-align: center; padding: 2rem 0; color: #8aa3c4; font-size: 0.8rem; border-top: 1px solid #e2e8f0; margin-top: 1rem; }
-  footer a { color: #6b7d99; }
+  footer { text-align: center; padding: 2rem 0; color: #3a5a7a; font-size: 0.78rem; border-top: 1px solid rgba(91,156,245,0.08); position: relative; z-index: 1; }
+  footer a { color: #4a6a8a; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0e17; }
+  ::-webkit-scrollbar-thumb { background: rgba(91,156,245,0.2); border-radius: 3px; }
 
   @media (max-width: 640px) {
     .hero { padding: 2.5rem 1rem 1.5rem; }
-    .hero h1 { font-size: 1.8rem; }
-    nav button { padding: 0.6rem 0.7rem; }
+    .hero h1 { font-size: 2rem; }
+    nav button { padding: 0.6rem 0.7rem; font-size: 0.75rem; }
     .container { padding: 1.2rem 1rem; }
   }
 </style>
@@ -100,7 +132,7 @@
   <button class="active" onclick="switchTab('about')">About</button>
   <button onclick="switchTab('skills')">Skills</button>
   <button onclick="switchTab('agents')">Agents</button>
-  <button onclick="switchTab('refs')">Refs</button>
+  <button onclick="switchTab('refs')">Resources</button>
   <button onclick="switchTab('usage')">Examples</button>
   <button onclick="switchTab('install')">Install</button>
   <a href="index.html">中文</a>
@@ -111,25 +143,25 @@
 <div id="about" class="tab active">
   <div class="about-section">
     <p>dotnet-artisan is a Claude Code plugin that teaches AI coding agents to write correct .NET code.</p>
-    <p>It's not a collection of scattered tools — it's a <span class="highlight">complete .NET development agent system</span>. A decision-maker orchestrator analyzes requirements, captures domain vocabulary, designs architecture, then routes to the right skills for execution. From building APIs to debugging crashes, security audits to CI/CD setup, it covers the full development lifecycle.</p>
-    <p>Install and go. Zero configuration required.</p>
+    <p>It's not scattered tools — it's a <span class="highlight">complete .NET development agent system</span>. A decision-maker analyzes requirements, captures domain vocabulary, designs architecture, then routes to the right skills. From building APIs to debugging crashes, covering the full development lifecycle.</p>
+    <p>Install and go. Zero config.</p>
   </div>
   <h2>How It Works</h2>
-  <div class="about-section" style="font-family:monospace;font-size:0.82rem;line-height:2">
-    Your request → intent detection → decision-maker →<br>
-    &nbsp;&nbsp;1. Detect .NET version<br>
-    &nbsp;&nbsp;2. Align requirements (ask, capture domain vocabulary)<br>
-    &nbsp;&nbsp;3. Load C# coding standards<br>
-    &nbsp;&nbsp;4. Design architecture (invoke architect agent)<br>
-    &nbsp;&nbsp;5. Decompose into domains → parallel routing to skills<br>
-    &nbsp;&nbsp;6. Specialist agents on demand<br>
-    &nbsp;&nbsp;7. Workflow + learning (capture corrections)
+  <div class="about-section" style="font-family:monospace;font-size:0.8rem;line-height:2.1">
+    <span style="color:#4a6a8a">Your request</span> <span style="color:#5b9cf5">⟶</span> intent detection <span style="color:#5b9cf5">⟶</span> decision-maker<br>
+    <span style="color:#5b9cf5">▸ 1.</span> Detect .NET version<br>
+    <span style="color:#5b9cf5">▸ 2.</span> Align requirements: ask, capture domain vocabulary<br>
+    <span style="color:#5b9cf5">▸ 3.</span> Load C# coding standards<br>
+    <span style="color:#5b9cf5">▸ 4.</span> Design architecture (invoke architect agent)<br>
+    <span style="color:#5b9cf5">▸ 5.</span> Decompose into domains ⟶ parallel routing<br>
+    <span style="color:#5b9cf5">▸ 6.</span> Specialist agents on demand<br>
+    <span style="color:#5b9cf5">▸ 7.</span> Workflow + learning
   </div>
 </div>
 
 <div id="skills" class="tab">
   <h2>Skills</h2>
-  <table class="skill-table">
+  <table class="card-table">
     <tr><th>Category</th><th>Skill</th><th>Positioning</th><th>Refs</th></tr>
     <tr class="cat"><td colspan="4">Gateway</td></tr>
     <tr><td></td><td><a href="../skills/using-dotnet/SKILL.md">using-dotnet</a></td><td>Detects .NET intent, triggers decision-maker</td><td>—</td></tr>
@@ -152,15 +184,15 @@
 </div>
 
 <div id="agents" class="tab">
-  <div class="category-label">Role Agents — work like human experts</div>
+  <div class="category-label">⟡ Role Agents · work like human experts</div>
   <div id="roleAgents"></div>
-  <div class="category-label" style="margin-top:1.5rem">Tool Agents — focus on specific domains</div>
+  <div class="category-label" style="margin-top:1.5rem">⟡ Tool Agents · focus on specific domains</div>
   <div id="toolAgents"></div>
 </div>
 
 <div id="refs" class="tab">
   <h2>Reference Files</h2>
-  <table class="skill-table">
+  <table class="card-table">
     <tr><th>Domain</th><th>Count</th><th>Covers</th></tr>
     <tr><td>API & Backend</td><td>33</td><td>Minimal API, EF Core, gRPC, SignalR, security, caching, messaging, YARP</td></tr>
     <tr><td>C# Language</td><td>27</td><td>async/await, DI, LINQ, serialization, concurrency, domain modeling, source gen</td></tr>
@@ -171,9 +203,9 @@
     <tr><td>UI</td><td>20</td><td>Blazor, MAUI, Uno, WPF, WinUI, WinForms</td></tr>
     <tr><td>Routing</td><td>2</td><td>Requirements alignment, architecture discovery</td></tr>
   </table>
-  <p style="margin-top:0.8rem;color:#6b7d99;font-size:0.85rem">Full index: <a href="../skills/INDEX.md">INDEX.md</a></p>
+  <p style="margin-top:0.8rem;color:#4a6a8a;font-size:0.82rem">Full index: <a href="../skills/INDEX.md">INDEX.md</a></p>
   <h2>Behaviors</h2>
-  <table class="skill-table">
+  <table class="card-table">
     <tr><th>Category</th><th>Examples</th><th>Routes to</th></tr>
     <tr><td>Build</td><td>Create API / Blazor / MAUI / CLI</td><td>api/ui + tooling + testing</td></tr>
     <tr><td>Fix</td><td>Debug crash / deadlock / memory leak / high CPU</td><td>debugging</td></tr>
@@ -183,27 +215,26 @@
     <tr><td>Upgrade</td><td>.NET version / AOT migration</td><td>devops + tooling</td></tr>
     <tr><td>Learn</td><td>Remember conventions / capture corrections</td><td>learning-agent</td></tr>
   </table>
-  <p style="margin-top:0.8rem;color:#6b7d99;font-size:0.85rem">Full catalog: <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
+  <p style="margin-top:0.8rem;color:#4a6a8a;font-size:0.82rem">Full catalog: <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
 </div>
 
 <div id="usage" class="tab">
   <div class="flow-box">
-    <h4>1. Building an Order Management System</h4>
+    <h4>⟫ 1. Building an Order System</h4>
     <div class="flow-line"><strong>You:</strong> I need an order management system</div>
-    <div class="flow-line"><strong style="color:#4f7ec9">AI:</strong> What kind of orders? Purchase orders, work orders, or customer orders?</div>
+    <div class="flow-line"><strong style="color:#5b9cf5">AI:</strong> What kind of orders? Purchase orders, work orders, or customer orders?</div>
     <div class="flow-line"><strong>You:</strong> Customer orders. We might split order and payment later.</div>
-    <div class="flow-line"><strong style="color:#4f7ec9">AI:</strong> Modular monolith + DDD: Order, Payment, Inventory as bounded contexts.</div>
-    <div class="flow-line" style="color:#16a34a">→ 4 rounds → domain-analyst → Event Storming → domain doc → parallel routing</div>
+    <div class="flow-line" style="color:#4ade80"><strong>→</strong> 4 rounds → domain-analyst → Event Storming → domain doc → parallel routing</div>
   </div>
   <div class="flow-box">
-    <h4>2. Debugging a Production Crash (OOM)</h4>
+    <h4>⟫ 2. Debugging a Crash (OOM)</h4>
     <div class="flow-line"><strong>You:</strong> OOM in production, here's the dump file</div>
-    <div class="flow-line" style="color:#16a34a">→ dotnet-debugging → !analyze -v → !dumpheap -stat finds 850MB → !gcroot traces root cause</div>
+    <div class="flow-line" style="color:#4ade80"><strong>→</strong> dotnet-debugging → !analyze -v → !dumpheap -stat → !gcroot traces root cause</div>
   </div>
   <div class="flow-box">
-    <h4>3. Learning a Convention</h4>
+    <h4>⟫ 3. Learning a Convention</h4>
     <div class="flow-line"><strong>You:</strong> Remember, use TimeProvider instead of DateTime.Now</div>
-    <div class="flow-line" style="color:#16a34a">→ learning-agent → generalize rule → deduplicate → write to MEMORY.md</div>
+    <div class="flow-line" style="color:#4ade80"><strong>→</strong> learning-agent → generalize rule → deduplicate → write to MEMORY.md</div>
   </div>
 </div>
 
@@ -213,7 +244,7 @@
     <code>claude plugins marketplace add fenzel999/dotnet-artisan<br>claude plugins install dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn">Copy</button>
   </div>
-  <p style="color:#6b7d99;font-size:0.85rem">Compatible with GitHub Copilot, VS Code, and Cursor.</p>
+  <p style="color:#4a6a8a;font-size:0.82rem;margin-bottom:1.5rem">Compatible with GitHub Copilot, VS Code, and Cursor</p>
   <h2>Further Reading</h2>
   <div class="link-list">
     <a href="../USAGE.md">USAGE.md — Questioning framework</a>
@@ -227,7 +258,7 @@
 
 <footer>
   <p>By <a href="https://github.com/fenzel">fenzel</a> · Built upon <a href="https://github.com/dotnet/skills">dotnet/skills</a> and <a href="https://github.com/novotnyllc/dotnet-artisan">novotnyllc/dotnet-artisan</a></p>
-  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · MIT License</p>
+  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · MIT</p>
 </footer>
 
 <script>
@@ -263,7 +294,7 @@ function copyInstall() {
   navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');
   const btn = document.getElementById('copyBtn');
   btn.textContent = 'Copied!'; btn.style.background = '#16a34a';
-  setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = '#4f7ec9'; }, 2000);
+  setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = 'linear-gradient(135deg,#5b9cf5,#7c5bf5)'; }, 2000);
 }
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
