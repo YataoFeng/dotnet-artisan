@@ -6,11 +6,6 @@ Slopwatch: LLM Anti-Cheat Quality Gate for .NET
 
 Run the `Slopwatch.Cmd` dotnet tool as an automated quality gate after code modifications to detect "slop" -- shortcuts that make builds/tests pass without fixing real problems.
 
-## Prerequisites
-
-- .NET 8.0+ SDK
-- `Slopwatch.Cmd` NuGet package (v0.3.3+)
-
 Cross-references: [skill:dotnet-tooling] `references/tool-management.md` for general dotnet tool installation mechanics.
 
 ---

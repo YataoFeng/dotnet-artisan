@@ -3,10 +3,6 @@
 > **Quick Ref**: Default to serial, use -m for parallel | Large solutions use /graph build | Replace <Exec> with built-in Tasks (MakeDir/Copy/Delete) | Wrap Condition values in double quotes | Migrate old projects to SDK-style | Analyze binlog with MSBuild Structured Log Viewer
 Help agents interpret and act on MSBuild build output. Covers error code prefixes, NuGet restore failures, analyzer warning interpretation, multi-targeting build differences, and "works locally, fails in CI" diagnosis patterns. Each subsection includes example output, diagnosis steps, and a fix pattern.
 
-## Prerequisites
-
-.NET 8.0+ SDK. MSBuild (included with .NET SDK). Understanding of SDK-style project format.
-
 Cross-references: [skill:dotnet-api] for common code mistakes that cause build errors, `references/csproj-reading.md` for project file structure and modification, `references/project-structure.md` for project organization and SDK selection.
 
 

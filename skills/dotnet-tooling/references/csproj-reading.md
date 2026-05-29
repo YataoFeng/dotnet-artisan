@@ -4,10 +4,6 @@
 
 Teaches agents to read and safely modify SDK-style .csproj files. Covers project structure, PropertyGroup conventions, ItemGroup patterns, conditional expressions, Directory.Build.props/.targets, and central package management (Directory.Packages.props). Each subsection provides annotated XML examples and common modification patterns.
 
-## Prerequisites
-
-.NET 8.0+ SDK. SDK-style projects only (legacy .csproj format is not covered). MSBuild (included with .NET SDK).
-
 Cross-references: `references/project-structure.md` for project organization and SDK selection, `references/build-analysis.md` for interpreting build errors from project misconfiguration, [skill:dotnet-api] for common project structure mistakes agents make.
 
 

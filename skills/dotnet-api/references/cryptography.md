@@ -4,12 +4,6 @@
 
 Modern .NET cryptography covering hashing (SHA-256/384/512), symmetric encryption (AES-GCM), asymmetric cryptography (RSA, ECDSA), key derivation (PBKDF2, Argon2), and post-quantum algorithms (ML-KEM, ML-DSA, SLH-DSA) for .NET 10+. Includes TFM-aware guidance: what's available on net10.0 vs fallback strategies for net8.0/net9.0.
 
-## Prerequisites
-
-- .NET 8.0+ (LTS baseline for classical algorithms)
-- .NET 10.0+ for post-quantum algorithms (ML-KEM, ML-DSA, SLH-DSA)
-- Platform support for PQC: Windows 11 (November 2025+) or OpenSSL 3.5+ on Linux/macOS
-
 ---
 
 ## Hashing (SHA-2 Family)
@@ -415,6 +409,14 @@ For the full list of deprecated security patterns beyond cryptography (CAS, APTC
 7. **PBKDF2 iteration count must be high** -- OWASP recommends 600,000 iterations with SHA-256 (as of 2023). Lower counts are brute-forceable.
 8. **PQC `IsSupported` checks are mandatory** -- calling PQC APIs on unsupported platforms throws `PlatformNotSupportedException`. Always check before use.
 9. **Do not suppress SYSLIB5006 globally** -- suppress the experimental diagnostic only at the specific call site where you intentionally use experimental PQC APIs.
+
+---
+
+## Prerequisites
+
+- .NET 8.0+ (LTS baseline for classical algorithms)
+- .NET 10.0+ for post-quantum algorithms (ML-KEM, ML-DSA, SLH-DSA)
+- Platform support for PQC: Windows 11 (November 2025+) or OpenSSL 3.5+ on Linux/macOS
 
 ---
 
