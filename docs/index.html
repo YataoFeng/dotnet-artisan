@@ -130,6 +130,7 @@
 <nav>
   <button class="active" onclick="switchTab('skills')">技能</button>
   <button onclick="switchTab('agents')">代理</button>
+  <button onclick="switchTab('refs')">参考文件</button>
   <button onclick="switchTab('usage')">示例</button>
   <button onclick="switchTab('install')">安装</button>
   <button onclick="switchTab('selfdoc')">30 秒法则</button>
@@ -174,6 +175,24 @@
   <div class="agent-list" id="toolAgents"></div>
 </div>
 
+<!-- REFS -->
+<div id="refs" class="tab">
+  <h2>参考文件</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1rem;font-size:0.85rem">173 个参考文件，按领域分类。每个文件包含：核心原则 → 模式 → 反模式 → 决策指南。</p>
+  <table class="skill-table">
+    <tr><th>领域</th><th>所属技能</th><th>数量</th><th>覆盖主题</th></tr>
+    <tr><td>API 与后端</td><td><a href="../skills/dotnet-api/SKILL.md">dotnet-api</a></td><td>33</td><td>Minimal API、EF Core、gRPC、SignalR、安全、缓存、消息、YARP</td></tr>
+    <tr><td>C# 语言</td><td><a href="../skills/dotnet-csharp/SKILL.md">dotnet-csharp</a></td><td>27</td><td>async/await、DI、LINQ、序列化、并发、领域建模、源码生成</td></tr>
+    <tr><td>调试</td><td><a href="../skills/dotnet-debugging/SKILL.md">dotnet-debugging</a></td><td>17</td><td>WinDbg、dotnet-dump、lldb、崩溃分析、死锁、高 CPU</td></tr>
+    <tr><td>DevOps</td><td><a href="../skills/dotnet-devops/SKILL.md">dotnet-devops</a></td><td>19</td><td>CI/CD、容器、NuGet、OpenTelemetry、版本迁移、Git 工作流</td></tr>
+    <tr><td>测试</td><td><a href="../skills/dotnet-testing/SKILL.md">dotnet-testing</a></td><td>14</td><td>xUnit、集成测试、Playwright、BDD、基准测试、快照</td></tr>
+    <tr><td>工具链</td><td><a href="../skills/dotnet-tooling/SKILL.md">dotnet-tooling</a></td><td>41</td><td>MSBuild、AOT、CLI、性能分析、模板引擎、PR 工作流</td></tr>
+    <tr><td>UI</td><td><a href="../skills/dotnet-ui/SKILL.md">dotnet-ui</a></td><td>20</td><td>Blazor、MAUI、Uno、WPF、WinUI、WinForms</td></tr>
+    <tr><td>路由</td><td><a href="../skills/dotnet-advisor/SKILL.md">dotnet-advisor</a></td><td>2</td><td>需求对齐、架构发现</td></tr>
+  </table>
+  <p style="margin-top:1rem;color:var(--fg-dim);font-size:0.85rem">完整列表：<a href="../skills/INDEX.md">INDEX.md</a></p>
+</div>
+
 <!-- USAGE -->
 <div id="usage" class="tab">
   <h2>场景示例</h2>
@@ -214,13 +233,14 @@
   </div>
   <p style="color:var(--fg-dim);font-size:0.85rem">兼容 GitHub Copilot、VS Code、Cursor。装完即用，Harness 自动激活。</p>
 
-  <h2>核心原则</h2>
-  <div class="principle-grid">
-    <div class="principle-card"><h3>KISS 优先</h3><p>简单 CRUD 不需要 DDD。</p></div>
-    <div class="principle-card"><h3>禁止仓储包装</h3><p>DbContext 即工作单元，DbSet 即仓储。</p></div>
-    <div class="principle-card"><h3>免费 & 开源</h3><p>零商业依赖，全部 MIT。</p></div>
-    <div class="principle-card"><h3>自文档化代码</h3><p>新 AI 30 秒理解项目。</p></div>
-  </div>
+  <h2>了解更多</h2>
+  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:2">
+    <a href="../USAGE.md">USAGE.md</a> — 先理解再动手：7 项检查清单、4 轮提问框架<br>
+    <a href="../CHEATSHEET.md">CHEATSHEET.md</a> — DbContext 即仓储、TimeProvider 等核心规范<br>
+    <a href="../BEHAVIORS.md">BEHAVIORS.md</a> — 全部行为目录、决策者路由逻辑<br>
+    <a href="../SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a> — 30 秒法则：让代码自文档化<br>
+    <a href="../CLAUDE.md">CLAUDE.md</a> — 插件架构、文件地图、上下文恢复
+  </p>
 </div>
 
 <!-- SELF-DOC -->
