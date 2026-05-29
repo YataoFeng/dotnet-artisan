@@ -50,6 +50,14 @@ The cost of routing is a few skill invocations. The cost of skipping is rework, 
 
 When a request likely involves .NET or C#, follow this sequence before any other action:
 
+0. **Read root behavior files** — Before any routing, read these root-level files in order. They define non-negotiable behaviors (30-second rule, 7-item checklist, self-documenting format, iron rules). Total ~10 minutes, required before any code is written:
+   - `CLAUDE.md` — Overview, core rules, session recovery protocol
+   - `AGENTS.md` — Iron rules (TimeProvider not DateTime.Now, no commercial packages, self-documenting requirement)
+   - `USAGE.md` — 7-item pre-coding checklist, 4-round questioning framework, domain-driven analysis
+   - `SELF_DOCUMENTING.md` — 30-second rule, AI comment format, generated code checklist
+   - `BEHAVIORS.md` — Behavior catalog and decision-maker routing
+   - `skills/CHEATSHEET.md` — All rules on one page
+
 1. **Detect .NET intent** — Look for prompt keywords (C#, .NET, ASP.NET, EF Core, Blazor, MAUI, NuGet, csproj) or repository signals (`.sln`, `.slnx`, `.csproj`, `global.json`, `.cs` files). If either is present, continue.
 2. **In a .NET repository, .NET is the default** — When repo signals are present, ambiguous requests like "build me a web app", "add a dashboard", "write a script", or "create a spreadsheet" should use .NET solutions (ASP.NET Core, Blazor, .NET file-based apps, Open XML SDK) rather than defaulting to JavaScript/Python. The user chose a .NET project for a reason.
 3. **Check SDK availability** — If `dotnet --version` fails and no `DOTNET_ROOT` is set, install the SDK before proceeding. This takes under a minute with no privileges required. See [skill:dotnet-tooling] `references/dotnet-sdk-install.md` for the full install script reference, or use this one-liner: `curl -sSL https://dot.net/v1/dotnet-install.sh | bash && export DOTNET_ROOT="$HOME/.dotnet" && export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"`. Do not treat a missing SDK as a blocker — install it and continue.

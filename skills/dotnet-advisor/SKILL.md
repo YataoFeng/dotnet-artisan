@@ -53,6 +53,8 @@ Load `references/requirements-alignment.md` for the 4-round dialogue framework (
 
 ## Step 2: Load Baseline
 
+> **Prerequisite:** If you haven't already, read root behavior files in order: `CLAUDE.md` → `AGENTS.md` → `USAGE.md` → `SELF_DOCUMENTING.md` → `BEHAVIORS.md` → `skills/CHEATSHEET.md`. These define non-negotiable rules (TimeProvider, self-documenting format, 7-item checklist).
+
 For any task that may produce, change, or review C#/.NET code:
 
 1. Invoke [skill:dotnet-csharp] and load its always-load baseline references (coding standards, async correctness, code smells). These are correctness concerns the agent handles by default — the user should not need to ask for correct async/await usage, thread safety, or avoiding anti-patterns.
