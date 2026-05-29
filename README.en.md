@@ -153,19 +153,19 @@ Chain: dotnet-learning-agent → detect correction → generalize rule →
 
 ## Skills
 
-| Category | Skill | Positioning |
-|----------|-------|-------------|
-| Gateway | [using-dotnet](skills/using-dotnet/SKILL.md) | Detects .NET intent, triggers decision-maker |
-| | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | Decision-maker: align → architect → route |
-| Baseline | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | C# standards, async/await, DI, LINQ (always loaded) |
-| Build | [dotnet-api](skills/dotnet-api/SKILL.md) | Backend API, EF Core, gRPC, SignalR, security |
-| | [dotnet-ui](skills/dotnet-ui/SKILL.md) | Blazor, MAUI, WPF, WinUI, Uno |
-| Verify | [dotnet-testing](skills/dotnet-testing/SKILL.md) | xUnit, integration, Playwright, benchmarks |
-| | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | WinDbg / dotnet-dump crash diagnostics |
-| Operate | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD, containers, migration, Git workflow |
-| | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | Project structure, AOT, CLI, performance, quality |
-| Augment | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP servers, Semantic Kernel, RAG |
-| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | Parallel workflows, context management, verification loops |
+| Category | Skill | Positioning | Refs |
+|----------|-------|-------------|------|
+| Gateway | [using-dotnet](skills/using-dotnet/SKILL.md) | Detects .NET intent, triggers decision-maker | — |
+| | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | Decision-maker: align → architect → route | 2 |
+| Baseline | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | C# standards, async/await, DI, LINQ (always loaded) | 27 |
+| Build | [dotnet-api](skills/dotnet-api/SKILL.md) | Backend API, EF Core, gRPC, SignalR, security | 33 |
+| | [dotnet-ui](skills/dotnet-ui/SKILL.md) | Blazor, MAUI, WPF, WinUI, Uno | 20 |
+| Verify | [dotnet-testing](skills/dotnet-testing/SKILL.md) | xUnit, integration, Playwright, benchmarks | 14 |
+| | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | WinDbg / dotnet-dump crash diagnostics | 17 |
+| Operate | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD, containers, migration, Git workflow | 19 |
+| | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | Project structure, AOT, CLI, performance, quality, templates | 41 |
+| Augment | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP servers, Semantic Kernel, RAG | — |
+| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | Parallel workflows, context management, verification loops | — |
 
 ---
 

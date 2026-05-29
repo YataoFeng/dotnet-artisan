@@ -152,19 +152,19 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 ## 技能
 
-| 分类 | 技能 | 定位 |
-|------|------|------|
-| 网关 | [using-dotnet](skills/using-dotnet/SKILL.md) | 检测 .NET 意图，触发决策者 |
-| | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | 决策者：需求对齐 → 架构设计 → 路由调度 |
-| 基线 | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | C# 规范、async/await、DI、LINQ（始终加载） |
-| 构建 | [dotnet-api](skills/dotnet-api/SKILL.md) | 后端 API、EF Core、gRPC、SignalR、安全 |
-| | [dotnet-ui](skills/dotnet-ui/SKILL.md) | Blazor、MAUI、WPF、WinUI、Uno |
-| 验证 | [dotnet-testing](skills/dotnet-testing/SKILL.md) | xUnit、集成测试、Playwright、基准测试 |
-| | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | WinDbg / dotnet-dump 崩溃诊断 |
-| 运维 | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD、容器、版本迁移、Git 工作流 |
-| | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | 项目结构、AOT、CLI、性能、代码质量 |
-| 增强 | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP 服务器、Semantic Kernel、RAG |
-| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | 并行工作流、上下文管理、验证循环 |
+| 分类 | 技能 | 定位 | 引用 |
+|------|------|------|------|
+| 网关 | [using-dotnet](skills/using-dotnet/SKILL.md) | 检测 .NET 意图，触发决策者 | — |
+| | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | 决策者：需求对齐 → 架构设计 → 路由调度 | 2 |
+| 基线 | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | C# 规范、async/await、DI、LINQ（始终加载） | 27 |
+| 构建 | [dotnet-api](skills/dotnet-api/SKILL.md) | 后端 API、EF Core、gRPC、SignalR、安全 | 33 |
+| | [dotnet-ui](skills/dotnet-ui/SKILL.md) | Blazor、MAUI、WPF、WinUI、Uno | 20 |
+| 验证 | [dotnet-testing](skills/dotnet-testing/SKILL.md) | xUnit、集成测试、Playwright、基准测试 | 14 |
+| | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | WinDbg / dotnet-dump 崩溃诊断 | 17 |
+| 运维 | [dotnet-devops](skills/dotnet-devops/SKILL.md) | CI/CD、容器、版本迁移、Git 工作流 | 19 |
+| | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | 项目结构、AOT、CLI、性能、代码质量、模板引擎 | 41 |
+| 增强 | [dotnet-ai](skills/dotnet-ai/SKILL.md) | MCP 服务器、Semantic Kernel、RAG | — |
+| | [dotnet-workflow](skills/dotnet-workflow/SKILL.md) | 并行工作流、上下文管理、验证循环 | — |
 
 ---
 
