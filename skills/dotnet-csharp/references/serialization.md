@@ -342,6 +342,46 @@ var json = JsonSerializer.Serialize(order, AppJsonContext.Default.Order);
 
 ---
 
+## .NET 11+ New APIs
+
+New System.Text.Json APIs available starting from .NET 11.
+
+### Typed JsonTypeInfo Access
+
+```csharp
+// Strongly-typed metadata access
+JsonTypeInfo<MyClass> typeInfo = options.GetTypeInfo<MyClass>();
+
+// Safe check without exceptions
+if (options.TryGetTypeInfo<MyClass>(out var info))
+{
+    Console.WriteLine($"Resolved: {info!.Type.Name}");
+}
+```
+
+### JsonNamingPolicy.PascalCase
+
+```csharp
+var opts = new JsonSerializerOptions
+{
+    PropertyNamingPolicy = JsonNamingPolicy.PascalCase
+};
+// "firstName" → "FirstName"
+```
+
+### Combined Usage
+
+```csharp
+var options = new JsonSerializerOptions
+{
+    PropertyNamingPolicy = JsonNamingPolicy.PascalCase
+};
+JsonTypeInfo<Person> typeInfo = options.GetTypeInfo<Person>();
+string json = JsonSerializer.Serialize(new Person("Jane", 30), typeInfo);
+```
+
+---
+
 ## Key Principles
 
 - **Default to System.Text.Json with source generators** for all JSON serialization -- it is AOT-safe, fast, and built into the framework

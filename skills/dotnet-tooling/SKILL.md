@@ -52,6 +52,10 @@ user-invocable: false
 | VS Code debugging | launch.json, tasks.json, coreclr, attach, debug | VS Code launch/attach configs, tasks, multi-project, hot reload | references/vscode-debug.md |
 | C# LSP | language server, csharp-ls, OmniSharp, go to definition | C# LSP servers, code navigation, agent usage patterns | references/csharp-lsp.md |
 | PR workflow | create PR, merge, release, conventional commit, PR review | PR lifecycle, conventional commits, merge strategy, version bump | references/pr-workflow.md |
+| Template authoring | create template, template.json, dotnet new template | Creating custom dotnet new templates from existing projects | references/template-authoring.md |
+| Template discovery | find template, search template, dotnet new search | Finding and inspecting .NET project templates | references/template-discovery.md |
+| Template instantiation | create project, scaffold, dotnet new | Creating projects from templates, multi-project setup, CPM adaptation | references/template-instantiation.md |
+| Template validation | validate template, check template.json | Validating template.json for correctness before publishing | references/template-validation.md |
 
 ## Scope
 
@@ -68,6 +72,7 @@ user-invocable: false
 - VS Code debug configuration (launch.json, tasks.json, coreclr)
 - C# LSP servers (csharp-ls, OmniSharp) for agent code navigation
 - PR workflow (conventional commits, review checklist, merge, versioning, release)
+- Template engine (authoring, discovery, instantiation, validation)
 
 ## Out of scope
 
