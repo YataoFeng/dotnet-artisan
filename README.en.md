@@ -169,6 +169,25 @@ Chain: dotnet-learning-agent → detect correction → generalize rule →
 
 ---
 
+## Reference Files
+
+173 reference files organized by domain. Each file: Core Principles → Patterns (GOOD) → Anti-patterns (BAD/GOOD) → Decision Guide.
+
+| Domain | Skill | Count | Topics |
+|--------|------|-------|--------|
+| API & Backend | [dotnet-api](skills/dotnet-api/SKILL.md) | 33 | Minimal API, EF Core, gRPC, SignalR, security, caching, messaging, YARP |
+| C# Language | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | 27 | async/await, DI, LINQ, serialization, concurrency, domain modeling, source gen |
+| Debugging | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | 17 | WinDbg, dotnet-dump, lldb, crash analysis, deadlocks, high CPU |
+| DevOps | [dotnet-devops](skills/dotnet-devops/SKILL.md) | 19 | CI/CD, containers, NuGet, OpenTelemetry, migration, Git workflow |
+| Testing | [dotnet-testing](skills/dotnet-testing/SKILL.md) | 14 | xUnit, integration testing, Playwright, BDD, benchmarks, snapshots |
+| Tooling | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | 41 | MSBuild, AOT, CLI, profiling, template engine, PR workflow |
+| UI | [dotnet-ui](skills/dotnet-ui/SKILL.md) | 20 | Blazor, MAUI, Uno, WPF, WinUI, WinForms |
+| Routing | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | 2 | Requirements alignment, architecture discovery |
+
+Full index: [INDEX.md](skills/INDEX.md)
+
+---
+
 ## Agents
 
 ### Role Agents
