@@ -21,7 +21,7 @@ Existing code often has context I don't understand. If I can't understand a file
 2. Let them explain the domain
 3. Then proceed with changes
 
-**Respect existing comments.** If a `.cs` file already has a purpose comment at the top and I didn't write it, leave it alone. I can only update comments that I (or another AI in the same session) created. Modifying original developer comments risks introducing inaccuracies.
+**Never modify existing comments.** Any comment already in the code when you open the file — regardless of who wrote it — is part of the established codebase. Leave it alone. If a comment seems wrong or outdated, ask the user about it, don't change it yourself.
 
 ## Rules (MUST)
 
