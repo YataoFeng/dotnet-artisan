@@ -171,13 +171,38 @@ Chain: dotnet-learning-agent → detect correction → generalize rule →
 
 ## Reference Files
 
-173 reference files across 8 domains: API, C#, debugging, DevOps, testing, tooling, UI, routing. Each file: Core Principles → Patterns → Anti-patterns → Decision Guide. See [INDEX.md](skills/INDEX.md).
+173 reference files across 8 domains. Each file: Core Principles → Patterns → Anti-patterns → Decision Guide.
+
+| Domain | Skill | Count | Covers |
+|--------|------|-------|--------|
+| API & Backend | dotnet-api | 33 | Minimal API, EF Core, gRPC, SignalR, security, caching, messaging, YARP |
+| C# Language | dotnet-csharp | 27 | async/await, DI, LINQ, serialization, concurrency, domain modeling, source gen |
+| Debugging | dotnet-debugging | 17 | WinDbg, dotnet-dump, lldb, crash analysis, deadlocks, high CPU |
+| DevOps | dotnet-devops | 19 | CI/CD, containers, NuGet, OpenTelemetry, migration, Git workflow |
+| Testing | dotnet-testing | 14 | xUnit, integration testing, Playwright, BDD, benchmarks, snapshots |
+| Tooling | dotnet-tooling | 41 | MSBuild, AOT, CLI, profiling, template engine, PR workflow |
+| UI | dotnet-ui | 20 | Blazor, MAUI, Uno, WPF, WinUI, WinForms |
+| Routing | dotnet-advisor | 2 | Requirements alignment, architecture discovery |
+
+Full index: [INDEX.md](skills/INDEX.md)
 
 ---
 
 ## Behaviors
 
-30+ predefined behaviors organized by goal — build, fix, review, test, ship, upgrade. The decision-maker routes your intent to the right skill chain automatically. For example, "build an API" triggers a coordinated workflow across api + tooling + testing skills. Full catalog: [BEHAVIORS.md](BEHAVIORS.md).
+30+ predefined behaviors organized by goal, auto-routed by the decision-maker:
+
+| Category | Examples | Routes to |
+|----------|---------|-----------|
+| Build | Create API / Blazor / MAUI / CLI app | dotnet-api/ui + tooling + testing |
+| Fix | Debug crash / deadlock / memory leak / high CPU | dotnet-debugging |
+| Review | Code review / security audit / architecture review | code-review-agent / security-reviewer / architect |
+| Test | Unit / integration / E2E / benchmarks | dotnet-testing + testing-specialist |
+| Ship | CI/CD / containerize / NuGet publish / deploy | dotnet-devops + cloud-specialist |
+| Upgrade | .NET version migration / AOT migration | dotnet-devops + dotnet-tooling |
+| Learn | Remember conventions / capture corrections | dotnet-learning-agent |
+
+Full catalog and routing logic: [BEHAVIORS.md](BEHAVIORS.md)
 
 ---
 

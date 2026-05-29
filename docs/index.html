@@ -178,10 +178,33 @@
 <!-- REFS -->
 <div id="refs" class="tab">
   <h2>参考文件</h2>
-  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">173 个参考文件，覆盖 8 个领域：API、C#、调试、DevOps、测试、工具链、UI、路由。<br>每个文件包含：核心原则 → 模式 → 反模式 → 决策指南。<br>详见 <a href="../skills/INDEX.md">INDEX.md</a></p>
+  <p style="color:var(--fg-dim);margin-bottom:0.8rem;font-size:0.85rem">173 个参考文件，横跨 8 个领域。每个文件：核心原则 → 模式 → 反模式 → 决策指南。</p>
+  <table class="skill-table">
+    <tr><th>领域</th><th>数量</th><th>覆盖主题</th></tr>
+    <tr><td>API 与后端</td><td>33</td><td>Minimal API、EF Core、gRPC、SignalR、安全、缓存、消息、YARP</td></tr>
+    <tr><td>C# 语言</td><td>27</td><td>async/await、DI、LINQ、序列化、并发、领域建模、源码生成</td></tr>
+    <tr><td>调试</td><td>17</td><td>WinDbg、dotnet-dump、lldb、崩溃分析、死锁、高 CPU</td></tr>
+    <tr><td>DevOps</td><td>19</td><td>CI/CD、容器、NuGet、OpenTelemetry、版本迁移、Git 工作流</td></tr>
+    <tr><td>测试</td><td>14</td><td>xUnit、集成测试、Playwright、BDD、基准测试、快照</td></tr>
+    <tr><td>工具链</td><td>41</td><td>MSBuild、AOT、CLI、性能分析、模板引擎、PR 工作流</td></tr>
+    <tr><td>UI</td><td>20</td><td>Blazor、MAUI、Uno、WPF、WinUI、WinForms</td></tr>
+    <tr><td>路由</td><td>2</td><td>需求对齐、架构发现</td></tr>
+  </table>
+  <p style="margin-top:0.8rem;color:var(--fg-dim);font-size:0.85rem">完整列表：<a href="../skills/INDEX.md">INDEX.md</a></p>
 
   <h2>行为</h2>
-  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">30+ 个预设行为，按目标组织：搭建、修复、审查、测试、交付、升级。<br>决策者根据意图自动路由到对应技能链。详见 <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
+  <p style="color:var(--fg-dim);margin-bottom:0.8rem;font-size:0.85rem">30+ 个预设行为，按目标组织，决策者自动路由。</p>
+  <table class="skill-table">
+    <tr><th>分类</th><th>示例</th><th>路由到</th></tr>
+    <tr><td>搭建</td><td>创建 API / Blazor / MAUI / CLI</td><td>api/ui + tooling + testing</td></tr>
+    <tr><td>修复</td><td>调试崩溃 / 死锁 / 内存泄漏 / 高 CPU</td><td>debugging</td></tr>
+    <tr><td>审查</td><td>代码审查 / 安全审计 / 架构评估</td><td>code-review / security / architect</td></tr>
+    <tr><td>测试</td><td>单元测试 / 集成测试 / E2E / 基准</td><td>testing + testing-specialist</td></tr>
+    <tr><td>交付</td><td>CI/CD / 容器化 / NuGet / 部署</td><td>devops + cloud-specialist</td></tr>
+    <tr><td>升级</td><td>.NET 版本迁移 / AOT 迁移</td><td>devops + tooling</td></tr>
+    <tr><td>学习</td><td>记住项目约定 / 捕获纠错</td><td>learning-agent</td></tr>
+  </table>
+  <p style="margin-top:0.8rem;color:var(--fg-dim);font-size:0.85rem">全部行为：<a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
 </div>
 
 <!-- USAGE -->

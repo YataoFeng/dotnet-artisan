@@ -170,13 +170,38 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 ## 参考文件
 
-173 个参考文件，覆盖 8 个领域：API、C#、调试、DevOps、测试、工具链、UI、路由。每个文件包含核心原则 → 模式 → 反模式 → 决策指南。详见 [INDEX.md](skills/INDEX.md)。
+173 个参考文件，横跨 8 个领域。每个文件：核心原则 → 模式 → 反模式 → 决策指南。
+
+| 领域 | 技能 | 数量 | 覆盖 |
+|------|------|------|------|
+| API 与后端 | dotnet-api | 33 | Minimal API、EF Core、gRPC、SignalR、安全、缓存、消息、YARP |
+| C# 语言 | dotnet-csharp | 27 | async/await、DI、LINQ、序列化、并发、领域建模、源码生成 |
+| 调试 | dotnet-debugging | 17 | WinDbg、dotnet-dump、lldb、崩溃分析、死锁、高 CPU |
+| DevOps | dotnet-devops | 19 | CI/CD、容器、NuGet、OpenTelemetry、版本迁移、Git 工作流 |
+| 测试 | dotnet-testing | 14 | xUnit、集成测试、Playwright、BDD、基准测试、快照 |
+| 工具链 | dotnet-tooling | 41 | MSBuild、AOT、CLI、性能分析、模板引擎、PR 工作流 |
+| UI | dotnet-ui | 20 | Blazor、MAUI、Uno、WPF、WinUI、WinForms |
+| 路由 | dotnet-advisor | 2 | 需求对齐、架构发现 |
+
+完整索引：[INDEX.md](skills/INDEX.md)
 
 ---
 
 ## 行为
 
-30+ 个预设行为，按目标组织——搭建、修复、审查、测试、交付、升级。决策者根据你的意图自动路由到对应技能链。例如"搭建 API"会启动 api + tooling + testing 三个技能的协同工作流。全部行为见 [BEHAVIORS.md](BEHAVIORS.md)。
+30+ 个预设行为，按目标组织，决策者自动路由：
+
+| 分类 | 行为示例 | 路由到 |
+|------|---------|--------|
+| 搭建 | 创建 API / Blazor / MAUI / CLI 应用 | dotnet-api/ui + tooling + testing |
+| 修复 | 调试崩溃 / 分析死锁 / 内存泄漏 / 高 CPU | dotnet-debugging |
+| 审查 | 代码审查 / 安全审计 / 架构评估 | code-review-agent / security-reviewer / architect |
+| 测试 | 单元测试 / 集成测试 / E2E / 基准测试 | dotnet-testing + testing-specialist |
+| 交付 | CI/CD / 容器化 / NuGet 发布 / 部署 | dotnet-devops + cloud-specialist |
+| 升级 | .NET 版本迁移 / AOT 迁移 | dotnet-devops + dotnet-tooling |
+| 学习 | 记住项目约定 / 捕获纠错 | dotnet-learning-agent |
+
+全部行为及路由逻辑：[BEHAVIORS.md](BEHAVIORS.md)
 
 ---
 

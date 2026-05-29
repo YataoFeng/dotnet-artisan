@@ -137,10 +137,33 @@
 
 <div id="refs" class="tab">
   <h2>Reference Files</h2>
-  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">173 reference files across 8 domains: API, C#, debugging, DevOps, testing, tooling, UI, routing.<br>Each file: Core Principles → Patterns → Anti-patterns → Decision Guide.<br>See <a href="../skills/INDEX.md">INDEX.md</a></p>
+  <p style="color:var(--fg-dim);margin-bottom:0.8rem;font-size:0.85rem">173 reference files across 8 domains. Each file: Core Principles → Patterns → Anti-patterns → Decision Guide.</p>
+  <table class="skill-table">
+    <tr><th>Domain</th><th>Count</th><th>Covers</th></tr>
+    <tr><td>API & Backend</td><td>33</td><td>Minimal API, EF Core, gRPC, SignalR, security, caching, messaging, YARP</td></tr>
+    <tr><td>C# Language</td><td>27</td><td>async/await, DI, LINQ, serialization, concurrency, domain modeling, source gen</td></tr>
+    <tr><td>Debugging</td><td>17</td><td>WinDbg, dotnet-dump, lldb, crash analysis, deadlocks, high CPU</td></tr>
+    <tr><td>DevOps</td><td>19</td><td>CI/CD, containers, NuGet, OpenTelemetry, migration, Git workflow</td></tr>
+    <tr><td>Testing</td><td>14</td><td>xUnit, integration testing, Playwright, BDD, benchmarks, snapshots</td></tr>
+    <tr><td>Tooling</td><td>41</td><td>MSBuild, AOT, CLI, profiling, template engine, PR workflow</td></tr>
+    <tr><td>UI</td><td>20</td><td>Blazor, MAUI, Uno, WPF, WinUI, WinForms</td></tr>
+    <tr><td>Routing</td><td>2</td><td>Requirements alignment, architecture discovery</td></tr>
+  </table>
+  <p style="margin-top:0.8rem;color:var(--fg-dim);font-size:0.85rem">Full index: <a href="../skills/INDEX.md">INDEX.md</a></p>
 
   <h2>Behaviors</h2>
-  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">30+ predefined behaviors organized by goal: build, fix, review, test, ship, upgrade.<br>The decision-maker routes intent to the right skill chain. See <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
+  <p style="color:var(--fg-dim);margin-bottom:0.8rem;font-size:0.85rem">30+ predefined behaviors organized by goal, auto-routed by the decision-maker.</p>
+  <table class="skill-table">
+    <tr><th>Category</th><th>Examples</th><th>Routes to</th></tr>
+    <tr><td>Build</td><td>Create API / Blazor / MAUI / CLI</td><td>api/ui + tooling + testing</td></tr>
+    <tr><td>Fix</td><td>Debug crash / deadlock / memory leak / high CPU</td><td>debugging</td></tr>
+    <tr><td>Review</td><td>Code review / security audit / architecture</td><td>code-review / security / architect</td></tr>
+    <tr><td>Test</td><td>Unit / integration / E2E / benchmarks</td><td>testing + testing-specialist</td></tr>
+    <tr><td>Ship</td><td>CI/CD / containerize / NuGet / deploy</td><td>devops + cloud-specialist</td></tr>
+    <tr><td>Upgrade</td><td>.NET version / AOT migration</td><td>devops + tooling</td></tr>
+    <tr><td>Learn</td><td>Remember conventions / capture corrections</td><td>learning-agent</td></tr>
+  </table>
+  <p style="margin-top:0.8rem;color:var(--fg-dim);font-size:0.85rem">Full catalog: <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
 </div>
 
 <div id="install" class="tab">
