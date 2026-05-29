@@ -6,92 +6,110 @@
 <title>dotnet-artisan — .NET AI 编码技能库</title>
 <style>
   :root {
-    --bg: #0a0e14; --surface: #12171e; --card: #181e28; --card-hover: #1e2632;
-    --fg: #b8c4d0; --fg-dim: #6b7888; --fg-bright: #e2e8f0;
-    --accent: #5b9cf5; --accent-dim: #3b7dd4; --accent-glow: #5b9cf533;
-    --border: #222a36; --border-light: #2a3442;
-    --green: #4ade80; --red: #f87171; --yellow: #fbbf24;
+    --bg: #0f1420; --surface: #151d2b; --card: #1a2333; --card-hover: #1f2a3d;
+    --fg: #c8d2e0; --fg-dim: #6b7d99; --fg-bright: #e8edf5;
+    --accent: #5b9cf5; --accent-glow: #5b9cf522;
+    --green: #4ade80; --red: #f87171; --border: #253040;
     --radius: 10px; --radius-sm: 6px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
-    background: var(--bg); color: var(--fg); line-height: 1.65;
+    font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 15px;
     -webkit-font-smoothing: antialiased;
   }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
   .hero {
-    background: linear-gradient(180deg, #0d1520 0%, var(--bg) 100%);
-    border-bottom: 1px solid var(--border); padding: 4rem 1.5rem 3rem; text-align: center;
+    text-align: center; padding: 4rem 1.5rem 2.5rem;
+    background: linear-gradient(180deg, #111a2a 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
   }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
+  .hero h1 { font-size: 2.4rem; font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
   .hero h1 span { background: linear-gradient(135deg, #5b9cf5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero .sub { font-size: 1.1rem; color: var(--fg-dim); max-width: 600px; margin: 0.75rem auto 1rem; }
-  .hero .stats { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.25rem; }
+  .hero .sub { font-size: 1rem; color: var(--fg-dim); max-width: 600px; margin: 0.6rem auto; }
+  .hero .stats { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   .hero .stat { text-align: center; }
-  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: var(--fg-bright); }
-  .hero .stat .lbl { font-size: 0.75rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+  .hero .stat .num { font-size: 1.3rem; font-weight: 700; color: var(--fg-bright); }
+  .hero .stat .lbl { font-size: 0.7rem; color: var(--fg-dim); letter-spacing: 0.07em; text-transform: uppercase; }
+
   nav {
     display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
     border-bottom: 1px solid var(--border); background: var(--surface);
     position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px);
   }
   nav button {
-    background: none; border: none; color: var(--fg-dim);
-    padding: 0.85rem 1.2rem; cursor: pointer; font-size: 0.88rem;
-    font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; font-family: inherit;
+    background: none; border: none; color: var(--fg-dim); padding: 0.75rem 1rem;
+    font-size: 0.85rem; font-family: inherit; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
   }
-  nav button:hover { color: var(--fg); }
+  nav button:hover { color: var(--fg); background: var(--card); }
   nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .container { max-width: 1024px; margin: 0 auto; padding: 2rem 1.5rem; }
+  nav a { padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--fg-dim); display: flex; align-items: center; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
   .tab { display: none; }
-  .tab.active { display: block; animation: fadeIn 0.25s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .category-section { margin-bottom: 2rem; }
-  .category-section h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.75rem; }
-  .cat-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-bottom: 1rem; }
-  .cat-table th { text-align: left; padding: 0.5rem 0.7rem; color: var(--fg-dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
-  .cat-table td { padding: 0.6rem 0.7rem; border-bottom: 1px solid var(--border); }
-  .cat-table tr:hover { background: var(--card-hover); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.85rem; }
+  .tab.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  h2 { font-size: 1.2rem; font-weight: 700; color: var(--fg-bright); margin: 1.5rem 0 1rem; border-left: 3px solid var(--accent); padding-left: 0.7rem; }
+  h3 { font-size: 1rem; color: var(--accent); font-weight: 600; margin-bottom: 0.6rem; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; margin-bottom: 1.2rem; }
   .card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.25rem 1.35rem; transition: all 0.2s; overflow: hidden;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1rem 1.2rem; transition: all 0.2s;
   }
-  .card:hover { background: var(--card-hover); border-color: var(--border-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-  .card h3 { color: var(--accent); font-size: 0.95rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
-  .card .tag { font-size: 0.65rem; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; background: var(--surface); padding: 0.15rem 0.5rem; border-radius: 4px; }
-  .card p { color: var(--fg-dim); font-size: 0.85rem; line-height: 1.5; }
-  .agent-list { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
-  .agent-row:last-child { border-bottom: none; }
+  .card:hover { background: var(--card-hover); border-color: #2a3a50; transform: translateY(-1px); }
+  .card h3 { font-size: 0.9rem; margin-bottom: 0.2rem; display: flex; justify-content: space-between; align-items: center; }
+  .card p { color: var(--fg-dim); font-size: 0.82rem; line-height: 1.5; }
+  .tag { font-size: 0.6rem; color: var(--fg-dim); background: var(--surface); padding: 0.1rem 0.4rem; border-radius: 3px; letter-spacing: 0.05em; }
+
+  .skill-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.2rem; }
+  .skill-table th { text-align: left; padding: 0.5rem 0.7rem; color: var(--fg-dim); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+  .skill-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); }
+  .skill-table tr:hover { background: var(--card-hover); }
+  .category-header td { color: var(--accent); font-weight: 600; font-size: 0.85rem; padding-top: 0.8rem; }
+
+  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
   .agent-row:hover { background: var(--card-hover); }
-  .agent-row strong { color: var(--fg-bright); font-size: 0.88rem; font-weight: 600; }
-  .agent-row span { color: var(--fg-dim); font-size: 0.8rem; }
-  pre { background: #0a0e14; border-radius: var(--radius-sm); padding: 0.85rem 1rem; overflow-x: auto; font-size: 0.8rem; border: 1px solid var(--border); margin: 0.5rem 0; line-height: 1.55; }
-  code { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; }
-  .install-block { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
-  .install-block code { background: #0a0e14; padding: 0.55rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.88rem; display: inline-block; }
-  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-top: 0.5rem; }
-  .principle-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
-  .principle-card h3 { color: var(--fg-bright); font-size: 0.9rem; margin-bottom: 0.35rem; }
-  .flow-example { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
-  .flow-example h4 { color: var(--accent); margin-bottom: 0.5rem; }
-  .flow-step { color: var(--fg-dim); font-size: 0.85rem; margin-bottom: 0.25rem; padding-left: 1rem; border-left: 2px solid var(--border); }
-  .doc-rule { display: flex; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; align-items: baseline; }
+  .agent-row strong { color: var(--fg-bright); font-size: 0.85rem; }
+  .agent-row span { color: var(--fg-dim); font-size: 0.82rem; }
+
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .principle-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem 1rem; }
+  .principle-card h3 { font-size: 0.85rem; margin-bottom: 0.2rem; }
+
+  .install-box { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; }
+  .install-box code { flex: 1; min-width: 280px; background: #080c14; padding: 0.7rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; border: 1px solid var(--border); line-height: 1.6; }
+  .install-box button { background: var(--accent); color: #fff; border: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600; font-family: inherit; white-space: nowrap; }
+
+  .flow-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; margin-bottom: 1rem; }
+  .flow-box h4 { color: var(--accent); font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .flow-line { font-size: 0.82rem; color: var(--fg-dim); margin-bottom: 0.3rem; line-height: 1.5; }
+  .flow-line strong { color: var(--fg-bright); }
+
+  .doc-rule { padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; display: flex; gap: 1rem; align-items: baseline; }
   .doc-rule .do { color: var(--green); min-width: 200px; }
   .doc-rule .dont { color: var(--red); }
-  h2 { font-size: 1.25rem; color: var(--fg-bright); margin-bottom: 1rem; font-weight: 700; border-left: 3px solid var(--accent); padding-left: 0.7rem; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  footer { text-align: center; padding: 2.5rem 0 1.5rem; color: #3d4a5c; font-size: 0.82rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+
+  footer { text-align: center; padding: 2rem 0; color: #3d4a5c; font-size: 0.8rem; border-top: 1px solid var(--border); }
+  footer a { color: #4a5a70; }
+  footer p { margin-top: 0.3rem; }
+
+  pre { background: var(--card); padding: 1rem; border-radius: var(--radius); font-size: 0.8rem; line-height: 1.7; border: 1px solid var(--border); overflow-x: auto; color: var(--fg-dim); }
+  .mode-tag { font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.3rem; }
+  .mode-ro { background: #2a1a1a; color: #f87171; }
+  .mode-rw { background: #1a2a1a; color: #4ade80; }
+
   @media (max-width: 640px) {
-    .hero { padding: 2.5rem 1rem 2rem; }
-    .hero .stats { gap: 1rem; }
-    .grid { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1rem 1.5rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .card-grid { grid-template-columns: 1fr; }
     .principle-grid { grid-template-columns: 1fr; }
-    nav button { padding: 0.7rem 0.8rem; font-size: 0.8rem; }
+    nav button { padding: 0.6rem 0.7rem; font-size: 0.78rem; }
   }
 </style>
 </head>
@@ -99,11 +117,11 @@
 
 <div class="hero">
   <h1><span>dotnet</span>-artisan</h1>
-  <p class="sub">面向 AI 编码代理的 .NET 开发技能库。教会 AI 写正确的 .NET 代码，并确保它们在 30 秒内重新理解任何项目。</p>
+  <p class="sub">面向 AI 编码代理的 .NET 开发技能库。即装即用，零配置。</p>
   <div class="stats">
     <div class="stat"><div class="num">11</div><div class="lbl">技能</div></div>
     <div class="stat"><div class="num">14</div><div class="lbl">代理</div></div>
-    <div class="stat"><div class="num">160+</div><div class="lbl">参考文件</div></div>
+    <div class="stat"><div class="num">173</div><div class="lbl">参考文件</div></div>
     <div class="stat"><div class="num">30+</div><div class="lbl">行为</div></div>
     <div class="stat"><div class="num">MIT</div><div class="lbl">许可</div></div>
   </div>
@@ -112,261 +130,146 @@
 <nav>
   <button class="active" onclick="switchTab('skills')">技能</button>
   <button onclick="switchTab('agents')">代理</button>
-  <button onclick="switchTab('usage')">使用</button>
+  <button onclick="switchTab('usage')">示例</button>
   <button onclick="switchTab('install')">安装</button>
   <button onclick="switchTab('selfdoc')">30 秒法则</button>
-  <button onclick="switchTab('flow')">流程</button>
-  <a href="index.en.html" style="display:flex;align-items:center;padding:0.85rem 1rem;color:var(--fg-dim);font-size:0.85rem;text-decoration:none;border-bottom:2px solid transparent;transition:all 0.2s" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg-dim)'">EN</a>
+  <a href="index.en.html">EN</a>
 </nav>
 
 <div class="container">
 
-<!-- SKILLS TAB -->
+<!-- SKILLS -->
 <div id="skills" class="tab active">
-  <p style="color:var(--fg-dim);margin-bottom:1rem">网关 → 决策者 → 领域 → 元技能。</p>
-
-  <div class="category-section">
-    <h3>网关（最先运行）</h3>
-    <div class="grid">
-      <div class="card"><h3>using-dotnet <span class="tag">网关</span></h3><p>意图检测器。"这是 .NET 吗？"始终最先运行。</p></div>
-      <div class="card" style="border-color:var(--accent)"><h3>dotnet-advisor <span class="tag" style="background:var(--accent-glow);color:var(--accent)">决策者</span></h3><p>分析你的提示词 + 项目文件。检测 .NET 版本。路由到正确技能。不清楚时反问。</p></div>
-    </div>
-  </div>
-
-  <div class="category-section">
-    <h3>基线（始终加载）</h3>
-    <table class="cat-table">
-      <tr><td><strong>dotnet-csharp</strong></td><td>C# 语言标准：async/await、DI、LINQ、并发、类型设计。所有代码路径都激活。</td></tr>
-    </table>
-  </div>
-
-  <div class="category-section">
-    <h3>构建者（创建东西）</h3>
-    <table class="cat-table">
-      <tr><td><strong>dotnet-api</strong></td><td>Web API、EF Core、gRPC、SignalR、认证、缓存、YARP</td></tr>
-      <tr><td><strong>dotnet-ui</strong></td><td>Blazor、MAUI、Uno、WPF、WinUI、WinForms</td></tr>
-    </table>
-  </div>
-
-  <div class="category-section">
-    <h3>验证者（检查 & 修复）</h3>
-    <table class="cat-table">
-      <tr><td><strong>dotnet-testing</strong></td><td>xUnit v3、Testcontainers、Playwright E2E、BenchmarkDotNet</td></tr>
-      <tr><td><strong>dotnet-debugging</strong></td><td>WinDbg 崩溃转储、死锁、内存泄漏、高 CPU</td></tr>
-    </table>
-  </div>
-
-  <div class="category-section">
-    <h3>运维者（交付 & 维护）</h3>
-    <table class="cat-table">
-      <tr><td><strong>dotnet-devops</strong></td><td>CI/CD、Docker、NuGet、OpenTelemetry、版本迁移</td></tr>
-      <tr><td><strong>dotnet-tooling</strong></td><td>MSBuild、Native AOT、CLI 工具、SDK、性能分析、代码质量清理</td></tr>
-    </table>
-  </div>
-
-  <div class="category-section">
-    <h3>增强者（扩展 & 提升）</h3>
-    <table class="cat-table">
-      <tr><td><strong>dotnet-ai</strong></td><td>MCP 服务、Semantic Kernel、RAG、ML.NET</td></tr>
-      <tr><td><strong>dotnet-workflow</strong></td><td>并行工作树、上下文管理、验证循环</td></tr>
-    </table>
-  </div>
+  <h2>技能</h2>
+  <table class="skill-table">
+    <tr><th>分类</th><th>技能</th><th>定位</th><th>引用</th></tr>
+    <tr class="category-header"><td colspan="4">网关</td></tr>
+    <tr><td></td><td><a href="skills/using-dotnet/SKILL.md">using-dotnet</a></td><td>检测 .NET 意图，触发决策者</td><td>—</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-advisor/SKILL.md">dotnet-advisor</a></td><td>决策者：需求对齐 → 架构设计 → 路由调度</td><td>2</td></tr>
+    <tr class="category-header"><td colspan="4">基线（始终加载）</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-csharp/SKILL.md">dotnet-csharp</a></td><td>C# 规范、async/await、DI、LINQ</td><td>27</td></tr>
+    <tr class="category-header"><td colspan="4">构建</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-api/SKILL.md">dotnet-api</a></td><td>后端 API、EF Core、gRPC、SignalR、安全</td><td>33</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-ui/SKILL.md">dotnet-ui</a></td><td>Blazor、MAUI、WPF、WinUI、Uno</td><td>20</td></tr>
+    <tr class="category-header"><td colspan="4">验证</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-testing/SKILL.md">dotnet-testing</a></td><td>xUnit、集成测试、Playwright、基准测试</td><td>14</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-debugging/SKILL.md">dotnet-debugging</a></td><td>WinDbg / dotnet-dump 崩溃诊断</td><td>17</td></tr>
+    <tr class="category-header"><td colspan="4">运维</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-devops/SKILL.md">dotnet-devops</a></td><td>CI/CD、容器、版本迁移、Git 工作流</td><td>19</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-tooling/SKILL.md">dotnet-tooling</a></td><td>项目结构、AOT、CLI、性能、代码质量、模板引擎</td><td>41</td></tr>
+    <tr class="category-header"><td colspan="4">增强</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-ai/SKILL.md">dotnet-ai</a></td><td>MCP 服务器、Semantic Kernel、RAG</td><td>—</td></tr>
+    <tr><td></td><td><a href="skills/dotnet-workflow/SKILL.md">dotnet-workflow</a></td><td>并行工作流、上下文管理、验证循环</td><td>—</td></tr>
+  </table>
 </div>
 
-<!-- AGENTS TAB -->
+<!-- AGENTS -->
 <div id="agents" class="tab">
-  <div class="category-section">
-    <h3>角色型代理</h3>
-    <p style="color:var(--fg-dim);margin-bottom:0.75rem">像人类专家一样工作。理解上下文，做出判断，解释推理。</p>
-    <div class="agent-list" id="roleAgents"></div>
-  </div>
-  <div class="category-section">
-    <h3>工具型代理</h3>
-    <p style="color:var(--fg-dim);margin-bottom:0.75rem">执行特定技术深度分析。聚焦单一领域。</p>
-    <div class="agent-list" id="toolAgents"></div>
-  </div>
+  <h2>角色型代理</h2>
+  <p style="color:var(--fg-dim);margin-bottom:0.6rem;font-size:0.85rem">像人类专家一样工作。理解上下文，做出判断，解释推理。</p>
+  <div class="agent-list" id="roleAgents"></div>
+
+  <h2 style="margin-top:2rem">工具型代理</h2>
+  <p style="color:var(--fg-dim);margin-bottom:0.6rem;font-size:0.85rem">执行特定技术深度分析。聚焦单一领域。</p>
+  <div class="agent-list" id="toolAgents"></div>
 </div>
 
-<!-- USAGE TAB -->
+<!-- USAGE -->
 <div id="usage" class="tab">
-  <h2>决策者在行动</h2>
-  <p style="color:var(--fg-dim);margin-bottom:1.5rem">实际使用这个仓库时的真实行为示例。决策者（dotnet-advisor）弥合你的话和正确行动之间的鸿沟。</p>
+  <h2>场景示例</h2>
+  <p style="color:var(--fg-dim);margin-bottom:1rem;font-size:0.85rem">决策者先对齐需求，再路由到具体技能执行。</p>
 
-  <div class="flow-example">
-    <h4>示例 1："我需要一个订单管理系统"</h4>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">你:</strong> "我需要一个订单管理系统"</div>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--accent)">决策者:</strong> "什么样的订单？采购订单？工单？顾客订单？"</div>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">你:</strong> "顾客订单。状态：待确认→已确认→已发货。"</div>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--accent)">决策者:</strong> "明白了。.NET 10 还是 8？PostgreSQL？生产还是原型？需要测试吗？"</div>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">你:</strong> ".NET 10，PostgreSQL，生产环境，需要。"</div>
-    <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">行为链:</strong> 意图检测 → 3 轮提问 → 捕获领域词汇表 → 选择架构 → 脚手架生成 OrderManagement.Api → EF Core + Minimal API + 认证 → 配置 Testcontainers → 每个文件遵循 30 秒法则</div>
+  <div class="flow-box">
+    <h4>1. 搭建订单管理系统</h4>
+    <div class="flow-line"><strong>你：</strong>我需要一个订单管理系统</div>
+    <div class="flow-line"><strong style="color:var(--accent)">AI：</strong>什么样的订单？采购订单、工单还是顾客订单？</div>
+    <div class="flow-line"><strong>你：</strong>顾客下单。未来可能拆分订单和支付。</div>
+    <div class="flow-line"><strong style="color:var(--accent)">AI：</strong>建议模块化单体 + DDD：订单、支付、库存作为限界上下文。</div>
+    <div class="flow-line"><strong>你：</strong>可以，但团队没用过 DDD。</div>
+    <div class="flow-line"><strong style="color:var(--accent)">AI：</strong>先做战略设计 — Event Storming → 领域文档 → 战术实现。.NET 10 + PostgreSQL。</div>
+    <div class="flow-line" style="margin-top:0.3rem;color:var(--green)"><strong>行为链：</strong>4 轮提问 → domain-analyst → Event Storming → 领域文档 → 并行路由到 api + testing + devops + tooling</div>
   </div>
 
-  <div class="flow-example">
-    <h4>示例 2："我的应用在生产环境崩溃"</h4>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">你:</strong> "我的应用一直崩溃——OutOfMemoryException"</div>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--accent)">决策者:</strong> "有 .dmp 文件吗？有的话我加载 WinDbg 分析。"</div>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">你:</strong> "有，C:\dumps\crash.dmp"</div>
-    <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">行为链:</strong> 意图检测 → 加载 dotnet-debugging → WinDbg 打开转储 → !analyze -v → !dumpheap -stat 发现 850MB byte[] → !gcroot 追溯到 ImageCache 单例 → 报告根因 + 修复方案：用 IMemoryCache + SizeLimit</div>
+  <div class="flow-box">
+    <h4>2. 排查生产崩溃（OOM）</h4>
+    <div class="flow-line"><strong>你：</strong>生产环境 OOM 了，这是 dump 文件</div>
+    <div class="flow-line"><strong style="color:var(--accent)">AI：</strong>加载 WinDbg（Windows）或 dotnet-dump（Linux/macOS）分析。</div>
+    <div class="flow-line" style="margin-top:0.3rem;color:var(--green)"><strong>行为链：</strong>dotnet-debugging → !analyze -v → !dumpheap -stat 发现 850MB → !gcroot 定位根因</div>
   </div>
 
-  <div class="flow-example">
-    <h4>示例 3："审查我的代码"</h4>
-    <div class="flow-step" style="margin-bottom:0.4rem"><strong style="color:var(--fg-bright)">你:</strong> "审查这个 PR"</div>
-    <div class="flow-step" style="margin-bottom:0"><strong style="color:var(--green)">行为链:</strong> 意图检测 → 启动 dotnet-code-review-agent（独立子会话）→ 分析正确性、性能、安全、架构 → 报告: "3 个问题：[严重] Scoped→Singleton DI，[性能] N+1 查询，[安全] 硬编码 API 密钥"</div>
+  <div class="flow-box">
+    <h4>3. 记住项目约定</h4>
+    <div class="flow-line"><strong>你：</strong>记住，用 TimeProvider 而不是 DateTime.Now</div>
+    <div class="flow-line"><strong style="color:var(--accent)">AI：</strong>已捕获规则：TimeProvider 构造函数注入优先。已存入 MEMORY.md。</div>
+    <div class="flow-line" style="margin-top:0.3rem;color:var(--green)"><strong>行为链：</strong>learning-agent → 泛化规则 → 去重 → 写入 MEMORY.md</div>
   </div>
-
-  <p style="margin-top:1.5rem;color:var(--fg-dim)">完整提问框架见 <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/USAGE.md">USAGE.md</a>。全部 30+ 行为见 <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/BEHAVIORS.md">BEHAVIORS.md</a>。</p>
 </div>
 
-<!-- INSTALL TAB -->
+<!-- INSTALL -->
 <div id="install" class="tab">
-  <h2>插件</h2>
-  <div class="install-block" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
-    <code style="flex:1;min-width:250px">claude plugins marketplace add fenzel999/dotnet-artisan<br>claude plugins install dotnet-artisan</code>
-    <button onclick="copyInstall()" id="copyBtn" style="background:var(--accent);color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;font-size:0.82rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:all 0.15s">复制</button>
+  <h2>安装</h2>
+  <div class="install-box">
+    <code>claude plugins marketplace add fenzel999/dotnet-artisan<br>claude plugins install dotnet-artisan</code>
+    <button onclick="copyInstall()" id="copyBtn">复制</button>
   </div>
-  <p style="color:var(--fg-dim);margin:0.5rem 0 1rem">兼容 GitHub Copilot、VS Code、Cursor — <a href="https://agentskills.io">agentskills.io</a> 标准。</p>
-
-  <h2>Harness（内置）</h2>
-  <p style="color:var(--fg-dim);margin:0.5rem 0 1.5rem">安装插件即自动启用。打开 .NET 项目 → harness 检测到 → 技能加载 → 决策者激活。检查新 .cs 文件的用途注释。零配置。<a href="https://github.com/fenzel999/dotnet-artisan/blob/main/harness/README.md">工作原理 →</a></p>
+  <p style="color:var(--fg-dim);font-size:0.85rem">兼容 GitHub Copilot、VS Code、Cursor。装完即用，Harness 自动激活。</p>
 
   <h2>核心原则</h2>
   <div class="principle-grid">
-    <div class="principle-card"><h3>KISS 优先</h3><p style="color:var(--fg-dim);font-size:0.82rem">简单 CRUD 不需要 DDD。按问题规模选择模式。</p></div>
-    <div class="principle-card"><h3>禁止仓储包装</h3><p style="color:var(--fg-dim);font-size:0.82rem">DbContext 就是工作单元；DbSet 就是仓储。</p></div>
-    <div class="principle-card"><h3>免费 & 开源</h3><p style="color:var(--fg-dim);font-size:0.82rem">微软推荐 + MIT 协议。零商业依赖。</p></div>
-    <div class="principle-card"><h3>自文档化代码</h3><p style="color:var(--fg-dim);font-size:0.82rem">新 AI 30 秒理解任何项目。<a href="https://github.com/fenzel999/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">指南 →</a></p></div>
+    <div class="principle-card"><h3>KISS 优先</h3><p>简单 CRUD 不需要 DDD。</p></div>
+    <div class="principle-card"><h3>禁止仓储包装</h3><p>DbContext 即工作单元，DbSet 即仓储。</p></div>
+    <div class="principle-card"><h3>免费 & 开源</h3><p>零商业依赖，全部 MIT。</p></div>
+    <div class="principle-card"><h3>自文档化代码</h3><p>新 AI 30 秒理解项目。</p></div>
   </div>
 </div>
 
-<!-- SELF-DOC TAB -->
+<!-- SELF-DOC -->
 <div id="selfdoc" class="tab">
   <h2>30 秒法则</h2>
-  <p style="color:var(--fg-dim);margin-bottom:1.5rem">这个仓库生成的每个项目，新 AI 会话必须在 30 秒内理解它。不需要聊天历史。</p>
-
-  <div class="doc-rule"><div class="do">解决方案在根目录</div><div class="dont">绝不藏在子目录里</div></div>
-  <div class="doc-rule"><div class="do">项目名用领域术语：OrderManagement.Api</div><div class="dont">绝不用 Core、Shared、Services</div></div>
-  <div class="doc-rule"><div class="do">文件顶部一句话：处理履约：验证支付、预留库存、创建发货单</div><div class="dont">绝不写"订单处理"</div></div>
-  <div class="doc-rule"><div class="do">显式依赖：构造函数(DbContext, IHybridCache)</div><div class="dont">绝不用 Service Locator、IServiceProvider</div></div>
-  <div class="doc-rule"><div class="do">WHY 注释：IServiceScopeFactory 因为 BackgroundService 活得比 Scoped 长</div><div class="dont">绝不写"保存订单"</div></div>
-  <div class="doc-rule"><div class="do">无通用名称</div><div class="dont">绝不出现 Helper、Manager、Utils、Common、Shared</div></div>
-
-  <h2 style="margin-top:2rem">发现模式</h2>
-  <pre style="background:var(--card);padding:1.25rem;font-size:0.82rem;line-height:1.8;border:1px solid var(--border);border-radius:var(--radius)">
-1. 打开 .slnx → 看到所有项目
-2. 打开 Program.cs → 看到 DI、中间件、端点
-3. 打开任意 .cs 文件 → 类名 + 构造函数 = 完整的故事
-4. 打开 appsettings.json → 看到配置全貌
-
-总计：30 秒。完整上下文恢复。零历史依赖。</pre>
-
-  <p style="margin-top:1.5rem;color:var(--fg-dim)">完整指南：<a href="https://github.com/fenzel999/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a></p>
-</div>
-
-<!-- FLOW TAB -->
-<div id="flow" class="tab">
-  <h2>决策者架构</h2>
-  <p style="color:var(--fg-dim);margin-bottom:1.5rem">AI 如何从你的话导航到正确行动</p>
-  <div style="display:flex;flex-wrap:wrap;gap:1.5rem">
-  <div style="flex:1;min-width:300px">
-    <pre style="background:var(--card);padding:1.5rem;font-size:0.82rem;line-height:1.9;overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)">
-你的提示词
-    │
-    ▼
-┌──────────────┐
-│ using-dotnet │  意图检测
-└──────┬───────┘
-       ▼
-┌──────────────┐
-│dotnet-advisor│  决策者
-│              │  • 分析提示词
-│              │  • 读取 .csproj
-│              │  • 检测版本
-│              │  • 路由到技能
-│              │  • 不清楚时反问
-└──────┬───────┘
-       ▼
-┌──────┴──────┐
-▼             ▼
-┌─────────┐ ┌──────────┐
-│ 构建者   │ │ 验证者    │
-│ api, ui  │ │testing,  │
-│          │ │debug,    │
-│ 运维者   │ │quality   │
-│ devops,  │ │          │
-│ tooling, │ │ 增强者    │
-│ upgrade  │ │ai,work-  │
-└─────────┘ │flow,learn│
-            └──────────┘
-  │
-  ▼
-┌──────────────┐
-│ dotnet-csharp │ 始终加载
-└──────────────┘</pre>
-  </div>
-  <div style="flex:1;min-width:280px">
-    <h2 style="font-size:1rem">基线（始终加载）</h2>
-    <div style="color:var(--fg-dim);font-size:0.85rem;line-height:2">
-      <div>1. anti-patterns.md — 好/坏代码</div>
-      <div>2. code-smells.md — 常见错误</div>
-      <div>3. async-patterns.md — 异步规范</div>
-      <div>4. solid-principles.md — SOLID</div>
-      <div>5. DECISIONS.md — 决策指南</div>
-      <div>6. CHEATSHEET.md — 全规则速查</div>
-      <div>7. package-choices.md — 包对照</div>
-      <div>8. coding-standards.md — 编码规范</div>
-      <div>9. dotnet-releases.md — 版本特性</div>
-    </div>
-  </div>
-  </div>
+  <p style="color:var(--fg-dim);margin-bottom:1rem;font-size:0.85rem">这个仓库生成的每个项目，新 AI 必须在 30 秒内理解。不需要聊天历史。</p>
+  <div class="doc-rule"><div class="do">✅ 解决方案在根目录</div><div class="dont">❌ 藏在子目录里</div></div>
+  <div class="doc-rule"><div class="do">✅ 项目名用领域术语</div><div class="dont">❌ Core、Shared、Services</div></div>
+  <div class="doc-rule"><div class="do">✅ 新文件顶部一句话说明</div><div class="dont">❌ 不写或瞎猜</div></div>
+  <div class="doc-rule"><div class="do">✅ 显式构造函数依赖</div><div class="dont">❌ Service Locator</div></div>
+  <div class="doc-rule"><div class="do">✅ WHY 注释解释非明显决策</div><div class="dont">❌ WHAT 注释重复代码</div></div>
+  <div class="doc-rule"><div class="do">✅ 无通用名称</div><div class="dont">❌ Helper、Manager、Utils</div></div>
 </div>
 
 </div>
-
-<button onclick="window.scrollTo({top:0,behavior:'smooth'})" id="topBtn" style="position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#fff;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.2rem;opacity:0;transition:opacity 0.3s;z-index:99;box-shadow:0 2px 12px rgba(0,0,0,0.3)" title="顶部">↑</button>
-<script>window.addEventListener('scroll',()=>document.getElementById('topBtn').style.opacity=window.scrollY>400?'1':'0')</script>
 
 <footer>
   <p>融合自 <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>、<a href="https://github.com/dotnet/skills">dotnet/skills</a>、<a href="https://github.com/codewithmukesh/dotnet-claude-kit">dotnet-claude-kit</a></p>
-  <p style="margin-top:0.3rem">
-    <a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> ·
-    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/USAGE.md">使用指南</a> ·
-    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/SELF_DOCUMENTING.md">30 秒法则</a> ·
-    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/BEHAVIORS.md">行为目录</a> ·
-    <a href="https://github.com/fenzel999/dotnet-artisan/blob/main/CLAUDE.md">CLAUDE.md</a>
-  </p>
-  <p style="margin-top:0.5rem;font-size:0.7rem">页面加载于 <span id="loadTime"></span></p>
+  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · <a href="USAGE.md">使用指南</a> · <a href="BEHAVIORS.md">行为目录</a></p>
 </footer>
 
 <script>
 const roleAgents = [
-  ["dotnet-architect","架构师 — 架构选型、文件夹结构、构建配置"],
-  ["dotnet-domain-analyst","领域分析师 — 事件风暴、限界上下文、领域文档"],
-  ["dotnet-code-review-agent","代码审查员 — 正确性、性能、安全、架构"],
-  ["dotnet-security-reviewer","安全审计员 — OWASP、密钥、加密（只读）"],
-  ["dotnet-testing-specialist","测试架构师 — 策略、测试数据、金字塔设计"],
-  ["dotnet-docs-generator","技术文档工程师 — DocFX、Mermaid、XML 文档"]
+  ["dotnet-architect","架构师","架构选型、文件夹结构、构建配置","ro"],
+  ["dotnet-domain-analyst","领域分析师","事件风暴、限界上下文、领域文档","rw"],
+  ["dotnet-code-review-agent","代码审查员","正确性、性能、安全、架构","ro"],
+  ["dotnet-security-reviewer","安全审计员","OWASP、密钥、加密（只读）","ro"],
+  ["dotnet-testing-specialist","测试架构师","策略、测试数据、金字塔设计","ro"],
+  ["dotnet-docs-generator","技术文档工程师","DocFX、Mermaid、XML 文档","rw"]
 ];
 const toolAgents = [
-  ["dotnet-aspnetcore-specialist","中间件、DI、请求管道"],
-  ["dotnet-ui-specialist","Blazor / MAUI / Uno 跨平台 UI"],
-  ["dotnet-performance-specialist","异步、性能分析、基准测试"],
-  ["dotnet-csharp-concurrency-specialist","竞态条件、死锁、线程安全"],
-  ["dotnet-code-lifecycle-agent","构建错误 + 质量清理流水线"],
-  ["dotnet-cloud-specialist","Aspire、AKS、云部署"],
-  ["dotnet-learning-agent","纠错捕获、模式泛化、记忆管理"],
-  ["dotnet-pr-workflow","PR 生命周期：创建 → 审查 → 合并 → 发布"]
+  ["dotnet-aspnetcore-specialist","中间件、DI、请求管道","ro"],
+  ["dotnet-ui-specialist","Blazor / MAUI / Uno 跨平台 UI","ro"],
+  ["dotnet-performance-specialist","异步、性能分析、基准测试","ro"],
+  ["dotnet-csharp-concurrency-specialist","竞态条件、死锁、线程安全","ro"],
+  ["dotnet-code-lifecycle-agent","构建错误 + 质量清理流水线","rw"],
+  ["dotnet-cloud-specialist","Aspire、AKS、云部署","ro"],
+  ["dotnet-learning-agent","纠错捕获、模式泛化、记忆管理","rw"],
+  ["dotnet-pr-workflow","PR 生命周期：创建 → 审查 → 合并 → 发布","rw"]
 ];
-
-function renderRoleAgents() {
-  document.getElementById('roleAgents').innerHTML = roleAgents.map(a =>
-    `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
+function render(el, items, showMode) {
+  document.getElementById(el).innerHTML = items.map(a => {
+    const mode = a[2] === "ro" ? '<span class="mode-tag mode-ro">只读</span>' : '<span class="mode-tag mode-rw">读写</span>';
+    const name = showMode ? `<strong style="color:var(--fg-bright)">${a[0]}</strong>` : `<strong>${a[0]}</strong>`;
+    return `<div class="agent-row">${name}<span>${a[1]} ${showMode ? mode : ''}</span></div>`;
+  }).join('');
 }
-function renderToolAgents() {
-  document.getElementById('toolAgents').innerHTML = toolAgents.map(a =>
-    `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]}</span></div>`).join('');
-}
+render('roleAgents', roleAgents.map(a => [a[0], a[1] + ' — ' + a[2], a[3]]), true);
+render('toolAgents', toolAgents, true);
 
 function copyInstall() {
   navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');
@@ -374,18 +277,12 @@ function copyInstall() {
   btn.textContent = '已复制！'; btn.style.background = 'var(--green)';
   setTimeout(() => { btn.textContent = '复制'; btn.style.background = 'var(--accent)'; }, 2000);
 }
-
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(name).classList.add('active');
-  const btn = document.querySelector(`nav button[onclick*="${name}"]`);
-  if (btn) btn.classList.add('active');
+  document.querySelector(`nav button[onclick*="${name}"]`)?.classList.add('active');
 }
-
-renderRoleAgents();
-renderToolAgents();
-document.getElementById('loadTime').textContent = new Date().toLocaleString('zh-CN', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
 </script>
 </body>
 </html>
