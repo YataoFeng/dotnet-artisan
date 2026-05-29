@@ -170,20 +170,13 @@ AI：已捕获规则：TimeProvider 构造函数注入优先。
 
 ## 参考文件
 
-173 个参考文件，按领域分类。每个文件包含：核心原则 → 模式（GOOD）→ 反模式（BAD/GOOD）→ 决策指南。
+173 个参考文件，覆盖 8 个领域：API、C#、调试、DevOps、测试、工具链、UI、路由。每个文件包含核心原则 → 模式 → 反模式 → 决策指南。详见 [INDEX.md](skills/INDEX.md)。
 
-| 领域 | 技能 | 数量 | 涵盖主题 |
-|------|------|------|---------|
-| API 与后端 | [dotnet-api](skills/dotnet-api/SKILL.md) | 33 | Minimal API、EF Core、gRPC、SignalR、安全、缓存、消息、YARP |
-| C# 语言 | [dotnet-csharp](skills/dotnet-csharp/SKILL.md) | 27 | async/await、DI、LINQ、序列化、并发、领域建模、源码生成 |
-| 调试 | [dotnet-debugging](skills/dotnet-debugging/SKILL.md) | 17 | WinDbg、dotnet-dump、lldb、崩溃分析、死锁、高 CPU |
-| DevOps | [dotnet-devops](skills/dotnet-devops/SKILL.md) | 19 | CI/CD、容器、NuGet、OpenTelemetry、版本迁移、Git 工作流 |
-| 测试 | [dotnet-testing](skills/dotnet-testing/SKILL.md) | 14 | xUnit、集成测试、Playwright、BDD、基准测试、快照 |
-| 工具链 | [dotnet-tooling](skills/dotnet-tooling/SKILL.md) | 41 | MSBuild、AOT、CLI、性能分析、模板引擎、PR 工作流 |
-| UI | [dotnet-ui](skills/dotnet-ui/SKILL.md) | 20 | Blazor、MAUI、Uno、WPF、WinUI、WinForms |
-| 路由 | [dotnet-advisor](skills/dotnet-advisor/SKILL.md) | 2 | 需求对齐、架构发现 |
+---
 
-完整列表：[INDEX.md](skills/INDEX.md)
+## 行为
+
+30+ 个预设行为，按目标组织——搭建、修复、审查、测试、交付、升级。决策者根据你的意图自动路由到对应技能链。例如"搭建 API"会启动 api + tooling + testing 三个技能的协同工作流。全部行为见 [BEHAVIORS.md](BEHAVIORS.md)。
 
 ---
 

@@ -178,19 +178,10 @@
 <!-- REFS -->
 <div id="refs" class="tab">
   <h2>参考文件</h2>
-  <p style="color:var(--fg-dim);margin-bottom:1rem;font-size:0.85rem">173 个参考文件，按领域分类。每个文件包含：核心原则 → 模式 → 反模式 → 决策指南。</p>
-  <table class="skill-table">
-    <tr><th>领域</th><th>所属技能</th><th>数量</th><th>覆盖主题</th></tr>
-    <tr><td>API 与后端</td><td><a href="../skills/dotnet-api/SKILL.md">dotnet-api</a></td><td>33</td><td>Minimal API、EF Core、gRPC、SignalR、安全、缓存、消息、YARP</td></tr>
-    <tr><td>C# 语言</td><td><a href="../skills/dotnet-csharp/SKILL.md">dotnet-csharp</a></td><td>27</td><td>async/await、DI、LINQ、序列化、并发、领域建模、源码生成</td></tr>
-    <tr><td>调试</td><td><a href="../skills/dotnet-debugging/SKILL.md">dotnet-debugging</a></td><td>17</td><td>WinDbg、dotnet-dump、lldb、崩溃分析、死锁、高 CPU</td></tr>
-    <tr><td>DevOps</td><td><a href="../skills/dotnet-devops/SKILL.md">dotnet-devops</a></td><td>19</td><td>CI/CD、容器、NuGet、OpenTelemetry、版本迁移、Git 工作流</td></tr>
-    <tr><td>测试</td><td><a href="../skills/dotnet-testing/SKILL.md">dotnet-testing</a></td><td>14</td><td>xUnit、集成测试、Playwright、BDD、基准测试、快照</td></tr>
-    <tr><td>工具链</td><td><a href="../skills/dotnet-tooling/SKILL.md">dotnet-tooling</a></td><td>41</td><td>MSBuild、AOT、CLI、性能分析、模板引擎、PR 工作流</td></tr>
-    <tr><td>UI</td><td><a href="../skills/dotnet-ui/SKILL.md">dotnet-ui</a></td><td>20</td><td>Blazor、MAUI、Uno、WPF、WinUI、WinForms</td></tr>
-    <tr><td>路由</td><td><a href="../skills/dotnet-advisor/SKILL.md">dotnet-advisor</a></td><td>2</td><td>需求对齐、架构发现</td></tr>
-  </table>
-  <p style="margin-top:1rem;color:var(--fg-dim);font-size:0.85rem">完整列表：<a href="../skills/INDEX.md">INDEX.md</a></p>
+  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">173 个参考文件，覆盖 8 个领域：API、C#、调试、DevOps、测试、工具链、UI、路由。<br>每个文件包含：核心原则 → 模式 → 反模式 → 决策指南。<br>详见 <a href="../skills/INDEX.md">INDEX.md</a></p>
+
+  <h2>行为</h2>
+  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">30+ 个预设行为，按目标组织：搭建、修复、审查、测试、交付、升级。<br>决策者根据意图自动路由到对应技能链。详见 <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
 </div>
 
 <!-- USAGE -->
@@ -263,33 +254,33 @@
 </footer>
 
 <script>
-const roleAgents = [
-  ["dotnet-architect","架构师","架构选型、文件夹结构、构建配置","ro"],
-  ["dotnet-domain-analyst","领域分析师","事件风暴、限界上下文、领域文档","rw"],
-  ["dotnet-code-review-agent","代码审查员","正确性、性能、安全、架构","ro"],
-  ["dotnet-security-reviewer","安全审计员","OWASP、密钥、加密（只读）","ro"],
-  ["dotnet-testing-specialist","测试架构师","策略、测试数据、金字塔设计","ro"],
-  ["dotnet-docs-generator","技术文档工程师","DocFX、Mermaid、XML 文档","rw"]
-];
-const toolAgents = [
-  ["dotnet-aspnetcore-specialist","中间件、DI、请求管道","ro"],
-  ["dotnet-ui-specialist","Blazor / MAUI / Uno 跨平台 UI","ro"],
-  ["dotnet-performance-specialist","异步、性能分析、基准测试","ro"],
-  ["dotnet-csharp-concurrency-specialist","竞态条件、死锁、线程安全","ro"],
-  ["dotnet-code-lifecycle-agent","构建错误 + 质量清理流水线","rw"],
-  ["dotnet-cloud-specialist","Aspire、AKS、云部署","ro"],
-  ["dotnet-learning-agent","纠错捕获、模式泛化、记忆管理","rw"],
-  ["dotnet-pr-workflow","PR 生命周期：创建 → 审查 → 合并 → 发布","rw"]
-];
-function render(el, items, showMode) {
-  document.getElementById(el).innerHTML = items.map(a => {
-    const mode = a[2] === "ro" ? '<span class="mode-tag mode-ro">只读</span>' : '<span class="mode-tag mode-rw">读写</span>';
-    const name = showMode ? `<strong style="color:var(--fg-bright)">${a[0]}</strong>` : `<strong>${a[0]}</strong>`;
-    return `<div class="agent-row">${name}<span>${a[1]} ${showMode ? mode : ''}</span></div>`;
-  }).join('');
+const agents = {
+  role: [
+    ["dotnet-architect","../agents/dotnet-architect.md","架构师 — 架构选型、文件夹结构、构建配置","ro"],
+    ["dotnet-domain-analyst","../agents/dotnet-domain-analyst.md","领域分析师 — 事件风暴、限界上下文、领域文档","rw"],
+    ["dotnet-code-review-agent","../agents/dotnet-code-review-agent.md","代码审查员 — 正确性、性能、安全、架构","ro"],
+    ["dotnet-security-reviewer","../agents/dotnet-security-reviewer.md","安全审计员 — OWASP、密钥、加密（只读）","ro"],
+    ["dotnet-testing-specialist","../agents/dotnet-testing-specialist.md","测试架构师 — 策略、测试数据、金字塔设计","ro"],
+    ["dotnet-docs-generator","../agents/dotnet-docs-generator.md","技术文档工程师 — DocFX、Mermaid、XML 文档","rw"]
+  ],
+  tool: [
+    ["dotnet-aspnetcore-specialist","../agents/dotnet-aspnetcore-specialist.md","中间件、DI、请求管道","ro"],
+    ["dotnet-ui-specialist","../agents/dotnet-ui-specialist.md","Blazor / MAUI / Uno 跨平台 UI","ro"],
+    ["dotnet-performance-specialist","../agents/dotnet-performance-specialist.md","异步、性能分析、基准测试","ro"],
+    ["dotnet-csharp-concurrency-specialist","../agents/dotnet-csharp-concurrency-specialist.md","竞态条件、死锁、线程安全","ro"],
+    ["dotnet-code-lifecycle-agent","../agents/dotnet-code-lifecycle-agent.md","构建错误 + 质量清理流水线","rw"],
+    ["dotnet-cloud-specialist","../agents/dotnet-cloud-specialist.md","Aspire、AKS、云部署","ro"],
+    ["dotnet-learning-agent","../agents/dotnet-learning-agent.md","纠错捕获、模式泛化、记忆管理","rw"],
+    ["dotnet-pr-workflow","../agents/dotnet-pr-workflow.md","PR 生命周期：创建 → 审查 → 合并 → 发布","rw"]
+  ]
+};
+function renderAgents(id, list) {
+  document.getElementById(id).innerHTML = list.map(a =>
+    `<div class="agent-row"><a href="${a[1]}" style="color:var(--fg-bright)"><strong>${a[0]}</strong></a><span>${a[2]} <span class="mode-tag mode-${a[3]}">${a[3] === 'ro' ? '只读' : '读写'}</span></span></div>`
+  ).join('');
 }
-render('roleAgents', roleAgents.map(a => [a[0], a[1] + ' — ' + a[2], a[3]]), true);
-render('toolAgents', toolAgents, true);
+renderAgents('roleAgents', agents.role);
+renderAgents('toolAgents', agents.tool);
 
 function copyInstall() {
   navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');

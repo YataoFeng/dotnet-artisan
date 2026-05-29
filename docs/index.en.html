@@ -137,19 +137,10 @@
 
 <div id="refs" class="tab">
   <h2>Reference Files</h2>
-  <p style="color:var(--fg-dim);margin-bottom:1rem;font-size:0.85rem">173 reference files organized by domain. Each file: Core Principles → Patterns → Anti-patterns → Decision Guide.</p>
-  <table class="skill-table">
-    <tr><th>Domain</th><th>Skill</th><th>Count</th><th>Topics</th></tr>
-    <tr><td>API & Backend</td><td><a href="../skills/dotnet-api/SKILL.md">dotnet-api</a></td><td>33</td><td>Minimal API, EF Core, gRPC, SignalR, security, caching, messaging, YARP</td></tr>
-    <tr><td>C# Language</td><td><a href="../skills/dotnet-csharp/SKILL.md">dotnet-csharp</a></td><td>27</td><td>async/await, DI, LINQ, serialization, concurrency, domain modeling, source gen</td></tr>
-    <tr><td>Debugging</td><td><a href="../skills/dotnet-debugging/SKILL.md">dotnet-debugging</a></td><td>17</td><td>WinDbg, dotnet-dump, lldb, crash analysis, deadlocks, high CPU</td></tr>
-    <tr><td>DevOps</td><td><a href="../skills/dotnet-devops/SKILL.md">dotnet-devops</a></td><td>19</td><td>CI/CD, containers, NuGet, OpenTelemetry, migration, Git workflow</td></tr>
-    <tr><td>Testing</td><td><a href="../skills/dotnet-testing/SKILL.md">dotnet-testing</a></td><td>14</td><td>xUnit, integration testing, Playwright, BDD, benchmarks, snapshots</td></tr>
-    <tr><td>Tooling</td><td><a href="../skills/dotnet-tooling/SKILL.md">dotnet-tooling</a></td><td>41</td><td>MSBuild, AOT, CLI, profiling, template engine, PR workflow</td></tr>
-    <tr><td>UI</td><td><a href="../skills/dotnet-ui/SKILL.md">dotnet-ui</a></td><td>20</td><td>Blazor, MAUI, Uno, WPF, WinUI, WinForms</td></tr>
-    <tr><td>Routing</td><td><a href="../skills/dotnet-advisor/SKILL.md">dotnet-advisor</a></td><td>2</td><td>Requirements alignment, architecture discovery</td></tr>
-  </table>
-  <p style="margin-top:1rem;color:var(--fg-dim);font-size:0.85rem">Full index: <a href="../skills/INDEX.md">INDEX.md</a></p>
+  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">173 reference files across 8 domains: API, C#, debugging, DevOps, testing, tooling, UI, routing.<br>Each file: Core Principles → Patterns → Anti-patterns → Decision Guide.<br>See <a href="../skills/INDEX.md">INDEX.md</a></p>
+
+  <h2>Behaviors</h2>
+  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:1.7">30+ predefined behaviors organized by goal: build, fix, review, test, ship, upgrade.<br>The decision-maker routes intent to the right skill chain. See <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
 </div>
 
 <div id="install" class="tab">
@@ -178,32 +169,33 @@
 </footer>
 
 <script>
-const roleAgents = [
-  ["dotnet-architect","Architect","Architecture, folder structure, build config","ro"],
-  ["dotnet-domain-analyst","Domain analyst","Event storming, bounded contexts, domain doc","rw"],
-  ["dotnet-code-review-agent","Code reviewer","Correctness, performance, security, architecture","ro"],
-  ["dotnet-security-reviewer","Security auditor","OWASP, secrets, crypto (read-only)","ro"],
-  ["dotnet-testing-specialist","Test architect","Strategy, pyramid design, test data","ro"],
-  ["dotnet-docs-generator","Technical writer","DocFX, Mermaid, XML docs","rw"]
-];
-const toolAgents = [
-  ["dotnet-aspnetcore-specialist","Middleware, DI, request pipelines","ro"],
-  ["dotnet-ui-specialist","Blazor / MAUI / Uno cross-platform UI","ro"],
-  ["dotnet-performance-specialist","Async, profiling, benchmarks","ro"],
-  ["dotnet-csharp-concurrency-specialist","Race conditions, deadlocks, thread safety","ro"],
-  ["dotnet-code-lifecycle-agent","Build errors + quality pipeline","rw"],
-  ["dotnet-cloud-specialist","Aspire, AKS, cloud deployment","ro"],
-  ["dotnet-learning-agent","Correction capture, generalization, memory","rw"],
-  ["dotnet-pr-workflow","PR lifecycle: create → review → merge → release","rw"]
-];
-function render(el, items) {
-  document.getElementById(el).innerHTML = items.map(a => {
-    const mode = a[2] === "ro" ? '<span class="mode-tag mode-ro">RO</span>' : '<span class="mode-tag mode-rw">RW</span>';
-    return `<div class="agent-row"><strong>${a[0]}</strong><span>${a[1]} ${mode}</span></div>`;
-  }).join('');
+const agents = {
+  role: [
+    ["dotnet-architect","../agents/dotnet-architect.md","Architect — architecture, folder structure, build config","ro"],
+    ["dotnet-domain-analyst","../agents/dotnet-domain-analyst.md","Domain analyst — event storming, bounded contexts, domain doc","rw"],
+    ["dotnet-code-review-agent","../agents/dotnet-code-review-agent.md","Code reviewer — correctness, performance, security","ro"],
+    ["dotnet-security-reviewer","../agents/dotnet-security-reviewer.md","Security auditor — OWASP, secrets, crypto (read-only)","ro"],
+    ["dotnet-testing-specialist","../agents/dotnet-testing-specialist.md","Test architect — strategy, pyramid design, test data","ro"],
+    ["dotnet-docs-generator","../agents/dotnet-docs-generator.md","Technical writer — DocFX, Mermaid, XML docs","rw"]
+  ],
+  tool: [
+    ["dotnet-aspnetcore-specialist","../agents/dotnet-aspnetcore-specialist.md","Middleware, DI, request pipelines","ro"],
+    ["dotnet-ui-specialist","../agents/dotnet-ui-specialist.md","Blazor / MAUI / Uno cross-platform UI","ro"],
+    ["dotnet-performance-specialist","../agents/dotnet-performance-specialist.md","Async, profiling, benchmarks","ro"],
+    ["dotnet-csharp-concurrency-specialist","../agents/dotnet-csharp-concurrency-specialist.md","Race conditions, deadlocks, thread safety","ro"],
+    ["dotnet-code-lifecycle-agent","../agents/dotnet-code-lifecycle-agent.md","Build errors + quality pipeline","rw"],
+    ["dotnet-cloud-specialist","../agents/dotnet-cloud-specialist.md","Aspire, AKS, cloud deployment","ro"],
+    ["dotnet-learning-agent","../agents/dotnet-learning-agent.md","Correction capture, generalization, memory","rw"],
+    ["dotnet-pr-workflow","../agents/dotnet-pr-workflow.md","PR lifecycle: create → review → merge → release","rw"]
+  ]
+};
+function renderAgents(id, list) {
+  document.getElementById(id).innerHTML = list.map(a =>
+    `<div class="agent-row"><a href="${a[1]}" style="color:var(--fg-bright)"><strong>${a[0]}</strong></a><span>${a[2]} <span class="mode-tag mode-${a[3]}">${a[3] === 'ro' ? 'RO' : 'RW'}</span></span></div>`
+  ).join('');
 }
-render('roleAgents', roleAgents, true);
-render('toolAgents', toolAgents, true);
+renderAgents('roleAgents', agents.role);
+renderAgents('toolAgents', agents.tool);
 
 function copyInstall() {
   navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');
