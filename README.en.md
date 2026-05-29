@@ -171,22 +171,33 @@ Chain: dotnet-learning-agent → detect correction → generalize rule →
 
 ## Agents
 
-| Category | Agent | Focus | Mode |
-|----------|-------|-------|------|
-| Design | [architect](agents/dotnet-architect.md) | Architecture, folder structure, build config | Read-only |
-| | [domain-analyst](agents/dotnet-domain-analyst.md) | Event storming, bounded contexts, domain doc | Read-Write |
-| Development | [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | Middleware pipeline, DI lifetimes, API design | Read-only |
-| | [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor/MAUI/Uno framework choice, render modes | Read-only |
-| | [performance-specialist](agents/dotnet-performance-specialist.md) | Async, flame graphs, GC, benchmarks | Read-only |
-| | [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | Race conditions, deadlocks, thread safety | Read-only |
-| Quality | [testing-specialist](agents/dotnet-testing-specialist.md) | Strategy, pyramid design, microservice tests | Read-only |
-| | [code-review-agent](agents/dotnet-code-review-agent.md) | Correctness, performance, security review | Read-only |
-| | [security-reviewer](agents/dotnet-security-reviewer.md) | OWASP, secrets, crypto audit | Read-only |
-| Operations | [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire, AKS, distributed tracing | Read-only |
-| | [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | Build errors + 7-step quality pipeline | Read-Write |
-| | [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release | Read-Write |
-| Support | [docs-generator](agents/dotnet-docs-generator.md) | DocFX, Mermaid, XML docs, README | Read-Write |
-| | [dotnet-learning-agent](agents/dotnet-learning-agent.md) | Correction capture, generalization, memory | Read-Write |
+### Role Agents
+
+Work like human experts. Understand context, make judgments, explain reasoning.
+
+| Agent | Focus | Mode |
+|-------|-------|------|
+| [architect](agents/dotnet-architect.md) | Architect — architecture, folder structure, build config | Read-only |
+| [domain-analyst](agents/dotnet-domain-analyst.md) | Domain analyst — event storming, bounded contexts, domain doc | Read-Write |
+| [code-review-agent](agents/dotnet-code-review-agent.md) | Code reviewer — correctness, performance, security | Read-only |
+| [security-reviewer](agents/dotnet-security-reviewer.md) | Security auditor — OWASP, secrets, crypto (read-only) | Read-only |
+| [testing-specialist](agents/dotnet-testing-specialist.md) | Test architect — strategy, test data, pyramid design | Read-only |
+| [docs-generator](agents/dotnet-docs-generator.md) | Technical writer — DocFX, Mermaid, XML docs | Read-Write |
+
+### Tool Agents
+
+Execute specific technical deep-dives. Focus on a single domain.
+
+| Agent | Focus | Mode |
+|-------|-------|------|
+| [aspnetcore-specialist](agents/dotnet-aspnetcore-specialist.md) | Middleware, DI, request pipelines | Read-only |
+| [ui-specialist](agents/dotnet-ui-specialist.md) | Blazor / MAUI / Uno cross-platform UI | Read-only |
+| [performance-specialist](agents/dotnet-performance-specialist.md) | Async, profiling, benchmarks | Read-only |
+| [concurrency-specialist](agents/dotnet-csharp-concurrency-specialist.md) | Race conditions, deadlocks, thread safety | Read-only |
+| [code-lifecycle-agent](agents/dotnet-code-lifecycle-agent.md) | Build errors + quality pipeline | Read-Write |
+| [cloud-specialist](agents/dotnet-cloud-specialist.md) | Aspire, AKS, cloud deployment | Read-only |
+| [dotnet-learning-agent](agents/dotnet-learning-agent.md) | Correction capture, generalization, memory | Read-Write |
+| [pr-workflow](agents/dotnet-pr-workflow.md) | PR lifecycle: create → review → merge → release | Read-Write |
 
 ---
 
