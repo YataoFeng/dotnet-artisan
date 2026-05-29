@@ -162,6 +162,13 @@ Before generating, writing, or committing any code, verify against these checkli
 - [ ] Patterns match the detected TFM (net10.0: use `field` keyword, net9.0: don't)
 - [ ] Package choices match version (`AddValidation()` for net10.0+, FluentValidation for net8.0-9.0)
 
+### Reference File Format (from CLAUDE.md #8)
+When creating or editing a `.md` file in `skills/*/references/`, verify:
+- [ ] First heading is Core Principles or equivalent context-setter (NOT Agent Gotchas, Prerequisites, or References)
+- [ ] Follows order: Core Principles → Patterns (GOOD code) → Anti-patterns (BAD/GOOD or inline "AVOID") → Decision Guide
+- [ ] Anti-patterns section exists (dedicated or inline BAD/GOOD examples)
+- [ ] If you find a non-compliant file you're editing, fix its structure to match the standard order
+
 ### USAGE.md Checklist Confirmation
 - [ ] I know WHAT is being built (one sentence)
 - [ ] I know the DOMAIN terms and their meanings

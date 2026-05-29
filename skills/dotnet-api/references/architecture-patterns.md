@@ -4,27 +4,13 @@
 
 Modern architecture patterns for .NET applications. Covers practical approaches to organizing minimal APIs at scale, vertical slice architecture, request pipeline composition, validation strategies, caching, error handling, and idempotency/outbox patterns.
 
-## Agent Gotchas
+## Core Principles
 
-1. **Idempotency must handle three states and finalize unconditionally** -- Distinguish no-record (claim), in-progress (reject 409), and completed (replay). Do NOT gate finalization on specific `IResult` subtypes -- non-value results like `Results.NoContent()` would be stuck permanently in-progress.
-2. **Cache invalidation must be explicit** -- ALWAYS invalidate (evict by tag or key) after write operations. Forgetting invalidation causes stale reads.
-3. **HybridCache stampede protection only works with `GetOrCreateAsync`** -- Do NOT use separate get-then-set; use the factory overload so the library serializes concurrent requests for the same key.
-4. **Outbox messages must be written in the same transaction as domain data** -- A crash between separate writes loses the event. ALWAYS wrap both in `BeginTransactionAsync`.
-5. **Endpoint filter order matters** -- Filters added first run outermost. Validation must run before idempotency, otherwise invalid requests get cached.
-6. **Do NOT share `DbContext` across concurrent requests** -- `DbContext` is not thread-safe. Each request must resolve its own scoped instance from DI.
-
----
-
-## Knowledge Sources
-
-Grounded in publicly available content from Jimmy Bogard (vertical slice architecture, domain events) and Nick Chapsas (result types, modern .NET patterns). This skill applies publicly documented guidance and does not represent or speak for the named sources. MediatR is commercial for commercial use; patterns here use built-in .NET mechanisms.
-
-## References
-
-- [ASP.NET Core Best Practices](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/best-practices?view=aspnetcore-10.0)
-- [HybridCache library](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid)
-- [Endpoint filters in minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters)
-- [Vertical Slice Architecture (Jimmy Bogard)](https://www.jimmybogard.com/vertical-slice-architecture/)
+- **Prefer composition** -- endpoint filters, middleware, and pipeline composition over base classes
+- **Keep slices independent** -- DRY applies to knowledge duplication, not code similarity across features
+- **Validate early, fail fast** -- validate at the boundary before entering business logic
+- **Use Problem Details everywhere** -- consistent error format via RFC 9457
+- **Make writes idempotent** -- use idempotency keys for retryable operations
 
 ---
 
@@ -471,13 +457,28 @@ The outbox pattern ensures that if the database write succeeds, the event is gua
 
 ---
 
-## Key Principles
+---
 
-- **Prefer composition** -- endpoint filters, middleware, and pipeline composition over base classes
-- **Keep slices independent** -- DRY applies to knowledge duplication, not code similarity across features
-- **Validate early, fail fast** -- validate at the boundary before entering business logic
-- **Use Problem Details everywhere** -- consistent error format via RFC 9457
-- **Make writes idempotent** -- use idempotency keys for retryable operations
-- See [skill:dotnet-csharp] for SOLID anti-patterns and compliance guidance
+## Agent Gotchas
+
+1. **Idempotency must handle three states and finalize unconditionally** -- Distinguish no-record (claim), in-progress (reject 409), and completed (replay). Do NOT gate finalization on specific `IResult` subtypes -- non-value results like `Results.NoContent()` would be stuck permanently in-progress.
+2. **Cache invalidation must be explicit** -- ALWAYS invalidate (evict by tag or key) after write operations. Forgetting invalidation causes stale reads.
+3. **HybridCache stampede protection only works with `GetOrCreateAsync`** -- Do NOT use separate get-then-set; use the factory overload so the library serializes concurrent requests for the same key.
+4. **Outbox messages must be written in the same transaction as domain data** -- A crash between separate writes loses the event. ALWAYS wrap both in `BeginTransactionAsync`.
+5. **Endpoint filter order matters** -- Filters added first run outermost. Validation must run before idempotency, otherwise invalid requests get cached.
+6. **Do NOT share `DbContext` across concurrent requests** -- `DbContext` is not thread-safe. Each request must resolve its own scoped instance from DI.
+
+---
+
+## Knowledge Sources
+
+Grounded in publicly available content from Jimmy Bogard (vertical slice architecture, domain events) and Nick Chapsas (result types, modern .NET patterns). This skill applies publicly documented guidance and does not represent or speak for the named sources. MediatR is commercial for commercial use; patterns here use built-in .NET mechanisms.
+
+## References
+
+- [ASP.NET Core Best Practices](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/best-practices?view=aspnetcore-10.0)
+- [HybridCache library](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid)
+- [Endpoint filters in minimal APIs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters)
+- [Vertical Slice Architecture (Jimmy Bogard)](https://www.jimmybogard.com/vertical-slice-architecture/)
 
 ---

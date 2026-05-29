@@ -4,13 +4,6 @@
 
 Common mistakes AI agents make when generating or modifying .NET code, organized by category. Each category provides a brief warning, anti-pattern code, corrected code, and a cross-reference to the canonical skill that owns the deep guidance. This skill does NOT provide full implementation walkthroughs -- it surfaces the mistake and points to the right skill.
 
-## Prerequisites
-
-.NET 8.0+ SDK. Familiarity with SDK-style projects and C# language features.
-
-
----
-
 ## Category 1: Async/Await Misuse
 
 **Warning:** Agents frequently block on async methods using `.Result` or `.Wait()`, causing deadlocks in ASP.NET Core and UI contexts. Another common mistake is fire-and-forget calls that silently swallow exceptions.
