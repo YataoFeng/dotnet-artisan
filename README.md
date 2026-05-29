@@ -14,6 +14,8 @@ dotnet-artisan 是一个 Claude Code 插件，让 AI 编码代理能够正确地
 
 装完即用，无需任何配置。 [Web 版 →](https://fenzel999.github.io/dotnet-artisan)
 
+本项目学习并整合了 [dotnet/skills](https://github.com/dotnet/skills) 和 [novotnyllc/dotnet-artisan](https://github.com/novotnyllc/dotnet-artisan) 的优秀实践，在此致谢。
+
 ---
 
 ## 安装

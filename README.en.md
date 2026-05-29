@@ -14,6 +14,8 @@ It's not a collection of scattered tools — it's a **complete .NET development 
 
 Install and go. Zero configuration required. [Web edition →](https://fenzel999.github.io/dotnet-artisan)
 
+This project builds upon and integrates best practices from [dotnet/skills](https://github.com/dotnet/skills) and [novotnyllc/dotnet-artisan](https://github.com/novotnyllc/dotnet-artisan). Special thanks to both projects.
+
 ---
 
 ## Install
