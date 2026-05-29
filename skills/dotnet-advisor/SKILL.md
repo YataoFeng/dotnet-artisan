@@ -45,7 +45,7 @@ This includes existing code you don't understand. If you open a file and can't g
 
 > Ask the user. "I see this file contains X, but I don't fully understand its role. Can you explain what it does?"
 
-**Never modify existing comments.** Any comment already in the file when you open it stays as-is. You don't know who wrote it or whether it's accurate. If a comment seems wrong, ask the user.
+**Comments are for AI readability.** Purpose comments in the `// Handles X: does Y, Z` format were written by AI for AI. You can read them to understand the code and update them if your domain knowledge improves. Any other comment format belongs to humans — don't modify it. If you can't understand the code, ask the user.
 
 Load `references/requirements-alignment.md` for the 4-round dialogue framework (Goal, Architecture, Tech, Quality). Load `references/architecture-discovery.md` when the user's project architecture is unclear (monolith vs microservices, DDD decision, bounded contexts).
 

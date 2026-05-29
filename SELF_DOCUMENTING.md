@@ -21,7 +21,14 @@ Existing code often has context I don't understand. If I can't understand a file
 2. Let them explain the domain
 3. Then proceed with changes
 
-**Never modify existing comments.** Any comment already in the code when you open the file — regardless of who wrote it — is part of the established codebase. Leave it alone. If a comment seems wrong or outdated, ask the user about it, don't change it yourself.
+**AI comments follow a standard format.** When I write a purpose comment, it uses `// Handles X: does Y, Z` format. Future AI sessions recognize this format and know it was written for them to read.
+
+**Human comments** — anything that doesn't match the standard format, or was already in the file before I opened it. Leave them alone. If I can't understand the code, ask the user.
+
+| Comment format | Who wrote it | What to do |
+|---------------|-------------|------------|
+| `// Handles X: does Y, Z` or similar one-liner | AI (any session) | Read for understanding, update if domain knowledge improves |
+| Any other format, or no comment | Human | Don't modify. Ask user if unclear. |
 
 ## Rules (MUST)
 
