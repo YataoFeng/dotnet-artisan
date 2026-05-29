@@ -7,91 +7,223 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
-    background: #f5f7fa; color: #1a2332; line-height: 1.7; font-size: 15px;
-  }
-  a { color: #4f7ec9; text-decoration: none; }
-  a:hover { text-decoration: underline; }
 
-  .hero {
-    background: linear-gradient(135deg, #1a2332 0%, #2a3a5c 100%);
-    color: #fff; padding: 3.5rem 1.5rem 2.5rem; text-align: center;
+  /* === 科幻粒子背景 === */
+  body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    background: #0a0e17; color: #b8d0e0; line-height: 1.7; font-size: 15px;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-  .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; }
-  .hero h1 span { background: linear-gradient(135deg, #7bb3ff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero .sub { font-size: 1.05rem; color: #a0b8d4; margin-top: 0.4rem; }
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0, 150, 255, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 50%, rgba(120, 50, 255, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 0%, rgba(0, 200, 255, 0.03) 0%, transparent 30%);
+    pointer-events: none; z-index: 0;
+  }
+  /* 星星 */
+  body::after {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 95% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 5%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 55%, rgba(255,255,255,0.15) 0%, transparent 100%);
+    animation: twinkle 4s ease-in-out infinite alternate;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  a { color: #5b9cf5; text-decoration: none; transition: color 0.3s; }
+  a:hover { color: #7bb3ff; text-shadow: 0 0 12px rgba(91,156,245,0.4); }
+
+  /* === Hero === */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center; padding: 4rem 1.5rem 2.5rem;
+    border-bottom: 1px solid rgba(91,156,245,0.15);
+    background: linear-gradient(180deg, rgba(0,100,200,0.08) 0%, transparent 100%);
+  }
+  .hero h1 {
+    font-size: 3rem; font-weight: 800; letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #5b9cf5, #a78bfa, #5b9cf5);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .hero h1::after {
+    content: '◈';
+    display: block; font-size: 0.6rem; margin-top: -0.3rem;
+    -webkit-text-fill-color: initial; color: rgba(91,156,245,0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+  .hero .sub { font-size: 1rem; color: #6b8db8; margin-top: 0.3rem; }
   .hero .stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   .hero .stat { text-align: center; }
-  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: #fff; }
-  .hero .stat .lbl { font-size: 0.72rem; color: #8aa3c4; letter-spacing: 0.07em; text-transform: uppercase; }
+  .hero .stat .num {
+    font-size: 1.5rem; font-weight: 700; color: #5b9cf5;
+    text-shadow: 0 0 20px rgba(91,156,245,0.3);
+  }
+  .hero .stat .lbl { font-size: 0.7rem; color: #4a6a8a; letter-spacing: 0.1em; text-transform: uppercase; }
 
+  /* === Nav === */
   nav {
+    position: sticky; top: 0; z-index: 10;
     display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
-    background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10;
+    background: rgba(10,14,23,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(91,156,245,0.12);
   }
   nav button {
-    background: none; border: none; color: #6b7d99; padding: 0.8rem 1.1rem;
-    font-size: 0.85rem; font-family: inherit; cursor: pointer;
-    border-bottom: 2px solid transparent; transition: all 0.2s;
+    background: none; border: none; color: #4a6a8a; padding: 0.75rem 1.1rem;
+    font-size: 0.82rem; font-family: inherit; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all 0.3s;
+    letter-spacing: 0.03em;
   }
-  nav button:hover { color: #1a2332; background: #f0f4f8; }
-  nav button.active { color: #4f7ec9; border-bottom-color: #4f7ec9; }
-  nav a { padding: 0.8rem 1.1rem; font-size: 0.85rem; color: #6b7d99; display: flex; align-items: center; }
+  nav button:hover { color: #7bb3ff; background: rgba(91,156,245,0.05); }
+  nav button.active {
+    color: #5b9cf5; border-bottom-color: #5b9cf5;
+    text-shadow: 0 0 12px rgba(91,156,245,0.3);
+  }
+  nav a { padding: 0.75rem 1.1rem; font-size: 0.82rem; color: #4a6a8a; display: flex; align-items: center; }
 
-  .container { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem; }
+  /* === Content === */
+  .container { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
   .tab { display: none; }
-  .tab.active { display: block; animation: fadeIn 0.2s ease; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .tab.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  h2 { font-size: 1.25rem; font-weight: 700; color: #1a2332; margin: 1.5rem 0 0.8rem; }
-  .category-label { font-size: 0.8rem; font-weight: 600; color: #4f7ec9; text-transform: uppercase; letter-spacing: 0.05em; margin: 1.2rem 0 0.5rem; }
+  h2 {
+    font-size: 1.15rem; font-weight: 700; color: #d0e0f0; margin: 1.5rem 0 0.8rem;
+    letter-spacing: 0.02em;
+  }
+  h2::before { content: '◆ '; color: #5b9cf5; font-size: 0.7rem; }
+  .category-label {
+    font-size: 0.75rem; font-weight: 600; color: #5b9cf5; text-transform: uppercase;
+    letter-spacing: 0.1em; margin: 1.2rem 0 0.5rem;
+    text-shadow: 0 0 10px rgba(91,156,245,0.2);
+  }
 
-  .skill-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.5rem; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .skill-table th { text-align: left; padding: 0.6rem 0.8rem; color: #6b7d99; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-  .skill-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eef2f6; }
-  .skill-table tr:last-child td { border-bottom: none; }
-  .skill-table tr:hover { background: #f8fafc; }
-  .skill-table .cat td { font-weight: 600; color: #4f7ec9; background: #f0f6ff; padding-top: 0.7rem; }
+  /* === Cards === */
+  .card-table {
+    width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 1.5rem;
+    background: rgba(20,30,50,0.5); border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(91,156,245,0.12);
+    backdrop-filter: blur(4px);
+  }
+  .card-table th {
+    text-align: left; padding: 0.6rem 0.8rem; color: #4a6a8a; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    background: rgba(91,156,245,0.05); border-bottom: 1px solid rgba(91,156,245,0.1);
+  }
+  .card-table td { padding: 0.55rem 0.8rem; border-bottom: 1px solid rgba(91,156,245,0.06); }
+  .card-table tr:last-child td { border-bottom: none; }
+  .card-table tr:hover td { background: rgba(91,156,245,0.04); }
+  .card-table .cat td { color: #5b9cf5; font-weight: 600; background: rgba(91,156,245,0.06); padding-top: 0.7rem; }
 
-  .agent-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.15s; }
-  .agent-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-color: #c8d2e0; }
-  .agent-card a { color: #1a2332; font-weight: 600; font-size: 0.85rem; }
-  .agent-card span { color: #6b7d99; font-size: 0.82rem; }
-  .mode-ro { background: #fef2f2; color: #dc2626; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; }
-  .mode-rw { background: #f0fdf4; color: #16a34a; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; }
+  .agent-card {
+    background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.1);
+    border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.45rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.3s; backdrop-filter: blur(4px);
+  }
+  .agent-card:hover {
+    border-color: rgba(91,156,245,0.3); background: rgba(20,35,60,0.6);
+    box-shadow: 0 0 20px rgba(91,156,245,0.08);
+    transform: translateX(3px);
+  }
+  .agent-card a { color: #c0d8f0; font-weight: 600; font-size: 0.85rem; }
+  .agent-card span { color: #6b8db8; font-size: 0.82rem; }
+  .mode-ro { background: rgba(220,38,38,0.1); color: #f87171; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; border: 1px solid rgba(220,38,38,0.2); }
+  .mode-rw { background: rgba(22,163,74,0.1); color: #4ade80; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; border: 1px solid rgba(22,163,74,0.2); }
 
-  .about-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1rem; line-height: 1.7; }
-  .about-section p { color: #3a4a62; font-size: 0.85rem; margin-bottom: 0.5rem; }
-  .about-section .highlight { color: #4f7ec9; font-weight: 600; }
+  .about-section {
+    background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.1);
+    border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1rem;
+    backdrop-filter: blur(4px); line-height: 1.8;
+  }
+  .about-section p { color: #8aaaC8; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .about-section .highlight { color: #5b9cf5; font-weight: 600; }
+  .workflow-text { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.8rem; line-height: 2; color: #6b8db8; }
+  .workflow-text .step { color: #5b9cf5; }
+  .workflow-text .arrow { color: #4a6a8a; }
 
-  .install-box { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; }
-  .install-box code { flex: 1; min-width: 280px; background: #f0f4f8; padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.88rem; color: #1a2332; line-height: 1.6; }
-  .install-box button { background: #4f7ec9; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; white-space: nowrap; }
+  .install-box {
+    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0;
+    background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.12);
+    border-radius: 8px; padding: 1rem 1.2rem; backdrop-filter: blur(4px);
+  }
+  .install-box code { flex:1; min-width:280px; background: rgba(0,0,0,0.3); padding:0.7rem 1rem; border-radius:6px; font-size:0.85rem; color:#7bb3ff; line-height:1.6; border:1px solid rgba(91,156,245,0.1); }
+  .install-box button {
+    background: linear-gradient(135deg, #5b9cf5, #7c5bf5); color:#fff; border:none;
+    padding:0.55rem 1.2rem; border-radius:6px; cursor:pointer; font-size:0.82rem; font-weight:600;
+    font-family:inherit; white-space:nowrap; transition: all 0.3s;
+  }
+  .install-box button:hover { box-shadow: 0 0 20px rgba(91,156,245,0.3); transform: translateY(-1px); }
 
-  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
-  .principle-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.8rem 1rem; text-align: center; }
-  .principle-card h3 { font-size: 0.85rem; color: #1a2332; margin-bottom: 0.2rem; }
-  .principle-card p { font-size: 0.78rem; color: #6b7d99; }
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .principle-card {
+    background: rgba(20,30,50,0.3); border: 1px solid rgba(91,156,245,0.08);
+    border-radius: 6px; padding: 0.8rem 1rem; text-align: center;
+    backdrop-filter: blur(4px); transition: all 0.3s;
+  }
+  .principle-card:hover { border-color: rgba(91,156,245,0.25); box-shadow: 0 0 15px rgba(91,156,245,0.05); }
+  .principle-card h3 { font-size: 0.82rem; color: #c0d8f0; margin-bottom: 0.1rem; }
+  .principle-card p { font-size: 0.75rem; color: #5a7a9a; }
 
-  .flow-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
-  .flow-box h4 { color: #4f7ec9; font-size: 0.85rem; margin-bottom: 0.4rem; }
-  .flow-line { font-size: 0.82rem; color: #3a4a62; margin-bottom: 0.25rem; }
-  .flow-line strong { color: #1a2332; }
-  .flow-line .ai { color: #4f7ec9; }
-  .flow-line .chain { color: #16a34a; }
+  .flow-box {
+    background: rgba(20,30,50,0.4); border: 1px solid rgba(91,156,245,0.1);
+    border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.8rem;
+    backdrop-filter: blur(4px); transition: all 0.3s;
+  }
+  .flow-box:hover { border-color: rgba(91,156,245,0.2); }
+  .flow-box h4 { color: #5b9cf5; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .flow-line { font-size: 0.82rem; color: #7a9ab8; margin-bottom: 0.25rem; }
+  .flow-line strong { color: #c8dde8; }
+  .flow-line .chain { color: #4ade80; }
 
-  .link-list { line-height: 2.2; }
-  .link-list a { display: inline-block; margin-right: 1.5rem; font-size: 0.85rem; }
+  .link-list { line-height: 2.4; }
+  .link-list a { display: inline-block; margin-right: 1.5rem; font-size: 0.85rem; color: #5b9cf5; }
+  .link-list a:hover { text-shadow: 0 0 12px rgba(91,156,245,0.3); }
 
-  footer { text-align: center; padding: 2rem 0; color: #8aa3c4; font-size: 0.8rem; border-top: 1px solid #e2e8f0; margin-top: 1rem; }
-  footer a { color: #6b7d99; }
+  footer {
+    text-align: center; padding: 2rem 0; color: #3a5a7a; font-size: 0.78rem;
+    border-top: 1px solid rgba(91,156,245,0.08); position: relative; z-index: 1;
+  }
+  footer a { color: #4a6a8a; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0e17; }
+  ::-webkit-scrollbar-thumb { background: rgba(91,156,245,0.2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(91,156,245,0.3); }
 
   @media (max-width: 640px) {
     .hero { padding: 2.5rem 1rem 1.5rem; }
-    .hero h1 { font-size: 1.8rem; }
-    .hero .stats { gap: 1.2rem; }
-    nav button { padding: 0.6rem 0.7rem; font-size: 0.78rem; }
+    .hero h1 { font-size: 2rem; }
+    .hero .stats { gap: 1rem; }
+    nav button { padding: 0.6rem 0.7rem; font-size: 0.75rem; }
     .container { padding: 1.2rem 1rem; }
   }
 </style>
@@ -113,7 +245,7 @@
   <button class="active" onclick="switchTab('about')">简介</button>
   <button onclick="switchTab('skills')">技能</button>
   <button onclick="switchTab('agents')">代理</button>
-  <button onclick="switchTab('refs')">参考文件</button>
+  <button onclick="switchTab('refs')">资源</button>
   <button onclick="switchTab('usage')">示例</button>
   <button onclick="switchTab('install')">安装</button>
   <a href="index.en.html">EN</a>
@@ -125,27 +257,27 @@
 <div id="about" class="tab active">
   <div class="about-section">
     <p>dotnet-artisan 是一个 Claude Code 插件，让 AI 编码代理能够正确地编写 .NET 代码。</p>
-    <p>它不是一个零散的工具集合，而是一个<span class="highlight">完整的 .NET 开发智能体系统</span>。核心是一个决策者编排器，它会先分析需求、捕获领域词汇、设计架构，然后路由到对应技能去执行——从 API 搭建到调试崩溃，从安全审计到 CI/CD 配置，覆盖完整的开发生命周期。</p>
-    <p>装完即用，无需任何配置。</p>
+    <p>它不是零散的工具集合，而是<span class="highlight">完整的 .NET 开发智能体系统</span>。决策者先分析需求、捕获领域词汇、设计架构，再路由到对应技能执行——从 API 搭建到调试崩溃，覆盖完整开发生命周期。</p>
+    <p>装完即用，零配置。</p>
   </div>
 
   <h2>工作流程</h2>
-  <div class="about-section" style="font-family:monospace;font-size:0.82rem;line-height:2">
-    你的需求 → 意图检测 → 决策者编排 →<br>
-    &nbsp;&nbsp;1. 检测 .NET 版本<br>
-    &nbsp;&nbsp;2. 需求对齐（提问澄清，捕获领域词汇）<br>
-    &nbsp;&nbsp;3. 加载 C# 编码规范<br>
-    &nbsp;&nbsp;4. 架构设计（调 architect 代理）<br>
-    &nbsp;&nbsp;5. 拆解为多个领域 → 并行路由到对应技能<br>
-    &nbsp;&nbsp;6. 按需调用专家代理<br>
-    &nbsp;&nbsp;7. 工作流优化 + 学习（记住纠错、泛化规则）
+  <div class="about-section" style="font-family:'Cascadia Code','Fira Code',monospace;font-size:0.8rem;line-height:2.1">
+    <span style="color:#4a6a8a">你的需求</span> <span style="color:#5b9cf5">⟶</span> 意图检测 <span style="color:#5b9cf5">⟶</span> 决策者编排<br>
+    <span class="step">▸ 1.</span> 检测 .NET 版本<br>
+    <span class="step">▸ 2.</span> 需求对齐：提问澄清，捕获领域词汇<br>
+    <span class="step">▸ 3.</span> 加载 C# 编码规范<br>
+    <span class="step">▸ 4.</span> 架构设计：调 architect 代理<br>
+    <span class="step">▸ 5.</span> 拆解领域 ⟶ 并行路由到技能<br>
+    <span class="step">▸ 6.</span> 按需调用专家代理<br>
+    <span class="step">▸ 7.</span> 工作流优化 + 学习
   </div>
 </div>
 
 <!-- SKILLS -->
 <div id="skills" class="tab">
   <h2>技能</h2>
-  <table class="skill-table">
+  <table class="card-table">
     <tr><th>分类</th><th>技能</th><th>定位</th><th>引用</th></tr>
     <tr class="cat"><td colspan="4">网关</td></tr>
     <tr><td></td><td><a href="../skills/using-dotnet/SKILL.md">using-dotnet</a></td><td>检测 .NET 意图，触发决策者</td><td>—</td></tr>
@@ -169,16 +301,16 @@
 
 <!-- AGENTS -->
 <div id="agents" class="tab">
-  <div class="category-label">角色型代理 — 像人类专家一样工作</div>
+  <div class="category-label">⟡ 角色型代理 · 像人类专家一样工作</div>
   <div id="roleAgents"></div>
-  <div class="category-label" style="margin-top:1.5rem">工具型代理 — 聚焦特定技术领域</div>
+  <div class="category-label" style="margin-top:1.5rem">⟡ 工具型代理 · 聚焦特定技术领域</div>
   <div id="toolAgents"></div>
 </div>
 
 <!-- REFS -->
 <div id="refs" class="tab">
   <h2>参考文件</h2>
-  <table class="skill-table">
+  <table class="card-table">
     <tr><th>领域</th><th>数量</th><th>覆盖主题</th></tr>
     <tr><td>API 与后端</td><td>33</td><td>Minimal API、EF Core、gRPC、SignalR、安全、缓存、消息、YARP</td></tr>
     <tr><td>C# 语言</td><td>27</td><td>async/await、DI、LINQ、序列化、并发、领域建模、源码生成</td></tr>
@@ -189,10 +321,10 @@
     <tr><td>UI</td><td>20</td><td>Blazor、MAUI、Uno、WPF、WinUI、WinForms</td></tr>
     <tr><td>路由</td><td>2</td><td>需求对齐、架构发现</td></tr>
   </table>
-  <p style="margin-top:0.8rem;color:#6b7d99;font-size:0.85rem">完整列表：<a href="../skills/INDEX.md">INDEX.md</a></p>
+  <p style="margin-top:0.8rem;color:#4a6a8a;font-size:0.82rem">完整列表：<a href="../skills/INDEX.md">INDEX.md</a></p>
 
   <h2>行为</h2>
-  <table class="skill-table">
+  <table class="card-table">
     <tr><th>分类</th><th>示例</th><th>路由到</th></tr>
     <tr><td>搭建</td><td>创建 API / Blazor / MAUI / CLI</td><td>api/ui + tooling + testing</td></tr>
     <tr><td>修复</td><td>调试崩溃 / 死锁 / 内存泄漏 / 高 CPU</td><td>debugging</td></tr>
@@ -202,28 +334,27 @@
     <tr><td>升级</td><td>.NET 版本迁移 / AOT 迁移</td><td>devops + tooling</td></tr>
     <tr><td>学习</td><td>记住项目约定 / 捕获纠错</td><td>learning-agent</td></tr>
   </table>
-  <p style="margin-top:0.8rem;color:#6b7d99;font-size:0.85rem">全部行为：<a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
+  <p style="margin-top:0.8rem;color:#4a6a8a;font-size:0.82rem">全部行为：<a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
 </div>
 
 <!-- USAGE -->
 <div id="usage" class="tab">
   <div class="flow-box">
-    <h4>1. 搭建订单管理系统</h4>
+    <h4>⟫ 1. 搭建订单管理系统</h4>
     <div class="flow-line"><strong>你：</strong>我需要一个订单管理系统</div>
-    <div class="flow-line"><strong class="ai">AI：</strong>什么样的订单？采购订单、工单还是顾客订单？</div>
+    <div class="flow-line"><strong style="color:#5b9cf5">AI：</strong>什么样的订单？采购订单、工单还是顾客订单？</div>
     <div class="flow-line"><strong>你：</strong>顾客下单。未来可能拆分订单和支付。</div>
-    <div class="flow-line"><strong class="ai">AI：</strong>建议模块化单体 + DDD：订单、支付、库存作为限界上下文。先做战略设计。</div>
-    <div class="flow-line"><strong class="chain">→</strong> 4 轮提问 → domain-analyst → Event Storming → 领域文档 → 并行路由到 api + testing + devops + tooling</div>
+    <div class="flow-line" style="color:#4ade80"><strong>→</strong> 4 轮提问 → domain-analyst → Event Storming → 领域文档 → 并行路由</div>
   </div>
   <div class="flow-box">
-    <h4>2. 排查生产崩溃（OOM）</h4>
+    <h4>⟫ 2. 排查生产崩溃（OOM）</h4>
     <div class="flow-line"><strong>你：</strong>生产环境 OOM 了，这是 dump 文件</div>
-    <div class="flow-line"><strong class="chain">→</strong> dotnet-debugging → !analyze -v → !dumpheap -stat 发现 850MB → !gcroot 定位根因</div>
+    <div class="flow-line" style="color:#4ade80"><strong>→</strong> dotnet-debugging → !analyze -v → !dumpheap -stat → !gcroot 定位根因</div>
   </div>
   <div class="flow-box">
-    <h4>3. 记住项目约定</h4>
+    <h4>⟫ 3. 记住项目约定</h4>
     <div class="flow-line"><strong>你：</strong>记住，用 TimeProvider 而不是 DateTime.Now</div>
-    <div class="flow-line"><strong class="chain">→</strong> learning-agent → 泛化规则 → 去重 → 写入 MEMORY.md</div>
+    <div class="flow-line" style="color:#4ade80"><strong>→</strong> learning-agent → 泛化规则 → 去重 → 写入 MEMORY.md</div>
   </div>
 </div>
 
@@ -234,12 +365,12 @@
     <code>claude plugins marketplace add fenzel999/dotnet-artisan<br>claude plugins install dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn">复制</button>
   </div>
-  <p style="color:#6b7d99;font-size:0.85rem">兼容 GitHub Copilot、VS Code、Cursor。装完即用。</p>
+  <p style="color:#4a6a8a;font-size:0.82rem;margin-bottom:1.5rem">兼容 GitHub Copilot、VS Code、Cursor</p>
 
-  <h2>优势</h2>
+  <h2>核心能力</h2>
   <div class="principle-grid">
-    <div class="principle-card"><h3>编排而非堆砌</h3><p>决策者统一编排全过程</p></div>
-    <div class="principle-card"><h3>先理解再动手</h3><p>提问澄清后再写代码</p></div>
+    <div class="principle-card"><h3>编排</h3><p>决策者统一调度</p></div>
+    <div class="principle-card"><h3>先问再做</h3><p>澄清需求后编码</p></div>
     <div class="principle-card"><h3>全覆盖</h3><p>11 技能 · 14 代理</p></div>
     <div class="principle-card"><h3>零配置</h3><p>装完即用</p></div>
   </div>
@@ -256,8 +387,8 @@
 </div>
 
 <footer>
-  <p>由 <a href="https://github.com/fenzel">fenzel</a> 制作 · 学习自 <a href="https://github.com/dotnet/skills">dotnet/skills</a> 和 <a href="https://github.com/novotnyllc/dotnet-artisan">novotnyllc/dotnet-artisan</a></p>
-  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · MIT 许可</p>
+  <p>由 <a href="https://github.com/fenzel">fenzel</a> 构建 · 基于 <a href="https://github.com/dotnet/skills">dotnet/skills</a> 和 <a href="https://github.com/novotnyllc/dotnet-artisan">novotnyllc/dotnet-artisan</a></p>
+  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · MIT</p>
 </footer>
 
 <script>
@@ -293,7 +424,7 @@ function copyInstall() {
   navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');
   const btn = document.getElementById('copyBtn');
   btn.textContent = '已复制！'; btn.style.background = '#16a34a';
-  setTimeout(() => { btn.textContent = '复制'; btn.style.background = '#4f7ec9'; }, 2000);
+  setTimeout(() => { btn.textContent = '复制'; btn.style.background = 'linear-gradient(135deg,#5b9cf5,#7c5bf5)'; }, 2000);
 }
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
