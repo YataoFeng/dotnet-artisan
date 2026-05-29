@@ -38,6 +38,7 @@ Most-shared companion: `references/architecture-patterns.md` covers vertical sli
 | Aspire | AppHost, service discovery, dashboard | AppHost, service discovery, components, dashboard | references/aspire-patterns.md |
 | Semantic Kernel | AI/LLM plugins, prompts, memory, agents | AI/LLM plugins, prompt templates, memory, agents | references/semantic-kernel.md |
 | Architecture | vertical slices, layered, pipelines, caching | Vertical slices, layered, pipelines, caching | references/architecture-patterns.md |
+| Architecture (VSA) | vertical slice, feature folder, slice, VSA, feature file | Vertical Slice Architecture: feature isolation, single-file handlers, no cross-feature coupling | references/architecture-patterns-vsa.md |
 | Messaging | Wolverine, Azure Service Bus, RabbitMQ, pub/sub, sagas | Wolverine, Azure Service Bus, RabbitMQ, pub/sub, sagas | references/messaging-patterns.md |
 | Service communication | REST vs gRPC vs SignalR decision matrix | REST vs gRPC vs SignalR decision matrix | references/service-communication.md |
 | API surface validation | PublicApiAnalyzers, Verify, ApiCompat | PublicApiAnalyzers, Verify snapshots, ApiCompat | references/api-surface-validation.md |
