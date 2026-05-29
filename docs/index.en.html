@@ -5,75 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>dotnet-artisan — .NET AI Coding Skills</title>
 <style>
-  :root {
-    --bg: #0f1420; --surface: #151d2b; --card: #1a2333; --card-hover: #1f2a3d;
-    --fg: #c8d2e0; --fg-dim: #6b7d99; --fg-bright: #e8edf5;
-    --accent: #5b9cf5; --accent-glow: #5b9cf522;
-    --green: #4ade80; --red: #f87171; --border: #253040;
-    --radius: 10px; --radius-sm: 6px;
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
     font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg); color: var(--fg); line-height: 1.7; font-size: 15px;
-    -webkit-font-smoothing: antialiased;
+    background: #f5f7fa; color: #1a2332; line-height: 1.7; font-size: 15px;
   }
-  a { color: var(--accent); text-decoration: none; }
+  a { color: #4f7ec9; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  .hero { text-align: center; padding: 4rem 1.5rem 2.5rem; background: linear-gradient(180deg, #111a2a 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); }
-  .hero h1 { font-size: 2.4rem; font-weight: 800; color: var(--fg-bright); letter-spacing: -0.03em; }
-  .hero h1 span { background: linear-gradient(135deg, #5b9cf5, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero .sub { font-size: 1rem; color: var(--fg-dim); max-width: 600px; margin: 0.6rem auto; }
-  .hero .stats { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
+  .hero { background: linear-gradient(135deg, #1a2332 0%, #2a3a5c 100%); color: #fff; padding: 3.5rem 1.5rem 2.5rem; text-align: center; }
+  .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; }
+  .hero h1 span { background: linear-gradient(135deg, #7bb3ff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .sub { font-size: 1.05rem; color: #a0b8d4; margin-top: 0.4rem; }
+  .hero .stats { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
   .hero .stat { text-align: center; }
-  .hero .stat .num { font-size: 1.3rem; font-weight: 700; color: var(--fg-bright); }
-  .hero .stat .lbl { font-size: 0.7rem; color: var(--fg-dim); letter-spacing: 0.07em; text-transform: uppercase; }
+  .hero .stat .num { font-size: 1.5rem; font-weight: 700; color: #fff; }
+  .hero .stat .lbl { font-size: 0.72rem; color: #8aa3c4; letter-spacing: 0.07em; text-transform: uppercase; }
 
-  nav { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px); }
-  nav button { background: none; border: none; color: var(--fg-dim); padding: 0.75rem 1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
-  nav button:hover { color: var(--fg); background: var(--card); }
-  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
-  nav a { padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--fg-dim); display: flex; align-items: center; }
+  nav { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
+  nav button { background: none; border: none; color: #6b7d99; padding: 0.8rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  nav button:hover { color: #1a2332; background: #f0f4f8; }
+  nav button.active { color: #4f7ec9; border-bottom-color: #4f7ec9; }
+  nav a { padding: 0.8rem 1.1rem; font-size: 0.85rem; color: #6b7d99; display: flex; align-items: center; }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .container { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem; }
   .tab { display: none; }
   .tab.active { display: block; animation: fadeIn 0.2s ease; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-  h2 { font-size: 1.2rem; font-weight: 700; color: var(--fg-bright); margin: 1.5rem 0 1rem; border-left: 3px solid var(--accent); padding-left: 0.7rem; }
+  h2 { font-size: 1.25rem; font-weight: 700; color: #1a2332; margin: 1.5rem 0 0.8rem; }
+  .category-label { font-size: 0.8rem; font-weight: 600; color: #4f7ec9; text-transform: uppercase; letter-spacing: 0.05em; margin: 1.2rem 0 0.5rem; }
 
-  .skill-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.2rem; }
-  .skill-table th { text-align: left; padding: 0.5rem 0.7rem; color: var(--fg-dim); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
-  .skill-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); }
-  .skill-table tr:hover { background: var(--card-hover); }
-  .category-header td { color: var(--accent); font-weight: 600; font-size: 0.85rem; padding-top: 0.8rem; }
+  .skill-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.5rem; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .skill-table th { text-align: left; padding: 0.6rem 0.8rem; color: #6b7d99; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+  .skill-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eef2f6; }
+  .skill-table tr:last-child td { border-bottom: none; }
+  .skill-table tr:hover { background: #f8fafc; }
+  .skill-table .cat td { font-weight: 600; color: #4f7ec9; background: #f0f6ff; padding-top: 0.7rem; }
 
-  .agent-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
-  .agent-row:hover { background: var(--card-hover); }
-  .agent-row strong { color: var(--fg-bright); font-size: 0.85rem; }
-  .agent-row span { color: var(--fg-dim); font-size: 0.82rem; }
+  .agent-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.15s; }
+  .agent-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-color: #c8d2e0; }
+  .agent-card a { color: #1a2332; font-weight: 600; font-size: 0.85rem; }
+  .agent-card span { color: #6b7d99; font-size: 0.82rem; }
+  .mode-ro { background: #fef2f2; color: #dc2626; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; }
+  .mode-rw { background: #f0fdf4; color: #16a34a; font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.4rem; font-weight: 600; }
 
-  .install-box { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; }
-  .install-box code { flex: 1; min-width: 280px; background: #080c14; padding: 0.7rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; border: 1px solid var(--border); line-height: 1.6; }
-  .install-box button { background: var(--accent); color: #fff; border: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600; font-family: inherit; white-space: nowrap; }
+  .about-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1rem; line-height: 1.7; }
+  .about-section p { color: #3a4a62; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .about-section .highlight { color: #4f7ec9; font-weight: 600; }
 
-  .flow-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; margin-bottom: 1rem; }
-  .flow-box h4 { color: var(--accent); font-size: 0.85rem; margin-bottom: 0.4rem; }
-  .flow-line { font-size: 0.82rem; color: var(--fg-dim); margin-bottom: 0.3rem; line-height: 1.5; }
-  .flow-line strong { color: var(--fg-bright); }
+  .install-box { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; }
+  .install-box code { flex: 1; min-width: 280px; background: #f0f4f8; padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.88rem; color: #1a2332; line-height: 1.6; }
+  .install-box button { background: #4f7ec9; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: inherit; white-space: nowrap; }
 
-  footer { text-align: center; padding: 2rem 0; color: #3d4a5c; font-size: 0.8rem; border-top: 1px solid var(--border); }
-  footer a { color: #4a5a70; }
-  .mode-tag { font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.3rem; }
-  .mode-ro { background: #2a1a1a; color: #f87171; }
-  .mode-rw { background: #1a2a1a; color: #4ade80; }
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .principle-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.8rem 1rem; text-align: center; }
+  .principle-card h3 { font-size: 0.85rem; color: #1a2332; margin-bottom: 0.2rem; }
+  .principle-card p { font-size: 0.78rem; color: #6b7d99; }
+
+  .flow-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
+  .flow-box h4 { color: #4f7ec9; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .flow-line { font-size: 0.82rem; color: #3a4a62; margin-bottom: 0.25rem; }
+  .flow-line strong { color: #1a2332; }
+
+  .link-list { line-height: 2.2; }
+  .link-list a { display: inline-block; margin-right: 1.5rem; font-size: 0.85rem; }
+
+  footer { text-align: center; padding: 2rem 0; color: #8aa3c4; font-size: 0.8rem; border-top: 1px solid #e2e8f0; margin-top: 1rem; }
+  footer a { color: #6b7d99; }
 
   @media (max-width: 640px) {
     .hero { padding: 2.5rem 1rem 1.5rem; }
     .hero h1 { font-size: 1.8rem; }
-    nav button { padding: 0.6rem 0.7rem; font-size: 0.78rem; }
+    nav button { padding: 0.6rem 0.7rem; }
+    .container { padding: 1.2rem 1rem; }
   }
 </style>
 </head>
@@ -81,63 +87,79 @@
 
 <div class="hero">
   <h1><span>dotnet</span>-artisan</h1>
-  <p class="sub">Makes your AI coding agent actually good at .NET. Install and go. Zero config.</p>
+  <p class="sub">Makes your AI coding agent actually good at .NET</p>
   <div class="stats">
     <div class="stat"><div class="num">11</div><div class="lbl">Skills</div></div>
     <div class="stat"><div class="num">14</div><div class="lbl">Agents</div></div>
     <div class="stat"><div class="num">173</div><div class="lbl">References</div></div>
     <div class="stat"><div class="num">30+</div><div class="lbl">Behaviors</div></div>
-    <div class="stat"><div class="num">MIT</div><div class="lbl">License</div></div>
   </div>
 </div>
 
 <nav>
-  <button class="active" onclick="switchTab('skills')">Skills</button>
+  <button class="active" onclick="switchTab('about')">About</button>
+  <button onclick="switchTab('skills')">Skills</button>
   <button onclick="switchTab('agents')">Agents</button>
-  <button onclick="switchTab('refs')">References</button>
+  <button onclick="switchTab('refs')">Refs</button>
+  <button onclick="switchTab('usage')">Examples</button>
   <button onclick="switchTab('install')">Install</button>
   <a href="index.html">中文</a>
 </nav>
 
 <div class="container">
 
-<div id="skills" class="tab active">
+<div id="about" class="tab active">
+  <div class="about-section">
+    <p>dotnet-artisan is a Claude Code plugin that teaches AI coding agents to write correct .NET code.</p>
+    <p>It's not a collection of scattered tools — it's a <span class="highlight">complete .NET development agent system</span>. A decision-maker orchestrator analyzes requirements, captures domain vocabulary, designs architecture, then routes to the right skills for execution. From building APIs to debugging crashes, security audits to CI/CD setup, it covers the full development lifecycle.</p>
+    <p>Install and go. Zero configuration required.</p>
+  </div>
+  <h2>How It Works</h2>
+  <div class="about-section" style="font-family:monospace;font-size:0.82rem;line-height:2">
+    Your request → intent detection → decision-maker →<br>
+    &nbsp;&nbsp;1. Detect .NET version<br>
+    &nbsp;&nbsp;2. Align requirements (ask, capture domain vocabulary)<br>
+    &nbsp;&nbsp;3. Load C# coding standards<br>
+    &nbsp;&nbsp;4. Design architecture (invoke architect agent)<br>
+    &nbsp;&nbsp;5. Decompose into domains → parallel routing to skills<br>
+    &nbsp;&nbsp;6. Specialist agents on demand<br>
+    &nbsp;&nbsp;7. Workflow + learning (capture corrections)
+  </div>
+</div>
+
+<div id="skills" class="tab">
   <h2>Skills</h2>
   <table class="skill-table">
     <tr><th>Category</th><th>Skill</th><th>Positioning</th><th>Refs</th></tr>
-    <tr class="category-header"><td colspan="4">Gateway</td></tr>
-    <tr><td></td><td><a href="skills/using-dotnet/SKILL.md">using-dotnet</a></td><td>Detects .NET intent, triggers decision-maker</td><td>—</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-advisor/SKILL.md">dotnet-advisor</a></td><td>Decision-maker: align → architect → route</td><td>2</td></tr>
-    <tr class="category-header"><td colspan="4">Baseline (always loaded)</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-csharp/SKILL.md">dotnet-csharp</a></td><td>C# standards, async/await, DI, LINQ</td><td>27</td></tr>
-    <tr class="category-header"><td colspan="4">Build</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-api/SKILL.md">dotnet-api</a></td><td>Backend API, EF Core, gRPC, SignalR, security</td><td>33</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-ui/SKILL.md">dotnet-ui</a></td><td>Blazor, MAUI, WPF, WinUI, Uno</td><td>20</td></tr>
-    <tr class="category-header"><td colspan="4">Verify</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-testing/SKILL.md">dotnet-testing</a></td><td>xUnit, integration, Playwright, benchmarks</td><td>14</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-debugging/SKILL.md">dotnet-debugging</a></td><td>WinDbg / dotnet-dump crash diagnostics</td><td>17</td></tr>
-    <tr class="category-header"><td colspan="4">Operate</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-devops/SKILL.md">dotnet-devops</a></td><td>CI/CD, containers, migration, Git workflow</td><td>19</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-tooling/SKILL.md">dotnet-tooling</a></td><td>Project structure, AOT, CLI, performance, quality, templates</td><td>41</td></tr>
-    <tr class="category-header"><td colspan="4">Augment</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-ai/SKILL.md">dotnet-ai</a></td><td>MCP servers, Semantic Kernel, RAG</td><td>—</td></tr>
-    <tr><td></td><td><a href="skills/dotnet-workflow/SKILL.md">dotnet-workflow</a></td><td>Parallel workflows, context management, verification loops</td><td>—</td></tr>
+    <tr class="cat"><td colspan="4">Gateway</td></tr>
+    <tr><td></td><td><a href="../skills/using-dotnet/SKILL.md">using-dotnet</a></td><td>Detects .NET intent, triggers decision-maker</td><td>—</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-advisor/SKILL.md">dotnet-advisor</a></td><td>Decision-maker: align → architect → route</td><td>2</td></tr>
+    <tr class="cat"><td colspan="4">Baseline (always loaded)</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-csharp/SKILL.md">dotnet-csharp</a></td><td>C# standards, async/await, DI, LINQ</td><td>27</td></tr>
+    <tr class="cat"><td colspan="4">Build</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-api/SKILL.md">dotnet-api</a></td><td>Backend API, EF Core, gRPC, SignalR, security</td><td>33</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-ui/SKILL.md">dotnet-ui</a></td><td>Blazor, MAUI, WPF, WinUI, Uno</td><td>20</td></tr>
+    <tr class="cat"><td colspan="4">Verify</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-testing/SKILL.md">dotnet-testing</a></td><td>xUnit, integration, Playwright, benchmarks</td><td>14</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-debugging/SKILL.md">dotnet-debugging</a></td><td>WinDbg / dotnet-dump crash diagnostics</td><td>17</td></tr>
+    <tr class="cat"><td colspan="4">Operate</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-devops/SKILL.md">dotnet-devops</a></td><td>CI/CD, containers, migration, Git workflow</td><td>19</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-tooling/SKILL.md">dotnet-tooling</a></td><td>Project structure, AOT, CLI, performance, quality, templates</td><td>41</td></tr>
+    <tr class="cat"><td colspan="4">Augment</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-ai/SKILL.md">dotnet-ai</a></td><td>MCP servers, Semantic Kernel, RAG</td><td>—</td></tr>
+    <tr><td></td><td><a href="../skills/dotnet-workflow/SKILL.md">dotnet-workflow</a></td><td>Parallel workflows, context management, verification loops</td><td>—</td></tr>
   </table>
 </div>
 
 <div id="agents" class="tab">
-  <h2>Role Agents</h2>
-  <p style="color:var(--fg-dim);margin-bottom:0.6rem;font-size:0.85rem">Work like human experts. Understand context, make judgments, explain reasoning.</p>
-  <div class="agent-list" id="roleAgents"></div>
-
-  <h2 style="margin-top:2rem">Tool Agents</h2>
-  <p style="color:var(--fg-dim);margin-bottom:0.6rem;font-size:0.85rem">Execute specific technical deep-dives. Focus on a single domain.</p>
-  <div class="agent-list" id="toolAgents"></div>
+  <div class="category-label">Role Agents — work like human experts</div>
+  <div id="roleAgents"></div>
+  <div class="category-label" style="margin-top:1.5rem">Tool Agents — focus on specific domains</div>
+  <div id="toolAgents"></div>
 </div>
 
 <div id="refs" class="tab">
   <h2>Reference Files</h2>
-  <p style="color:var(--fg-dim);margin-bottom:0.8rem;font-size:0.85rem">173 reference files across 8 domains. Each file: Core Principles → Patterns → Anti-patterns → Decision Guide.</p>
   <table class="skill-table">
     <tr><th>Domain</th><th>Count</th><th>Covers</th></tr>
     <tr><td>API & Backend</td><td>33</td><td>Minimal API, EF Core, gRPC, SignalR, security, caching, messaging, YARP</td></tr>
@@ -149,10 +171,8 @@
     <tr><td>UI</td><td>20</td><td>Blazor, MAUI, Uno, WPF, WinUI, WinForms</td></tr>
     <tr><td>Routing</td><td>2</td><td>Requirements alignment, architecture discovery</td></tr>
   </table>
-  <p style="margin-top:0.8rem;color:var(--fg-dim);font-size:0.85rem">Full index: <a href="../skills/INDEX.md">INDEX.md</a></p>
-
+  <p style="margin-top:0.8rem;color:#6b7d99;font-size:0.85rem">Full index: <a href="../skills/INDEX.md">INDEX.md</a></p>
   <h2>Behaviors</h2>
-  <p style="color:var(--fg-dim);margin-bottom:0.8rem;font-size:0.85rem">30+ predefined behaviors organized by goal, auto-routed by the decision-maker.</p>
   <table class="skill-table">
     <tr><th>Category</th><th>Examples</th><th>Routes to</th></tr>
     <tr><td>Build</td><td>Create API / Blazor / MAUI / CLI</td><td>api/ui + tooling + testing</td></tr>
@@ -163,7 +183,28 @@
     <tr><td>Upgrade</td><td>.NET version / AOT migration</td><td>devops + tooling</td></tr>
     <tr><td>Learn</td><td>Remember conventions / capture corrections</td><td>learning-agent</td></tr>
   </table>
-  <p style="margin-top:0.8rem;color:var(--fg-dim);font-size:0.85rem">Full catalog: <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
+  <p style="margin-top:0.8rem;color:#6b7d99;font-size:0.85rem">Full catalog: <a href="../BEHAVIORS.md">BEHAVIORS.md</a></p>
+</div>
+
+<div id="usage" class="tab">
+  <div class="flow-box">
+    <h4>1. Building an Order Management System</h4>
+    <div class="flow-line"><strong>You:</strong> I need an order management system</div>
+    <div class="flow-line"><strong style="color:#4f7ec9">AI:</strong> What kind of orders? Purchase orders, work orders, or customer orders?</div>
+    <div class="flow-line"><strong>You:</strong> Customer orders. We might split order and payment later.</div>
+    <div class="flow-line"><strong style="color:#4f7ec9">AI:</strong> Modular monolith + DDD: Order, Payment, Inventory as bounded contexts.</div>
+    <div class="flow-line" style="color:#16a34a">→ 4 rounds → domain-analyst → Event Storming → domain doc → parallel routing</div>
+  </div>
+  <div class="flow-box">
+    <h4>2. Debugging a Production Crash (OOM)</h4>
+    <div class="flow-line"><strong>You:</strong> OOM in production, here's the dump file</div>
+    <div class="flow-line" style="color:#16a34a">→ dotnet-debugging → !analyze -v → !dumpheap -stat finds 850MB → !gcroot traces root cause</div>
+  </div>
+  <div class="flow-box">
+    <h4>3. Learning a Convention</h4>
+    <div class="flow-line"><strong>You:</strong> Remember, use TimeProvider instead of DateTime.Now</div>
+    <div class="flow-line" style="color:#16a34a">→ learning-agent → generalize rule → deduplicate → write to MEMORY.md</div>
+  </div>
 </div>
 
 <div id="install" class="tab">
@@ -172,34 +213,32 @@
     <code>claude plugins marketplace add fenzel999/dotnet-artisan<br>claude plugins install dotnet-artisan</code>
     <button onclick="copyInstall()" id="copyBtn">Copy</button>
   </div>
-  <p style="color:var(--fg-dim);font-size:0.85rem">Compatible with GitHub Copilot, VS Code, and Cursor.</p>
-
+  <p style="color:#6b7d99;font-size:0.85rem">Compatible with GitHub Copilot, VS Code, and Cursor.</p>
   <h2>Further Reading</h2>
-  <p style="color:var(--fg-dim);font-size:0.85rem;line-height:2">
-    <a href="../USAGE.md">USAGE.md</a> — Understand before building: 7-item checklist, 4-round questioning<br>
-    <a href="../CHEATSHEET.md">CHEATSHEET.md</a> — DbContext as repository, TimeProvider, core rules<br>
-    <a href="../BEHAVIORS.md">BEHAVIORS.md</a> — Full behavior catalog, routing logic<br>
-    <a href="../SELF_DOCUMENTING.md">SELF_DOCUMENTING.md</a> — 30-second rule: write code any AI can read<br>
-    <a href="../CLAUDE.md">CLAUDE.md</a> — Plugin architecture, file map, session recovery
-  </p>
+  <div class="link-list">
+    <a href="../USAGE.md">USAGE.md — Questioning framework</a>
+    <a href="../CHEATSHEET.md">CHEATSHEET.md — Core rules</a>
+    <a href="../BEHAVIORS.md">BEHAVIORS.md — Behavior catalog</a>
+    <a href="../SELF_DOCUMENTING.md">SELF_DOCUMENTING.md — 30-second rule</a>
+  </div>
 </div>
 
 </div>
 
 <footer>
-  <p>Synthesized from <a href="https://github.com/novotnyllc/dotnet-artisan">dotnet-artisan</a>, <a href="https://github.com/dotnet/skills">dotnet/skills</a></p>
-  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · <a href="USAGE.md">Usage</a> · <a href="BEHAVIORS.md">Behaviors</a></p>
+  <p>By <a href="https://github.com/fenzel">fenzel</a> · Built upon <a href="https://github.com/dotnet/skills">dotnet/skills</a> and <a href="https://github.com/novotnyllc/dotnet-artisan">novotnyllc/dotnet-artisan</a></p>
+  <p><a href="https://github.com/fenzel999/dotnet-artisan">GitHub</a> · MIT License</p>
 </footer>
 
 <script>
 const agents = {
   role: [
-    ["dotnet-architect","../agents/dotnet-architect.md","Architect — architecture, folder structure, build config","ro"],
-    ["dotnet-domain-analyst","../agents/dotnet-domain-analyst.md","Domain analyst — event storming, bounded contexts, domain doc","rw"],
-    ["dotnet-code-review-agent","../agents/dotnet-code-review-agent.md","Code reviewer — correctness, performance, security","ro"],
-    ["dotnet-security-reviewer","../agents/dotnet-security-reviewer.md","Security auditor — OWASP, secrets, crypto (read-only)","ro"],
-    ["dotnet-testing-specialist","../agents/dotnet-testing-specialist.md","Test architect — strategy, pyramid design, test data","ro"],
-    ["dotnet-docs-generator","../agents/dotnet-docs-generator.md","Technical writer — DocFX, Mermaid, XML docs","rw"]
+    ["dotnet-architect","../agents/dotnet-architect.md","Architect","Architecture, folder structure, build config","ro"],
+    ["dotnet-domain-analyst","../agents/dotnet-domain-analyst.md","Domain analyst","Event storming, bounded contexts, domain doc","rw"],
+    ["dotnet-code-review-agent","../agents/dotnet-code-review-agent.md","Code reviewer","Correctness, performance, security","ro"],
+    ["dotnet-security-reviewer","../agents/dotnet-security-reviewer.md","Security auditor","OWASP, secrets, crypto (read-only)","ro"],
+    ["dotnet-testing-specialist","../agents/dotnet-testing-specialist.md","Test architect","Strategy, pyramid design, test data","ro"],
+    ["dotnet-docs-generator","../agents/dotnet-docs-generator.md","Technical writer","DocFX, Mermaid, XML docs","rw"]
   ],
   tool: [
     ["dotnet-aspnetcore-specialist","../agents/dotnet-aspnetcore-specialist.md","Middleware, DI, request pipelines","ro"],
@@ -214,7 +253,7 @@ const agents = {
 };
 function renderAgents(id, list) {
   document.getElementById(id).innerHTML = list.map(a =>
-    `<div class="agent-row"><a href="${a[1]}" style="color:var(--fg-bright)"><strong>${a[0]}</strong></a><span>${a[2]} <span class="mode-tag mode-${a[3]}">${a[3] === 'ro' ? 'RO' : 'RW'}</span></span></div>`
+    `<div class="agent-card"><a href="${a[1]}">${a[0]} — ${a[2]}</a><span>${a[3]} <span class="mode-${a[4]}">${a[4] === 'ro' ? 'RO' : 'RW'}</span></span></div>`
   ).join('');
 }
 renderAgents('roleAgents', agents.role);
@@ -223,8 +262,8 @@ renderAgents('toolAgents', agents.tool);
 function copyInstall() {
   navigator.clipboard.writeText('claude plugins marketplace add fenzel999/dotnet-artisan && claude plugins install dotnet-artisan');
   const btn = document.getElementById('copyBtn');
-  btn.textContent = 'Copied!'; btn.style.background = 'var(--green)';
-  setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = 'var(--accent)'; }, 2000);
+  btn.textContent = 'Copied!'; btn.style.background = '#16a34a';
+  setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = '#4f7ec9'; }, 2000);
 }
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
