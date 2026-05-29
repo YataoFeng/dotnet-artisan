@@ -1,6 +1,6 @@
 # dotnet-artisan — AI Agent Skills for .NET
 
-11 skills, 13 agents, 160+ reference files. Synthesized from dotnet-artisan, dotnet/skills, and dotnet-claude-kit.
+11 skills, 14 agents, 173 reference files. Synthesized from dotnet-artisan, dotnet/skills, and dotnet-claude-kit.
 
 ## Quick Start
 

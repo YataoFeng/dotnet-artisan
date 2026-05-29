@@ -4,7 +4,7 @@
 
 ## What This Repo Is
 
-A Claude Code plugin containing 11 skills + 13 agents + 160+ reference files for .NET development. It teaches AI coding agents how to write correct, idiomatic .NET code.
+A Claude Code plugin containing 11 skills + 14 agents + 173 reference files for .NET development. It teaches AI coding agents how to write correct, idiomatic .NET code.
 
 ## Session Recovery Protocol (read in this order)
 
@@ -37,7 +37,7 @@ dotnet-artisan/
 ├── skills/
 │   ├── CHEATSHEET.md      ← One-page all-rules
 │   ├── DECISIONS.md       ← "When to use what"
-│   ├── INDEX.md           ← 166 references by domain
+│   ├── INDEX.md           ← 173 references by domain
 │   ├── using-dotnet/      ← Gateway skill (auto-loaded)
 │   ├── dotnet-advisor/    ← Router skill (auto-loaded)
 │   ├── dotnet-csharp/     ← Baseline C# (always loaded, 27 refs)
@@ -45,7 +45,7 @@ dotnet-artisan/
 │   ├── dotnet-ui/         ← Blazor/MAUI/WPF/WinUI (20 refs)
 │   ├── dotnet-testing/    ← xUnit/Playwright/Benchmark (14 refs)
 │   ├── dotnet-devops/     ← CI/CD/Docker/NuGet (19 refs)
-│   ├── dotnet-tooling/    ← MSBuild/AOT/CLI (37 refs)
+│   ├── dotnet-tooling/    ← MSBuild/AOT/CLI (41 refs)
 │   ├── dotnet-debugging/  ← WinDbg/crash dumps (17 refs)
 │   ├── dotnet-ai/         ← MCP/Semantic Kernel/RAG
 │   ├── dotnet-workflow/   ← Parallel worktrees, context, corrections, learning
